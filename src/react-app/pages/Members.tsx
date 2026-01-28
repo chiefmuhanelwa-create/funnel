@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, FileText, Loader2 } from 'lucide-react';
+import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 export default function Members() {
@@ -66,8 +66,6 @@ export default function Members() {
     },
   ];
 
-  const accessibleProducts = getAllAccessibleProducts();
-
   const handleEmailCheck = async (e: React.FormEvent) => {
     e.preventDefault();
     setEmailError('');
@@ -84,8 +82,11 @@ export default function Members() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
-        <Loader2 className="w-12 h-12 text-primary-600 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
+          <p className="mt-4 text-white/50">Loading your content...</p>
+        </div>
       </div>
     );
   }
@@ -93,40 +94,44 @@ export default function Members() {
   // If not authenticated and no email access, show login options
   if (!isAuthenticated && !emailAccess) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="min-h-screen bg-dark-500 pt-20">
+        <div className="container-tight py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card text-center"
+            className="glass-card p-10 text-center"
           >
-            <h1 className="text-3xl font-bold text-gray-900">
-              Access Your Content
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-gold flex items-center justify-center mb-6">
+              <User size={28} className="text-dark-500" />
+            </div>
+
+            <h1 className="text-section text-white">
+              Access Your <span className="text-gradient-gold">Content</span>
             </h1>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-white/60">
               Log in to access your purchased courses and resources
             </p>
 
-            <div className="mt-8 space-y-6">
+            <div className="mt-10 space-y-6">
               {/* OAuth Login */}
               <div>
                 <button
                   onClick={login}
-                  className="btn-primary w-full py-4 text-lg"
+                  className="btn-primary w-full btn-lg"
                 >
                   Sign in with Google
                 </button>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-3 text-sm text-white/40">
                   Recommended for the best experience
                 </p>
               </div>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-white/10" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">or</span>
+                  <span className="px-4 bg-dark-500 text-white/40">or</span>
                 </div>
               </div>
 
@@ -145,7 +150,7 @@ export default function Members() {
                 </div>
 
                 {emailError && (
-                  <div className="mt-3 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                  <div className="mt-3 p-4 bg-error-500/10 border border-error-500/20 text-error-400 rounded-xl text-sm">
                     {emailError}
                   </div>
                 )}
@@ -167,14 +172,14 @@ export default function Members() {
               </form>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <p className="text-gray-600">
-                Don't have access yet?{' '}
-                <Link to="/contentpreneur-starter-kit" className="text-primary-600 font-semibold">
-                  Get the Starter Kit
-                </Link>
-              </p>
-            </div>
+            <div className="divider my-10" />
+
+            <p className="text-white/50">
+              Don't have access yet?{' '}
+              <Link to="/contentpreneur-starter-kit" className="text-gold-500 font-semibold hover:text-gold-400">
+                Get the Starter Kit
+              </Link>
+            </p>
           </motion.div>
         </div>
       </div>
@@ -185,28 +190,27 @@ export default function Members() {
   const ownedProducts = products.filter(p => hasAccessToProduct(p.key));
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="container-content py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back{user ? `, ${user.name.split(' ')[0]}` : ''}!
-              </h1>
-              <p className="mt-2 text-gray-600">
-                Access your purchased content below
-              </p>
-            </div>
+          {/* Welcome header */}
+          <div className="mb-10">
+            <h1 className="text-section text-white">
+              Welcome back{user ? `, ${user.name.split(' ')[0]}` : ''}!
+            </h1>
+            <p className="mt-2 text-white/50">
+              Access your purchased content below
+            </p>
           </div>
 
           {ownedProducts.length === 0 ? (
-            <div className="card text-center py-12">
-              <p className="text-gray-600">
+            <div className="glass-card p-12 text-center">
+              <p className="text-white/60">
                 You don't have any products yet.{' '}
-                <Link to="/contentpreneur-starter-kit" className="text-primary-600 font-semibold">
+                <Link to="/contentpreneur-starter-kit" className="text-gold-500 font-semibold hover:text-gold-400">
                   Get started with the Starter Kit
                 </Link>
               </p>
@@ -224,46 +228,44 @@ export default function Members() {
                     <a
                       href={product.link}
                       download
-                      className="card card-hover block h-full"
+                      className="card card-hover block h-full group"
                     >
-                      <div className="flex items-start">
-                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center shrink-0">
-                          <product.icon className="text-primary-600" size={24} />
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center shrink-0">
+                          <product.icon className="text-gold-500" size={24} />
                         </div>
-                        <div className="ml-4">
-                          <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded">
-                            {product.type}
-                          </span>
-                          <h3 className="mt-2 font-semibold text-gray-900">
+                        <div className="flex-1">
+                          <span className="badge badge-gold text-xs">{product.type}</span>
+                          <h3 className="mt-2 font-semibold text-white group-hover:text-gold-500 transition-colors">
                             {product.name}
                           </h3>
-                          <p className="mt-1 text-sm text-gray-600">
+                          <p className="mt-1 text-sm text-white/50">
                             {product.description}
                           </p>
-                          <span className="mt-3 inline-flex items-center text-primary-600 font-medium text-sm">
+                          <span className="mt-4 inline-flex items-center text-gold-500 font-medium text-sm">
+                            <Download size={16} className="mr-2" />
                             Download PDF
                           </span>
                         </div>
                       </div>
                     </a>
                   ) : (
-                    <Link to={product.link} className="card card-hover block h-full">
-                      <div className="flex items-start">
-                        <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center shrink-0">
-                          <product.icon className="text-primary-600" size={24} />
+                    <Link to={product.link} className="card card-hover block h-full group">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center shrink-0">
+                          <product.icon className="text-gold-500" size={24} />
                         </div>
-                        <div className="ml-4">
-                          <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded">
-                            {product.type}
-                          </span>
-                          <h3 className="mt-2 font-semibold text-gray-900">
+                        <div className="flex-1">
+                          <span className="badge badge-gold text-xs">{product.type}</span>
+                          <h3 className="mt-2 font-semibold text-white group-hover:text-gold-500 transition-colors">
                             {product.name}
                           </h3>
-                          <p className="mt-1 text-sm text-gray-600">
+                          <p className="mt-1 text-sm text-white/50">
                             {product.description}
                           </p>
-                          <span className="mt-3 inline-flex items-center text-primary-600 font-medium text-sm">
-                            Access Now →
+                          <span className="mt-4 inline-flex items-center text-gold-500 font-medium text-sm group-hover:gap-2 transition-all">
+                            Access Now
+                            <ArrowRight size={16} className="ml-1" />
                           </span>
                         </div>
                       </div>
@@ -273,6 +275,25 @@ export default function Members() {
               ))}
             </div>
           )}
+
+          {/* Quick links */}
+          <div className="mt-12 pt-8 border-t border-white/10">
+            <h2 className="text-lg font-semibold text-white mb-4">Need help?</h2>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="mailto:support@contentpreneurhub.online"
+                className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+              >
+                Contact Support
+              </a>
+              <Link
+                to="/contentpreneur-starter-kit"
+                className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+              >
+                Browse More Products
+              </Link>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

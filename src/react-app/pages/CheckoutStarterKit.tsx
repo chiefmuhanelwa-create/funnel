@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Shield, CreditCard, Loader2 } from 'lucide-react';
+import { CheckCircle, Shield, CreditCard, Loader2, Lock, Zap } from 'lucide-react';
 import { analytics } from '../utils/analytics';
 
 interface OrderBump {
@@ -107,17 +107,25 @@ export default function CheckoutStarterKit() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="container-content py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid md:grid-cols-5 gap-8"
+          className="grid lg:grid-cols-5 gap-8"
         >
           {/* Order Form */}
-          <div className="md:col-span-3">
-            <div className="card">
-              <h1 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Order</h1>
+          <div className="lg:col-span-3">
+            <div className="glass-card p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center">
+                  <Lock size={18} className="text-dark-500" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-white">Secure Checkout</h1>
+                  <p className="text-sm text-white/50">Your information is protected</p>
+                </div>
+              </div>
 
               <form onSubmit={handleSubmit}>
                 {/* Customer Info */}
@@ -143,48 +151,49 @@ export default function CheckoutStarterKit() {
                       placeholder="john@example.com"
                       required
                     />
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-2 text-xs text-white/40">
                       Your course access will be sent to this email
                     </p>
                   </div>
                 </div>
 
                 {/* Order Bumps */}
-                <div className="border-t border-gray-200 pt-6 mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <div className="border-t border-white/10 pt-6 mb-6">
+                  <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <Zap size={18} className="text-gold-500" />
                     Special Offers (One-Time Only)
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {orderBumps.map((bump) => (
                       <div
                         key={bump.key}
                         onClick={() => toggleBump(bump.key)}
-                        className={`p-4 border-2 rounded-lg cursor-pointer transition ${
+                        className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           selectedBumps.includes(bump.key)
-                            ? 'border-primary-500 bg-primary-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-gold-500 bg-gold-500/10'
+                            : 'border-white/10 hover:border-white/20 bg-white/5'
                         }`}
                       >
-                        <div className="flex items-start">
+                        <div className="flex items-start gap-3">
                           <div
-                            className={`w-6 h-6 rounded border-2 flex items-center justify-center shrink-0 mr-3 ${
+                            className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all ${
                               selectedBumps.includes(bump.key)
-                                ? 'border-primary-500 bg-primary-500'
-                                : 'border-gray-300'
+                                ? 'border-gold-500 bg-gold-500'
+                                : 'border-white/30'
                             }`}
                           >
                             {selectedBumps.includes(bump.key) && (
-                              <CheckCircle className="text-white" size={16} />
+                              <CheckCircle className="text-dark-500" size={14} />
                             )}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <span className="font-medium text-gray-900">{bump.name}</span>
-                              <span className="font-semibold text-primary-600">
+                              <span className="font-medium text-white">{bump.name}</span>
+                              <span className="font-semibold text-gold-500">
                                 +${(bump.price / 100).toFixed(0)}
                               </span>
                             </div>
-                            <p className="mt-1 text-sm text-gray-600">{bump.description}</p>
+                            <p className="mt-1 text-sm text-white/50">{bump.description}</p>
                           </div>
                         </div>
                       </div>
@@ -194,7 +203,7 @@ export default function CheckoutStarterKit() {
 
                 {/* Error Message */}
                 {error && (
-                  <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
+                  <div className="mb-4 p-4 bg-error-500/10 border border-error-500/20 text-error-400 rounded-xl text-sm">
                     {error}
                   </div>
                 )}
@@ -203,7 +212,7 @@ export default function CheckoutStarterKit() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full btn-primary btn-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center">
@@ -219,26 +228,29 @@ export default function CheckoutStarterKit() {
                 </button>
 
                 {/* Trust badges */}
-                <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <Shield className="mr-1" size={16} />
-                    Secure Payment
+                <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/40">
+                  <div className="flex items-center gap-2">
+                    <Shield size={16} className="text-success-400" />
+                    <span>Secure Payment</span>
                   </div>
-                  <div>30-Day Guarantee</div>
+                  <div className="flex items-center gap-2">
+                    <Lock size={16} />
+                    <span>SSL Encrypted</span>
+                  </div>
                 </div>
               </form>
             </div>
           </div>
 
           {/* Order Summary */}
-          <div className="md:col-span-2">
-            <div className="card sticky top-24">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+          <div className="lg:col-span-2">
+            <div className="glass-card p-6 sticky top-24">
+              <h2 className="text-lg font-semibold text-white mb-4">Order Summary</h2>
 
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{mainProduct.name}</span>
-                  <span className="font-medium">${(mainProduct.price / 100).toFixed(0)}</span>
+                  <span className="text-white/70">{mainProduct.name}</span>
+                  <span className="font-medium text-white">${(mainProduct.price / 100).toFixed(0)}</span>
                 </div>
 
                 {selectedBumps.map((key) => {
@@ -246,28 +258,28 @@ export default function CheckoutStarterKit() {
                   if (!bump) return null;
                   return (
                     <div key={key} className="flex justify-between text-sm">
-                      <span className="text-gray-600">{bump.name}</span>
-                      <span className="font-medium">${(bump.price / 100).toFixed(0)}</span>
+                      <span className="text-white/50">{bump.name}</span>
+                      <span className="font-medium text-white/70">${(bump.price / 100).toFixed(0)}</span>
                     </div>
                   );
                 })}
 
-                <div className="border-t border-gray-200 pt-3 mt-3">
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Total</span>
-                    <div className="text-right">
-                      <div>${(totalUSD / 100).toFixed(0)}</div>
-                      <div className="text-sm font-normal text-gray-500">
-                        ≈ R{(totalZAR / 100).toFixed(2)}
-                      </div>
+                <div className="divider my-4" />
+
+                <div className="flex justify-between text-lg font-bold">
+                  <span className="text-white">Total</span>
+                  <div className="text-right">
+                    <div className="text-gradient-gold">${(totalUSD / 100).toFixed(0)}</div>
+                    <div className="text-sm font-normal text-white/40">
+                      ≈ R{(totalZAR / 100).toFixed(2)}
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* What's included */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h3 className="font-medium text-gray-900 mb-3">What's Included:</h3>
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <h3 className="font-medium text-white mb-3">What's Included:</h3>
                 <ul className="space-y-2">
                   {[
                     '9 Video Modules',
@@ -277,12 +289,23 @@ export default function CheckoutStarterKit() {
                     'Content Calendar Template',
                     'Lifetime Access',
                   ].map((item, index) => (
-                    <li key={index} className="flex items-center text-sm text-gray-600">
-                      <CheckCircle className="text-green-500 mr-2 shrink-0" size={16} />
+                    <li key={index} className="flex items-center text-sm text-white/60">
+                      <CheckCircle className="text-success-400 mr-2 shrink-0" size={14} />
                       {item}
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Guarantee badge */}
+              <div className="mt-6 p-4 rounded-xl bg-success-500/10 border border-success-500/20">
+                <div className="flex items-center gap-3">
+                  <Shield size={24} className="text-success-400" />
+                  <div>
+                    <p className="text-sm font-medium text-white">30-Day Money-Back Guarantee</p>
+                    <p className="text-xs text-white/50">Not satisfied? Get a full refund.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

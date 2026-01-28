@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Play, ArrowRight, Star, Clock, Users, Award } from 'lucide-react';
+import { CheckCircle, Play, ArrowRight, Star, Clock, Users, Award, Shield, Zap, Gift } from 'lucide-react';
 
 export default function StarterKitProduct() {
   const modules = [
@@ -16,61 +16,74 @@ export default function StarterKitProduct() {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="bg-dark-500 pt-20">
       {/* Hero Section */}
-      <section className="gradient-hero py-20 md:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-hero" />
+        <div className="glow-orb w-96 h-96 -top-48 -right-48 opacity-30" />
+        <div className="glow-orb-accent w-80 h-80 bottom-0 -left-40 opacity-20" />
+
+        <div className="container-content relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block px-4 py-1 text-sm font-medium text-primary-400 bg-primary-900/50 rounded-full mb-4">
-                Limited Time Offer
+              <span className="badge badge-gold mb-4">
+                <Clock size={12} className="mr-1" />
+                Limited Time: 66% Off
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                Contentpreneur Starter Kit
+
+              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+                Contentpreneur{' '}
+                <span className="text-gradient-gold">Starter Kit</span>
               </h1>
-              <p className="mt-6 text-lg text-gray-300">
+
+              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
                 The complete 9-module course to launch and grow your content creator business.
                 Learn the exact PAIDS Framework that has generated over $2M in creator revenue.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center text-white">
-                  <Clock className="mr-2 text-primary-400" size={20} />
+              <div className="mt-8 flex flex-wrap gap-6">
+                <div className="flex items-center text-white/70">
+                  <Clock className="mr-2 text-gold-500" size={18} />
                   <span>9 Modules</span>
                 </div>
-                <div className="flex items-center text-white">
-                  <Users className="mr-2 text-primary-400" size={20} />
+                <div className="flex items-center text-white/70">
+                  <Users className="mr-2 text-gold-500" size={18} />
                   <span>10K+ Students</span>
                 </div>
-                <div className="flex items-center text-white">
-                  <Award className="mr-2 text-primary-400" size={20} />
+                <div className="flex items-center text-white/70">
+                  <Gift className="mr-2 text-gold-500" size={18} />
                   <span>Bonus Workbooks</span>
                 </div>
               </div>
 
-              <div className="mt-8 flex items-baseline gap-4">
-                <span className="text-5xl font-bold text-white">$67</span>
-                <span className="text-2xl text-gray-400 line-through">$197</span>
-                <span className="px-2 py-1 text-sm font-medium text-green-400 bg-green-900/50 rounded">
-                  66% OFF
-                </span>
+              <div className="mt-10 flex items-baseline gap-4">
+                <span className="text-5xl font-bold text-gradient-gold">$67</span>
+                <span className="text-2xl text-white/40 line-through">$197</span>
+                <span className="badge badge-success">66% OFF</span>
               </div>
 
               <Link
                 to="/checkout/starter-kit"
-                className="mt-8 inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition text-lg"
+                className="mt-8 btn-primary btn-lg inline-flex group animate-glow-pulse"
               >
                 Enroll Now - Get Instant Access
-                <ArrowRight className="ml-2" size={20} />
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <p className="mt-4 text-sm text-gray-400">
-                30-day money-back guarantee. No questions asked.
-              </p>
+              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+                <div className="flex items-center gap-2">
+                  <Shield size={16} className="text-success-400" />
+                  <span>30-Day Guarantee</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Zap size={16} className="text-gold-500" />
+                  <span>Instant Access</span>
+                </div>
+              </div>
             </motion.div>
 
             <motion.div
@@ -79,14 +92,16 @@ export default function StarterKitProduct() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-800 aspect-video">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <button className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors group">
-                    <Play className="text-white ml-1 group-hover:scale-110 transition-transform" size={32} />
-                  </button>
-                </div>
-                <div className="absolute bottom-4 left-4 text-white text-sm">
-                  Watch the intro video
+              <div className="glass-card p-2 glow-gold">
+                <div className="relative rounded-xl overflow-hidden bg-dark-400 aspect-video">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <button className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group">
+                      <Play className="text-dark-500 ml-1 group-hover:scale-110 transition-transform" size={32} />
+                    </button>
+                  </div>
+                  <div className="absolute bottom-4 left-4 text-white/70 text-sm">
+                    Watch the intro video
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -95,23 +110,24 @@ export default function StarterKitProduct() {
       </section>
 
       {/* What's Included */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 md:py-28 section-gradient">
+        <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              What's Inside the Starter Kit
+            <span className="badge badge-gold mb-4">Course Curriculum</span>
+            <h2 className="text-section md:text-section-lg text-white">
+              What's Inside the <span className="text-gradient-gold">Starter Kit</span>
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
               Everything you need to build a profitable content business
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4">
             {modules.map((module, index) => (
               <motion.div
                 key={index}
@@ -121,13 +137,13 @@ export default function StarterKitProduct() {
                 transition={{ delay: index * 0.05 }}
                 className="card card-hover"
               >
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold shrink-0">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
                     {index + 1}
                   </div>
-                  <div className="ml-4">
-                    <h3 className="font-semibold text-gray-900">{module.title}</h3>
-                    <p className="mt-1 text-sm text-gray-600">{module.desc}</p>
+                  <div>
+                    <h3 className="font-semibold text-white">{module.title}</h3>
+                    <p className="mt-1 text-sm text-white/50">{module.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -137,23 +153,26 @@ export default function StarterKitProduct() {
       </section>
 
       {/* Bonuses */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+
+        <div className="container-content relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <span className="inline-block px-4 py-1 text-sm font-medium text-primary-600 bg-primary-100 rounded-full mb-4">
+            <span className="badge badge-success mb-4">
+              <Gift size={12} className="mr-1" />
               Included Free
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Bonus Resources (Worth $97)
+            <h2 className="text-section md:text-section-lg text-white">
+              Bonus Resources <span className="text-gradient-gold">(Worth $97)</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
               { title: 'Niche Finder Workbook', value: '$27', desc: 'Step-by-step exercises to find your profitable niche' },
               { title: 'PAIDS Framework Workbook', value: '$27', desc: 'Implement each pillar with guided worksheets' },
@@ -166,15 +185,19 @@ export default function StarterKitProduct() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card flex items-start"
+                className="glass-card p-6"
               >
-                <CheckCircle className="text-green-500 shrink-0 mt-1" size={24} />
-                <div className="ml-4">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900">{bonus.title}</h3>
-                    <span className="text-sm text-gray-400">({bonus.value} value)</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-success-500/20 flex items-center justify-center shrink-0">
+                    <CheckCircle className="text-success-400" size={20} />
                   </div>
-                  <p className="mt-1 text-gray-600">{bonus.desc}</p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-white">{bonus.title}</h3>
+                      <span className="text-xs text-white/40">({bonus.value} value)</span>
+                    </div>
+                    <p className="mt-1 text-sm text-white/60">{bonus.desc}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -183,20 +206,21 @@ export default function StarterKitProduct() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 md:py-28 section-gradient">
+        <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Success Stories
+            <span className="badge badge-gold mb-4">Success Stories</span>
+            <h2 className="text-section md:text-section-lg text-white">
+              Real Results from <span className="text-gradient-gold">Real Creators</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
               {
                 quote: "I was skeptical at first, but the PAIDS Framework is the real deal. Within 3 months of implementing it, I signed a $5,000 brand deal.",
@@ -221,18 +245,16 @@ export default function StarterKitProduct() {
               >
                 <div className="flex mb-4">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="w-5 h-5 text-yellow-400 fill-current" />
+                    <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic text-lg">"{testimonial.quote}"</p>
-                <div className="mt-6 flex items-center justify-between">
+                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/10">
                   <div>
-                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-500">{testimonial.role}</div>
+                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="text-sm text-white/50">{testimonial.role}</div>
                   </div>
-                  <span className="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full">
-                    {testimonial.result}
-                  </span>
+                  <span className="badge badge-success">{testimonial.result}</span>
                 </div>
               </motion.div>
             ))}
@@ -240,34 +262,98 @@ export default function StarterKitProduct() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 gradient-primary">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* FAQ */}
+      <section className="py-20 md:py-28 bg-dark-500">
+        <div className="container-narrow">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Start Your Content Business Today
+            <span className="badge badge-gold mb-4">FAQ</span>
+            <h2 className="text-section md:text-section-lg text-white">
+              Common <span className="text-gradient-gold">Questions</span>
             </h2>
-            <p className="mt-6 text-lg text-white/90">
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "How long do I have access to the course?",
+                a: "Forever! You get lifetime access to all course materials and any future updates."
+              },
+              {
+                q: "Is this course suitable for beginners?",
+                a: "Yes! The Starter Kit is designed for both beginners and creators who want to systematize their approach."
+              },
+              {
+                q: "What if I'm not satisfied?",
+                a: "We offer a 30-day money-back guarantee. If you're not happy, just email us for a full refund."
+              },
+              {
+                q: "When do I get access?",
+                a: "Immediately! As soon as your payment is confirmed, you'll receive an email with your login details."
+              },
+            ].map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="card"
+              >
+                <h3 className="font-semibold text-white mb-2">{faq.q}</h3>
+                <p className="text-white/60 text-sm">{faq.a}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-radial-gold opacity-40" />
+
+        <div className="container-narrow relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-10 md:p-14 text-center glow-gold-lg"
+          >
+            <h2 className="text-section md:text-section-lg text-white mb-4">
+              Start Your Content Business{' '}
+              <span className="text-gradient-gold">Today</span>
+            </h2>
+            <p className="text-white/60 mb-8 max-w-xl mx-auto">
               Get instant access to all 9 modules + bonus resources
             </p>
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <span className="text-5xl font-bold text-white">$67</span>
-              <span className="text-2xl text-white/50 line-through">$197</span>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-5xl font-bold text-gradient-gold">$67</span>
+              <span className="text-2xl text-white/30 line-through">$197</span>
             </div>
+
             <Link
               to="/checkout/starter-kit"
-              className="mt-8 inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition text-lg"
+              className="btn-primary btn-lg inline-flex group"
             >
               Enroll Now - Get Instant Access
-              <ArrowRight className="ml-2" size={20} />
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
-            <p className="mt-4 text-sm text-white/70">
-              30-day money-back guarantee. Lifetime access.
-            </p>
+
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={16} className="text-success-400" />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap size={16} className="text-gold-500" />
+                <span>Lifetime Access</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

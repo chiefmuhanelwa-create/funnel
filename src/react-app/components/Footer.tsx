@@ -1,64 +1,92 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Twitter } from 'lucide-react';
+import { Instagram, Youtube, Twitter, Mail, Shield, CreditCard } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 export default function Footer() {
   const { isAuthenticated, login } = useMemberAccess();
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-dark-600 border-t border-white/5">
+      {/* Main footer content */}
+      <div className="container-content py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
-          <div className="col-span-1 md:col-span-2">
-            <Link to="/" className="text-2xl font-bold">
-              Contentpreneur<span className="text-primary-400">Hub</span>
+          <div className="lg:col-span-2">
+            <Link to="/" className="inline-block">
+              <span className="text-2xl font-bold text-white">
+                Contentpreneur<span className="text-gradient-gold">Hub</span>
+              </span>
             </Link>
-            <p className="mt-4 text-gray-400 max-w-md">
+            <p className="mt-4 text-white/50 max-w-md leading-relaxed">
               Empowering content creators to build sustainable businesses through
               the PAIDS Framework. Transform your passion into profit.
             </p>
-            <div className="flex space-x-4 mt-6">
+
+            {/* Social links */}
+            <div className="flex items-center gap-4 mt-6">
               <a
                 href="https://instagram.com/contentpreneurhub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/50 hover:text-gold-500 hover:bg-gold-500/10 transition-all"
               >
-                <Instagram size={24} />
+                <Instagram size={20} />
               </a>
               <a
                 href="https://youtube.com/@contentpreneurhub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/50 hover:text-gold-500 hover:bg-gold-500/10 transition-all"
               >
-                <Youtube size={24} />
+                <Youtube size={20} />
               </a>
               <a
                 href="https://twitter.com/contentpreneurhub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/50 hover:text-gold-500 hover:bg-gold-500/10 transition-all"
               >
-                <Twitter size={24} />
+                <Twitter size={20} />
               </a>
+              <a
+                href="mailto:hello@contentpreneurhub.online"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/50 hover:text-gold-500 hover:bg-gold-500/10 transition-all"
+              >
+                <Mail size={20} />
+              </a>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap items-center gap-4 mt-8">
+              <div className="security-badge">
+                <Shield size={14} />
+                <span>SSL Secured</span>
+              </div>
+              <div className="security-badge">
+                <CreditCard size={14} />
+                <span>Secure Payments</span>
+              </div>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              Quick Links
+            </h3>
+            <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-gray-400 hover:text-white transition">
+                <Link
+                  to="/"
+                  className="text-white/50 hover:text-gold-500 transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
                 <Link
                   to="/contentpreneur-starter-kit"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-white/50 hover:text-gold-500 transition-colors"
                 >
                   Starter Kit
                 </Link>
@@ -66,7 +94,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/free/paids-workbook"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-white/50 hover:text-gold-500 transition-colors"
                 >
                   Free Resources
                 </Link>
@@ -74,9 +102,9 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:hello@contentpreneurhub.online"
-                  className="text-gray-400 hover:text-white transition"
+                  className="text-white/50 hover:text-gold-500 transition-colors"
                 >
-                  Contact
+                  Contact Support
                 </a>
               </li>
             </ul>
@@ -84,14 +112,16 @@ export default function Footer() {
 
           {/* Member Access */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Members</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              Members
+            </h3>
+            <ul className="space-y-3">
               {isAuthenticated ? (
                 <>
                   <li>
                     <Link
                       to="/members"
-                      className="text-gray-400 hover:text-white transition"
+                      className="text-white/50 hover:text-gold-500 transition-colors"
                     >
                       My Content
                     </Link>
@@ -99,7 +129,7 @@ export default function Footer() {
                   <li>
                     <Link
                       to="/dashboard"
-                      className="text-gray-400 hover:text-white transition"
+                      className="text-white/50 hover:text-gold-500 transition-colors"
                     >
                       Dashboard
                     </Link>
@@ -109,27 +139,53 @@ export default function Footer() {
                 <li>
                   <button
                     onClick={login}
-                    className="text-gray-400 hover:text-white transition"
+                    className="text-white/50 hover:text-gold-500 transition-colors"
                   >
                     Member Login
                   </button>
                 </li>
               )}
             </ul>
+
+            {/* Newsletter signup hint */}
+            <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
+              <p className="text-sm text-white/70 mb-3">Get free tips weekly</p>
+              <Link
+                to="/free/paids-workbook"
+                className="text-sm text-gold-500 hover:text-gold-400 font-medium"
+              >
+                Join 10K+ creators →
+              </Link>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
+      {/* Bottom bar */}
+      <div className="border-t border-white/5">
+        <div className="container-content py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-white/40 text-sm">
               &copy; {new Date().getFullYear()} Contentpreneur Hub. All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition">
+            <div className="flex items-center gap-6">
+              <a
+                href="#"
+                className="text-white/40 hover:text-white/70 text-sm transition-colors"
+              >
                 Privacy Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition">
+              <a
+                href="#"
+                className="text-white/40 hover:text-white/70 text-sm transition-colors"
+              >
                 Terms of Service
+              </a>
+              <a
+                href="#"
+                className="text-white/40 hover:text-white/70 text-sm transition-colors"
+              >
+                Refund Policy
               </a>
             </div>
           </div>
