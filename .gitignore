@@ -5,6 +5,7 @@ node_modules/
 # Build outputs
 dist/
 .wrangler/
+.vercel/
 
 # Environment variables
 .env
@@ -28,6 +29,9 @@ npm-debug.log*
 
 # Test coverage
 coverage/
+
+# Drizzle
+drizzle/
 
 # Misc
 *.tsbuildinfo
