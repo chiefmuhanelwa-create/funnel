@@ -1,0 +1,300 @@
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { CheckCircle, BookOpen, ArrowRight, Star, Shield, Zap, Users, Target, TrendingUp } from 'lucide-react';
+
+export default function InfluencersCodeProduct() {
+  const chapters = [
+    { title: 'Chapter 1: The Influencer Mindset', desc: 'Develop the psychology of successful influencers' },
+    { title: 'Chapter 2: Finding Your Unique Voice', desc: 'Stand out in a crowded market' },
+    { title: 'Chapter 3: Building Your Personal Brand', desc: 'Create a memorable identity' },
+    { title: 'Chapter 4: Content That Converts', desc: 'Turn followers into customers' },
+    { title: 'Chapter 5: The Engagement Formula', desc: 'Build a loyal community' },
+    { title: 'Chapter 6: Monetization Strategies', desc: 'Multiple income streams explained' },
+    { title: 'Chapter 7: Brand Partnership Secrets', desc: 'Land lucrative deals' },
+    { title: 'Chapter 8: Scaling Your Influence', desc: 'From micro to macro influencer' },
+  ];
+
+  return (
+    <div className="bg-dark-500 pt-20">
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-hero" />
+        <div className="glow-orb w-96 h-96 -top-48 -right-48 opacity-30" />
+        <div className="glow-orb-accent w-80 h-80 bottom-0 -left-40 opacity-20" />
+
+        <div className="container-content relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="badge badge-gold mb-4">
+                <BookOpen size={12} className="mr-1" />
+                Digital eBook
+              </span>
+
+              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+                The Influencer's{' '}
+                <span className="text-gradient-gold">Code</span>
+              </h1>
+
+              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+                Unlock the secrets that top influencers use to build massive audiences,
+                land brand deals, and turn their personal brand into a profitable business.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-6">
+                <div className="flex items-center text-white/70">
+                  <BookOpen className="mr-2 text-gold-500" size={18} />
+                  <span>8 Chapters</span>
+                </div>
+                <div className="flex items-center text-white/70">
+                  <Users className="mr-2 text-gold-500" size={18} />
+                  <span>5K+ Readers</span>
+                </div>
+                <div className="flex items-center text-white/70">
+                  <Target className="mr-2 text-gold-500" size={18} />
+                  <span>Actionable Strategies</span>
+                </div>
+              </div>
+
+              <div className="mt-10 flex items-baseline gap-4">
+                <span className="text-5xl font-bold text-gradient-gold">$19</span>
+                <span className="text-2xl text-white/40 line-through">$47</span>
+                <span className="badge badge-success">60% OFF</span>
+              </div>
+
+              <Link
+                to="/checkout/influencers-code"
+                className="mt-8 btn-primary btn-lg inline-flex group animate-glow-pulse"
+              >
+                Get Your Copy Now
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Link>
+
+              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+                <div className="flex items-center gap-2">
+                  <Shield size={16} className="text-success-400" />
+                  <span>30-Day Guarantee</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Zap size={16} className="text-gold-500" />
+                  <span>Instant Download</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="glass-card p-8 glow-gold">
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gold-500/20 to-dark-400 aspect-[3/4] flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <BookOpen size={80} className="text-gold-500 mx-auto mb-6" />
+                    <h2 className="text-2xl font-bold text-white">The Influencer's Code</h2>
+                    <p className="text-white/60 mt-2">Complete Digital eBook</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You'll Learn */}
+      <section className="py-20 md:py-28 section-gradient">
+        <div className="container-content">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="badge badge-gold mb-4">What's Inside</span>
+            <h2 className="text-section md:text-section-lg text-white">
+              8 Chapters to <span className="text-gradient-gold">Transform</span> Your Influence
+            </h2>
+            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+              A complete roadmap from building your brand to monetizing your influence
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {chapters.map((chapter, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="card card-hover"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">{chapter.title}</h3>
+                    <p className="mt-1 text-sm text-white/50">{chapter.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits */}
+      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+
+        <div className="container-content relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="badge badge-success mb-4">
+              <TrendingUp size={12} className="mr-1" />
+              Results You'll Get
+            </span>
+            <h2 className="text-section md:text-section-lg text-white">
+              Why Creators Love <span className="text-gradient-gold">This Book</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { icon: Target, title: 'Clear Strategy', desc: 'No more guessing. Get a proven roadmap for influencer success.' },
+              { icon: Users, title: 'Grow Your Audience', desc: 'Learn the exact tactics to attract and retain followers.' },
+              { icon: TrendingUp, title: 'Increase Revenue', desc: 'Multiple monetization strategies to boost your income.' },
+            ].map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="glass-card p-6 text-center"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="text-gold-500" size={28} />
+                </div>
+                <h3 className="font-semibold text-white mb-2">{benefit.title}</h3>
+                <p className="text-sm text-white/60">{benefit.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 md:py-28 section-gradient">
+        <div className="container-content">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="badge badge-gold mb-4">Reader Reviews</span>
+            <h2 className="text-section md:text-section-lg text-white">
+              What Readers Are <span className="text-gradient-gold">Saying</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                quote: "This book changed how I approach content creation. The brand partnership chapter alone was worth 10x the price.",
+                name: "Nomsa P.",
+                role: "Beauty Creator",
+                result: "Landed first brand deal",
+              },
+              {
+                quote: "Finally, a book that doesn't just tell you to 'be authentic.' It gives you actual strategies you can implement today.",
+                name: "David M.",
+                role: "Tech Reviewer",
+                result: "Doubled engagement",
+              },
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="card"
+              >
+                <div className="flex mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
+                  ))}
+                </div>
+                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                  <div>
+                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                  </div>
+                  <span className="badge badge-success">{testimonial.result}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-radial-gold opacity-40" />
+
+        <div className="container-narrow relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-10 md:p-14 text-center glow-gold-lg"
+          >
+            <h2 className="text-section md:text-section-lg text-white mb-4">
+              Start Your Influencer Journey{' '}
+              <span className="text-gradient-gold">Today</span>
+            </h2>
+            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+              Get instant access to all 8 chapters and start building your influence
+            </p>
+
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-5xl font-bold text-gradient-gold">$19</span>
+              <span className="text-2xl text-white/30 line-through">$47</span>
+            </div>
+
+            <Link
+              to="/checkout/influencers-code"
+              className="btn-primary btn-lg inline-flex group"
+            >
+              Get Your Copy Now
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+            </Link>
+
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+              <div className="flex items-center gap-2">
+                <Shield size={16} className="text-success-400" />
+                <span>30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap size={16} className="text-gold-500" />
+                <span>Instant Download</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
