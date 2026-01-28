@@ -1,0 +1,293 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { CheckCircle, Shield, CreditCard, Loader2 } from 'lucide-react';
+import { analytics } from '../utils/analytics';
+
+interface OrderBump {
+  key: string;
+  name: string;
+  price: number;
+  description: string;
+}
+
+export default function CheckoutStarterKit() {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [exchangeRate, setExchangeRate] = useState(18.5);
+
+  const mainProduct = {
+    key: 'starter-kit',
+    name: 'Contentpreneur Starter Kit',
+    price: 6700, // $67 in cents
+  };
+
+  const orderBumps: OrderBump[] = [
+    {
+      key: 'influencers-code',
+      name: "The Influencer's Code (eBook)",
+      price: 2700,
+      description: 'Learn the secrets of successful influencers. Normally $47, yours for just $27 today.',
+    },
+    {
+      key: 'tax-guide',
+      name: 'Creator Tax Guide SA',
+      price: 1500,
+      description: 'Essential tax tips for content creators. Save thousands in taxes.',
+    },
+  ];
+
+  useEffect(() => {
+    // Fetch exchange rate
+    fetch('/api/exchange-rate')
+      .then((res) => res.json())
+      .then((data) => setExchangeRate(data.rate))
+      .catch(() => console.log('Using fallback exchange rate'));
+
+    // Track checkout started
+    analytics.beginCheckout({
+      value: mainProduct.price,
+      currency: 'USD',
+      items: [{ item_id: mainProduct.key, item_name: mainProduct.name, price: mainProduct.price }],
+    });
+  }, []);
+
+  const toggleBump = (key: string) => {
+    setSelectedBumps((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
+  const calculateTotal = () => {
+    let total = mainProduct.price;
+    selectedBumps.forEach((key) => {
+      const bump = orderBumps.find((b) => b.key === key);
+      if (bump) total += bump.price;
+    });
+    return total;
+  };
+
+  const totalUSD = calculateTotal();
+  const totalZAR = Math.round(totalUSD * exchangeRate);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Track payment info added
+      analytics.addPaymentInfo({ value: totalUSD, currency: 'USD' });
+
+      const response = await fetch('/api/checkout/create-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productKeys: [mainProduct.key],
+          includeOrderBumps: selectedBumps,
+          customerEmail: email,
+          customerName: name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Redirect to Paystack
+      window.location.href = data.checkoutUrl;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid md:grid-cols-5 gap-8"
+        >
+          {/* Order Form */}
+          <div className="md:col-span-3">
+            <div className="card">
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Order</h1>
+
+              <form onSubmit={handleSubmit}>
+                {/* Customer Info */}
+                <div className="space-y-4 mb-8">
+                  <div>
+                    <label className="label">Full Name</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="input"
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="label">Email Address</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="input"
+                      placeholder="john@example.com"
+                      required
+                    />
+                    <p className="mt-1 text-sm text-gray-500">
+                      Your course access will be sent to this email
+                    </p>
+                  </div>
+                </div>
+
+                {/* Order Bumps */}
+                <div className="border-t border-gray-200 pt-6 mb-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Special Offers (One-Time Only)
+                  </h2>
+                  <div className="space-y-4">
+                    {orderBumps.map((bump) => (
+                      <div
+                        key={bump.key}
+                        onClick={() => toggleBump(bump.key)}
+                        className={`p-4 border-2 rounded-lg cursor-pointer transition ${
+                          selectedBumps.includes(bump.key)
+                            ? 'border-primary-500 bg-primary-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-start">
+                          <div
+                            className={`w-6 h-6 rounded border-2 flex items-center justify-center shrink-0 mr-3 ${
+                              selectedBumps.includes(bump.key)
+                                ? 'border-primary-500 bg-primary-500'
+                                : 'border-gray-300'
+                            }`}
+                          >
+                            {selectedBumps.includes(bump.key) && (
+                              <CheckCircle className="text-white" size={16} />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium text-gray-900">{bump.name}</span>
+                              <span className="font-semibold text-primary-600">
+                                +${(bump.price / 100).toFixed(0)}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-sm text-gray-600">{bump.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
+                    {error}
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <Loader2 className="animate-spin mr-2" size={20} />
+                      Processing...
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center">
+                      <CreditCard className="mr-2" size={20} />
+                      Complete Order - R{(totalZAR / 100).toFixed(2)}
+                    </span>
+                  )}
+                </button>
+
+                {/* Trust badges */}
+                <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
+                  <div className="flex items-center">
+                    <Shield className="mr-1" size={16} />
+                    Secure Payment
+                  </div>
+                  <div>30-Day Guarantee</div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* Order Summary */}
+          <div className="md:col-span-2">
+            <div className="card sticky top-24">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">{mainProduct.name}</span>
+                  <span className="font-medium">${(mainProduct.price / 100).toFixed(0)}</span>
+                </div>
+
+                {selectedBumps.map((key) => {
+                  const bump = orderBumps.find((b) => b.key === key);
+                  if (!bump) return null;
+                  return (
+                    <div key={key} className="flex justify-between text-sm">
+                      <span className="text-gray-600">{bump.name}</span>
+                      <span className="font-medium">${(bump.price / 100).toFixed(0)}</span>
+                    </div>
+                  );
+                })}
+
+                <div className="border-t border-gray-200 pt-3 mt-3">
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <div className="text-right">
+                      <div>${(totalUSD / 100).toFixed(0)}</div>
+                      <div className="text-sm font-normal text-gray-500">
+                        ≈ R{(totalZAR / 100).toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* What's included */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="font-medium text-gray-900 mb-3">What's Included:</h3>
+                <ul className="space-y-2">
+                  {[
+                    '9 Video Modules',
+                    'Niche Finder Workbook',
+                    'PAIDS Framework Workbook',
+                    'Brand Pitch Templates',
+                    'Content Calendar Template',
+                    'Lifetime Access',
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center text-sm text-gray-600">
+                      <CheckCircle className="text-green-500 mr-2 shrink-0" size={16} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

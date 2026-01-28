@@ -1,0 +1,31 @@
+name = "contentpreneur-hub"
+main = "src/worker/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+ENVIRONMENT = "development"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "contentpreneur-db"
+database_id = "your-database-id-here"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "contentpreneur-files"
+
+[site]
+bucket = "./dist"
+
+# Development environment
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+# Production environment
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Cron triggers for scheduled jobs
+[triggers]
+crons = ["*/15 * * * *"]
