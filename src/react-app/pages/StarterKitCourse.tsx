@@ -1,34 +1,107 @@
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, CheckCircle, Lock, ChevronRight, FileText } from 'lucide-react';
+import { Play, CheckCircle, ChevronLeft, Clock, FileText, Download, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 interface Module {
   id: number;
+  label: string;
   title: string;
   description: string;
   duration: string;
   videoId?: number;
-  isCompleted?: boolean;
+  isBonus?: boolean;
 }
 
 export default function StarterKitCourse() {
   const { hasAccessToProduct, isLoading } = useMemberAccess();
-  const [activeModule, setActiveModule] = useState(0);
+  const [activeModule, setActiveModule] = useState<number | null>(null);
   const [completedModules, setCompletedModules] = useState<number[]>([]);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const modules: Module[] = [
-    { id: 1, title: 'Finding Your Niche', description: 'Discover your unique positioning in the content market', duration: '18 min', videoId: 1 },
-    { id: 2, title: 'Understanding Your Audience', description: 'Deep dive into audience research and personas', duration: '22 min', videoId: 2 },
-    { id: 3, title: 'Content Strategy Foundations', description: 'Build a content plan that actually works', duration: '25 min', videoId: 3 },
-    { id: 4, title: 'The PAIDS Framework Deep Dive', description: 'Master all five pillars of the system', duration: '35 min', videoId: 4 },
-    { id: 5, title: 'Monetization Strategies', description: 'Multiple income streams explained', duration: '28 min', videoId: 5 },
-    { id: 6, title: 'Brand Partnerships 101', description: 'Land your first (or next) brand deal', duration: '24 min', videoId: 6 },
-    { id: 7, title: 'Building Your Distribution', description: 'Get your content seen by the right people', duration: '20 min', videoId: 7 },
-    { id: 8, title: 'Systems & Automation', description: 'Scale without burning out', duration: '22 min', videoId: 8 },
-    { id: 9, title: 'Launch Your Business', description: 'Action plan to implement everything', duration: '30 min', videoId: 9 },
+    {
+      id: 0,
+      label: 'INTRODUCTION',
+      title: 'Welcome to Your Personal Branding Journey',
+      description: 'Welcome to your personal branding journey. Set the foundation for your transformation from content creator to contentpreneur.',
+      duration: '1:19',
+      videoId: 0
+    },
+    {
+      id: 1,
+      label: 'MODULE 1',
+      title: 'What is a Personal Brand',
+      description: 'Understand what personal branding really means and why it\'s the most powerful asset you can build in the digital age.',
+      duration: '1:42',
+      videoId: 1
+    },
+    {
+      id: 2,
+      label: 'MODULE 2',
+      title: 'A Blueprint to Build a Personal Brand',
+      description: 'Get the step-by-step framework to build your personal brand from scratch. This is the exact blueprint used to build a 3M+ following.',
+      duration: '2:26',
+      videoId: 2
+    },
+    {
+      id: 3,
+      label: 'MODULE 3',
+      title: 'The 3Cs - Mindset',
+      description: 'Master the psychological foundations required for success: Confidence, Consistency, and Courage.',
+      duration: '4:16',
+      videoId: 3
+    },
+    {
+      id: 4,
+      label: 'MODULE 4',
+      title: 'SWOT Analysis',
+      description: 'Identify your Strengths, Weaknesses, Opportunities, and Threats to position yourself strategically in your niche.',
+      duration: '9:31',
+      videoId: 4
+    },
+    {
+      id: 5,
+      label: 'MODULE 5',
+      title: '3Es Content Idea Formula',
+      description: 'Learn the proven formula for creating content that Educates, Entertains, and Engages your audience consistently.',
+      duration: '7:10',
+      videoId: 5
+    },
+    {
+      id: 6,
+      label: 'MODULE 6',
+      title: 'Understand Social Media Platforms',
+      description: 'Master each platform\'s unique algorithm, audience, and content strategy for maximum growth and monetization.',
+      duration: '4:09',
+      videoId: 6
+    },
+    {
+      id: 7,
+      label: 'MODULE 7',
+      title: 'Community Building',
+      description: 'Build a loyal community around your personal brand that supports, engages, and buys from you.',
+      duration: '6:32',
+      videoId: 7
+    },
+    {
+      id: 8,
+      label: 'MODULE 8',
+      title: 'PAIDS Framework',
+      description: 'The exact 5-stream income system: Products, Ads/Affiliates, Information, Deals, and Services.',
+      duration: '4:51',
+      videoId: 8
+    },
+    {
+      id: 9,
+      label: 'BONUS - MODULE 9',
+      title: 'Formula to Create Online Asset',
+      description: 'Build assets that generate income 24/7 — email lists, digital products, automated systems, and owned platforms.',
+      duration: '3:20',
+      videoId: 9,
+      isBonus: true
+    },
   ];
 
   useEffect(() => {
@@ -40,15 +113,30 @@ export default function StarterKitCourse() {
   }, []);
 
   const markComplete = (moduleId: number) => {
-    const updated = [...completedModules, moduleId];
-    setCompletedModules(updated);
-    localStorage.setItem('starterkit-progress', JSON.stringify(updated));
+    if (!completedModules.includes(moduleId)) {
+      const updated = [...completedModules, moduleId];
+      setCompletedModules(updated);
+      localStorage.setItem('starterkit-progress', JSON.stringify(updated));
+    }
+  };
+
+  const handleModuleClick = (moduleId: number) => {
+    setActiveModule(moduleId);
+    setIsPlaying(false);
+  };
+
+  const handleBackToList = () => {
+    setActiveModule(null);
+    setIsPlaying(false);
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
-        <div className="animate-spin w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
+          <p className="mt-4 text-white/50">Loading course...</p>
+        </div>
       </div>
     );
   }
@@ -57,172 +145,311 @@ export default function StarterKitCourse() {
     return <Navigate to="/checkout/starter-kit" replace />;
   }
 
-  const currentModule = modules[activeModule];
   const progress = Math.round((completedModules.length / modules.length) * 100);
+  const currentModule = activeModule !== null ? modules[activeModule] : null;
 
-  return (
-    <div className="min-h-screen bg-gray-100 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Sidebar - Module List */}
-          <div className="lg:col-span-1">
-            <div className="card sticky top-24">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
-                Contentpreneur Starter Kit
-              </h2>
+  // Module List View
+  if (activeModule === null) {
+    return (
+      <div className="min-h-screen bg-dark-500 pt-20">
+        <div className="container-content py-8">
+          {/* Back to Hub */}
+          <Link
+            to="/members"
+            className="inline-flex items-center text-white/50 hover:text-gold-500 transition-colors mb-8"
+          >
+            <ChevronLeft size={20} className="mr-1" />
+            Back to Hub
+          </Link>
 
-              {/* Progress Bar */}
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-600">Your Progress</span>
-                  <span className="font-medium text-primary-600">{progress}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary-600 transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Module List */}
-              <div className="space-y-2">
-                {modules.map((module, index) => {
-                  const isCompleted = completedModules.includes(module.id);
-                  const isActive = index === activeModule;
-
-                  return (
-                    <button
-                      key={module.id}
-                      onClick={() => setActiveModule(index)}
-                      className={`w-full text-left p-3 rounded-lg transition ${
-                        isActive
-                          ? 'bg-primary-50 border-2 border-primary-500'
-                          : 'hover:bg-gray-50 border-2 border-transparent'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                            isCompleted
-                              ? 'bg-green-500 text-white'
-                              : isActive
-                              ? 'bg-primary-600 text-white'
-                              : 'bg-gray-200 text-gray-600'
-                          }`}
-                        >
-                          {isCompleted ? (
-                            <CheckCircle size={16} />
-                          ) : (
-                            <span className="text-sm font-medium">{module.id}</span>
-                          )}
-                        </div>
-                        <div className="ml-3 flex-1">
-                          <div className={`font-medium text-sm ${isActive ? 'text-primary-700' : 'text-gray-900'}`}>
-                            {module.title}
-                          </div>
-                          <div className="text-xs text-gray-500">{module.duration}</div>
-                        </div>
-                        <ChevronRight className={`text-gray-400 ${isActive ? 'text-primary-500' : ''}`} size={16} />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Course Header */}
+          <div className="mb-10">
+            <h1 className="text-section md:text-section-lg text-white">
+              Contentpreneur <span className="text-gradient-gold">Starter Kit</span>
+            </h1>
+            <p className="mt-3 text-white/60 max-w-2xl">
+              Your complete roadmap from content creator to content entrepreneur. Build real income streams, not just followers.
+            </p>
           </div>
 
-          {/* Main Content */}
+          {/* Progress Card */}
+          <div className="glass-card p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-white/50 text-sm">Contentpreneur Starter Kit Course - 9 Modules</p>
+                <h3 className="text-lg font-semibold text-white mt-1">Your Progress</h3>
+              </div>
+              <div className="text-right">
+                <span className="text-3xl font-bold text-gradient-gold">{progress}%</span>
+              </div>
+            </div>
+            <div className="progress-bar">
+              <div className="progress-bar-fill" style={{ width: `${progress}%` }} />
+            </div>
+            <p className="text-white/40 text-sm mt-3">
+              {completedModules.length} of {modules.length} modules completed
+            </p>
+          </div>
+
+          {/* Course Modules */}
+          <div>
+            <h2 className="text-xl font-semibold text-white mb-6">Course Modules</h2>
+            <div className="space-y-3">
+              {modules.map((module, index) => {
+                const isCompleted = completedModules.includes(module.id);
+
+                return (
+                  <motion.button
+                    key={module.id}
+                    onClick={() => handleModuleClick(module.id)}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`w-full text-left card card-hover p-5 group ${
+                      module.isBonus ? 'border border-gold-500/20' : ''
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      {/* Module indicator */}
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                        isCompleted
+                          ? 'bg-success-500/20'
+                          : module.isBonus
+                            ? 'bg-gold-500/20'
+                            : 'bg-white/5'
+                      }`}>
+                        {isCompleted ? (
+                          <CheckCircle size={20} className="text-success-400" />
+                        ) : (
+                          <Play size={18} className={module.isBonus ? 'text-gold-500' : 'text-white/50'} />
+                        )}
+                      </div>
+
+                      {/* Module content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-1">
+                          <span className={`text-xs font-semibold uppercase tracking-wider ${
+                            module.isBonus ? 'text-gold-500' : 'text-white/40'
+                          }`}>
+                            {module.label}
+                          </span>
+                          <div className="flex items-center text-white/30 text-xs">
+                            <Clock size={12} className="mr-1" />
+                            {module.duration}
+                          </div>
+                        </div>
+                        <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors">
+                          {module.title}
+                        </h3>
+                        <p className="text-sm text-white/50 mt-1 line-clamp-2">
+                          {module.description}
+                        </p>
+                      </div>
+
+                      {/* Action indicator */}
+                      <div className="shrink-0 self-center">
+                        <ArrowRight
+                          size={18}
+                          className="text-white/20 group-hover:text-gold-500 group-hover:translate-x-1 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Video Player View
+  return (
+    <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="container-content py-8">
+        {/* Back to course list */}
+        <button
+          onClick={handleBackToList}
+          className="inline-flex items-center text-white/50 hover:text-gold-500 transition-colors mb-6"
+        >
+          <ChevronLeft size={20} className="mr-1" />
+          Back to Course
+        </button>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Content - Video Player */}
           <div className="lg:col-span-2">
             <motion.div
-              key={currentModule.id}
+              key={currentModule?.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
               {/* Video Player */}
-              <div className="card p-0 overflow-hidden mb-6">
-                <div className="video-container bg-gray-900">
+              <div className="glass-card p-2 mb-6 glow-gold">
+                <div className="video-container bg-dark-400">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition group">
-                      <Play className="text-white ml-1 group-hover:scale-110 transition" size={32} />
+                    <button
+                      onClick={() => setIsPlaying(true)}
+                      className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group"
+                    >
+                      <Play className="text-dark-500 ml-1 group-hover:scale-110 transition" size={32} />
                     </button>
                   </div>
                 </div>
               </div>
 
               {/* Module Info */}
-              <div className="card">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-sm font-medium text-primary-600">
-                      Module {currentModule.id} of {modules.length}
-                    </span>
-                    <h1 className="mt-2 text-2xl font-bold text-gray-900">
-                      {currentModule.title}
+              <div className="glass-card p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className={`text-xs font-semibold uppercase tracking-wider ${
+                        currentModule?.isBonus ? 'text-gold-500' : 'text-white/40'
+                      }`}>
+                        {currentModule?.label}
+                      </span>
+                      <div className="flex items-center text-white/30 text-xs">
+                        <Clock size={12} className="mr-1" />
+                        {currentModule?.duration}
+                      </div>
+                    </div>
+                    <h1 className="text-2xl font-bold text-white">
+                      {currentModule?.title}
                     </h1>
-                    <p className="mt-2 text-gray-600">{currentModule.description}</p>
+                    <p className="mt-3 text-white/60">{currentModule?.description}</p>
                   </div>
-                  {!completedModules.includes(currentModule.id) && (
+
+                  {currentModule && !completedModules.includes(currentModule.id) ? (
                     <button
                       onClick={() => markComplete(currentModule.id)}
-                      className="btn-primary text-sm"
+                      className="btn-primary btn-sm shrink-0"
                     >
                       Mark Complete
                     </button>
-                  )}
-                  {completedModules.includes(currentModule.id) && (
-                    <span className="flex items-center text-green-600 font-medium">
-                      <CheckCircle className="mr-2" size={20} />
+                  ) : (
+                    <span className="flex items-center text-success-400 font-medium shrink-0">
+                      <CheckCircle className="mr-2" size={18} />
                       Completed
                     </span>
                   )}
                 </div>
 
                 {/* Resources */}
-                <div className="mt-8 pt-8 border-t border-gray-200">
-                  <h3 className="font-semibold text-gray-900 mb-4">Module Resources</h3>
-                  <div className="space-y-3">
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <h3 className="font-semibold text-white mb-4">Module Resources</h3>
+                  <div className="space-y-2">
                     <a
                       href="#"
-                      className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                      className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
                     >
-                      <FileText className="text-primary-600 mr-3" size={20} />
-                      <span className="font-medium text-gray-900">
-                        Module {currentModule.id} Worksheet
+                      <FileText className="text-gold-500 mr-3" size={18} />
+                      <span className="font-medium text-white/70 group-hover:text-white transition-colors">
+                        {currentModule?.label} Worksheet
                       </span>
+                      <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>
                     <a
                       href="#"
-                      className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                      className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
                     >
-                      <FileText className="text-primary-600 mr-3" size={20} />
-                      <span className="font-medium text-gray-900">
+                      <FileText className="text-gold-500 mr-3" size={18} />
+                      <span className="font-medium text-white/70 group-hover:text-white transition-colors">
                         Action Checklist
                       </span>
+                      <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>
                   </div>
                 </div>
 
                 {/* Navigation */}
-                <div className="mt-8 pt-8 border-t border-gray-200 flex justify-between">
+                <div className="mt-6 pt-6 border-t border-white/10 flex justify-between">
                   <button
                     onClick={() => setActiveModule(Math.max(0, activeModule - 1))}
                     disabled={activeModule === 0}
-                    className="btn-secondary disabled:opacity-50"
+                    className="btn-secondary btn-sm disabled:opacity-30 disabled:cursor-not-allowed"
                   >
-                    Previous Module
+                    <ArrowLeft size={16} className="mr-2" />
+                    Previous
                   </button>
                   <button
                     onClick={() => setActiveModule(Math.min(modules.length - 1, activeModule + 1))}
                     disabled={activeModule === modules.length - 1}
-                    className="btn-primary disabled:opacity-50"
+                    className="btn-primary btn-sm disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     Next Module
+                    <ArrowRight size={16} className="ml-2" />
                   </button>
                 </div>
               </div>
             </motion.div>
+          </div>
+
+          {/* Sidebar - Module List */}
+          <div className="lg:col-span-1">
+            <div className="glass-card p-5 sticky top-24">
+              <h2 className="font-semibold text-white mb-4">
+                All Modules
+              </h2>
+
+              {/* Progress mini */}
+              <div className="mb-4 pb-4 border-b border-white/10">
+                <div className="flex justify-between text-xs mb-2">
+                  <span className="text-white/50">Progress</span>
+                  <span className="font-medium text-gold-500">{progress}%</span>
+                </div>
+                <div className="progress-bar h-1.5">
+                  <div className="progress-bar-fill" style={{ width: `${progress}%` }} />
+                </div>
+              </div>
+
+              {/* Module List */}
+              <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-2">
+                {modules.map((module) => {
+                  const isCompleted = completedModules.includes(module.id);
+                  const isActive = module.id === activeModule;
+
+                  return (
+                    <button
+                      key={module.id}
+                      onClick={() => handleModuleClick(module.id)}
+                      className={`w-full text-left p-3 rounded-xl transition-all ${
+                        isActive
+                          ? 'bg-gold-500/10 border border-gold-500/30'
+                          : 'hover:bg-white/5 border border-transparent'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-medium ${
+                            isCompleted
+                              ? 'bg-success-500/20 text-success-400'
+                              : isActive
+                                ? 'bg-gold-500/20 text-gold-500'
+                                : 'bg-white/5 text-white/50'
+                          }`}
+                        >
+                          {isCompleted ? (
+                            <CheckCircle size={14} />
+                          ) : (
+                            <span>{module.id}</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className={`font-medium text-sm truncate ${
+                            isActive ? 'text-gold-500' : 'text-white/70'
+                          }`}>
+                            {module.title}
+                          </div>
+                          <div className="text-xs text-white/30">{module.duration}</div>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
