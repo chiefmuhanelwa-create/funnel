@@ -1,56 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { eq } from 'drizzle-orm';
-import { pgTable, serial, text, integer, boolean, timestamp } from 'drizzle-orm/pg-core';
-
-// Define tables inline to avoid import issues
-const products = pgTable('products', {
-  id: serial('id').primaryKey(),
-  productKey: text('product_key').notNull().unique(),
-  name: text('name').notNull(),
-  description: text('description'),
-  priceCents: integer('price_cents').notNull(),
-  isActive: boolean('is_active').default(true),
-  level: text('level'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
-
-const orders = pgTable('orders', {
-  id: serial('id').primaryKey(),
-  orderNumber: text('order_number').notNull().unique(),
-  customerEmail: text('customer_email').notNull(),
-  customerName: text('customer_name'),
-  paymentStatus: text('payment_status').default('pending'),
-  totalAmountCents: integer('total_amount_cents').notNull(),
-  currency: text('currency').notNull().default('USD'),
-  paymentIntentId: text('payment_intent_id'),
-  paystackReference: text('paystack_reference'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
-
-const orderItems = pgTable('order_items', {
-  id: serial('id').primaryKey(),
-  orderId: integer('order_id').notNull(),
-  productId: integer('product_id'),
-  productKey: text('product_key').notNull(),
-  priceCents: integer('price_cents').notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
-
-const abandonedCarts = pgTable('abandoned_carts', {
-  id: serial('id').primaryKey(),
-  customerEmail: text('customer_email').notNull().unique(),
-  productKeys: text('product_keys').notNull(),
-  totalAmountCents: integer('total_amount_cents').notNull(),
-  currency: text('currency').default('USD'),
-  recoveryEmailSent: boolean('recovery_email_sent').default(false),
-  recovered: boolean('recovered').default(false),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
 
 // Simple in-memory rate limiting
 const checkoutAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -85,13 +34,13 @@ async function getExchangeRate(): Promise<number> {
   }
 }
 
-function generateRandomString(length: number): string {
+function generateOrderNumber(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  let suffix = '';
+  for (let i = 0; i < 6; i++) {
+    suffix += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return result;
+  return `ORD-${Date.now()}-${suffix}`;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -117,8 +66,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!paystackKey) return res.status(500).json({ error: 'Payment not configured' });
 
   try {
+    // Create raw SQL connection (no ORM)
     const sql = neon(databaseUrl);
-    const db = drizzle(sql);
 
     const body = req.body || {};
     const { productKeys, includeOrderBumps, customerEmail, customerName } = body;
@@ -133,11 +82,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ...(Array.isArray(includeOrderBumps) ? includeOrderBumps : [])
     ];
 
-    // Fetch products
+    // Fetch products using raw SQL
     const productsList: any[] = [];
     for (const key of allProductKeys) {
-      const result = await db.select().from(products).where(eq(products.productKey, key));
-      if (result.length > 0 && result[0].isActive) {
+      const result = await sql`
+        SELECT id, product_key, name, price_cents, is_active
+        FROM products
+        WHERE product_key = ${key} AND is_active = true
+      `;
+      if (result.length > 0) {
         productsList.push(result[0]);
       }
     }
@@ -147,50 +100,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Calculate totals
-    const totalUSD = productsList.reduce((sum, p) => sum + (p.priceCents || 0), 0);
+    const totalUSD = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
     const exchangeRate = await getExchangeRate();
     const totalZAR = Math.round(totalUSD * exchangeRate);
-    const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
+    const orderNumber = generateOrderNumber();
+    const email = customerEmail.toLowerCase().trim();
 
-    // Create order
-    const orderResult = await db.insert(orders).values({
-      orderNumber,
-      customerEmail: customerEmail.toLowerCase().trim(),
-      customerName: customerName || null,
-      paymentStatus: 'pending',
-      totalAmountCents: totalZAR,
-      currency: 'ZAR',
-    }).returning();
+    // Create order using raw SQL
+    const orderResult = await sql`
+      INSERT INTO orders (order_number, customer_email, customer_name, payment_status, total_amount_cents, currency)
+      VALUES (${orderNumber}, ${email}, ${customerName || null}, 'pending', ${totalZAR}, 'ZAR')
+      RETURNING id
+    `;
 
-    const order = orderResult[0];
+    const orderId = orderResult[0].id;
 
     // Create order items
     for (const product of productsList) {
-      const priceZAR = Math.round((product.priceCents || 0) * exchangeRate);
-      await db.insert(orderItems).values({
-        orderId: order.id,
-        productId: product.id,
-        productKey: product.productKey,
-        priceCents: priceZAR,
-      });
+      const priceZAR = Math.round((product.price_cents || 0) * exchangeRate);
+      await sql`
+        INSERT INTO order_items (order_id, product_id, product_key, price_cents)
+        VALUES (${orderId}, ${product.id}, ${product.product_key}, ${priceZAR})
+      `;
     }
-
-    // Track abandoned cart (optional)
-    try {
-      await db.insert(abandonedCarts).values({
-        customerEmail: customerEmail.toLowerCase().trim(),
-        productKeys: JSON.stringify(allProductKeys),
-        totalAmountCents: totalZAR,
-        currency: 'ZAR',
-      }).onConflictDoUpdate({
-        target: abandonedCarts.customerEmail,
-        set: {
-          productKeys: JSON.stringify(allProductKeys),
-          totalAmountCents: totalZAR,
-          updatedAt: new Date(),
-        },
-      });
-    } catch (e) { /* non-critical */ }
 
     // Initialize Paystack
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online';
@@ -206,7 +138,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         currency: 'ZAR',
         callback_url: `${appUrl}/checkout/success`,
         metadata: {
-          order_id: order.id,
+          order_id: orderId,
           order_number: orderNumber,
           product_keys: allProductKeys,
         },
@@ -219,8 +151,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: 'Payment initialization failed', details: paystackData.message });
     }
 
-    // Update order with reference
-    await db.update(orders).set({ paystackReference: paystackData.data.reference }).where(eq(orders.id, order.id));
+    // Update order with Paystack reference
+    await sql`
+      UPDATE orders SET paystack_reference = ${paystackData.data.reference} WHERE id = ${orderId}
+    `;
 
     return res.status(200).json({
       checkoutUrl: paystackData.data.authorization_url,
