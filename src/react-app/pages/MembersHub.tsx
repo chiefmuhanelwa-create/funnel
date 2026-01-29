@@ -17,8 +17,16 @@ import {
   Calendar,
   Download,
   ExternalLink,
+  Settings,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
+
+// Admin emails that can access /admin
+const ADMIN_EMAILS = [
+  'info@nochill.co.za',
+  'ndivhuwo@nochill.co.za',
+  'chiefmuhanelwa@gmail.com',
+];
 
 interface Product {
   id: number;
@@ -203,6 +211,9 @@ export default function MembersHub() {
   // Get owned product keys
   const ownedProductKeys = PRODUCTS.filter(p => hasAccessToProduct(p.key)).map(p => p.key);
 
+  // Check if user is admin
+  const isAdmin = user && ADMIN_EMAILS.includes(user.email.toLowerCase());
+
   // Filter products by level
   const filteredProducts = activeLevel === 'all'
     ? PRODUCTS
@@ -316,7 +327,18 @@ export default function MembersHub() {
             </div>
           </div>
           {user && (
-            <p className="text-white/40 text-sm">{user.email}</p>
+            <div className="flex items-center gap-4">
+              <p className="text-white/40 text-sm">{user.email}</p>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 px-4 py-2 bg-gold-500 text-dark-500 rounded-lg font-semibold text-sm hover:bg-gold-400 transition-colors"
+                >
+                  <Settings size={16} />
+                  Admin Panel
+                </Link>
+              )}
+            </div>
           )}
         </motion.div>
 
@@ -547,6 +569,15 @@ export default function MembersHub() {
             >
               Browse Products
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-gold-500 hover:text-gold-400 text-sm transition-colors flex items-center gap-1"
+              >
+                <Settings size={14} />
+                Admin Panel
+              </Link>
+            )}
           </div>
         </section>
       </div>
