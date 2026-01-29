@@ -1,7 +1,36 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { db, products, orders, orderItems, abandonedCarts } from '../../lib/db';
 import { eq } from 'drizzle-orm';
-import { applyRateLimit, rateLimiters } from '../../lib/rate-limit';
+
+// Simple in-memory rate limiting for checkout
+const checkoutAttempts = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX = 30; // 30 requests per minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = checkoutAttempts.get(ip);
+
+  if (!entry || entry.resetAt < now) {
+    checkoutAttempts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return false;
+  }
+
+  entry.count++;
+  return true;
+}
+
+function getClientIP(req: VercelRequest): string {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) {
+    return (typeof forwarded === 'string' ? forwarded : forwarded[0]).split(',')[0].trim();
+  }
+  return req.socket?.remoteAddress || 'unknown';
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -18,8 +47,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Apply rate limiting
-  const allowed = await applyRateLimit(req, res, rateLimiters.checkout);
-  if (!allowed) return;
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(clientIP)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
 
   // Check for required environment variables
   if (!process.env.DATABASE_URL) {
@@ -39,7 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { productKeys, includeOrderBumps, customerEmail, customerName } = req.body;
+    const { productKeys, includeOrderBumps, customerEmail, customerName, discountCode } = req.body;
 
     if (!customerEmail || !productKeys?.length) {
       return res.status(400).json({ error: 'Customer email and products are required' });
@@ -84,6 +115,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         paymentStatus: 'pending',
         totalAmountCents: totalZAR,
         currency: 'ZAR',
+        discountCode: discountCode || null, // Save discount code if provided
       })
       .returning();
 

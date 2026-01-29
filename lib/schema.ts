@@ -49,6 +49,7 @@ export const orders = pgTable('orders', {
   currency: text('currency').notNull().default('USD'),
   paymentIntentId: text('payment_intent_id'),
   paystackReference: text('paystack_reference'),
+  discountCode: text('discount_code'), // Applied discount code
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
