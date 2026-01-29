@@ -34,8 +34,27 @@ function getClientIP(req: VercelRequest): string {
   return req.socket?.remoteAddress || 'unknown';
 }
 
+async function getExchangeRate(): Promise<number> {
+  try {
+    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
+    const data = await response.json() as { rates: { ZAR: number } };
+    return data.rates.ZAR;
+  } catch {
+    return 18.5; // Fallback rate
+  }
+}
+
+function generateRandomString(length: number): string {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers first
+  // Set CORS headers first - always do this
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -55,87 +74,93 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
-  // Check for required environment variables
-  if (!process.env.DATABASE_URL) {
-    console.error('DATABASE_URL is not configured');
+  // Check for required environment variables BEFORE doing anything else
+  const databaseUrl = process.env.DATABASE_URL;
+  const paystackKey = process.env.PAYSTACK_SECRET_KEY;
+
+  if (!databaseUrl) {
     return res.status(500).json({
-      error: 'Database not configured. Please set DATABASE_URL environment variable.',
-      setup_required: true
+      error: 'Database not configured',
+      code: 'NO_DATABASE_URL'
     });
   }
 
-  if (!process.env.PAYSTACK_SECRET_KEY) {
-    console.error('PAYSTACK_SECRET_KEY is not configured');
+  if (!paystackKey) {
     return res.status(500).json({
-      error: 'Payment provider not configured. Please set PAYSTACK_SECRET_KEY environment variable.',
-      setup_required: true
+      error: 'Payment provider not configured',
+      code: 'NO_PAYSTACK_KEY'
     });
   }
-
-  // Create database connection directly in handler
-  const sql = neon(process.env.DATABASE_URL);
-  const db = drizzle(sql);
 
   try {
-    const { productKeys, includeOrderBumps, customerEmail, customerName } = req.body;
+    // Create database connection inside the try block
+    const sql = neon(databaseUrl);
+    const db = drizzle(sql);
 
-    if (!customerEmail || !productKeys?.length) {
+    // Parse request body
+    const body = req.body || {};
+    const { productKeys, includeOrderBumps, customerEmail, customerName } = body;
+
+    if (!customerEmail || !productKeys || !Array.isArray(productKeys) || productKeys.length === 0) {
       return res.status(400).json({ error: 'Customer email and products are required' });
     }
 
-    // Get all products
-    const allProductKeys = [...productKeys, ...(includeOrderBumps || [])];
+    // Get all product keys (main products + order bumps)
+    const allProductKeys: string[] = [
+      ...productKeys,
+      ...(Array.isArray(includeOrderBumps) ? includeOrderBumps : [])
+    ];
+
+    // Fetch products from database
     const productsList: any[] = [];
-
     for (const key of allProductKeys) {
-      try {
-        const result = await db
-          .select()
-          .from(products)
-          .where(eq(products.productKey, key));
+      const result = await db
+        .select()
+        .from(products)
+        .where(eq(products.productKey, key));
 
-        const product = result[0];
-        if (product && product.isActive) {
-          productsList.push(product);
-        }
-      } catch (dbError) {
-        console.error(`Error fetching product ${key}:`, dbError);
-        // Continue with other products
+      if (result.length > 0 && result[0].isActive) {
+        productsList.push(result[0]);
       }
     }
 
     if (productsList.length === 0) {
-      return res.status(400).json({ error: 'No valid products found' });
+      return res.status(400).json({
+        error: 'No valid products found',
+        requestedKeys: allProductKeys
+      });
     }
 
-    // Calculate total in USD cents
-    const totalUSD = productsList.reduce((sum, p) => sum + p.priceCents, 0);
-
-    // Get exchange rate for ZAR
+    // Calculate totals
+    const totalUSD = productsList.reduce((sum, p) => sum + (p.priceCents || 0), 0);
     const exchangeRate = await getExchangeRate();
     const totalZAR = Math.round(totalUSD * exchangeRate);
 
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
 
-    // Create order record
+    // Create order
     const orderResult = await db
       .insert(orders)
       .values({
         orderNumber,
         customerEmail: customerEmail.toLowerCase().trim(),
-        customerName,
+        customerName: customerName || null,
         paymentStatus: 'pending',
         totalAmountCents: totalZAR,
         currency: 'ZAR',
       })
       .returning();
 
+    if (!orderResult.length) {
+      throw new Error('Failed to create order record');
+    }
+
     const order = orderResult[0];
 
     // Create order items
     for (const product of productsList) {
-      const priceZAR = Math.round(product.priceCents * exchangeRate);
+      const priceZAR = Math.round((product.priceCents || 0) * exchangeRate);
       await db.insert(orderItems).values({
         orderId: order.id,
         productId: product.id,
@@ -144,7 +169,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Track as potential abandoned cart (non-critical, wrapped in try-catch)
+    // Track abandoned cart (non-critical)
     try {
       await db
         .insert(abandonedCarts)
@@ -162,44 +187,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             updatedAt: new Date(),
           },
         });
-    } catch (cartError) {
-      console.error('Failed to track abandoned cart:', cartError);
-      // Non-critical, continue with checkout
+    } catch (e) {
+      // Non-critical, continue
     }
 
     // Initialize Paystack transaction
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online';
+
     const paystackResponse = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        'Authorization': `Bearer ${paystackKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email: customerEmail,
-        amount: totalZAR, // Paystack uses kobo (cents)
+        amount: totalZAR,
         currency: 'ZAR',
-        callback_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online'}/checkout/success`,
+        callback_url: `${appUrl}/checkout/success`,
         metadata: {
           order_id: order.id,
           order_number: orderNumber,
           product_keys: allProductKeys,
           custom_fields: [
             { display_name: 'Order Number', variable_name: 'order_number', value: orderNumber },
-            { display_name: 'Customer Name', variable_name: 'customer_name', value: customerName },
+            { display_name: 'Customer Name', variable_name: 'customer_name', value: customerName || 'N/A' },
           ],
         },
       }),
     });
 
-    const paystackData = await paystackResponse.json() as {
-      status: boolean;
-      message?: string;
-      data?: { authorization_url: string; reference: string };
-    };
+    const paystackData = await paystackResponse.json() as any;
 
-    if (!paystackData.status || !paystackData.data) {
+    if (!paystackData.status || !paystackData.data?.authorization_url) {
       console.error('Paystack error:', paystackData);
-      throw new Error(paystackData.message || 'Failed to initialize Paystack transaction');
+      return res.status(500).json({
+        error: 'Payment initialization failed',
+        details: paystackData.message || 'Unknown Paystack error'
+      });
     }
 
     // Update order with Paystack reference
@@ -216,31 +241,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       totalZAR,
       exchangeRate,
     });
-  } catch (error) {
+
+  } catch (error: any) {
     console.error('Checkout error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return res.status(500).json({
-      error: 'Failed to create checkout session',
-      message: errorMessage,
+      error: 'Checkout failed',
+      message: error?.message || 'Unknown error',
+      stack: process.env.NODE_ENV === 'development' ? error?.stack : undefined
     });
   }
-}
-
-async function getExchangeRate(): Promise<number> {
-  try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
-    const data = await response.json() as { rates: { ZAR: number } };
-    return data.rates.ZAR;
-  } catch {
-    return 18.5; // Fallback rate
-  }
-}
-
-function generateRandomString(length: number): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
 }
