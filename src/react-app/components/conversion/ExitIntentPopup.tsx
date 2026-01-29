@@ -90,7 +90,7 @@ export default function ExitIntentPopup({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/70 backdrop-blur-sm"
         onClick={handleClose}
       >
         <motion.div
@@ -98,19 +98,19 @@ export default function ExitIntentPopup({
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.8, y: -50 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-md bg-gradient-to-br from-dark-400 to-dark-500 rounded-3xl p-8 border border-white/10 shadow-2xl"
+          className="relative w-full max-w-md bg-gradient-to-br from-gray-100 to-white rounded-3xl p-8 border border-gray-200 shadow-2xl"
         >
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-colors"
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-white transition-colors"
           >
             <X size={18} />
           </button>
 
           {/* Icon */}
           <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-6">
-            <Gift size={32} className="text-dark-500" />
+            <Gift size={32} className="text-gray-900" />
           </div>
 
           {/* Content */}
@@ -118,7 +118,7 @@ export default function ExitIntentPopup({
             <h2 className="text-2xl font-bold text-white mb-2">
               Wait! Don't Leave Empty-Handed
             </h2>
-            <p className="text-white/60 mb-6">
+            <p className="text-gray-500 mb-6">
               Get <span className="text-yellow-400 font-bold">{discountPercent}% OFF</span> your
               first purchase
             </p>
@@ -126,7 +126,7 @@ export default function ExitIntentPopup({
             {/* Discount Code Box */}
             <div
               onClick={handleCopyCode}
-              className="bg-white/5 border-2 border-dashed border-yellow-500/50 rounded-xl p-4 mb-6 cursor-pointer hover:bg-white/10 transition-colors"
+              className="bg-gray-50 border-2 border-dashed border-yellow-500/50 rounded-xl p-4 mb-6 cursor-pointer hover:bg-gray-100 transition-colors"
             >
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Percent size={20} className="text-yellow-500" />
@@ -134,22 +134,22 @@ export default function ExitIntentPopup({
                   {discountCode}
                 </span>
               </div>
-              <p className="text-xs text-white/50">
+              <p className="text-xs text-gray-500">
                 {copied ? 'Copied!' : 'Click to copy'}
               </p>
             </div>
 
             {/* Benefits */}
             <ul className="text-left space-y-2 mb-6">
-              <li className="flex items-center gap-2 text-sm text-white/70">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
                 <Check size={16} className="text-green-400" />
                 Instant access to all modules
               </li>
-              <li className="flex items-center gap-2 text-sm text-white/70">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
                 <Check size={16} className="text-green-400" />
                 Lifetime updates included
               </li>
-              <li className="flex items-center gap-2 text-sm text-white/70">
+              <li className="flex items-center gap-2 text-sm text-gray-600">
                 <Check size={16} className="text-green-400" />
                 30-day money-back guarantee
               </li>
@@ -164,7 +164,7 @@ export default function ExitIntentPopup({
               <ArrowRight size={18} />
             </button>
 
-            <p className="text-xs text-white/40 mt-4">
+            <p className="text-xs text-gray-400 mt-4">
               This offer is only available on this page
             </p>
           </div>

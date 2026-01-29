@@ -150,7 +150,7 @@ export default function CheckoutSuccess() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -160,7 +160,7 @@ export default function CheckoutSuccess() {
           <h2 className="mt-4 text-xl font-semibold text-white">
             Verifying your payment...
           </h2>
-          <p className="mt-2 text-white/60">Please wait while we confirm your order</p>
+          <p className="mt-2 text-gray-500">Please wait while we confirm your order</p>
         </motion.div>
       </div>
     );
@@ -168,7 +168,7 @@ export default function CheckoutSuccess() {
 
   if (status === 'error') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -176,8 +176,8 @@ export default function CheckoutSuccess() {
         >
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
           <h2 className="mt-4 text-2xl font-bold text-white">Something went wrong</h2>
-          <p className="mt-2 text-white/60">{error}</p>
-          <p className="mt-4 text-sm text-white/40">
+          <p className="mt-2 text-gray-500">{error}</p>
+          <p className="mt-4 text-sm text-gray-400">
             If you believe this is an error, please contact support at{' '}
             <a href="mailto:hello@contentpreneurhub.online" className="text-gold-500">
               hello@contentpreneurhub.online
@@ -193,7 +193,7 @@ export default function CheckoutSuccess() {
 
   if (status === 'pending') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -201,12 +201,12 @@ export default function CheckoutSuccess() {
         >
           <Loader2 className="w-16 h-16 text-yellow-500 mx-auto animate-spin" />
           <h2 className="mt-4 text-2xl font-bold text-white">Payment Processing</h2>
-          <p className="mt-2 text-white/60">
+          <p className="mt-2 text-gray-500">
             Your payment is still being processed. You'll receive an email confirmation once
             it's complete.
           </p>
           {orderDetails && (
-            <p className="mt-4 text-sm text-white/40">
+            <p className="mt-4 text-sm text-gray-400">
               Order Number: <strong className="text-white">{orderDetails.order_number}</strong>
             </p>
           )}
@@ -219,7 +219,7 @@ export default function CheckoutSuccess() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20 pb-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white pt-20 pb-12 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -235,15 +235,15 @@ export default function CheckoutSuccess() {
 
         <h1 className="mt-6 text-3xl font-bold text-white">Payment Successful!</h1>
 
-        <p className="mt-4 text-lg text-white/60">
+        <p className="mt-4 text-lg text-gray-500">
           Thank you for your purchase! You now have instant access to your content.
         </p>
 
         {orderDetails && (
-          <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
-            <div className="text-sm text-white/50">Order Number</div>
+          <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div className="text-sm text-gray-500">Order Number</div>
             <div className="font-mono font-bold text-white">{orderDetails.order_number}</div>
-            <div className="mt-2 text-sm text-white/50">
+            <div className="mt-2 text-sm text-gray-500">
               Amount Paid:{' '}
               <span className="font-semibold text-white">
                 {orderDetails.currency === 'ZAR' ? 'R' : '$'}
@@ -262,14 +262,14 @@ export default function CheckoutSuccess() {
             <ArrowRight className="ml-2" size={20} />
           </Link>
 
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-gray-400">
             A confirmation email has been sent to your inbox with login instructions.
           </p>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-white/10">
+        <div className="mt-8 pt-8 border-t border-gray-200">
           <h3 className="font-semibold text-white mb-4">What's Next?</h3>
-          <ol className="text-left text-sm text-white/60 space-y-2">
+          <ol className="text-left text-sm text-gray-500 space-y-2">
             <li className="flex items-start">
               <span className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-sm font-bold mr-3 shrink-0">
                 1

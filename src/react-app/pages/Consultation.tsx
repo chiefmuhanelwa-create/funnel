@@ -62,7 +62,7 @@ export default function Consultation() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="min-h-screen bg-white pt-20">
         <div className="container-tight py-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -75,12 +75,12 @@ export default function Consultation() {
             <h1 className="text-section text-white mb-4">
               Application <span className="text-gradient-gold">Received!</span>
             </h1>
-            <p className="text-white/60 max-w-lg mx-auto mb-8">
+            <p className="text-gray-500 max-w-lg mx-auto mb-8">
               Thank you for your interest in booking a strategy call. We'll review your application
               and get back to you within 24-48 hours to confirm availability and next steps.
             </p>
             <div className="glass-card p-4 mb-8 inline-block">
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-gray-500">
                 Check your inbox for a confirmation email at <strong className="text-white">{formData.email}</strong>
               </p>
             </div>
@@ -99,12 +99,12 @@ export default function Consultation() {
   }
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation */}
       <div className="container-content pt-6">
         <Link
           to="/products/coaching"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm"
         >
           <ArrowLeft size={16} />
           Back to Coaching
@@ -126,7 +126,7 @@ export default function Consultation() {
               <h1 className="text-section md:text-section-lg text-white">
                 Strategy Call <span className="text-gradient-gold">Application</span>
               </h1>
-              <p className="mt-4 text-white/60 max-w-xl mx-auto">
+              <p className="mt-4 text-gray-500 max-w-xl mx-auto">
                 Complete this form to apply for a 1-on-1 strategy session.
                 Due to limited availability, we review all applications to ensure fit.
               </p>
@@ -312,7 +312,7 @@ export default function Consultation() {
                   )}
                 </button>
 
-                <p className="mt-4 text-center text-sm text-white/40">
+                <p className="mt-4 text-center text-sm text-gray-400">
                   We'll respond within 24-48 hours with next steps.
                 </p>
               </form>
@@ -339,10 +339,10 @@ export default function Consultation() {
                     { icon: MessageSquare, text: '7-day email follow-up' },
                   ].map((item, index) => (
                     <li key={index} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
                         <item.icon size={16} className="text-gold-500" />
                       </div>
-                      <span className="text-sm text-white/70">{item.text}</span>
+                      <span className="text-sm text-gray-600">{item.text}</span>
                     </li>
                   ))}
                 </ul>
@@ -356,9 +356,9 @@ export default function Consultation() {
                 </h3>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-3xl font-bold text-gradient-gold">$1,500</span>
-                  <span className="text-white/40 line-through">$2,500</span>
+                  <span className="text-gray-400 line-through">$2,500</span>
                 </div>
-                <p className="text-sm text-white/50">
+                <p className="text-sm text-gray-500">
                   Payment details will be sent after your application is approved.
                 </p>
               </div>
@@ -366,7 +366,7 @@ export default function Consultation() {
               {/* Questions */}
               <div className="glass-card p-6">
                 <h3 className="font-semibold text-white mb-4">Have Questions?</h3>
-                <p className="text-sm text-white/60 mb-4">
+                <p className="text-sm text-gray-500 mb-4">
                   Email us at{' '}
                   <a
                     href="mailto:hello@contentpreneurhub.online"
@@ -375,7 +375,7 @@ export default function Consultation() {
                     hello@contentpreneurhub.online
                   </a>
                 </p>
-                <p className="text-sm text-white/40">
+                <p className="text-sm text-gray-400">
                   Response time: 24-48 hours
                 </p>
               </div>

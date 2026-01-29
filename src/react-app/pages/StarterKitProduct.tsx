@@ -36,7 +36,7 @@ export default function StarterKitProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Conversion Components */}
       <ExitIntentPopup
         discountCode="SAVE10"
@@ -78,21 +78,21 @@ export default function StarterKitProduct() {
                 <span className="text-gradient-gold">Starter Kit</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The complete 9-module course to launch and grow your content creator business.
                 Learn the exact PAIDS Framework that has generated over $2M in creator revenue.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Clock className="mr-2 text-gold-500" size={18} />
                   <span>9 Modules</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Users className="mr-2 text-gold-500" size={18} />
                   <span>10K+ Students</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Gift className="mr-2 text-gold-500" size={18} />
                   <span>Bonus Workbooks</span>
                 </div>
@@ -100,7 +100,7 @@ export default function StarterKitProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$67</span>
-                <span className="text-2xl text-white/40 line-through">$197</span>
+                <span className="text-2xl text-gray-400 line-through">$197</span>
                 <span className="badge badge-success">66% OFF</span>
               </div>
 
@@ -122,7 +122,7 @@ export default function StarterKitProduct() {
               </Link>
 
               {/* Trust Badges */}
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -136,7 +136,7 @@ export default function StarterKitProduct() {
                   <span>Secure Checkout</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CreditCard size={16} className="text-white/40" />
+                  <CreditCard size={16} className="text-gray-400" />
                   <span>SSL Encrypted</span>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default function StarterKitProduct() {
                 href="https://wa.me/27600000000?text=Hi!%20I%20have%20a%20question%20about%20the%20Starter%20Kit"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 text-sm text-white/50 hover:text-green-400 transition-colors"
+                className="mt-4 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-green-400 transition-colors"
               >
                 <MessageCircle size={16} className="text-green-400" />
                 Questions? WhatsApp us
@@ -167,7 +167,7 @@ export default function StarterKitProduct() {
                     className="w-full h-auto rounded-xl"
                   />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <div className="bg-dark-500/90 backdrop-blur-sm rounded-lg p-3 text-center">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
                       <span className="text-white font-semibold">9-Module Video Course</span>
                     </div>
                   </div>
@@ -191,7 +191,7 @@ export default function StarterKitProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               What's Inside the <span className="text-gradient-gold">Starter Kit</span>
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               Everything you need to build a profitable content business
             </p>
           </motion.div>
@@ -207,12 +207,12 @@ export default function StarterKitProduct() {
                 className="card card-hover"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold shrink-0">
                     {index + 1}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{module.title}</h3>
-                    <p className="mt-1 text-sm text-white/50">{module.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{module.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -222,7 +222,7 @@ export default function StarterKitProduct() {
       </section>
 
       {/* Bonuses */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -263,9 +263,9 @@ export default function StarterKitProduct() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-white">{bonus.title}</h3>
-                      <span className="text-xs text-white/40">({bonus.value} value)</span>
+                      <span className="text-xs text-gray-400">({bonus.value} value)</span>
                     </div>
-                    <p className="mt-1 text-sm text-white/60">{bonus.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{bonus.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -317,11 +317,11 @@ export default function StarterKitProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -332,7 +332,7 @@ export default function StarterKitProduct() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-narrow">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -374,7 +374,7 @@ export default function StarterKitProduct() {
                 className="card"
               >
                 <h3 className="font-semibold text-white mb-2">{faq.q}</h3>
-                <p className="text-white/60 text-sm">{faq.a}</p>
+                <p className="text-gray-500 text-sm">{faq.a}</p>
               </motion.div>
             ))}
           </div>
@@ -406,7 +406,7 @@ export default function StarterKitProduct() {
               Start Your Content Business{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-6 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-6 max-w-xl mx-auto">
               Get instant access to all 9 modules + bonus resources
             </p>
 
@@ -420,7 +420,7 @@ export default function StarterKitProduct() {
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$67</span>
-              <span className="text-2xl text-white/30 line-through">$197</span>
+              <span className="text-2xl text-gray-400 line-through">$197</span>
             </div>
 
             <Link
@@ -431,7 +431,7 @@ export default function StarterKitProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

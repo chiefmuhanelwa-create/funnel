@@ -193,7 +193,7 @@ export default function PAIDSHub({ userOwnedProductKeys }: PAIDSHubProps) {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white">
             Your <span className="text-gradient-gold">Monetization Hub</span>
           </h2>
-          <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
             Everything you need to turn content into cash, organized by outcome
           </p>
         </motion.div>
@@ -219,7 +219,7 @@ export default function PAIDSHub({ userOwnedProductKeys }: PAIDSHubProps) {
                   <h3 className="text-xl md:text-2xl font-black text-white tracking-tight">
                     {category.letter} — {category.title}
                   </h3>
-                  <p className="text-sm text-white/50">{category.description}</p>
+                  <p className="text-sm text-gray-500">{category.description}</p>
                 </div>
               </div>
 

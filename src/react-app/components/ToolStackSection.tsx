@@ -99,7 +99,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white">
             The NoChill <span className="text-gradient-gold">Tool Stack</span>
           </h2>
-          <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
             Your Affiliate Money Machine – A system that makes sense
           </p>
         </motion.div>
@@ -116,7 +116,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-3xl overflow-hidden transition-colors"
+                className="bg-gray-50 backdrop-blur-sm border border-gray-200 hover:border-gray-300 rounded-3xl overflow-hidden transition-colors"
               >
                 {/* Section Header */}
                 <div className="p-6 md:p-8">
@@ -160,7 +160,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="px-6 md:px-8 pb-6 md:pb-8 pt-0 border-t border-white/10">
+                      <div className="px-6 md:px-8 pb-6 md:pb-8 pt-0 border-t border-gray-200">
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 pt-6">
                           {section.tools.map((tool) => (
                             <a
@@ -168,7 +168,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
                               href={tool.link}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group block p-4 md:p-5 rounded-2xl bg-white/5 backdrop-blur border border-white/10 hover:border-yellow-500/50 hover:bg-white/10 transition-all duration-300"
+                              className="group block p-4 md:p-5 rounded-2xl bg-gray-50 backdrop-blur border border-gray-200 hover:border-yellow-500/50 hover:bg-gray-100 transition-all duration-300"
                             >
                               <motion.div
                                 whileHover={{ y: -5, scale: 1.02 }}
@@ -180,7 +180,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
                                   </h4>
                                   <ExternalLink
                                     size={16}
-                                    className="text-white/30 group-hover:text-white/70 transition-colors"
+                                    className="text-gray-400 group-hover:text-gray-600 transition-colors"
                                   />
                                 </div>
                                 <p className="text-sm font-medium text-blue-200 mb-1">
@@ -213,7 +213,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
             <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-4">
               Want My Complete Setup?
             </h3>
-            <p className="text-white/60 max-w-xl mx-auto mb-8">
+            <p className="text-gray-500 max-w-xl mx-auto mb-8">
               Get the full breakdown, affiliate links, and exact workflows in the Contentpreneur Starter Kit
             </p>
             <Link

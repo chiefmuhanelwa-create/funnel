@@ -13,7 +13,7 @@ export default function ContentFoundationsProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -42,21 +42,21 @@ export default function ContentFoundationsProduct() {
                 <span className="text-gradient-gold">Foundations</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 Essential groundwork for building your authentic personal brand.
                 Start here if you're new to content creation or want to realign your direction.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Play className="mr-2 text-gold-500" size={18} />
                   <span>4 Video Modules</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Target className="mr-2 text-gold-500" size={18} />
                   <span>Worksheets Included</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <CheckCircle className="mr-2 text-gold-500" size={18} />
                   <span>Lifetime Access</span>
                 </div>
@@ -64,7 +64,7 @@ export default function ContentFoundationsProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$37</span>
-                <span className="text-2xl text-white/40 line-through">$67</span>
+                <span className="text-2xl text-gray-400 line-through">$67</span>
                 <span className="badge badge-success">45% OFF</span>
               </div>
 
@@ -76,7 +76,7 @@ export default function ContentFoundationsProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -89,7 +89,7 @@ export default function ContentFoundationsProduct() {
 
               {/* Upgrade note */}
               <div className="mt-8 p-4 rounded-xl bg-gold-500/10 border border-gold-500/20">
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-gray-600">
                   <span className="font-semibold text-gold-500">Want the complete system?</span>{' '}
                   Upgrade to the full{' '}
                   <Link to="/contentpreneur-starter-kit" className="text-gold-500 underline hover:text-gold-400">
@@ -140,7 +140,7 @@ export default function ContentFoundationsProduct() {
                 "You want to build an authentic personal brand",
                 "You need clarity on your direction before scaling",
               ].map((item, index) => (
-                <div key={index} className="flex items-start gap-3 text-white/70">
+                <div key={index} className="flex items-start gap-3 text-gray-600">
                   <CheckCircle className="text-success-400 shrink-0 mt-1" size={16} />
                   <span className="text-sm">{item}</span>
                 </div>
@@ -151,7 +151,7 @@ export default function ContentFoundationsProduct() {
       </section>
 
       {/* Course Modules */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -179,11 +179,11 @@ export default function ContentFoundationsProduct() {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-xl bg-gradient-gold flex items-center justify-center shrink-0">
-                    <module.icon size={28} className="text-dark-500" />
+                    <module.icon size={28} className="text-gray-900" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-white text-lg">{module.title}</h3>
-                    <p className="mt-2 text-white/60">{module.desc}</p>
+                    <p className="mt-2 text-gray-500">{module.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -228,7 +228,7 @@ export default function ContentFoundationsProduct() {
                   <CheckCircle className="text-success-400" size={28} />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{result.title}</h3>
-                <p className="text-sm text-white/60">{result.desc}</p>
+                <p className="text-sm text-gray-500">{result.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -236,7 +236,7 @@ export default function ContentFoundationsProduct() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -278,11 +278,11 @@ export default function ContentFoundationsProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -311,11 +311,11 @@ export default function ContentFoundationsProduct() {
             {/* Foundations */}
             <div className="glass-card p-8">
               <h3 className="text-xl font-bold text-white mb-2">Content Foundations</h3>
-              <p className="text-white/50 mb-4">Perfect for beginners</p>
+              <p className="text-gray-500 mb-4">Perfect for beginners</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$37</div>
               <ul className="space-y-3 mb-8">
                 {['4 Video Modules', 'Self Reflection Workshop', 'SWOT Analysis Template', 'Value Alignment Exercise', 'Lifetime Access'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-white/70 text-sm">
+                  <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
                     <CheckCircle size={16} className="text-success-400 shrink-0" />
                     {item}
                   </li>
@@ -332,11 +332,11 @@ export default function ContentFoundationsProduct() {
                 <span className="badge badge-gold">BEST VALUE</span>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Contentpreneur Starter Kit</h3>
-              <p className="text-white/50 mb-4">Complete system</p>
+              <p className="text-gray-500 mb-4">Complete system</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$67</div>
               <ul className="space-y-3 mb-8">
                 {['9 Video Modules', 'Everything in Foundations', 'PAIDS Framework Workbook', 'Niche Finder Workbook', 'Brand Pitch Templates', 'Content Calendar', 'Lifetime Access + Updates'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-white/70 text-sm">
+                  <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
                     <CheckCircle size={16} className="text-gold-500 shrink-0" />
                     {item}
                   </li>
@@ -364,13 +364,13 @@ export default function ContentFoundationsProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Build Your Foundation <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Start your content creation journey with clarity and confidence.
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$37</span>
-              <span className="text-2xl text-white/30 line-through">$67</span>
+              <span className="text-2xl text-gray-400 line-through">$67</span>
             </div>
 
             <Link
@@ -381,7 +381,7 @@ export default function ContentFoundationsProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

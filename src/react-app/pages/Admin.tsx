@@ -252,7 +252,7 @@ export default function Admin() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <Loader2 className="w-12 h-12 text-gold-500 animate-spin" />
       </div>
     );
@@ -264,11 +264,11 @@ export default function Admin() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <div className="glass-card max-w-md text-center p-8">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
           <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
-          <p className="mt-2 text-white/60">
+          <p className="mt-2 text-gray-500">
             You don't have permission to access the admin panel.
           </p>
         </div>
@@ -277,7 +277,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-500 pt-20">
+    <div className="min-h-screen bg-white pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-white mb-8">Admin Dashboard</h1>
 
@@ -294,8 +294,8 @@ export default function Admin() {
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center px-4 py-2 rounded-xl font-medium transition ${
                 activeTab === tab.key
-                  ? 'bg-gold-500 text-dark-500'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-gold-500 text-gray-900'
+                  : 'bg-gray-100 text-white hover:bg-gray-200'
               }`}
             >
               <tab.icon className="mr-2" size={20} />
@@ -348,7 +348,7 @@ export default function Admin() {
                         ? 'application/pdf'
                         : 'video/mp4,video/webm,video/quicktime'
                     }
-                    className="input file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gold-500 file:text-dark-500 file:font-medium hover:file:bg-gold-400"
+                    className="input file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gold-500 file:text-gray-900 file:font-medium hover:file:bg-gold-400"
                     disabled={isUploading}
                   />
                 </div>
@@ -356,7 +356,7 @@ export default function Admin() {
 
               {isUploading && (
                 <div className="space-y-2">
-                  <div className="flex items-center gap-3 text-white/60">
+                  <div className="flex items-center gap-3 text-gray-500">
                     <Loader2 className="animate-spin" size={20} />
                     <span>
                       {uploadProgress > 0
@@ -365,7 +365,7 @@ export default function Admin() {
                     </span>
                   </div>
                   {uploadProgress > 0 && (
-                    <div className="w-full bg-white/10 rounded-full h-2">
+                    <div className="w-full bg-gray-100 rounded-full h-2">
                       <div
                         className="bg-gold-500 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
@@ -375,14 +375,14 @@ export default function Admin() {
                 </div>
               )}
 
-              <div className="mt-4 p-4 bg-white/5 rounded-xl">
-                <h3 className="text-sm font-medium text-white/70 mb-2">File Limits:</h3>
-                <ul className="text-xs text-white/50 space-y-1">
+              <div className="mt-4 p-4 bg-gray-50 rounded-xl">
+                <h3 className="text-sm font-medium text-gray-600 mb-2">File Limits:</h3>
+                <ul className="text-xs text-gray-500 space-y-1">
                   <li>Images: Max 5MB (JPG, PNG, WebP, GIF) - fast server upload</li>
                   <li>PDFs: Max 50MB - direct browser upload</li>
                   <li>Videos: Max 500MB (MP4, WebM) - direct browser upload</li>
                 </ul>
-                <p className="text-xs text-white/40 mt-2">
+                <p className="text-xs text-gray-400 mt-2">
                   Large files (PDFs, videos) upload directly to storage for better reliability.
                 </p>
               </div>
@@ -399,8 +399,8 @@ export default function Admin() {
                   }}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                     selectedFolder === folder
-                      ? 'bg-gold-500 text-dark-500'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                      ? 'bg-gold-500 text-gray-900'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {folder || 'All Files'}
@@ -418,23 +418,23 @@ export default function Admin() {
                   <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
                 </div>
               ) : files.length === 0 ? (
-                <p className="text-white/50 text-center py-8">No files uploaded yet</p>
+                <p className="text-gray-500 text-center py-8">No files uploaded yet</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="text-left py-3 px-4 text-white/70 font-medium">File</th>
-                        <th className="text-left py-3 px-4 text-white/70 font-medium">Size</th>
-                        <th className="text-left py-3 px-4 text-white/70 font-medium">Uploaded</th>
-                        <th className="text-left py-3 px-4 text-white/70 font-medium">Actions</th>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">File</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Size</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Uploaded</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {files.map((file) => (
                         <tr
                           key={file.url}
-                          className="border-b border-white/5 hover:bg-white/5"
+                          className="border-b border-white/5 hover:bg-gray-50"
                         >
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
@@ -443,21 +443,21 @@ export default function Admin() {
                                 <p className="text-white font-medium text-sm truncate max-w-xs">
                                   {file.pathname.split('/').pop()}
                                 </p>
-                                <p className="text-white/40 text-xs">{file.pathname}</p>
+                                <p className="text-gray-400 text-xs">{file.pathname}</p>
                               </div>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-white/60 text-sm">
+                          <td className="py-3 px-4 text-gray-500 text-sm">
                             {formatFileSize(file.size)}
                           </td>
-                          <td className="py-3 px-4 text-white/60 text-sm">
+                          <td className="py-3 px-4 text-gray-500 text-sm">
                             {new Date(file.uploadedAt).toLocaleDateString()}
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => copyToClipboard(file.url)}
-                                className="p-2 text-white/60 hover:text-gold-500 transition-colors"
+                                className="p-2 text-gray-500 hover:text-gold-500 transition-colors"
                                 title="Copy URL"
                               >
                                 {copiedUrl === file.url ? (
@@ -470,14 +470,14 @@ export default function Admin() {
                                 href={file.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-white/60 hover:text-gold-500 transition-colors"
+                                className="p-2 text-gray-500 hover:text-gold-500 transition-colors"
                                 title="Open"
                               >
                                 <ExternalLink size={18} />
                               </a>
                               <button
                                 onClick={() => handleDeleteFile(file.url)}
-                                className="p-2 text-white/60 hover:text-red-500 transition-colors"
+                                className="p-2 text-gray-500 hover:text-red-500 transition-colors"
                                 title="Delete"
                               >
                                 <Trash2 size={18} />
@@ -495,7 +495,7 @@ export default function Admin() {
             {/* Usage Instructions */}
             <div className="glass-card p-6">
               <h2 className="text-xl font-bold text-white mb-4">How to Use Files</h2>
-              <div className="space-y-4 text-sm text-white/70">
+              <div className="space-y-4 text-sm text-gray-600">
                 <div>
                   <h3 className="font-medium text-white mb-1">Hero Images:</h3>
                   <p>
@@ -531,30 +531,30 @@ export default function Admin() {
                 <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
               </div>
             ) : media.length === 0 ? (
-              <p className="text-white/50 text-center py-8">No media in database yet</p>
+              <p className="text-gray-500 text-center py-8">No media in database yet</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="text-left py-3 px-4 text-white/70">Title</th>
-                      <th className="text-left py-3 px-4 text-white/70">Type</th>
-                      <th className="text-left py-3 px-4 text-white/70">Category</th>
-                      <th className="text-left py-3 px-4 text-white/70">Status</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-600">Title</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Type</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Category</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {media.map((item) => (
-                      <tr key={item.id} className="border-b border-white/5 hover:bg-white/5">
+                      <tr key={item.id} className="border-b border-white/5 hover:bg-gray-50">
                         <td className="py-3 px-4 text-white">{item.title}</td>
-                        <td className="py-3 px-4 text-white/60 capitalize">{item.type}</td>
-                        <td className="py-3 px-4 text-white/60">{item.category || '-'}</td>
+                        <td className="py-3 px-4 text-gray-500 capitalize">{item.type}</td>
+                        <td className="py-3 px-4 text-gray-500">{item.category || '-'}</td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
                               item.is_published
                                 ? 'bg-green-500/20 text-green-400'
-                                : 'bg-white/10 text-white/50'
+                                : 'bg-gray-100 text-gray-500'
                             }`}
                           >
                             {item.is_published ? 'Published' : 'Draft'}
@@ -580,25 +580,25 @@ export default function Admin() {
                 <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
               </div>
             ) : contacts.length === 0 ? (
-              <p className="text-white/50 text-center py-8">No subscribers yet</p>
+              <p className="text-gray-500 text-center py-8">No subscribers yet</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="text-left py-3 px-4 text-white/70">Email</th>
-                      <th className="text-left py-3 px-4 text-white/70">Name</th>
-                      <th className="text-left py-3 px-4 text-white/70">Lead Magnet</th>
-                      <th className="text-left py-3 px-4 text-white/70">Subscribed</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-600">Email</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Name</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Lead Magnet</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Subscribed</th>
                     </tr>
                   </thead>
                   <tbody>
                     {contacts.map((contact) => (
-                      <tr key={contact.id} className="border-b border-white/5 hover:bg-white/5">
+                      <tr key={contact.id} className="border-b border-white/5 hover:bg-gray-50">
                         <td className="py-3 px-4 text-white">{contact.email}</td>
-                        <td className="py-3 px-4 text-white/60">{contact.first_name || '-'}</td>
-                        <td className="py-3 px-4 text-white/60">{contact.lead_magnet || '-'}</td>
-                        <td className="py-3 px-4 text-white/60">
+                        <td className="py-3 px-4 text-gray-500">{contact.first_name || '-'}</td>
+                        <td className="py-3 px-4 text-gray-500">{contact.lead_magnet || '-'}</td>
+                        <td className="py-3 px-4 text-gray-500">
                           {new Date(contact.subscribed_at).toLocaleDateString()}
                         </td>
                       </tr>
@@ -619,26 +619,26 @@ export default function Admin() {
                 <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
               </div>
             ) : orders.length === 0 ? (
-              <p className="text-white/50 text-center py-8">No orders yet</p>
+              <p className="text-gray-500 text-center py-8">No orders yet</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="text-left py-3 px-4 text-white/70">Order #</th>
-                      <th className="text-left py-3 px-4 text-white/70">Customer</th>
-                      <th className="text-left py-3 px-4 text-white/70">Amount</th>
-                      <th className="text-left py-3 px-4 text-white/70">Status</th>
-                      <th className="text-left py-3 px-4 text-white/70">Date</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-600">Order #</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Customer</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Amount</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Status</th>
+                      <th className="text-left py-3 px-4 text-gray-600">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orders.map((order) => (
-                      <tr key={order.id} className="border-b border-white/5 hover:bg-white/5">
+                      <tr key={order.id} className="border-b border-white/5 hover:bg-gray-50">
                         <td className="py-3 px-4 font-mono text-sm text-white">
                           {order.order_number}
                         </td>
-                        <td className="py-3 px-4 text-white/60">{order.customer_email}</td>
+                        <td className="py-3 px-4 text-gray-500">{order.customer_email}</td>
                         <td className="py-3 px-4 text-white">
                           {order.currency === 'ZAR' ? 'R' : '$'}
                           {(order.total_amount_cents / 100).toFixed(2)}
@@ -656,7 +656,7 @@ export default function Admin() {
                             {order.payment_status}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-white/60">
+                        <td className="py-3 px-4 text-gray-500">
                           {new Date(order.created_at).toLocaleDateString()}
                         </td>
                       </tr>

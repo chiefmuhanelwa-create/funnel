@@ -49,7 +49,7 @@ export default function BackButton({
   return (
     <Link
       to={destination}
-      className={`inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm ${className}`}
+      className={`inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm ${className}`}
     >
       {showIcon && <ArrowLeft size={16} />}
       {displayLabel}

@@ -67,7 +67,7 @@ export default function MobileCTA({
         >
           <Link
             to={ctaLink}
-            className="block w-full px-6 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full text-dark-500 font-black text-center shadow-2xl pointer-events-auto hover:shadow-yellow-500/25 transition-shadow"
+            className="block w-full px-6 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full text-gray-900 font-black text-center shadow-2xl pointer-events-auto hover:shadow-yellow-500/25 transition-shadow"
           >
             <span className="flex items-center justify-center gap-2">
               {ctaText} - {price}

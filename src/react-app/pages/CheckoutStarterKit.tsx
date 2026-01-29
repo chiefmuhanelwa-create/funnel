@@ -193,7 +193,7 @@ export default function CheckoutStarterKit() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-500 pt-20">
+    <div className="min-h-screen bg-white pt-20">
       <div className="container-content py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -205,11 +205,11 @@ export default function CheckoutStarterKit() {
             <div className="glass-card p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center">
-                  <Lock size={18} className="text-dark-500" />
+                  <Lock size={18} className="text-gray-900" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-white">Secure Checkout</h1>
-                  <p className="text-sm text-white/50">Your information is protected</p>
+                  <p className="text-sm text-gray-500">Your information is protected</p>
                 </div>
               </div>
 
@@ -237,15 +237,15 @@ export default function CheckoutStarterKit() {
                       placeholder="john@example.com"
                       required
                     />
-                    <p className="mt-2 text-xs text-white/40">
+                    <p className="mt-2 text-xs text-gray-400">
                       Your course access will be sent to this email
                     </p>
                   </div>
                 </div>
 
                 {/* Discount Code */}
-                <div className="border-t border-white/10 pt-6 mb-6">
-                  <h2 className="text-sm font-medium text-white/70 mb-3 flex items-center gap-2">
+                <div className="border-t border-gray-200 pt-6 mb-6">
+                  <h2 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
                     <Tag size={16} />
                     Have a discount code?
                   </h2>
@@ -263,7 +263,7 @@ export default function CheckoutStarterKit() {
                         type="button"
                         onClick={handleApplyDiscount}
                         disabled={checkingDiscount || !discountCode.trim()}
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-white font-medium text-sm transition-colors disabled:opacity-50"
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-white font-medium text-sm transition-colors disabled:opacity-50"
                       >
                         {checkingDiscount ? 'Checking...' : 'Apply'}
                       </button>
@@ -290,7 +290,7 @@ export default function CheckoutStarterKit() {
                 </div>
 
                 {/* Order Bumps */}
-                <div className="border-t border-white/10 pt-6 mb-6">
+                <div className="border-t border-gray-200 pt-6 mb-6">
                   <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                     <Zap size={18} className="text-gold-500" />
                     Special Offers (One-Time Only)
@@ -303,7 +303,7 @@ export default function CheckoutStarterKit() {
                         className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
                           selectedBumps.includes(bump.key)
                             ? 'border-gold-500 bg-gold-500/10'
-                            : 'border-white/10 hover:border-white/20 bg-white/5'
+                            : 'border-gray-200 hover:border-gray-300 bg-gray-50'
                         }`}
                       >
                         <div className="flex items-start gap-3">
@@ -311,11 +311,11 @@ export default function CheckoutStarterKit() {
                             className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition-all ${
                               selectedBumps.includes(bump.key)
                                 ? 'border-gold-500 bg-gold-500'
-                                : 'border-white/30'
+                                : 'border-amber-300'
                             }`}
                           >
                             {selectedBumps.includes(bump.key) && (
-                              <CheckCircle className="text-dark-500" size={14} />
+                              <CheckCircle className="text-gray-900" size={14} />
                             )}
                           </div>
                           <div className="flex-1">
@@ -325,7 +325,7 @@ export default function CheckoutStarterKit() {
                                 +${(bump.price / 100).toFixed(0)}
                               </span>
                             </div>
-                            <p className="mt-1 text-sm text-white/50">{bump.description}</p>
+                            <p className="mt-1 text-sm text-gray-500">{bump.description}</p>
                           </div>
                         </div>
                       </div>
@@ -360,7 +360,7 @@ export default function CheckoutStarterKit() {
                 </button>
 
                 {/* Trust badges */}
-                <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/40">
+                <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
                     <Shield size={16} className="text-success-400" />
                     <span>Secure Payment</span>
@@ -391,7 +391,7 @@ export default function CheckoutStarterKit() {
 
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-white/70">{mainProduct.name}</span>
+                  <span className="text-gray-600">{mainProduct.name}</span>
                   <span className="font-medium text-white">${(mainProduct.price / 100).toFixed(0)}</span>
                 </div>
 
@@ -400,8 +400,8 @@ export default function CheckoutStarterKit() {
                   if (!bump) return null;
                   return (
                     <div key={key} className="flex justify-between text-sm">
-                      <span className="text-white/50">{bump.name}</span>
-                      <span className="font-medium text-white/70">${(bump.price / 100).toFixed(0)}</span>
+                      <span className="text-gray-500">{bump.name}</span>
+                      <span className="font-medium text-gray-600">${(bump.price / 100).toFixed(0)}</span>
                     </div>
                   );
                 })}
@@ -410,8 +410,8 @@ export default function CheckoutStarterKit() {
                   <>
                     <div className="divider my-3" />
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/50">Subtotal</span>
-                      <span className="font-medium text-white/70">${(subtotalUSD / 100).toFixed(0)}</span>
+                      <span className="text-gray-500">Subtotal</span>
+                      <span className="font-medium text-gray-600">${(subtotalUSD / 100).toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-green-400">
                       <span>
@@ -430,7 +430,7 @@ export default function CheckoutStarterKit() {
                   <span className="text-white">Total</span>
                   <div className="text-right">
                     <div className="text-gradient-gold">${(totalUSD / 100).toFixed(0)}</div>
-                    <div className="text-sm font-normal text-white/40">
+                    <div className="text-sm font-normal text-gray-400">
                       ≈ R{(totalZAR / 100).toFixed(2)}
                     </div>
                   </div>
@@ -438,7 +438,7 @@ export default function CheckoutStarterKit() {
               </div>
 
               {/* What's included */}
-              <div className="mt-6 pt-6 border-t border-white/10">
+              <div className="mt-6 pt-6 border-t border-gray-200">
                 <h3 className="font-medium text-white mb-3">What's Included:</h3>
                 <ul className="space-y-2">
                   {[
@@ -449,7 +449,7 @@ export default function CheckoutStarterKit() {
                     'Content Calendar Template',
                     'Lifetime Access',
                   ].map((item, index) => (
-                    <li key={index} className="flex items-center text-sm text-white/60">
+                    <li key={index} className="flex items-center text-sm text-gray-500">
                       <CheckCircle className="text-success-400 mr-2 shrink-0" size={14} />
                       {item}
                     </li>
@@ -463,7 +463,7 @@ export default function CheckoutStarterKit() {
                   <Shield size={24} className="text-success-400" />
                   <div>
                     <p className="text-sm font-medium text-white">30-Day Money-Back Guarantee</p>
-                    <p className="text-xs text-white/50">Not satisfied? Get a full refund.</p>
+                    <p className="text-xs text-gray-500">Not satisfied? Get a full refund.</p>
                   </div>
                 </div>
               </div>

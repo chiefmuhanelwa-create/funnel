@@ -64,7 +64,7 @@ export default function OTOPopup({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-md overflow-y-auto"
           onClick={onDecline}
         >
           <motion.div
@@ -72,12 +72,12 @@ export default function OTOPopup({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg bg-gradient-to-br from-dark-400 to-dark-500 rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl my-8"
+            className="relative w-full max-w-lg bg-gradient-to-br from-gray-100 to-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-2xl my-8"
           >
             {/* Close Button */}
             <button
               onClick={onDecline}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-colors z-10"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-white transition-colors z-10"
             >
               <X size={18} />
             </button>
@@ -101,20 +101,20 @@ export default function OTOPopup({
             <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2">
               Wait! Before You Go...
             </h2>
-            <p className="text-white/60 text-center mb-6">
+            <p className="text-gray-500 text-center mb-6">
               Add {productName} for{' '}
               <span className="text-yellow-400 font-bold">{savingsPercent}% OFF</span>
             </p>
 
             {/* Product Details */}
-            <div className="bg-white/5 rounded-2xl p-5 mb-6">
+            <div className="bg-gray-50 rounded-2xl p-5 mb-6">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center shrink-0">
-                  <BookOpen size={28} className="text-dark-500" />
+                  <BookOpen size={28} className="text-gray-900" />
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-lg">{productName}</h3>
-                  <p className="text-white/50 text-sm mt-1">
+                  <p className="text-gray-500 text-sm mt-1">
                     The #1 bestselling book on content monetization. 6,000+ copies sold.
                   </p>
                 </div>
@@ -123,7 +123,7 @@ export default function OTOPopup({
               {/* Features */}
               <ul className="space-y-2">
                 {features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm text-white/70">
+                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
                     <Check size={16} className="text-green-400 shrink-0" />
                     {feature}
                   </li>
@@ -134,14 +134,14 @@ export default function OTOPopup({
             {/* Pricing */}
             <div className="flex items-center justify-between bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-4 mb-6">
               <div>
-                <p className="text-white/50 text-sm line-through">${originalPrice}</p>
+                <p className="text-gray-500 text-sm line-through">${originalPrice}</p>
                 <p className="text-2xl font-bold text-green-400">${otoPrice}</p>
               </div>
               <div className="text-right">
-                <span className="inline-block bg-green-500 text-dark-500 font-bold text-sm px-3 py-1 rounded-full">
+                <span className="inline-block bg-green-500 text-gray-900 font-bold text-sm px-3 py-1 rounded-full">
                   Save ${savings}
                 </span>
-                <p className="text-white/50 text-xs mt-1">{savingsPercent}% OFF</p>
+                <p className="text-gray-500 text-xs mt-1">{savingsPercent}% OFF</p>
               </div>
             </div>
 
@@ -168,14 +168,14 @@ export default function OTOPopup({
               <button
                 onClick={onDecline}
                 disabled={isProcessing}
-                className="w-full text-sm text-white/40 hover:text-white/60 transition-colors py-2"
+                className="w-full text-sm text-gray-400 hover:text-gray-500 transition-colors py-2"
               >
                 No thanks, I'll pay full price later
               </button>
             </div>
 
             {/* Fine Print */}
-            <p className="text-center text-xs text-white/30 mt-4">
+            <p className="text-center text-xs text-gray-400 mt-4">
               This one-time offer is available only on this page and expires in{' '}
               {formatTime(timeLeft)}
             </p>

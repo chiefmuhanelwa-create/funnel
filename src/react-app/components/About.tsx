@@ -33,7 +33,7 @@ export default function About() {
             <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-2xl md:blur-3xl" />
 
             {/* 2. Photo Container */}
-            <div className="relative h-full rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+            <div className="relative h-full rounded-3xl border border-gray-200 shadow-2xl overflow-hidden">
               {/* 3. Image */}
               <img
                 src="/images/about-mrnochill.jpg"
@@ -62,7 +62,7 @@ export default function About() {
               <p className="text-white/80 text-base md:text-lg leading-relaxed">
                 Let me tell you where I started. I dropped out of university twice. I slept on bathroom floors because I couldn't afford rent. I built a following of over 3 million people... and still couldn't pay my bills.
               </p>
-              <p className="text-white/60 text-base md:text-lg leading-relaxed mt-4">
+              <p className="text-gray-500 text-base md:text-lg leading-relaxed mt-4">
                 Followers don't pay rent. Engagement doesn't buy groceries. I learned this the hard way.
               </p>
             </div>
@@ -80,7 +80,7 @@ export default function About() {
               <p className="text-white/80 text-base md:text-lg leading-relaxed">
                 Then came the wake-up call. Tax issues I didn't understand. Lost followers because I didn't know how to retain them. Burnout from creating content with no strategy.
               </p>
-              <p className="text-white/60 text-base md:text-lg leading-relaxed mt-4">
+              <p className="text-gray-500 text-base md:text-lg leading-relaxed mt-4">
                 That's when I realized: Content creation isn't a business. It's a vehicle. And I needed a system to drive it.
               </p>
             </div>

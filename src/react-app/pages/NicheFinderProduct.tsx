@@ -15,7 +15,7 @@ export default function NicheFinderProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -44,21 +44,21 @@ export default function NicheFinderProduct() {
                 <span className="text-gradient-gold">Workbook</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 Stop second-guessing yourself. This step-by-step workbook helps you discover
                 the perfect niche that combines your passion, skills, and market demand.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <FileText className="mr-2 text-gold-500" size={18} />
                   <span>6 Exercises</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Target className="mr-2 text-gold-500" size={18} />
                   <span>Proven Framework</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Download className="mr-2 text-gold-500" size={18} />
                   <span>PDF Download</span>
                 </div>
@@ -66,7 +66,7 @@ export default function NicheFinderProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$17</span>
-                <span className="text-2xl text-white/40 line-through">$27</span>
+                <span className="text-2xl text-gray-400 line-through">$27</span>
                 <span className="badge badge-success">37% OFF</span>
               </div>
 
@@ -78,7 +78,7 @@ export default function NicheFinderProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -123,7 +123,7 @@ export default function NicheFinderProduct() {
             <h2 className="text-section text-white mb-4">
               Are You Stuck Trying to Find <span className="text-gradient-gold">Your Niche?</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
+            <p className="text-gray-500 max-w-2xl mx-auto">
               Most creators spend months (or years) jumping between topics, never building momentum.
               They know they need to niche down, but they're paralyzed by the fear of choosing wrong.
             </p>
@@ -133,7 +133,7 @@ export default function NicheFinderProduct() {
                 "You're afraid of limiting your potential audience",
                 "You've tried niching before but it didn't feel right",
               ].map((problem, index) => (
-                <div key={index} className="flex items-start gap-3 text-white/70">
+                <div key={index} className="flex items-start gap-3 text-gray-600">
                   <CheckCircle className="text-error-400 shrink-0 mt-1" size={16} />
                   <span className="text-sm">{problem}</span>
                 </div>
@@ -144,7 +144,7 @@ export default function NicheFinderProduct() {
       </section>
 
       {/* What's Inside */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -171,12 +171,12 @@ export default function NicheFinderProduct() {
                 className="card card-hover"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold shrink-0">
                     {index + 1}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{exercise.title}</h3>
-                    <p className="mt-1 text-sm text-white/50">{exercise.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{exercise.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -221,7 +221,7 @@ export default function NicheFinderProduct() {
                   <result.icon className="text-gold-500" size={28} />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{result.title}</h3>
-                <p className="text-sm text-white/60">{result.desc}</p>
+                <p className="text-sm text-gray-500">{result.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -229,7 +229,7 @@ export default function NicheFinderProduct() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -271,11 +271,11 @@ export default function NicheFinderProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -299,13 +299,13 @@ export default function NicheFinderProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Find Your Niche <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Stop guessing, start growing. Get instant access to the complete workbook.
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$17</span>
-              <span className="text-2xl text-white/30 line-through">$27</span>
+              <span className="text-2xl text-gray-400 line-through">$27</span>
             </div>
 
             <Link
@@ -316,7 +316,7 @@ export default function NicheFinderProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

@@ -43,10 +43,10 @@ export default function StarterKitCourse() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
-          <p className="mt-4 text-white/50">Loading course...</p>
+          <p className="mt-4 text-gray-500">Loading course...</p>
         </div>
       </div>
     );
@@ -62,12 +62,12 @@ export default function StarterKitCourse() {
   // Module List View
   if (activeModule === null) {
     return (
-      <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="min-h-screen bg-white pt-20">
         <div className="container-content py-8">
           {/* Back to Hub */}
           <Link
             to="/members"
-            className="inline-flex items-center text-white/50 hover:text-gold-500 transition-colors mb-8"
+            className="inline-flex items-center text-gray-500 hover:text-gold-500 transition-colors mb-8"
           >
             <ChevronLeft size={20} className="mr-1" />
             Back to Hub
@@ -78,7 +78,7 @@ export default function StarterKitCourse() {
             <h1 className="text-section md:text-section-lg text-white">
               Contentpreneur <span className="text-gradient-gold">Starter Kit</span>
             </h1>
-            <p className="mt-3 text-white/60 max-w-2xl">
+            <p className="mt-3 text-gray-500 max-w-2xl">
               Your complete roadmap from content creator to content entrepreneur. Build real income streams, not just followers.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function StarterKitCourse() {
           <div className="glass-card p-6 mb-8">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <p className="text-white/50 text-sm">Contentpreneur Starter Kit Course - 9 Modules</p>
+                <p className="text-gray-500 text-sm">Contentpreneur Starter Kit Course - 9 Modules</p>
                 <h3 className="text-lg font-semibold text-white mt-1">Your Progress</h3>
               </div>
               <div className="text-right">
@@ -97,7 +97,7 @@ export default function StarterKitCourse() {
             <div className="progress-bar">
               <div className="progress-bar-fill" style={{ width: `${progress}%` }} />
             </div>
-            <p className="text-white/40 text-sm mt-3">
+            <p className="text-gray-400 text-sm mt-3">
               {completedModules.length} of {modules.length} modules completed
             </p>
           </div>
@@ -127,12 +127,12 @@ export default function StarterKitCourse() {
                           ? 'bg-success-500/20'
                           : module.isBonus
                             ? 'bg-gold-500/20'
-                            : 'bg-white/5'
+                            : 'bg-gray-50'
                       }`}>
                         {isCompleted ? (
                           <CheckCircle size={20} className="text-success-400" />
                         ) : (
-                          <Play size={18} className={module.isBonus ? 'text-gold-500' : 'text-white/50'} />
+                          <Play size={18} className={module.isBonus ? 'text-gold-500' : 'text-gray-500'} />
                         )}
                       </div>
 
@@ -140,11 +140,11 @@ export default function StarterKitCourse() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-1">
                           <span className={`text-xs font-semibold uppercase tracking-wider ${
-                            module.isBonus ? 'text-gold-500' : 'text-white/40'
+                            module.isBonus ? 'text-gold-500' : 'text-gray-400'
                           }`}>
                             {module.label}
                           </span>
-                          <div className="flex items-center text-white/30 text-xs">
+                          <div className="flex items-center text-gray-400 text-xs">
                             <Clock size={12} className="mr-1" />
                             {module.duration}
                           </div>
@@ -152,7 +152,7 @@ export default function StarterKitCourse() {
                         <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors">
                           {module.title}
                         </h3>
-                        <p className="text-sm text-white/50 mt-1 line-clamp-2">
+                        <p className="text-sm text-gray-500 mt-1 line-clamp-2">
                           {module.description}
                         </p>
                       </div>
@@ -177,12 +177,12 @@ export default function StarterKitCourse() {
 
   // Video Player View
   return (
-    <div className="min-h-screen bg-dark-500 pt-20">
+    <div className="min-h-screen bg-white pt-20">
       <div className="container-content py-8">
         {/* Back to course list */}
         <button
           onClick={handleBackToList}
-          className="inline-flex items-center text-white/50 hover:text-gold-500 transition-colors mb-6"
+          className="inline-flex items-center text-gray-500 hover:text-gold-500 transition-colors mb-6"
         >
           <ChevronLeft size={20} className="mr-1" />
           Back to Course
@@ -199,7 +199,7 @@ export default function StarterKitCourse() {
             >
               {/* Video Player */}
               <div className="glass-card p-2 mb-6 glow-gold">
-                <div className="relative aspect-video bg-dark-400 rounded-xl overflow-hidden">
+                <div className="relative aspect-video bg-gray-50 rounded-xl overflow-hidden">
                   {currentModule?.videoUrl ? (
                     <>
                       <video
@@ -218,7 +218,7 @@ export default function StarterKitCourse() {
                         }}
                       />
                       {!isPlaying && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-dark-400/50">
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-50/50">
                           <button
                             onClick={() => {
                               setIsPlaying(true);
@@ -226,14 +226,14 @@ export default function StarterKitCourse() {
                             }}
                             className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group"
                           >
-                            <Play className="text-dark-500 ml-1 group-hover:scale-110 transition" size={32} />
+                            <Play className="text-gray-900 ml-1 group-hover:scale-110 transition" size={32} />
                           </button>
                         </div>
                       )}
                     </>
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <p className="text-white/50">Video not available</p>
+                      <p className="text-gray-500">Video not available</p>
                     </div>
                   )}
                 </div>
@@ -245,11 +245,11 @@ export default function StarterKitCourse() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <span className={`text-xs font-semibold uppercase tracking-wider ${
-                        currentModule?.isBonus ? 'text-gold-500' : 'text-white/40'
+                        currentModule?.isBonus ? 'text-gold-500' : 'text-gray-400'
                       }`}>
                         {currentModule?.label}
                       </span>
-                      <div className="flex items-center text-white/30 text-xs">
+                      <div className="flex items-center text-gray-400 text-xs">
                         <Clock size={12} className="mr-1" />
                         {currentModule?.duration}
                       </div>
@@ -257,7 +257,7 @@ export default function StarterKitCourse() {
                     <h1 className="text-2xl font-bold text-white">
                       {currentModule?.title}
                     </h1>
-                    <p className="mt-3 text-white/60">{currentModule?.description}</p>
+                    <p className="mt-3 text-gray-500">{currentModule?.description}</p>
                   </div>
 
                   {currentModule && !completedModules.includes(currentModule.id) ? (
@@ -276,38 +276,38 @@ export default function StarterKitCourse() {
                 </div>
 
                 {/* Resources */}
-                <div className="mt-8 pt-6 border-t border-white/10">
+                <div className="mt-8 pt-6 border-t border-gray-200">
                   <h3 className="font-semibold text-white mb-4">Course Resources</h3>
                   <div className="space-y-2">
                     <a
                       href={DOCUMENTS.paidsFrameworkWorkbook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
+                      className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-white/70 group-hover:text-white transition-colors">
+                      <span className="font-medium text-gray-600 group-hover:text-white transition-colors">
                         PAIDS Framework Workbook
                       </span>
-                      <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
+                      <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>
                     <a
                       href={DOCUMENTS.nicheFinderWorkbook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
+                      className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-white/70 group-hover:text-white transition-colors">
+                      <span className="font-medium text-gray-600 group-hover:text-white transition-colors">
                         Niche Finder Workbook
                       </span>
-                      <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
+                      <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>
                   </div>
                 </div>
 
                 {/* Navigation */}
-                <div className="mt-6 pt-6 border-t border-white/10 flex justify-between">
+                <div className="mt-6 pt-6 border-t border-gray-200 flex justify-between">
                   <button
                     onClick={() => setActiveModule(Math.max(0, activeModule - 1))}
                     disabled={activeModule === 0}
@@ -337,9 +337,9 @@ export default function StarterKitCourse() {
               </h2>
 
               {/* Progress mini */}
-              <div className="mb-4 pb-4 border-b border-white/10">
+              <div className="mb-4 pb-4 border-b border-gray-200">
                 <div className="flex justify-between text-xs mb-2">
-                  <span className="text-white/50">Progress</span>
+                  <span className="text-gray-500">Progress</span>
                   <span className="font-medium text-gold-500">{progress}%</span>
                 </div>
                 <div className="progress-bar h-1.5">
@@ -360,7 +360,7 @@ export default function StarterKitCourse() {
                       className={`w-full text-left p-3 rounded-xl transition-all ${
                         isActive
                           ? 'bg-gold-500/10 border border-gold-500/30'
-                          : 'hover:bg-white/5 border border-transparent'
+                          : 'hover:bg-gray-50 border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -370,7 +370,7 @@ export default function StarterKitCourse() {
                               ? 'bg-success-500/20 text-success-400'
                               : isActive
                                 ? 'bg-gold-500/20 text-gold-500'
-                                : 'bg-white/5 text-white/50'
+                                : 'bg-gray-50 text-gray-500'
                           }`}
                         >
                           {isCompleted ? (
@@ -381,11 +381,11 @@ export default function StarterKitCourse() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className={`font-medium text-sm truncate ${
-                            isActive ? 'text-gold-500' : 'text-white/70'
+                            isActive ? 'text-gold-500' : 'text-gray-600'
                           }`}>
                             {module.title}
                           </div>
-                          <div className="text-xs text-white/30">{module.duration}</div>
+                          <div className="text-xs text-gray-400">{module.duration}</div>
                         </div>
                       </div>
                     </button>

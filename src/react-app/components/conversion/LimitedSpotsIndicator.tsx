@@ -29,11 +29,11 @@ export default function LimitedSpotsIndicator({
               {spotsLeft} spots left at this price
             </span>
           </div>
-          <span className="text-xs text-white/50">
+          <span className="text-xs text-gray-500">
             {spotsLeft}/{totalSpots}
           </span>
         </div>
-        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${100 - percentageLeft}%` }}
@@ -71,7 +71,7 @@ export default function LimitedSpotsIndicator({
         >
           Only {spotsLeft} spots left!
         </span>
-        <span className="text-xs text-white/50 ml-1">at this price</span>
+        <span className="text-xs text-gray-500 ml-1">at this price</span>
       </div>
     </motion.div>
   );

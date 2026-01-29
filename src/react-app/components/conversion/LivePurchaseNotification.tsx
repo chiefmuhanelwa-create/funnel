@@ -86,7 +86,7 @@ export default function LivePurchaseNotification({
           <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/40 rounded-2xl p-4 backdrop-blur-lg shadow-2xl">
             <button
               onClick={handleDismiss}
-              className="absolute -top-2 -right-2 w-6 h-6 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors"
+              className="absolute -top-2 -right-2 w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-white transition-colors"
             >
               <X size={14} />
             </button>
@@ -99,7 +99,7 @@ export default function LivePurchaseNotification({
                 <p className="font-bold text-white text-sm">
                   {notification.name} from {notification.location}
                 </p>
-                <p className="text-xs text-white/70">
+                <p className="text-xs text-gray-600">
                   Just purchased "{notification.product}"
                 </p>
                 <p className="text-xs text-green-400 mt-1">{notification.time}</p>

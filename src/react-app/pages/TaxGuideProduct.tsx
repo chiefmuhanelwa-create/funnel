@@ -13,7 +13,7 @@ export default function TaxGuideProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -42,21 +42,21 @@ export default function TaxGuideProduct() {
                 <span className="text-gradient-gold">Contentpreneurs</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The complete SARS compliance guide for South African content creators.
                 Understand your tax obligations, maximize deductions, and stay on the right side of the law.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <FileText className="mr-2 text-gold-500" size={18} />
                   <span>6 Tax Types Covered</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Calculator className="mr-2 text-gold-500" size={18} />
                   <span>Deduction Checklist</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Download className="mr-2 text-gold-500" size={18} />
                   <span>PDF Download</span>
                 </div>
@@ -64,7 +64,7 @@ export default function TaxGuideProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$47</span>
-                <span className="text-2xl text-white/40 line-through">$97</span>
+                <span className="text-2xl text-gray-400 line-through">$97</span>
                 <span className="badge badge-success">52% OFF</span>
               </div>
 
@@ -76,7 +76,7 @@ export default function TaxGuideProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -121,7 +121,7 @@ export default function TaxGuideProduct() {
             <h2 className="text-section text-white mb-4">
               Are You Tax Compliant as a <span className="text-gradient-gold">Content Creator?</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
+            <p className="text-gray-500 max-w-2xl mx-auto">
               SARS is cracking down on undeclared online income. Many creators don't realize they're breaking the law
               by not declaring sponsorship deals, affiliate income, and digital product sales.
             </p>
@@ -131,7 +131,7 @@ export default function TaxGuideProduct() {
                 "You sell digital products or receive affiliate commissions",
                 "You're unsure what expenses you can deduct",
               ].map((problem, index) => (
-                <div key={index} className="flex items-start gap-3 text-white/70">
+                <div key={index} className="flex items-start gap-3 text-gray-600">
                   <CheckCircle className="text-error-400 shrink-0 mt-1" size={16} />
                   <span className="text-sm">{problem}</span>
                 </div>
@@ -142,7 +142,7 @@ export default function TaxGuideProduct() {
       </section>
 
       {/* What's Covered */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -170,11 +170,11 @@ export default function TaxGuideProduct() {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center shrink-0">
-                    <topic.icon size={24} className="text-dark-500" />
+                    <topic.icon size={24} className="text-gray-900" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{topic.title}</h3>
-                    <p className="mt-1 text-sm text-white/50">{topic.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{topic.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -198,7 +198,7 @@ export default function TaxGuideProduct() {
                   'Record-keeping requirements',
                   'Common mistakes to avoid',
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-2 text-white/60 text-sm">
+                  <div key={index} className="flex items-center gap-2 text-gray-500 text-sm">
                     <CheckCircle size={16} className="text-success-400 shrink-0" />
                     <span>{item}</span>
                   </div>
@@ -252,11 +252,11 @@ export default function TaxGuideProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -280,13 +280,13 @@ export default function TaxGuideProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Get Tax Compliant <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Don't wait for SARS to come knocking. Get the complete guide and protect your content business.
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$47</span>
-              <span className="text-2xl text-white/30 line-through">$97</span>
+              <span className="text-2xl text-gray-400 line-through">$97</span>
             </div>
 
             <Link
@@ -297,7 +297,7 @@ export default function TaxGuideProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

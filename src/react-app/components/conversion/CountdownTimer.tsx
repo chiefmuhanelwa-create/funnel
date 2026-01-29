@@ -53,7 +53,7 @@ export default function CountdownTimer({
     return (
       <div className="flex items-center gap-2 text-sm">
         <Clock size={16} className="text-red-400" />
-        <span className="text-white/70">{title}</span>
+        <span className="text-gray-600">{title}</span>
         <span className="font-mono font-bold text-yellow-400">
           {String(timeLeft.hours).padStart(2, '0')}:
           {String(timeLeft.minutes).padStart(2, '0')}:
@@ -78,10 +78,10 @@ export default function CountdownTimer({
         {timeLeft.days > 0 && (
           <>
             <div className="flex flex-col items-center">
-              <span className="text-3xl sm:text-4xl font-black text-white bg-white/10 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
+              <span className="text-3xl sm:text-4xl font-black text-white bg-gray-100 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
                 {String(timeLeft.days).padStart(2, '0')}
               </span>
-              <span className="text-xs sm:text-sm text-white/50 mt-1 uppercase tracking-wide">
+              <span className="text-xs sm:text-sm text-gray-500 mt-1 uppercase tracking-wide">
                 Days
               </span>
             </div>
@@ -90,10 +90,10 @@ export default function CountdownTimer({
         )}
 
         <div className="flex flex-col items-center">
-          <span className="text-3xl sm:text-4xl font-black text-white bg-white/10 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
+          <span className="text-3xl sm:text-4xl font-black text-white bg-gray-100 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
             {String(timeLeft.hours).padStart(2, '0')}
           </span>
-          <span className="text-xs sm:text-sm text-white/50 mt-1 uppercase tracking-wide">
+          <span className="text-xs sm:text-sm text-gray-500 mt-1 uppercase tracking-wide">
             Hours
           </span>
         </div>
@@ -101,10 +101,10 @@ export default function CountdownTimer({
         <span className="text-2xl sm:text-3xl font-bold text-yellow-500">:</span>
 
         <div className="flex flex-col items-center">
-          <span className="text-3xl sm:text-4xl font-black text-white bg-white/10 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
+          <span className="text-3xl sm:text-4xl font-black text-white bg-gray-100 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]">
             {String(timeLeft.minutes).padStart(2, '0')}
           </span>
-          <span className="text-xs sm:text-sm text-white/50 mt-1 uppercase tracking-wide">
+          <span className="text-xs sm:text-sm text-gray-500 mt-1 uppercase tracking-wide">
             Mins
           </span>
         </div>
@@ -116,11 +116,11 @@ export default function CountdownTimer({
             key={timeLeft.seconds}
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
-            className="text-3xl sm:text-4xl font-black text-white bg-white/10 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]"
+            className="text-3xl sm:text-4xl font-black text-white bg-gray-100 rounded-lg px-3 py-2 min-w-[60px] sm:min-w-[80px]"
           >
             {String(timeLeft.seconds).padStart(2, '0')}
           </motion.span>
-          <span className="text-xs sm:text-sm text-white/50 mt-1 uppercase tracking-wide">
+          <span className="text-xs sm:text-sm text-gray-500 mt-1 uppercase tracking-wide">
             Secs
           </span>
         </div>

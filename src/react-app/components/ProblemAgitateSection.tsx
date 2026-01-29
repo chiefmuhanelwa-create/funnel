@@ -56,7 +56,7 @@ export default function ProblemAgitateSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/10 hover:border-red-500/30 p-4 md:p-6 rounded-xl md:rounded-2xl transition-all duration-300 hover:scale-[1.01]"
+              className="group bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-gray-200 hover:border-red-500/30 p-4 md:p-6 rounded-xl md:rounded-2xl transition-all duration-300 hover:scale-[1.01]"
             >
               {/* Icon Container */}
               <div className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br from-red-500/20 to-red-500/10 border border-red-500/20 flex items-center justify-center mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300">

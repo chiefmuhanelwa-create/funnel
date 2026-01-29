@@ -223,10 +223,10 @@ export default function MembersHub() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
-          <p className="mt-4 text-white/50">Loading your hub...</p>
+          <p className="mt-4 text-gray-500">Loading your hub...</p>
         </div>
       </div>
     );
@@ -235,7 +235,7 @@ export default function MembersHub() {
   // Login screen
   if (!isAuthenticated && !emailAccess) {
     return (
-      <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="min-h-screen bg-white pt-20">
         <div className="container-tight py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -243,13 +243,13 @@ export default function MembersHub() {
             className="glass-card p-10 text-center"
           >
             <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-gold flex items-center justify-center mb-6">
-              <Crown size={28} className="text-dark-500" />
+              <Crown size={28} className="text-gray-900" />
             </div>
 
             <h1 className="text-section text-white">
               Contentpreneur <span className="text-gradient-gold">Hub</span>
             </h1>
-            <p className="mt-4 text-white/60">
+            <p className="mt-4 text-gray-500">
               Access your courses, workbooks, and exclusive resources
             </p>
 
@@ -266,7 +266,7 @@ export default function MembersHub() {
                     placeholder="you@example.com"
                     required
                   />
-                  <p className="mt-2 text-xs text-white/40">
+                  <p className="mt-2 text-xs text-gray-400">
                     Use the same email you used when purchasing
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export default function MembersHub() {
 
             <div className="divider my-10" />
 
-            <p className="text-white/50">
+            <p className="text-gray-500">
               Don't have access yet?{' '}
               <Link to="/contentpreneur-starter-kit" className="text-gold-500 font-semibold hover:text-gold-400">
                 Get the Starter Kit
@@ -309,7 +309,7 @@ export default function MembersHub() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-500 pt-20">
+    <div className="min-h-screen bg-white pt-20">
       <div className="container-content py-12">
         {/* Welcome Header */}
         <motion.div
@@ -319,7 +319,7 @@ export default function MembersHub() {
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
-              <Crown size={24} className="text-dark-500" />
+              <Crown size={24} className="text-gray-900" />
             </div>
             <div>
               <span className="badge badge-gold text-xs">Contentpreneur Hub</span>
@@ -330,11 +330,11 @@ export default function MembersHub() {
           </div>
           {user && (
             <div className="flex items-center gap-4">
-              <p className="text-white/40 text-sm">{user.email}</p>
+              <p className="text-gray-400 text-sm">{user.email}</p>
               {isAdmin && (
                 <Link
                   to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 bg-gold-500 text-dark-500 rounded-lg font-semibold text-sm hover:bg-gold-400 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gold-500 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gold-400 transition-colors"
                 >
                   <Settings size={16} />
                   Admin Panel
@@ -375,7 +375,7 @@ export default function MembersHub() {
                           <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors truncate">
                             {product.name}
                           </h3>
-                          <p className="text-sm text-white/50 mt-1 line-clamp-2">
+                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
                             {product.description}
                           </p>
                           <span className="mt-3 inline-flex items-center text-gold-500 font-medium text-sm group-hover:gap-2 transition-all">
@@ -406,7 +406,7 @@ export default function MembersHub() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     activeLevel === level
                       ? 'bg-gold-500/20 text-gold-500 border border-gold-500/30'
-                      : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10'
+                      : 'bg-gray-50 text-gray-500 hover:text-white hover:bg-gray-100'
                   }`}
                 >
                   {level === 'all' ? 'All' : LEVEL_CONFIG[level].label}
@@ -432,7 +432,7 @@ export default function MembersHub() {
                   </div>
                   <div>
                     <h3 className={`font-semibold ${levelInfo.textColor}`}>{levelInfo.label}</h3>
-                    <p className="text-xs text-white/40">{levelInfo.description}</p>
+                    <p className="text-xs text-gray-400">{levelInfo.description}</p>
                   </div>
                 </div>
 
@@ -467,7 +467,7 @@ export default function MembersHub() {
                             <h3 className="font-semibold text-white pr-16">
                               {product.name}
                             </h3>
-                            <p className="text-sm text-white/50 mt-1 line-clamp-2">
+                            <p className="text-sm text-gray-500 mt-1 line-clamp-2">
                               {product.description}
                             </p>
 
@@ -475,7 +475,7 @@ export default function MembersHub() {
                             {product.features && (
                               <div className="flex flex-wrap gap-2 mt-3">
                                 {product.features.map((feature, i) => (
-                                  <span key={i} className="text-xs text-white/40 bg-white/5 px-2 py-0.5 rounded">
+                                  <span key={i} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded">
                                     {feature}
                                   </span>
                                 ))}
@@ -483,7 +483,7 @@ export default function MembersHub() {
                             )}
 
                             {/* Price & CTA */}
-                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
                               <p className={`text-lg font-bold ${levelInfo.textColor}`}>
                                 ${(product.price_cents / 100).toFixed(0)}
                               </p>
@@ -498,7 +498,7 @@ export default function MembersHub() {
                               ) : (
                                 <Link
                                   to={product.purchaseLink}
-                                  className="text-sm font-medium text-white/70 hover:text-white flex items-center gap-1"
+                                  className="text-sm font-medium text-gray-600 hover:text-white flex items-center gap-1"
                                 >
                                   Get Started
                                   <ArrowRight size={14} />
@@ -523,25 +523,25 @@ export default function MembersHub() {
         <ToolStackSection hasStarterKit={hasAccessToProduct('starter-kit')} />
 
         {/* Quick Links */}
-        <section className="py-12 border-t border-white/10">
+        <section className="py-12 border-t border-gray-200">
           <h2 className="text-lg font-semibold text-white mb-4">Quick Links</h2>
           <div className="flex flex-wrap gap-4">
             <a
               href="mailto:support@contentpreneurhub.online"
-              className="text-white/50 hover:text-gold-500 text-sm transition-colors flex items-center gap-1"
+              className="text-gray-500 hover:text-gold-500 text-sm transition-colors flex items-center gap-1"
             >
               Contact Support
               <ExternalLink size={14} />
             </a>
             <Link
               to="/dashboard"
-              className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+              className="text-gray-500 hover:text-gold-500 text-sm transition-colors"
             >
               Dashboard
             </Link>
             <Link
               to="/contentpreneur-starter-kit"
-              className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+              className="text-gray-500 hover:text-gold-500 text-sm transition-colors"
             >
               Browse Products
             </Link>

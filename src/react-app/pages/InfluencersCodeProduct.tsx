@@ -17,7 +17,7 @@ export default function InfluencersCodeProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -46,21 +46,21 @@ export default function InfluencersCodeProduct() {
                 <span className="text-gradient-gold">Code</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 Unlock the secrets that top influencers use to build massive audiences,
                 land brand deals, and turn their personal brand into a profitable business.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <BookOpen className="mr-2 text-gold-500" size={18} />
                   <span>8 Chapters</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Users className="mr-2 text-gold-500" size={18} />
                   <span>5K+ Readers</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Target className="mr-2 text-gold-500" size={18} />
                   <span>Actionable Strategies</span>
                 </div>
@@ -68,7 +68,7 @@ export default function InfluencersCodeProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$19</span>
-                <span className="text-2xl text-white/40 line-through">$47</span>
+                <span className="text-2xl text-gray-400 line-through">$47</span>
                 <span className="badge badge-success">60% OFF</span>
               </div>
 
@@ -80,7 +80,7 @@ export default function InfluencersCodeProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -125,7 +125,7 @@ export default function InfluencersCodeProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               8 Chapters to <span className="text-gradient-gold">Transform</span> Your Influence
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               A complete roadmap from building your brand to monetizing your influence
             </p>
           </motion.div>
@@ -141,12 +141,12 @@ export default function InfluencersCodeProduct() {
                 className="card card-hover"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold shrink-0">
                     {index + 1}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{chapter.title}</h3>
-                    <p className="mt-1 text-sm text-white/50">{chapter.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{chapter.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -156,7 +156,7 @@ export default function InfluencersCodeProduct() {
       </section>
 
       {/* Key Benefits */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -193,7 +193,7 @@ export default function InfluencersCodeProduct() {
                   <benefit.icon className="text-gold-500" size={28} />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{benefit.title}</h3>
-                <p className="text-sm text-white/60">{benefit.desc}</p>
+                <p className="text-sm text-gray-500">{benefit.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -243,11 +243,11 @@ export default function InfluencersCodeProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -272,13 +272,13 @@ export default function InfluencersCodeProduct() {
               Start Your Influencer Journey{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Get instant access to all 8 chapters and start building your influence
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$19</span>
-              <span className="text-2xl text-white/30 line-through">$47</span>
+              <span className="text-2xl text-gray-400 line-through">$47</span>
             </div>
 
             <Link
@@ -289,7 +289,7 @@ export default function InfluencersCodeProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

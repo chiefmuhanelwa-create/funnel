@@ -14,7 +14,7 @@ export default function PAIDSWorkbookProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -43,21 +43,21 @@ export default function PAIDSWorkbookProduct() {
                 <span className="text-gradient-gold">Workbook</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The proven 5-pillar system for building multiple income streams as a content creator.
                 Stop relying on a single revenue source and build a sustainable creator business.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <FileText className="mr-2 text-gold-500" size={18} />
                   <span>5 Modules</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <CheckCircle className="mr-2 text-gold-500" size={18} />
                   <span>Worksheets Included</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Download className="mr-2 text-gold-500" size={18} />
                   <span>PDF Download</span>
                 </div>
@@ -65,7 +65,7 @@ export default function PAIDSWorkbookProduct() {
 
               <div className="mt-10 flex items-baseline gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$17</span>
-                <span className="text-2xl text-white/40 line-through">$27</span>
+                <span className="text-2xl text-gray-400 line-through">$27</span>
                 <span className="badge badge-success">37% OFF</span>
               </div>
 
@@ -77,7 +77,7 @@ export default function PAIDSWorkbookProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -122,7 +122,7 @@ export default function PAIDSWorkbookProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               5 Pillars of Creator <span className="text-gradient-gold">Income</span>
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               The PAIDS Framework gives you 5 proven ways to monetize your content and audience
             </p>
           </motion.div>
@@ -137,11 +137,11 @@ export default function PAIDSWorkbookProduct() {
                 transition={{ delay: index * 0.1 }}
                 className="card card-hover text-center"
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold text-2xl mx-auto mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold text-2xl mx-auto mb-4">
                   {pillar.letter}
                 </div>
                 <h3 className="font-semibold text-white mb-2">{pillar.title}</h3>
-                <p className="text-sm text-white/50">{pillar.desc}</p>
+                <p className="text-sm text-gray-500">{pillar.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -149,7 +149,7 @@ export default function PAIDSWorkbookProduct() {
       </section>
 
       {/* What's Inside */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -191,7 +191,7 @@ export default function PAIDSWorkbookProduct() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{item.title}</h3>
-                    <p className="mt-1 text-sm text-white/60">{item.desc}</p>
+                    <p className="mt-1 text-sm text-gray-500">{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -221,7 +221,7 @@ export default function PAIDSWorkbookProduct() {
               ].map((item, index) => (
                 <div key={index} className="text-center">
                   <div className="text-4xl font-bold text-gradient-gold">{item.stat}</div>
-                  <div className="text-white/60 mt-2">{item.label}</div>
+                  <div className="text-gray-500 mt-2">{item.label}</div>
                 </div>
               ))}
             </div>
@@ -230,7 +230,7 @@ export default function PAIDSWorkbookProduct() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -272,11 +272,11 @@ export default function PAIDSWorkbookProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -301,13 +301,13 @@ export default function PAIDSWorkbookProduct() {
               Build Multiple Income Streams{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Get the complete PAIDS Framework workbook and start diversifying your creator income
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$17</span>
-              <span className="text-2xl text-white/30 line-through">$27</span>
+              <span className="text-2xl text-gray-400 line-through">$27</span>
             </div>
 
             <Link
@@ -318,7 +318,7 @@ export default function PAIDSWorkbookProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

@@ -31,7 +31,7 @@ export default function ContentpreneurBookProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -60,22 +60,22 @@ export default function ContentpreneurBookProduct() {
                 <span className="text-gradient-gold">Guide</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-xl">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The definitive guide to building a profitable content business.
                 Get both the digital eBook for instant access and a beautiful
                 printed copy delivered to your door.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <BookOpen className="mr-2 text-gold-500" size={18} />
                   <span>10 Chapters</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Package className="mr-2 text-gold-500" size={18} />
                   <span>eBook + Print</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Truck className="mr-2 text-gold-500" size={18} />
                   <span>Free Shipping (SA)</span>
                 </div>
@@ -84,10 +84,10 @@ export default function ContentpreneurBookProduct() {
               <div className="mt-10">
                 <div className="flex items-baseline gap-4 mb-4">
                   <span className="text-5xl font-bold text-gradient-gold">$27</span>
-                  <span className="text-2xl text-white/40 line-through">$47</span>
+                  <span className="text-2xl text-gray-400 line-through">$47</span>
                   <span className="badge badge-success">43% OFF</span>
                 </div>
-                <p className="text-sm text-white/50">
+                <p className="text-sm text-gray-500">
                   Includes instant eBook download + physical book delivery
                 </p>
               </div>
@@ -100,7 +100,7 @@ export default function ContentpreneurBookProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -151,7 +151,7 @@ export default function ContentpreneurBookProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               10 Chapters of <span className="text-gradient-gold">Pure Value</span>
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               Everything you need to go from zero to profitable contentpreneur
             </p>
           </motion.div>
@@ -167,7 +167,7 @@ export default function ContentpreneurBookProduct() {
                 className="card card-hover"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold shrink-0">
                     {index + 1}
                   </div>
                   <h3 className="font-semibold text-white">{chapter}</h3>
@@ -179,7 +179,7 @@ export default function ContentpreneurBookProduct() {
       </section>
 
       {/* Bundle Benefits */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -221,7 +221,7 @@ export default function ContentpreneurBookProduct() {
                 ].map((item, index) => (
                   <li key={index} className="flex items-center gap-3">
                     <CheckCircle className="text-accent-400 shrink-0" size={16} />
-                    <span className="text-white/70">{item}</span>
+                    <span className="text-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -249,7 +249,7 @@ export default function ContentpreneurBookProduct() {
                 ].map((item, index) => (
                   <li key={index} className="flex items-center gap-3">
                     <CheckCircle className="text-gold-500 shrink-0" size={16} />
-                    <span className="text-white/70">{item}</span>
+                    <span className="text-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -304,10 +304,10 @@ export default function ContentpreneurBookProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6 text-sm">"{testimonial.quote}"</p>
-                <div className="pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6 text-sm">"{testimonial.quote}"</p>
+                <div className="pt-4 border-t border-gray-200">
                   <div className="font-semibold text-white">{testimonial.name}</div>
-                  <div className="text-sm text-white/50">{testimonial.role}</div>
+                  <div className="text-sm text-gray-500">{testimonial.role}</div>
                 </div>
               </motion.div>
             ))}
@@ -316,7 +316,7 @@ export default function ContentpreneurBookProduct() {
       </section>
 
       {/* Shipping Info */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-narrow">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -333,18 +333,18 @@ export default function ContentpreneurBookProduct() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-medium text-white mb-2">South Africa</h4>
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-gray-500">
                   Free shipping on all orders. Delivery within 5-7 business days.
                 </p>
               </div>
               <div>
                 <h4 className="font-medium text-white mb-2">International</h4>
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-gray-500">
                   Flat rate shipping available. Delivery within 10-14 business days.
                 </p>
               </div>
             </div>
-            <p className="mt-6 text-sm text-white/40">
+            <p className="mt-6 text-sm text-gray-400">
               You'll receive your eBook immediately after purchase. Physical book shipping details will be sent via email.
             </p>
           </motion.div>
@@ -365,13 +365,13 @@ export default function ContentpreneurBookProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Get the Complete <span className="text-gradient-gold">Package</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               eBook for convenience, print for impact. Why choose when you can have both?
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$27</span>
-              <span className="text-2xl text-white/30 line-through">$47</span>
+              <span className="text-2xl text-gray-400 line-through">$47</span>
             </div>
 
             <Link
@@ -382,7 +382,7 @@ export default function ContentpreneurBookProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

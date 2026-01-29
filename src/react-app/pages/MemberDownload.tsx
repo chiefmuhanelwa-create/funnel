@@ -105,10 +105,10 @@ export default function MemberDownload() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-500 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-gold-500/30 border-t-gold-500 rounded-full animate-spin mx-auto" />
-          <p className="mt-4 text-white/50">Loading...</p>
+          <p className="mt-4 text-gray-500">Loading...</p>
         </div>
       </div>
     );
@@ -122,7 +122,7 @@ export default function MemberDownload() {
   // Not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="min-h-screen bg-white pt-20">
         <div className="container-tight py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -133,7 +133,7 @@ export default function MemberDownload() {
               <Lock size={28} className="text-gold-500" />
             </div>
             <h1 className="text-section text-white">Access Required</h1>
-            <p className="mt-4 text-white/60">
+            <p className="mt-4 text-gray-500">
               Please log in to access your purchased content.
             </p>
             <Link to="/members" className="mt-8 btn-primary inline-flex">
@@ -148,7 +148,7 @@ export default function MemberDownload() {
   // No access to this product
   if (!hasAccessToProduct(product.key)) {
     return (
-      <div className="min-h-screen bg-dark-500 pt-20">
+      <div className="min-h-screen bg-white pt-20">
         <div className="container-tight py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ export default function MemberDownload() {
               <Lock size={28} className="text-error-400" />
             </div>
             <h1 className="text-section text-white">Access Not Found</h1>
-            <p className="mt-4 text-white/60">
+            <p className="mt-4 text-gray-500">
               You don't have access to {product.name}. Would you like to purchase it?
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
@@ -178,12 +178,12 @@ export default function MemberDownload() {
 
   // Has access - show download page
   return (
-    <div className="min-h-screen bg-dark-500 pt-20">
+    <div className="min-h-screen bg-white pt-20">
       <div className="container-content py-12">
         {/* Back to hub */}
         <Link
           to="/members"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-white mb-6 transition-colors"
         >
           <ArrowLeft size={16} />
           Back to My Hub
@@ -200,9 +200,9 @@ export default function MemberDownload() {
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
                   {product.type === 'ebook' ? (
-                    <BookOpen size={24} className="text-dark-500" />
+                    <BookOpen size={24} className="text-gray-900" />
                   ) : (
-                    <FileText size={24} className="text-dark-500" />
+                    <FileText size={24} className="text-gray-900" />
                   )}
                 </div>
                 <div>
@@ -211,7 +211,7 @@ export default function MemberDownload() {
                 </div>
               </div>
 
-              <p className="text-white/60 mb-8">{product.description}</p>
+              <p className="text-gray-500 mb-8">{product.description}</p>
 
               {/* Download Files */}
               <div className="space-y-4">
@@ -225,7 +225,7 @@ export default function MemberDownload() {
                     href={file.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold-500/30 transition-all group"
+                    className="block p-6 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gold-500/30 transition-all group"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
@@ -237,7 +237,7 @@ export default function MemberDownload() {
                             {file.name}
                           </h3>
                           {file.description && (
-                            <p className="text-sm text-white/50 mt-1">{file.description}</p>
+                            <p className="text-sm text-gray-500 mt-1">{file.description}</p>
                           )}
                         </div>
                       </div>
@@ -252,14 +252,14 @@ export default function MemberDownload() {
 
               {/* Tips for getting the most out of it */}
               {product.tips && product.tips.length > 0 && (
-                <div className="mt-8 pt-8 border-t border-white/10">
+                <div className="mt-8 pt-8 border-t border-gray-200">
                   <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                     <CheckCircle size={18} className="text-success-400" />
                     Tips for Getting the Most Out of This
                   </h2>
                   <ul className="space-y-3">
                     {product.tips.map((tip, index) => (
-                      <li key={index} className="flex items-start gap-3 text-white/60">
+                      <li key={index} className="flex items-start gap-3 text-gray-500">
                         <span className="w-6 h-6 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 text-sm font-bold shrink-0">
                           {index + 1}
                         </span>
@@ -293,10 +293,10 @@ export default function MemberDownload() {
                 </div>
                 <div>
                   <p className="font-semibold text-white">Access Granted</p>
-                  <p className="text-xs text-white/50">Lifetime access</p>
+                  <p className="text-xs text-gray-500">Lifetime access</p>
                 </div>
               </div>
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-gray-500">
                 You have full access to this product. Download it as many times as you need.
               </p>
             </div>
@@ -304,7 +304,7 @@ export default function MemberDownload() {
             {/* Need Help */}
             <div className="glass-card p-6 mt-6">
               <h3 className="font-semibold text-white mb-3">Need Help?</h3>
-              <p className="text-sm text-white/60 mb-4">
+              <p className="text-sm text-gray-500 mb-4">
                 Having trouble with your download? Contact support and we'll help you out.
               </p>
               <a

@@ -41,10 +41,10 @@ import Admin from './pages/Admin';
 // Loading fallback
 function PageLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-500">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
         <div className="w-12 h-12 border-4 border-gold-500/30 border-t-gold-500 rounded-full animate-spin mx-auto" />
-        <p className="mt-4 text-white/50">Loading...</p>
+        <p className="mt-4 text-gray-500">Loading...</p>
       </div>
     </div>
   );
@@ -56,7 +56,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-dark-500">
+    <div className="min-h-screen flex flex-col bg-white">
       <StickyNav />
       <main className="flex-1">
         <Routes>
@@ -110,11 +110,11 @@ function App() {
 
 function NotFound() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-dark-500 pt-20">
+    <div className="min-h-[60vh] flex items-center justify-center bg-white pt-20">
       <div className="text-center">
         <div className="text-8xl font-black text-gradient-gold mb-4">404</div>
         <h1 className="text-2xl font-bold text-white mb-2">Page Not Found</h1>
-        <p className="text-white/60 mb-8">The page you're looking for doesn't exist or has been moved.</p>
+        <p className="text-gray-500 mb-8">The page you're looking for doesn't exist or has been moved.</p>
         <a
           href="/"
           className="btn-primary inline-flex"

@@ -42,7 +42,7 @@ export default function ContentArsenalProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -71,21 +71,21 @@ export default function ContentArsenalProduct() {
                 <span className="text-gradient-gold">Expansion Pack</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-2xl mx-auto">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-2xl mx-auto">
                 Stop reinventing the wheel. Get 100+ proven templates, swipe files,
                 and tools to streamline your content creation and save 10+ hours every week.
               </p>
 
               <div className="mt-8 flex flex-wrap justify-center gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <FileText className="mr-2 text-gold-500" size={18} />
                   <span>100+ Templates</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Download className="mr-2 text-gold-500" size={18} />
                   <span>Instant Download</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Zap className="mr-2 text-gold-500" size={18} />
                   <span>Lifetime Updates</span>
                 </div>
@@ -93,7 +93,7 @@ export default function ContentArsenalProduct() {
 
               <div className="mt-10 flex items-center justify-center gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$37</span>
-                <span className="text-2xl text-white/40 line-through">$97</span>
+                <span className="text-2xl text-gray-400 line-through">$97</span>
                 <span className="badge badge-success">62% OFF</span>
               </div>
 
@@ -105,7 +105,7 @@ export default function ContentArsenalProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center justify-center gap-4 text-sm text-white/50">
+              <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -133,7 +133,7 @@ export default function ContentArsenalProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               6 Categories of <span className="text-gradient-gold">Power Tools</span>
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               Everything organized and ready to use - just customize and go
             </p>
           </motion.div>
@@ -160,7 +160,7 @@ export default function ContentArsenalProduct() {
       </section>
 
       {/* Full List */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -177,7 +177,7 @@ export default function ContentArsenalProduct() {
               <h2 className="text-section md:text-section-lg text-white">
                 Everything You <span className="text-gradient-gold">Get</span>
               </h2>
-              <p className="mt-4 text-white/60">
+              <p className="mt-4 text-gray-500">
                 Professionally designed, tested, and optimized for results:
               </p>
 
@@ -185,7 +185,7 @@ export default function ContentArsenalProduct() {
                 {whatYouGet.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <CheckCircle className="text-success-400 shrink-0 mt-0.5" size={18} />
-                    <span className="text-white/70">{item}</span>
+                    <span className="text-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -203,19 +203,19 @@ export default function ContentArsenalProduct() {
                 <div className="space-y-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold text-gradient-gold mb-2">100+</div>
-                    <div className="text-sm text-white/50">Templates & Tools</div>
+                    <div className="text-sm text-gray-500">Templates & Tools</div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-white/5 rounded-xl">
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <div className="text-2xl font-bold text-white mb-1">10h</div>
-                      <div className="text-xs text-white/50">Weekly Savings</div>
+                      <div className="text-xs text-gray-500">Weekly Savings</div>
                     </div>
-                    <div className="text-center p-4 bg-white/5 rounded-xl">
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <div className="text-2xl font-bold text-white mb-1">$0</div>
-                      <div className="text-xs text-white/50">Per Template</div>
+                      <div className="text-xs text-gray-500">Per Template</div>
                     </div>
                   </div>
-                  <div className="text-center text-sm text-white/40">
+                  <div className="text-center text-sm text-gray-400">
                     One-time purchase. Lifetime access.
                   </div>
                 </div>
@@ -270,7 +270,7 @@ export default function ContentArsenalProduct() {
                   <item.icon className="text-gold-500" size={28} />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-white/60">{item.desc}</p>
+                <p className="text-sm text-gray-500">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -278,7 +278,7 @@ export default function ContentArsenalProduct() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-content">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -318,10 +318,10 @@ export default function ContentArsenalProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="pt-4 border-t border-gray-200">
                   <div className="font-semibold text-white">{testimonial.name}</div>
-                  <div className="text-sm text-white/50">{testimonial.role}</div>
+                  <div className="text-sm text-gray-500">{testimonial.role}</div>
                 </div>
               </motion.div>
             ))}
@@ -343,13 +343,13 @@ export default function ContentArsenalProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Arm Your Content <span className="text-gradient-gold">Arsenal</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               100+ templates waiting to save you hours of work every week
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$37</span>
-              <span className="text-2xl text-white/30 line-through">$97</span>
+              <span className="text-2xl text-gray-400 line-through">$97</span>
             </div>
 
             <Link
@@ -360,7 +360,7 @@ export default function ContentArsenalProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>

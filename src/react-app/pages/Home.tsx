@@ -12,7 +12,7 @@ function SectionFallback() {
 
 export default function Home() {
   return (
-    <div className="bg-black">
+    <div className="bg-white">
       {/* Hero loads immediately (critical for first paint) */}
       <Hero />
 

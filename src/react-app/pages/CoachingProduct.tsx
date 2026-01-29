@@ -34,7 +34,7 @@ export default function CoachingProduct() {
   ];
 
   return (
-    <div className="bg-dark-500 pt-20">
+    <div className="bg-white pt-20">
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
         <BackButton />
@@ -63,21 +63,21 @@ export default function CoachingProduct() {
                 <span className="text-gradient-gold">Mr. NoChill</span>
               </h1>
 
-              <p className="mt-6 text-body-lg text-white/70 max-w-2xl mx-auto">
+              <p className="mt-6 text-body-lg text-gray-600 max-w-2xl mx-auto">
                 Get personalized guidance to fast-track your content business.
                 60 minutes that could change the trajectory of your entire creator career.
               </p>
 
               <div className="mt-8 flex flex-wrap justify-center gap-6">
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Clock className="mr-2 text-gold-500" size={18} />
                   <span>60 Minutes</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Video className="mr-2 text-gold-500" size={18} />
                   <span>Via Zoom</span>
                 </div>
-                <div className="flex items-center text-white/70">
+                <div className="flex items-center text-gray-600">
                   <Award className="mr-2 text-gold-500" size={18} />
                   <span>Expert Guidance</span>
                 </div>
@@ -85,7 +85,7 @@ export default function CoachingProduct() {
 
               <div className="mt-10 flex items-center justify-center gap-4">
                 <span className="text-5xl font-bold text-gradient-gold">$1,500</span>
-                <span className="text-xl text-white/40 line-through">$2,500</span>
+                <span className="text-xl text-gray-400 line-through">$2,500</span>
                 <span className="badge badge-success">40% OFF</span>
               </div>
 
@@ -97,7 +97,7 @@ export default function CoachingProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <p className="mt-4 text-sm text-white/40">
+              <p className="mt-4 text-sm text-gray-400">
                 Only 4 spots available per month
               </p>
             </motion.div>
@@ -118,7 +118,7 @@ export default function CoachingProduct() {
             <h2 className="text-section md:text-section-lg text-white">
               More Than Just a <span className="text-gradient-gold">Call</span>
             </h2>
-            <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               You get a complete strategy experience, not just advice
             </p>
           </motion.div>
@@ -137,7 +137,7 @@ export default function CoachingProduct() {
                   <item.icon className="text-gold-500" size={28} />
                 </div>
                 <h3 className="font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-white/60">{item.desc}</p>
+                <p className="text-sm text-gray-500">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -145,7 +145,7 @@ export default function CoachingProduct() {
       </section>
 
       {/* What We'll Cover */}
-      <section className="py-20 md:py-28 bg-dark-500 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="absolute inset-0 dot-pattern opacity-20" />
 
         <div className="container-content relative z-10">
@@ -162,7 +162,7 @@ export default function CoachingProduct() {
               <h2 className="text-section md:text-section-lg text-white">
                 We'll Cover <span className="text-gradient-gold">Everything</span>
               </h2>
-              <p className="mt-4 text-white/60">
+              <p className="mt-4 text-gray-500">
                 Your session is completely customized to your needs. Common topics include:
               </p>
 
@@ -178,7 +178,7 @@ export default function CoachingProduct() {
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <CheckCircle className="text-success-400 shrink-0 mt-0.5" size={18} />
-                    <span className="text-white/70">{item}</span>
+                    <span className="text-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -199,7 +199,7 @@ export default function CoachingProduct() {
                       <div className="w-6 h-6 rounded-full bg-gold-500/20 flex items-center justify-center shrink-0 mt-0.5">
                         <CheckCircle className="text-gold-500" size={14} />
                       </div>
-                      <span className="text-white/70">{item}</span>
+                      <span className="text-gray-600">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -252,11 +252,11 @@ export default function CoachingProduct() {
                     <Star key={star} className="w-4 h-4 text-gold-500 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/70 mb-6">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
                     <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-white/50">{testimonial.role}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
                 </div>
@@ -267,7 +267,7 @@ export default function CoachingProduct() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 md:py-28 bg-dark-500">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container-narrow">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -308,7 +308,7 @@ export default function CoachingProduct() {
                 className="card"
               >
                 <h3 className="font-semibold text-white mb-2">{faq.q}</h3>
-                <p className="text-sm text-white/60">{faq.a}</p>
+                <p className="text-sm text-gray-500">{faq.a}</p>
               </motion.div>
             ))}
           </div>
@@ -329,13 +329,13 @@ export default function CoachingProduct() {
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Ready to <span className="text-gradient-gold">Level Up?</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 mb-8 max-w-xl mx-auto">
               Stop guessing and start growing with personalized expert guidance
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$1,500</span>
-              <span className="text-xl text-white/30 line-through">$2,500</span>
+              <span className="text-xl text-gray-400 line-through">$2,500</span>
             </div>
 
             <Link
@@ -346,7 +346,7 @@ export default function CoachingProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>Satisfaction Guaranteed</span>
