@@ -105,7 +105,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
 
-    // Create order record
+    // Create order record (discountCode column may not exist yet in database)
     const [order] = await db
       .insert(orders)
       .values({
@@ -115,7 +115,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         paymentStatus: 'pending',
         totalAmountCents: totalZAR,
         currency: 'ZAR',
-        discountCode: discountCode || null, // Save discount code if provided
       })
       .returning();
 
@@ -197,7 +196,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (error) {
     console.error('Checkout error:', error);
-    return res.status(500).json({ error: 'Failed to create checkout session' });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return res.status(500).json({
+      error: 'Failed to create checkout session',
+      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+    });
   }
 }
 

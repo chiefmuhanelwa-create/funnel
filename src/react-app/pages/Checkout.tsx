@@ -260,6 +260,7 @@ export default function Checkout() {
           includeOrderBumps: selectedBumps,
           customerEmail: email,
           customerName: name,
+          discountCode: appliedDiscount?.code || null,
         }),
       });
 
