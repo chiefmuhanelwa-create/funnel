@@ -2,26 +2,67 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { eq } from 'drizzle-orm';
-import { products, orders, orderItems, abandonedCarts } from '../../lib/schema';
+import { pgTable, serial, text, integer, boolean, timestamp } from 'drizzle-orm/pg-core';
 
-// Simple in-memory rate limiting for checkout
+// Define tables inline to avoid import issues
+const products = pgTable('products', {
+  id: serial('id').primaryKey(),
+  productKey: text('product_key').notNull().unique(),
+  name: text('name').notNull(),
+  description: text('description'),
+  priceCents: integer('price_cents').notNull(),
+  isActive: boolean('is_active').default(true),
+  level: text('level'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+const orders = pgTable('orders', {
+  id: serial('id').primaryKey(),
+  orderNumber: text('order_number').notNull().unique(),
+  customerEmail: text('customer_email').notNull(),
+  customerName: text('customer_name'),
+  paymentStatus: text('payment_status').default('pending'),
+  totalAmountCents: integer('total_amount_cents').notNull(),
+  currency: text('currency').notNull().default('USD'),
+  paymentIntentId: text('payment_intent_id'),
+  paystackReference: text('paystack_reference'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+const orderItems = pgTable('order_items', {
+  id: serial('id').primaryKey(),
+  orderId: integer('order_id').notNull(),
+  productId: integer('product_id'),
+  productKey: text('product_key').notNull(),
+  priceCents: integer('price_cents').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+const abandonedCarts = pgTable('abandoned_carts', {
+  id: serial('id').primaryKey(),
+  customerEmail: text('customer_email').notNull().unique(),
+  productKeys: text('product_keys').notNull(),
+  totalAmountCents: integer('total_amount_cents').notNull(),
+  currency: text('currency').default('USD'),
+  recoveryEmailSent: boolean('recovery_email_sent').default(false),
+  recovered: boolean('recovered').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+// Simple in-memory rate limiting
 const checkoutAttempts = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const RATE_LIMIT_MAX = 30; // 30 requests per minute
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const entry = checkoutAttempts.get(ip);
-
   if (!entry || entry.resetAt < now) {
-    checkoutAttempts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    checkoutAttempts.set(ip, { count: 1, resetAt: now + 60000 });
     return true;
   }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return false;
-  }
-
+  if (entry.count >= 30) return false;
   entry.count++;
   return true;
 }
@@ -40,7 +81,7 @@ async function getExchangeRate(): Promise<number> {
     const data = await response.json() as { rates: { ZAR: number } };
     return data.rates.ZAR;
   } catch {
-    return 18.5; // Fallback rate
+    return 18.5;
   }
 }
 
@@ -54,50 +95,31 @@ function generateRandomString(length: number): string {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers first - always do this
+  // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  // Rate limiting
+  if (!checkRateLimit(getClientIP(req))) {
+    return res.status(429).json({ error: 'Too many requests' });
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // Apply rate limiting
-  const clientIP = getClientIP(req);
-  if (!checkRateLimit(clientIP)) {
-    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
-  }
-
-  // Check for required environment variables BEFORE doing anything else
+  // Check env vars
   const databaseUrl = process.env.DATABASE_URL;
   const paystackKey = process.env.PAYSTACK_SECRET_KEY;
 
-  if (!databaseUrl) {
-    return res.status(500).json({
-      error: 'Database not configured',
-      code: 'NO_DATABASE_URL'
-    });
-  }
-
-  if (!paystackKey) {
-    return res.status(500).json({
-      error: 'Payment provider not configured',
-      code: 'NO_PAYSTACK_KEY'
-    });
-  }
+  if (!databaseUrl) return res.status(500).json({ error: 'Database not configured' });
+  if (!paystackKey) return res.status(500).json({ error: 'Payment not configured' });
 
   try {
-    // Create database connection inside the try block
     const sql = neon(databaseUrl);
     const db = drizzle(sql);
 
-    // Parse request body
     const body = req.body || {};
     const { productKeys, includeOrderBumps, customerEmail, customerName } = body;
 
@@ -105,56 +127,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Customer email and products are required' });
     }
 
-    // Get all product keys (main products + order bumps)
+    // Combine product keys
     const allProductKeys: string[] = [
       ...productKeys,
       ...(Array.isArray(includeOrderBumps) ? includeOrderBumps : [])
     ];
 
-    // Fetch products from database
+    // Fetch products
     const productsList: any[] = [];
     for (const key of allProductKeys) {
-      const result = await db
-        .select()
-        .from(products)
-        .where(eq(products.productKey, key));
-
+      const result = await db.select().from(products).where(eq(products.productKey, key));
       if (result.length > 0 && result[0].isActive) {
         productsList.push(result[0]);
       }
     }
 
     if (productsList.length === 0) {
-      return res.status(400).json({
-        error: 'No valid products found',
-        requestedKeys: allProductKeys
-      });
+      return res.status(400).json({ error: 'No valid products found', requestedKeys: allProductKeys });
     }
 
     // Calculate totals
     const totalUSD = productsList.reduce((sum, p) => sum + (p.priceCents || 0), 0);
     const exchangeRate = await getExchangeRate();
     const totalZAR = Math.round(totalUSD * exchangeRate);
-
-    // Generate order number
     const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
 
     // Create order
-    const orderResult = await db
-      .insert(orders)
-      .values({
-        orderNumber,
-        customerEmail: customerEmail.toLowerCase().trim(),
-        customerName: customerName || null,
-        paymentStatus: 'pending',
-        totalAmountCents: totalZAR,
-        currency: 'ZAR',
-      })
-      .returning();
-
-    if (!orderResult.length) {
-      throw new Error('Failed to create order record');
-    }
+    const orderResult = await db.insert(orders).values({
+      orderNumber,
+      customerEmail: customerEmail.toLowerCase().trim(),
+      customerName: customerName || null,
+      paymentStatus: 'pending',
+      totalAmountCents: totalZAR,
+      currency: 'ZAR',
+    }).returning();
 
     const order = orderResult[0];
 
@@ -169,31 +175,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Track abandoned cart (non-critical)
+    // Track abandoned cart (optional)
     try {
-      await db
-        .insert(abandonedCarts)
-        .values({
-          customerEmail: customerEmail.toLowerCase().trim(),
+      await db.insert(abandonedCarts).values({
+        customerEmail: customerEmail.toLowerCase().trim(),
+        productKeys: JSON.stringify(allProductKeys),
+        totalAmountCents: totalZAR,
+        currency: 'ZAR',
+      }).onConflictDoUpdate({
+        target: abandonedCarts.customerEmail,
+        set: {
           productKeys: JSON.stringify(allProductKeys),
           totalAmountCents: totalZAR,
-          currency: 'ZAR',
-        })
-        .onConflictDoUpdate({
-          target: abandonedCarts.customerEmail,
-          set: {
-            productKeys: JSON.stringify(allProductKeys),
-            totalAmountCents: totalZAR,
-            updatedAt: new Date(),
-          },
-        });
-    } catch (e) {
-      // Non-critical, continue
-    }
+          updatedAt: new Date(),
+        },
+      });
+    } catch (e) { /* non-critical */ }
 
-    // Initialize Paystack transaction
+    // Initialize Paystack
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online';
-
     const paystackResponse = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
       headers: {
@@ -209,10 +209,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           order_id: order.id,
           order_number: orderNumber,
           product_keys: allProductKeys,
-          custom_fields: [
-            { display_name: 'Order Number', variable_name: 'order_number', value: orderNumber },
-            { display_name: 'Customer Name', variable_name: 'customer_name', value: customerName || 'N/A' },
-          ],
         },
       }),
     });
@@ -220,18 +216,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const paystackData = await paystackResponse.json() as any;
 
     if (!paystackData.status || !paystackData.data?.authorization_url) {
-      console.error('Paystack error:', paystackData);
-      return res.status(500).json({
-        error: 'Payment initialization failed',
-        details: paystackData.message || 'Unknown Paystack error'
-      });
+      return res.status(500).json({ error: 'Payment initialization failed', details: paystackData.message });
     }
 
-    // Update order with Paystack reference
-    await db
-      .update(orders)
-      .set({ paystackReference: paystackData.data.reference })
-      .where(eq(orders.id, order.id));
+    // Update order with reference
+    await db.update(orders).set({ paystackReference: paystackData.data.reference }).where(eq(orders.id, order.id));
 
     return res.status(200).json({
       checkoutUrl: paystackData.data.authorization_url,
@@ -247,7 +236,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({
       error: 'Checkout failed',
       message: error?.message || 'Unknown error',
-      stack: process.env.NODE_ENV === 'development' ? error?.stack : undefined
     });
   }
 }
