@@ -36,7 +36,7 @@ export default function About() {
             <div className="relative h-full rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
               {/* 3. Image */}
               <img
-                src="https://019bb654-d68c-7f4b-bdd4-908a2a75512e.mochausercontent.com/unnamed.jpg"
+                src="/images/about-mrnochill.jpg"
                 alt="MN - Mr NoChill - Contentpreneur"
                 className="w-full h-full object-cover"
                 loading="lazy"

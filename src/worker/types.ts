@@ -20,9 +20,8 @@ export interface Env {
   GA4_MEASUREMENT_ID: string;
   FACEBOOK_PIXEL_ID: string;
 
-  // Auth
-  MOCHA_USERS_SERVICE_API_URL?: string;
-  MOCHA_USERS_SERVICE_API_KEY?: string;
+  // Auth (JWT secret for simple email-based auth)
+  JWT_SECRET?: string;
 }
 
 export interface Product {

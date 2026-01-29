@@ -16,6 +16,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Check for required environment variables
+  if (!process.env.DATABASE_URL) {
+    console.error('DATABASE_URL is not configured');
+    return res.status(500).json({
+      error: 'Database not configured. Please set DATABASE_URL environment variable.',
+      setup_required: true
+    });
+  }
+
+  if (!process.env.PAYSTACK_SECRET_KEY) {
+    console.error('PAYSTACK_SECRET_KEY is not configured');
+    return res.status(500).json({
+      error: 'Payment provider not configured. Please set PAYSTACK_SECRET_KEY environment variable.',
+      setup_required: true
+    });
+  }
+
   try {
     const { productKeys, includeOrderBumps, customerEmail, customerName } = req.body;
 
