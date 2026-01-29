@@ -30,11 +30,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Test schema import
     let schemaImportOk = false;
+    let schemaError = null;
     try {
       const schema = await import('../../lib/schema');
       schemaImportOk = !!schema.products && !!schema.orders;
-    } catch (e) {
+    } catch (e: any) {
       schemaImportOk = false;
+      schemaError = e?.message || String(e);
     }
 
     return res.status(200).json({
@@ -50,6 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         neonImportOk,
         drizzleImportOk,
         schemaImportOk,
+        schemaError,
       },
     });
   } catch (error: any) {
