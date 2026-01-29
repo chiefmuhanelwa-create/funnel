@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, products, orders, orderItems, abandonedCarts } from '../../lib/db';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import { eq } from 'drizzle-orm';
+import { products, orders, orderItems, abandonedCarts } from '../../lib/schema';
 
 // Simple in-memory rate limiting for checkout
 const checkoutAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -33,6 +35,7 @@ function getClientIP(req: VercelRequest): string {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Set CORS headers first
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -69,8 +72,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  // Create database connection directly in handler
+  const sql = neon(process.env.DATABASE_URL);
+  const db = drizzle(sql);
+
   try {
-    const { productKeys, includeOrderBumps, customerEmail, customerName, discountCode } = req.body;
+    const { productKeys, includeOrderBumps, customerEmail, customerName } = req.body;
 
     if (!customerEmail || !productKeys?.length) {
       return res.status(400).json({ error: 'Customer email and products are required' });
@@ -81,13 +88,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const productsList: any[] = [];
 
     for (const key of allProductKeys) {
-      const [product] = await db
-        .select()
-        .from(products)
-        .where(eq(products.productKey, key));
+      try {
+        const result = await db
+          .select()
+          .from(products)
+          .where(eq(products.productKey, key));
 
-      if (product && product.isActive) {
-        productsList.push(product);
+        const product = result[0];
+        if (product && product.isActive) {
+          productsList.push(product);
+        }
+      } catch (dbError) {
+        console.error(`Error fetching product ${key}:`, dbError);
+        // Continue with other products
       }
     }
 
@@ -105,8 +118,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
 
-    // Create order record (discountCode column may not exist yet in database)
-    const [order] = await db
+    // Create order record
+    const orderResult = await db
       .insert(orders)
       .values({
         orderNumber,
@@ -117,6 +130,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         currency: 'ZAR',
       })
       .returning();
+
+    const order = orderResult[0];
 
     // Create order items
     for (const product of productsList) {
@@ -129,23 +144,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Track as potential abandoned cart
-    await db
-      .insert(abandonedCarts)
-      .values({
-        customerEmail: customerEmail.toLowerCase().trim(),
-        productKeys: JSON.stringify(allProductKeys),
-        totalAmountCents: totalZAR,
-        currency: 'ZAR',
-      })
-      .onConflictDoUpdate({
-        target: abandonedCarts.customerEmail,
-        set: {
+    // Track as potential abandoned cart (non-critical, wrapped in try-catch)
+    try {
+      await db
+        .insert(abandonedCarts)
+        .values({
+          customerEmail: customerEmail.toLowerCase().trim(),
           productKeys: JSON.stringify(allProductKeys),
           totalAmountCents: totalZAR,
-          updatedAt: new Date(),
-        },
-      });
+          currency: 'ZAR',
+        })
+        .onConflictDoUpdate({
+          target: abandonedCarts.customerEmail,
+          set: {
+            productKeys: JSON.stringify(allProductKeys),
+            totalAmountCents: totalZAR,
+            updatedAt: new Date(),
+          },
+        });
+    } catch (cartError) {
+      console.error('Failed to track abandoned cart:', cartError);
+      // Non-critical, continue with checkout
+    }
 
     // Initialize Paystack transaction
     const paystackResponse = await fetch('https://api.paystack.co/transaction/initialize', {
@@ -173,11 +193,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const paystackData = await paystackResponse.json() as {
       status: boolean;
-      data: { authorization_url: string; reference: string };
+      message?: string;
+      data?: { authorization_url: string; reference: string };
     };
 
-    if (!paystackData.status) {
-      throw new Error('Failed to initialize Paystack transaction');
+    if (!paystackData.status || !paystackData.data) {
+      console.error('Paystack error:', paystackData);
+      throw new Error(paystackData.message || 'Failed to initialize Paystack transaction');
     }
 
     // Update order with Paystack reference
@@ -199,7 +221,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return res.status(500).json({
       error: 'Failed to create checkout session',
-      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+      message: errorMessage,
     });
   }
 }

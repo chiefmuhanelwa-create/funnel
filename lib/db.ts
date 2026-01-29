@@ -1,33 +1,27 @@
-import { neon, NeonQueryFunction } from '@neondatabase/serverless';
-import { drizzle, NeonHttpDatabase } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-// Lazy database connection - created on first use
-let _db: NeonHttpDatabase<typeof schema> | null = null;
-let _sql: NeonQueryFunction<false, false> | null = null;
-
-function getDb(): NeonHttpDatabase<typeof schema> {
-  if (!_db) {
-    if (!process.env.DATABASE_URL) {
-      throw new Error('DATABASE_URL environment variable is not set');
-    }
-    _sql = neon(process.env.DATABASE_URL);
-    _db = drizzle(_sql, { schema });
+// Create database connection
+// Note: Each API route should ideally create its own connection for serverless
+function createDb() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL environment variable is not set');
   }
-  return _db;
+  const sql = neon(process.env.DATABASE_URL);
+  return drizzle(sql, { schema });
 }
 
-// Export a proxy that lazily initializes the database
-export const db = new Proxy({} as NeonHttpDatabase<typeof schema>, {
-  get(target, prop) {
-    const realDb = getDb();
-    const value = (realDb as any)[prop];
-    if (typeof value === 'function') {
-      return value.bind(realDb);
-    }
-    return value;
-  },
-});
+// Export a function to get db, or null if not configured
+export function getDb() {
+  if (!process.env.DATABASE_URL) {
+    return null;
+  }
+  return createDb();
+}
+
+// For backwards compatibility - create db if DATABASE_URL is set
+export const db = process.env.DATABASE_URL ? createDb() : (null as any);
 
 // Export schema for use in queries
 export * from './schema';
