@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, LogOut } from 'lucide-react';
+import { Menu, X, Home, LogOut, User } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,8 +28,8 @@ export default function StickyNav() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-black/90 backdrop-blur-lg border-b border-white/10'
-          : 'bg-transparent'
+          ? 'bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100'
+          : 'bg-white/80 backdrop-blur-sm'
       }`}
     >
       <div className="container mx-auto max-w-7xl px-4">
@@ -39,10 +39,10 @@ export default function StickyNav() {
             to={isAuthenticated ? "/members" : "/"}
             className="flex flex-col group"
           >
-            <span className="text-xl md:text-2xl font-black tracking-tight bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+            <span className="text-xl md:text-2xl font-black tracking-tight text-gray-900">
               CONTENTPRENEUR
             </span>
-            <span className="text-yellow-400 text-xs sm:text-sm font-light -mt-1">
+            <span className="text-amber-600 text-xs sm:text-sm font-medium -mt-1">
               by Mr NoChill
             </span>
           </Link>
@@ -54,7 +54,7 @@ export default function StickyNav() {
                 {/* My Hub Button */}
                 <Link
                   to="/members"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full text-white font-medium text-sm transition-all duration-300 min-h-[44px]"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-50 hover:bg-amber-100 rounded-full text-amber-700 font-medium text-sm transition-all duration-300 border border-amber-200"
                 >
                   <Home size={18} />
                   My Hub
@@ -63,7 +63,7 @@ export default function StickyNav() {
                 {/* Logout Button */}
                 <button
                   onClick={logout}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-full text-red-400 font-medium text-sm transition-all duration-300 min-h-[44px]"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-50 hover:bg-red-50 rounded-full text-gray-600 hover:text-red-600 font-medium text-sm transition-all duration-300 border border-gray-200 hover:border-red-200"
                 >
                   <LogOut size={18} />
                   Logout
@@ -73,9 +73,9 @@ export default function StickyNav() {
               /* Member Login for unauthenticated users */
               <Link
                 to="/members"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gold-500/20 hover:bg-gold-500/30 rounded-full text-gold-500 font-medium text-sm transition-all duration-300 min-h-[44px]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 rounded-full text-white font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md"
               >
-                <Home size={18} />
+                <User size={18} />
                 Member Login
               </Link>
             )}
@@ -84,7 +84,7 @@ export default function StickyNav() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-white hover:bg-white/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -99,30 +99,31 @@ export default function StickyNav() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden overflow-hidden"
             >
-              <div className="bg-black/95 backdrop-blur-lg rounded-2xl mt-2 mb-4 p-4 border border-white/10">
+              <div className="bg-white rounded-2xl mt-2 mb-4 p-4 border border-gray-200 shadow-lg">
                 {isAuthenticated ? (
                   <div className="space-y-2">
                     <Link
                       to="/members"
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-white hover:bg-white/5 transition-all min-h-[44px]"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition-all min-h-[44px]"
                     >
                       <Home size={18} />
                       My Hub
                     </Link>
                     <button
                       onClick={logout}
-                      className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all min-h-[44px]"
+                      className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all min-h-[44px]"
                     >
                       <LogOut size={18} />
                       Logout
                     </button>
                   </div>
                 ) : (
-                  <div className="text-center py-4 text-white/50 text-sm">
+                  <div className="text-center py-2">
                     <Link
                       to="/members"
-                      className="text-yellow-400 hover:text-yellow-300 font-medium"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 rounded-full text-white font-medium transition-all"
                     >
+                      <User size={18} />
                       Member Login
                     </Link>
                   </div>
