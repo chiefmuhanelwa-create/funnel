@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
-import { db, orders, orderItems, customerAccess, products, abandonedCarts, orderEmailsSent, emailSequences } from '../../lib/db';
-import { eq, and } from 'drizzle-orm';
+import { db, orders, orderItems, customerAccess, products, abandonedCarts, orderEmailsSent, emailSequences, discountCodes } from '../../lib/db';
+import { eq, and, sql } from 'drizzle-orm';
 import { PRODUCT_BUNDLES } from '../../lib/schema';
 import { Resend } from 'resend';
 
@@ -60,6 +60,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .update(abandonedCarts)
         .set({ recovered: true, updatedAt: new Date() })
         .where(eq(abandonedCarts.customerEmail, customerEmail));
+
+      // Increment discount code usage if one was used
+      if (order.discountCode) {
+        await incrementDiscountCodeUsage(order.discountCode);
+      }
 
       // Send order confirmation email
       await sendOrderConfirmationEmail(order, product_keys);
@@ -242,4 +247,20 @@ function formatProductName(productKey: string): string {
     'coaching-session': '1-on-1 Coaching Session',
   };
   return names[productKey] || productKey;
+}
+
+async function incrementDiscountCodeUsage(code: string) {
+  try {
+    await db
+      .update(discountCodes)
+      .set({
+        currentUses: sql`${discountCodes.currentUses} + 1`,
+        updatedAt: new Date()
+      })
+      .where(eq(discountCodes.code, code.toUpperCase()));
+
+    console.log(`[DISCOUNT] Incremented usage for code: ${code}`);
+  } catch (error) {
+    console.error(`[DISCOUNT] Failed to increment usage for code ${code}:`, error);
+  }
 }

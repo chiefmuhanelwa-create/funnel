@@ -20,6 +20,10 @@ import NicheFinderProduct from './pages/NicheFinderProduct';
 import PAIDSWorkbookProduct from './pages/PAIDSWorkbookProduct';
 import TaxGuideProduct from './pages/TaxGuideProduct';
 import ContentFoundationsProduct from './pages/ContentFoundationsProduct';
+import CoachingProduct from './pages/CoachingProduct';
+import ContentpreneurBookProduct from './pages/ContentpreneurBookProduct';
+import ContentArsenalProduct from './pages/ContentArsenalProduct';
+import Consultation from './pages/Consultation';
 
 // Checkout pages
 import Checkout from './pages/Checkout';
@@ -70,6 +74,10 @@ function App() {
           <Route path="/products/paids-workbook" element={<PAIDSWorkbookProduct />} />
           <Route path="/products/tax-guide" element={<TaxGuideProduct />} />
           <Route path="/products/content-foundations" element={<ContentFoundationsProduct />} />
+          <Route path="/products/coaching" element={<CoachingProduct />} />
+          <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
+          <Route path="/products/content-arsenal" element={<ContentArsenalProduct />} />
+          <Route path="/consultation" element={<Consultation />} />
 
           {/* Checkout Routes - Generic checkout for all products */}
           <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />

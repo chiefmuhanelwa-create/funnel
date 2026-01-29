@@ -1,9 +1,27 @@
-import { Link } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Play, ArrowRight, ArrowLeft, Star, Clock, Users, Award, Shield, Zap, Gift } from 'lucide-react';
+import { CheckCircle, Play, ArrowRight, ArrowLeft, Star, Clock, Users, Award, Shield, Zap, Gift, Lock, CreditCard, MessageCircle } from 'lucide-react';
 import { IMAGES } from '../config/assets';
+import CountdownTimer from '../components/conversion/CountdownTimer';
+import ExitIntentPopup from '../components/conversion/ExitIntentPopup';
+import MobileCTA from '../components/conversion/MobileCTA';
 
 export default function StarterKitProduct() {
+  const navigate = useNavigate();
+
+  // Create countdown target date (midnight tonight + 2 days for urgency)
+  const countdownTarget = useMemo(() => {
+    const target = new Date();
+    target.setDate(target.getDate() + 2);
+    target.setHours(23, 59, 59, 999);
+    return target;
+  }, []);
+
+  const handleExitDiscount = (code: string) => {
+    // Navigate to checkout with discount pre-applied
+    navigate(`/checkout/starter-kit?discount=${code}`);
+  };
   const modules = [
     { title: 'Module 1: Finding Your Niche', desc: 'Discover your unique positioning in the content market' },
     { title: 'Module 2: Understanding Your Audience', desc: 'Deep dive into audience research and personas' },
@@ -18,6 +36,19 @@ export default function StarterKitProduct() {
 
   return (
     <div className="bg-dark-500 pt-20">
+      {/* Conversion Components */}
+      <ExitIntentPopup
+        discountCode="SAVE10"
+        discountPercent={10}
+        onApplyDiscount={handleExitDiscount}
+      />
+      <MobileCTA
+        productName="Starter Kit"
+        price="$67"
+        originalPrice="$197"
+        checkoutUrl="/checkout/starter-kit"
+      />
+
       {/* Back Navigation */}
       <div className="container-content pt-6">
         <Link
@@ -78,6 +109,15 @@ export default function StarterKitProduct() {
                 <span className="badge badge-success">66% OFF</span>
               </div>
 
+              {/* Urgency Countdown */}
+              <div className="mt-6">
+                <CountdownTimer
+                  targetDate={countdownTarget}
+                  title="Sale Ends In:"
+                  compact
+                />
+              </div>
+
               <Link
                 to="/checkout/starter-kit"
                 className="mt-8 btn-primary btn-lg inline-flex group animate-glow-pulse"
@@ -86,7 +126,8 @@ export default function StarterKitProduct() {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-white/50">
+              {/* Trust Badges */}
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50">
                 <div className="flex items-center gap-2">
                   <Shield size={16} className="text-success-400" />
                   <span>30-Day Guarantee</span>
@@ -95,7 +136,26 @@ export default function StarterKitProduct() {
                   <Zap size={16} className="text-gold-500" />
                   <span>Instant Access</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Lock size={16} className="text-accent-400" />
+                  <span>Secure Checkout</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CreditCard size={16} className="text-white/40" />
+                  <span>SSL Encrypted</span>
+                </div>
               </div>
+
+              {/* WhatsApp Support */}
+              <a
+                href="https://wa.me/27600000000?text=Hi!%20I%20have%20a%20question%20about%20the%20Starter%20Kit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-sm text-white/50 hover:text-green-400 transition-colors"
+              >
+                <MessageCircle size={16} className="text-green-400" />
+                Questions? WhatsApp us
+              </a>
             </motion.div>
 
             <motion.div
@@ -337,13 +397,31 @@ export default function StarterKitProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
+            {/* Social Proof */}
+            <div className="mb-6">
+              <div className="inline-flex items-center gap-2 bg-success-500/20 border border-success-500/30 rounded-full px-4 py-2">
+                <Users size={16} className="text-success-400" />
+                <span className="text-success-400 text-sm font-medium">
+                  Join 10,247+ creators who enrolled
+                </span>
+              </div>
+            </div>
+
             <h2 className="text-section md:text-section-lg text-white mb-4">
               Start Your Content Business{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-white/60 mb-6 max-w-xl mx-auto">
               Get instant access to all 9 modules + bonus resources
             </p>
+
+            {/* Countdown */}
+            <div className="mb-8">
+              <CountdownTimer
+                targetDate={countdownTarget}
+                title="This price expires in:"
+              />
+            </div>
 
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="text-5xl font-bold text-gradient-gold">$67</span>
@@ -358,7 +436,7 @@ export default function StarterKitProduct() {
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-6 text-sm text-white/50">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
               <div className="flex items-center gap-2">
                 <Shield size={16} className="text-success-400" />
                 <span>30-Day Guarantee</span>
@@ -366,6 +444,10 @@ export default function StarterKitProduct() {
               <div className="flex items-center gap-2">
                 <Zap size={16} className="text-gold-500" />
                 <span>Lifetime Access</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock size={16} className="text-accent-400" />
+                <span>Secure Checkout</span>
               </div>
             </div>
           </motion.div>

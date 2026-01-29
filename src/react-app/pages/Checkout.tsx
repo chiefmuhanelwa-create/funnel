@@ -70,6 +70,31 @@ const PRODUCTS: Record<string, {
     features: ['4 Video Modules', 'Self Reflection Exercises', 'SWOT Analysis Template', 'Value Alignment Workshop'],
     salesPage: '/products/content-foundations',
   },
+  'coaching-session': {
+    key: 'coaching-session',
+    name: '1-on-1 Strategy Call',
+    description: '60-minute personalized strategy session with Mr. NoChill',
+    price: 150000,
+    features: ['60-Min Video Call', '90-Day Action Plan', 'Session Recording', '7-Day Email Follow-up'],
+    salesPage: '/products/coaching',
+  },
+  'contentpreneur-book': {
+    key: 'contentpreneur-book',
+    name: 'Contentpreneur Guide (eBook + Print)',
+    description: 'The definitive guide to building a profitable content business',
+    price: 2700,
+    image: IMAGES.influencersCodeMockup,
+    features: ['10 Chapters', 'eBook + Physical Book', 'Free SA Shipping', 'Lifetime Updates'],
+    salesPage: '/products/contentpreneur-book',
+  },
+  'content-arsenal': {
+    key: 'content-arsenal',
+    name: 'Content Arsenal Expansion Pack',
+    description: '100+ templates, swipe files, and tools to streamline your content creation',
+    price: 3700,
+    features: ['100+ Templates', 'Content Calendar Templates', 'Caption Swipe Files', 'Analytics Dashboards', 'Lifetime Access'],
+    salesPage: '/products/content-arsenal',
+  },
 };
 
 // Order bumps configuration
@@ -87,9 +112,18 @@ const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; de
   'paids-workbook': [
     { key: 'niche-finder', name: 'Niche Finder Workbook', price: 1200, description: 'Find your perfect niche first. Bundle price.' },
   ],
-  'tax-guide': [],
+  'tax-guide': [
+    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2500, description: '100+ templates to save you 10+ hours every week.' },
+  ],
   'content-foundations': [
     { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 4. Only $30 more!' },
+  ],
+  'coaching-session': [],
+  'contentpreneur-book': [
+    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2500, description: '100+ templates to jumpstart your content business.' },
+  ],
+  'content-arsenal': [
+    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success.' },
   ],
 };
 

@@ -1,12 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { put } from '@vercel/blob';
 
-// Admin emails that can upload files
-const ADMIN_EMAILS = [
-  'info@nochill.co.za',
-  'ndivhuwo@nochill.co.za',
-  'chiefmuhanelwa@gmail.com',
-];
+// Admin emails - uses environment variable with fallback
+const getAdminEmails = (): string[] => {
+  const envAdmins = process.env.ADMIN_EMAILS;
+  if (envAdmins) {
+    return envAdmins.split(',').map(e => e.trim().toLowerCase());
+  }
+  // Fallback for development
+  return [
+    'info@nochill.co.za',
+    'ndivhuwo@nochill.co.za',
+    'chiefmuhanelwa@gmail.com',
+  ];
+};
 
 // File type configurations
 const FILE_CONFIGS: Record<string, { maxSize: number; folder: string }> = {
@@ -14,6 +21,9 @@ const FILE_CONFIGS: Record<string, { maxSize: number; folder: string }> = {
   pdf: { maxSize: 50 * 1024 * 1024, folder: 'books' },
   video: { maxSize: 500 * 1024 * 1024, folder: 'videos' },
 };
+
+// Simple in-memory upload session tokens (valid for 5 minutes)
+const uploadSessions = new Map<string, { pathname: string; maxSize: number; expiresAt: number }>();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Content-Type', 'application/json');
@@ -31,9 +41,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { email, fileType, fileName, contentType } = req.body;
+    const adminEmails = getAdminEmails();
 
     // Verify admin
-    if (!email || !ADMIN_EMAILS.includes(email.toLowerCase())) {
+    if (!email || !adminEmails.includes(email.toLowerCase())) {
       return res.status(403).json({ error: 'Admin access required' });
     }
 
@@ -52,14 +63,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const cleanFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '-').toLowerCase();
     const pathname = `${config.folder}/${cleanFileName}`;
 
-    // Return the token and pathname for client-side upload
+    // Generate a secure upload session token instead of exposing BLOB token
+    const sessionToken = crypto.randomUUID();
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
+
+    uploadSessions.set(sessionToken, { pathname, maxSize: config.maxSize, expiresAt });
+
+    // Clean up expired sessions
+    for (const [key, session] of uploadSessions.entries()) {
+      if (session.expiresAt < Date.now()) {
+        uploadSessions.delete(key);
+      }
+    }
+
+    // Return session token instead of actual BLOB token
     return res.status(200).json({
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      uploadSessionToken: sessionToken,
       pathname,
       maxSize: config.maxSize,
+      expiresIn: 300, // 5 minutes in seconds
     });
   } catch (error) {
     console.error('[UPLOAD] Get upload URL error:', error);
     return res.status(500).json({ error: 'Failed to generate upload URL' });
   }
 }
+
+// Export for use by upload endpoint
+export { uploadSessions };

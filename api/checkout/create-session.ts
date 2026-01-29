@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { db, products, orders, orderItems, abandonedCarts } from '../../lib/db';
 import { eq } from 'drizzle-orm';
+import { applyRateLimit, rateLimiters } from '../../lib/rate-limit';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -15,6 +16,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  // Apply rate limiting
+  const allowed = await applyRateLimit(req, res, rateLimiters.checkout);
+  if (!allowed) return;
 
   // Check for required environment variables
   if (!process.env.DATABASE_URL) {

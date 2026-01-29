@@ -199,30 +199,27 @@ export async function sendWelcomeSequenceEmail(
   sequenceType: string,
   emailNumber: number
 ): Promise<boolean> {
-  // Day 2 welcome email
-  if (sequenceType === 'welcome' && emailNumber === 2) {
-    const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
+  const emailStyles = `
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
     .content { background: #f9fafb; padding: 30px; border-radius: 8px; }
     .button { display: inline-block; background: #d946ef; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-top: 20px; }
-  </style>
-</head>
+    .tip-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; }
+  `;
+
+  // Day 2: PAIDS Framework Introduction
+  if (sequenceType === 'welcome' && emailNumber === 2) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><style>${emailStyles}</style></head>
 <body>
   <div class="container">
     <div class="content">
       <p>Hey there!</p>
-
       <p>It's day 2 of your contentpreneur journey. How's it going?</p>
-
       <p>I wanted to check in and share something important:</p>
-
       <p><strong>The PAIDS Framework</strong> - This is the heart of everything I teach. If you haven't started with it yet, now is the time.</p>
-
       <p>PAIDS stands for:</p>
       <ul>
         <li><strong>P</strong>ositioning - Define your unique space</li>
@@ -231,23 +228,151 @@ export async function sendWelcomeSequenceEmail(
         <li><strong>D</strong>istribution - Get your content seen</li>
         <li><strong>S</strong>ystems - Automate and scale</li>
       </ul>
-
       <p>Master these five pillars, and you'll have a sustainable content business.</p>
-
       <a href="https://contentpreneurhub.online/members" class="button">Continue Learning</a>
-
       <p style="margin-top: 30px;">Keep pushing forward!</p>
-
       <p>MN</p>
     </div>
   </div>
 </body>
-</html>
-    `;
+</html>`;
 
     return sendEmail(env, {
       to: email,
       subject: 'Day 2: The Framework That Changed Everything',
+      html,
+    });
+  }
+
+  // Day 3: Module Progress Check
+  if (sequenceType === 'welcome' && emailNumber === 3) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><style>${emailStyles}</style></head>
+<body>
+  <div class="container">
+    <div class="content">
+      <p>Hey!</p>
+      <p>Quick check-in - have you completed Module 1 yet?</p>
+      <p>I know life gets busy, but here's the thing: <strong>the people who see results are the ones who take action</strong>.</p>
+      <div class="tip-box">
+        <strong>Today's Challenge:</strong> Watch just ONE module and take notes on the key takeaway. That's it. 15 minutes of focused learning.
+      </div>
+      <p>Remember: You don't have to be perfect. You just have to start.</p>
+      <a href="https://contentpreneurhub.online/members" class="button">Continue Module 1</a>
+      <p style="margin-top: 30px;">You've got this!</p>
+      <p>MN</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    return sendEmail(env, {
+      to: email,
+      subject: 'Day 3: Quick check-in on your progress',
+      html,
+    });
+  }
+
+  // Day 7: Week 1 Recap & Quick Win Story
+  if (sequenceType === 'welcome' && emailNumber === 7) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><style>${emailStyles}</style></head>
+<body>
+  <div class="container">
+    <div class="content">
+      <p>Hey!</p>
+      <p>It's been a week since you started your contentpreneur journey. How are you feeling?</p>
+      <p>I wanted to share a quick win story to inspire you:</p>
+      <div class="tip-box">
+        <strong>Thabo's Story:</strong> "I was stuck for months trying to figure out my niche. After going through Module 1, I finally narrowed it down and posted my first piece of focused content. It got 3x more engagement than anything I'd posted before!"
+      </div>
+      <p>The modules are designed to give you quick wins like this. The key is to implement what you learn immediately.</p>
+      <p><strong>My challenge for you this week:</strong> Pick ONE thing from the course and implement it before next week. Just one.</p>
+      <a href="https://contentpreneurhub.online/members" class="button">Keep Learning</a>
+      <p style="margin-top: 30px;">To your success,</p>
+      <p>MN</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    return sendEmail(env, {
+      to: email,
+      subject: 'Week 1 complete - here\'s a quick win story',
+      html,
+    });
+  }
+
+  // Day 14: Upsell Complementary Product
+  if (sequenceType === 'welcome' && emailNumber === 14) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><style>${emailStyles}</style></head>
+<body>
+  <div class="container">
+    <div class="content">
+      <p>Hey!</p>
+      <p>You're two weeks into your contentpreneur journey. By now, you should have a solid foundation.</p>
+      <p>Many creators at this stage ask me: <strong>"What's next?"</strong></p>
+      <p>If you're ready to go deeper, I recommend:</p>
+      <ul>
+        <li><strong>The Influencer's Code</strong> - My complete guide to building influence and landing brand deals</li>
+        <li><strong>1-on-1 Strategy Call</strong> - Get personalized guidance for your specific situation</li>
+      </ul>
+      <p>But here's the truth: the Starter Kit alone has everything you need to build your first income streams. Don't rush to add more until you've implemented what you have.</p>
+      <p><strong>Focus on action over accumulation.</strong></p>
+      <a href="https://contentpreneurhub.online/members" class="button">Access Your Content</a>
+      <p style="margin-top: 30px;">Keep building,</p>
+      <p>MN</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    return sendEmail(env, {
+      to: email,
+      subject: 'Two weeks in - what\'s next?',
+      html,
+    });
+  }
+
+  // Day 30: Request Testimonial
+  if (sequenceType === 'welcome' && emailNumber === 30) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><style>${emailStyles}</style></head>
+<body>
+  <div class="container">
+    <div class="content">
+      <p>Hey!</p>
+      <p>It's been a month since you started the Contentpreneur Starter Kit. I'd love to hear how it's going!</p>
+      <p>Have you:</p>
+      <ul>
+        <li>Clarified your niche?</li>
+        <li>Started implementing the PAIDS Framework?</li>
+        <li>Seen any improvements in your content or engagement?</li>
+        <li>Made your first sale or landed a deal?</li>
+      </ul>
+      <p><strong>I'd love to hear your story.</strong></p>
+      <p>Hit reply and share your biggest win or breakthrough from the course. Your story could inspire other creators just like you!</p>
+      <p>Even small wins count - sometimes the biggest transformations start with tiny shifts.</p>
+      <a href="mailto:hello@contentpreneurhub.online?subject=My Contentpreneur Journey" class="button">Share Your Story</a>
+      <p style="margin-top: 30px;">Looking forward to hearing from you,</p>
+      <p>MN</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    return sendEmail(env, {
+      to: email,
+      subject: 'Month 1 check-in - how\'s it going?',
       html,
     });
   }
@@ -261,14 +386,19 @@ export async function sendLeadMagnetEmail(
   firstName: string,
   leadMagnet: string
 ): Promise<boolean> {
+  const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
   const leadMagnetConfig: Record<string, { name: string; downloadUrl: string }> = {
     'paids-workbook': {
       name: 'PAIDS Framework Workbook',
-      downloadUrl: 'https://contentpreneurhub.online/api/files/books/paids-workbook.pdf',
+      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
     },
     'niche-finder': {
       name: 'Niche Finder Workbook',
-      downloadUrl: 'https://contentpreneurhub.online/api/files/books/niche-finder.pdf',
+      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+    },
+    'tax-guide': {
+      name: 'Tax Guide for Contentpreneurs',
+      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
     },
   };
 
