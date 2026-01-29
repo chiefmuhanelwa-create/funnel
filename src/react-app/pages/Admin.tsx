@@ -19,6 +19,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
+import { upload } from '@vercel/blob/client';
 
 interface MediaItem {
   id: number;
@@ -135,24 +136,69 @@ export default function Admin() {
     setSuccess('');
 
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: {
-          'Content-Type': file.type,
-          'X-Admin-Email': user?.email || '',
-          'X-File-Type': uploadType,
-          'X-File-Name': file.name,
-        },
-        body: file,
-      });
+      // For large files (PDFs and videos), use client-side upload to bypass 4.5MB serverless limit
+      if (uploadType === 'pdf' || uploadType === 'video') {
+        // Get upload URL and token from server
+        const urlRes = await fetch('/api/upload/get-upload-url', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user?.email,
+            fileType: uploadType,
+            fileName: file.name,
+            contentType: file.type,
+          }),
+        });
 
-      const data = await res.json();
+        const urlData = await urlRes.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Upload failed');
+        if (!urlRes.ok) {
+          throw new Error(urlData.error || 'Failed to get upload URL');
+        }
+
+        // Check file size on client side
+        if (file.size > urlData.maxSize) {
+          throw new Error(`File too large. Maximum size: ${urlData.maxSize / 1024 / 1024}MB`);
+        }
+
+        // Use client-side upload directly to Vercel Blob
+        setUploadProgress(10);
+
+        const blob = await upload(urlData.pathname, file, {
+          access: 'public',
+          handleUploadUrl: '/api/upload/client-upload',
+          clientPayload: JSON.stringify({
+            email: user?.email,
+            fileType: uploadType,
+          }),
+        });
+
+        setUploadProgress(100);
+        setSuccess(`File uploaded successfully! URL: ${blob.url}`);
+      } else {
+        // For images (small files), use server-side upload
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': file.type,
+            'X-Admin-Email': user?.email || '',
+            'X-File-Type': uploadType,
+            'X-File-Name': file.name,
+          },
+          body: file,
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Upload failed');
+        }
+
+        setSuccess(`File uploaded successfully! URL: ${data.url}`);
       }
 
-      setSuccess(`File uploaded successfully! URL: ${data.url}`);
       fetchData();
 
       // Reset file input
@@ -309,19 +355,36 @@ export default function Admin() {
               </div>
 
               {isUploading && (
-                <div className="flex items-center gap-3 text-white/60">
-                  <Loader2 className="animate-spin" size={20} />
-                  <span>Uploading...</span>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 text-white/60">
+                    <Loader2 className="animate-spin" size={20} />
+                    <span>
+                      {uploadProgress > 0
+                        ? `Uploading... ${uploadProgress}%`
+                        : 'Preparing upload...'}
+                    </span>
+                  </div>
+                  {uploadProgress > 0 && (
+                    <div className="w-full bg-white/10 rounded-full h-2">
+                      <div
+                        className="bg-gold-500 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
 
               <div className="mt-4 p-4 bg-white/5 rounded-xl">
                 <h3 className="text-sm font-medium text-white/70 mb-2">File Limits:</h3>
                 <ul className="text-xs text-white/50 space-y-1">
-                  <li>Images: Max 5MB (JPG, PNG, WebP, GIF)</li>
-                  <li>PDFs: Max 50MB</li>
-                  <li>Videos: Max 500MB (MP4, WebM)</li>
+                  <li>Images: Max 5MB (JPG, PNG, WebP, GIF) - fast server upload</li>
+                  <li>PDFs: Max 50MB - direct browser upload</li>
+                  <li>Videos: Max 500MB (MP4, WebM) - direct browser upload</li>
                 </ul>
+                <p className="text-xs text-white/40 mt-2">
+                  Large files (PDFs, videos) upload directly to storage for better reliability.
+                </p>
               </div>
             </div>
 
