@@ -1,13 +1,27 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Shield, CreditCard, Loader2, Lock, Zap } from 'lucide-react';
+import { CheckCircle, Shield, CreditCard, Loader2, Lock, Zap, Tag, X } from 'lucide-react';
 import { analytics } from '../utils/analytics';
+import {
+  CountdownTimer,
+  LimitedSpotsIndicator,
+  LivePurchaseNotification,
+  ExitIntentPopup,
+  MobileCTA,
+} from '../components/conversion';
 
 interface OrderBump {
   key: string;
   name: string;
   price: number;
   description: string;
+}
+
+interface AppliedDiscount {
+  code: string;
+  discount_type: string;
+  discount_value: number;
+  discount_amount: number;
 }
 
 export default function CheckoutStarterKit() {
@@ -17,6 +31,20 @@ export default function CheckoutStarterKit() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [exchangeRate, setExchangeRate] = useState(18.5);
+
+  // Discount code state
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
+  const [discountError, setDiscountError] = useState('');
+  const [checkingDiscount, setCheckingDiscount] = useState(false);
+
+  // Countdown timer - set to end of current day + 3 days
+  const [offerEndDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    date.setHours(23, 59, 59, 999);
+    return date;
+  });
 
   const mainProduct = {
     key: 'starter-kit',
@@ -60,7 +88,7 @@ export default function CheckoutStarterKit() {
     );
   };
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     let total = mainProduct.price;
     selectedBumps.forEach((key) => {
       const bump = orderBumps.find((b) => b.key === key);
@@ -69,6 +97,64 @@ export default function CheckoutStarterKit() {
     return total;
   };
 
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    if (appliedDiscount) {
+      return subtotal - appliedDiscount.discount_amount;
+    }
+    return subtotal;
+  };
+
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) return;
+
+    setCheckingDiscount(true);
+    setDiscountError('');
+
+    try {
+      const productKeys = [mainProduct.key, ...selectedBumps];
+      const subtotal = calculateSubtotal();
+
+      const response = await fetch('/api/discount/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: discountCode.toUpperCase(),
+          productKeys,
+          subtotal,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.valid) {
+        setAppliedDiscount(data);
+        analytics.customEvent('discount_applied', {
+          code: discountCode,
+          discount_amount: data.discount_amount,
+          discount_type: data.discount_type,
+        });
+      } else {
+        setDiscountError(data.error || 'Invalid discount code');
+      }
+    } catch (err) {
+      setDiscountError('Failed to validate code');
+    } finally {
+      setCheckingDiscount(false);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+  };
+
+  const handleExitIntentDiscount = (code: string) => {
+    setDiscountCode(code);
+    handleApplyDiscount();
+  };
+
+  const subtotalUSD = calculateSubtotal();
   const totalUSD = calculateTotal();
   const totalZAR = Math.round(totalUSD * exchangeRate);
 
@@ -155,6 +241,52 @@ export default function CheckoutStarterKit() {
                       Your course access will be sent to this email
                     </p>
                   </div>
+                </div>
+
+                {/* Discount Code */}
+                <div className="border-t border-white/10 pt-6 mb-6">
+                  <h2 className="text-sm font-medium text-white/70 mb-3 flex items-center gap-2">
+                    <Tag size={16} />
+                    Have a discount code?
+                  </h2>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={discountCode}
+                      onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                      placeholder="Enter code"
+                      disabled={!!appliedDiscount}
+                      className="input flex-1"
+                    />
+                    {!appliedDiscount ? (
+                      <button
+                        type="button"
+                        onClick={handleApplyDiscount}
+                        disabled={checkingDiscount || !discountCode.trim()}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-white font-medium text-sm transition-colors disabled:opacity-50"
+                      >
+                        {checkingDiscount ? 'Checking...' : 'Apply'}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleRemoveDiscount}
+                        className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-xl text-red-400 font-medium text-sm transition-colors"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                  </div>
+                  {discountError && (
+                    <p className="mt-2 text-sm text-red-400">{discountError}</p>
+                  )}
+                  {appliedDiscount && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-green-400">
+                      <CheckCircle size={16} />
+                      Code <strong>{appliedDiscount.code}</strong> applied! Saving $
+                      {(appliedDiscount.discount_amount / 100).toFixed(2)}
+                    </div>
+                  )}
                 </div>
 
                 {/* Order Bumps */}
@@ -244,6 +376,16 @@ export default function CheckoutStarterKit() {
 
           {/* Order Summary */}
           <div className="lg:col-span-2">
+            {/* Urgency Elements */}
+            <div className="space-y-4 mb-6">
+              <CountdownTimer
+                targetDate={offerEndDate}
+                title="Special Price Ends In:"
+                compact={false}
+              />
+              <LimitedSpotsIndicator spotsLeft={7} totalSpots={20} variant="bar" />
+            </div>
+
             <div className="glass-card p-6 sticky top-24">
               <h2 className="text-lg font-semibold text-white mb-4">Order Summary</h2>
 
@@ -263,6 +405,24 @@ export default function CheckoutStarterKit() {
                     </div>
                   );
                 })}
+
+                {appliedDiscount && (
+                  <>
+                    <div className="divider my-3" />
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white/50">Subtotal</span>
+                      <span className="font-medium text-white/70">${(subtotalUSD / 100).toFixed(0)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-green-400">
+                      <span>
+                        Discount ({appliedDiscount.code})
+                        {appliedDiscount.discount_type === 'percentage' &&
+                          ` (${appliedDiscount.discount_value}%)`}
+                      </span>
+                      <span>-${(appliedDiscount.discount_amount / 100).toFixed(2)}</span>
+                    </div>
+                  </>
+                )}
 
                 <div className="divider my-4" />
 
@@ -311,6 +471,20 @@ export default function CheckoutStarterKit() {
           </div>
         </motion.div>
       </div>
+
+      {/* Conversion Elements */}
+      <LivePurchaseNotification />
+      <ExitIntentPopup
+        discountCode="SPECIAL10"
+        discountPercent={10}
+        onApplyDiscount={handleExitIntentDiscount}
+      />
+      <MobileCTA
+        ctaText="Get Started Now"
+        ctaLink="/checkout/starter-kit"
+        price="$67"
+        urgencyText="Special pricing ends soon"
+      />
     </div>
   );
 }

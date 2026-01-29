@@ -155,6 +155,21 @@ CREATE TABLE IF NOT EXISTS brand_inquiries (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Discount codes table
+CREATE TABLE IF NOT EXISTS discount_codes (
+  id SERIAL PRIMARY KEY,
+  code TEXT NOT NULL UNIQUE,
+  discount_type TEXT NOT NULL, -- 'percentage' or 'fixed'
+  discount_value INTEGER NOT NULL, -- 10 for 10%, or 500 for $5.00
+  applies_to TEXT DEFAULT 'all', -- 'all' or comma-separated product_keys
+  min_purchase INTEGER, -- Minimum purchase amount in cents
+  max_uses INTEGER, -- NULL for unlimited
+  current_uses INTEGER DEFAULT 0,
+  expires_at TIMESTAMP,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_customer_access_email ON customer_access(customer_email);
 CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(customer_email);
@@ -163,6 +178,7 @@ CREATE INDEX IF NOT EXISTS idx_media_category ON media_items(category);
 CREATE INDEX IF NOT EXISTS idx_media_published ON media_items(is_published);
 CREATE INDEX IF NOT EXISTS idx_email_sequences_scheduled ON email_sequences(scheduled_for, is_sent);
 CREATE INDEX IF NOT EXISTS idx_abandoned_carts_email ON abandoned_carts(customer_email);
+CREATE INDEX IF NOT EXISTS idx_discount_codes_code ON discount_codes(code);
 
 -- Seed products
 INSERT INTO products (product_key, name, description, price_cents, is_active, level) VALUES
@@ -178,6 +194,18 @@ ON CONFLICT (product_key) DO UPDATE SET
   price_cents = EXCLUDED.price_cents,
   is_active = EXCLUDED.is_active,
   level = EXCLUDED.level;
+
+-- Seed discount codes
+INSERT INTO discount_codes (code, discount_type, discount_value, applies_to, min_purchase, max_uses, is_active) VALUES
+  ('SAVE10', 'percentage', 10, 'all', NULL, NULL, true),
+  ('SPECIAL10', 'percentage', 10, 'all', NULL, 100, true),
+  ('FIRSTTIME20', 'percentage', 20, 'all', NULL, NULL, true),
+  ('EARLYBIRD', 'fixed', 1000, 'starter-kit', 5000, 50, true)
+ON CONFLICT (code) DO UPDATE SET
+  discount_type = EXCLUDED.discount_type,
+  discount_value = EXCLUDED.discount_value,
+  applies_to = EXCLUDED.applies_to,
+  is_active = EXCLUDED.is_active;
 
 -- Verify setup
 SELECT 'Database setup complete! Products created: ' || COUNT(*)::text FROM products;

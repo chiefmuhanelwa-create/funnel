@@ -156,6 +156,21 @@ export const PRODUCT_BUNDLES: Record<string, string[]> = {
   'contentpreneur-pro': ['starter-kit', 'influencers-code', 'tax-guide', 'content-foundations', 'niche-finder', 'paids-workbook'],
 };
 
+// Discount codes table
+export const discountCodes = pgTable('discount_codes', {
+  id: serial('id').primaryKey(),
+  code: text('code').notNull().unique(),
+  discountType: text('discount_type').notNull(), // 'percentage' or 'fixed'
+  discountValue: integer('discount_value').notNull(), // 10 for 10%, or 500 for $5
+  appliesTo: text('applies_to').default('all'), // 'all' or specific product_key
+  minPurchase: integer('min_purchase'), // Minimum purchase amount in cents
+  maxUses: integer('max_uses'), // NULL for unlimited
+  currentUses: integer('current_uses').default(0),
+  expiresAt: timestamp('expires_at'),
+  isActive: boolean('is_active').default(true),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
 // Admin authorized emails
 export const ADMIN_EMAILS = [
   'info@nochill.co.za',
