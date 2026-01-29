@@ -1,6 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, products, customerAccess, ADMIN_EMAILS } from '../lib/db';
-import { eq } from 'drizzle-orm';
+
+// Admin emails that can log in without purchases
+const ADMIN_EMAILS = [
+  'info@nochill.co.za',
+  'ndivhuwo@nochill.co.za',
+  'chiefmuhanelwa@gmail.com',
+];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -28,44 +33,97 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Check if user is admin - admins can log in without purchases
     const isAdmin = ADMIN_EMAILS.includes(normalizedEmail);
 
-    // Get all access records for this email with product info
-    let accessRecords: Array<{ productId: number; productKey: string; name: string }> = [];
+    // If admin, allow access immediately (even without database)
+    if (isAdmin) {
+      console.log(`[AUTH] Admin login: ${normalizedEmail}`);
 
-    if (db) {
-      accessRecords = await db
-        .select({
-          productId: customerAccess.productId,
-          productKey: products.productKey,
-          name: products.name,
-        })
-        .from(customerAccess)
-        .innerJoin(products, eq(customerAccess.productId, products.id))
-        .where(eq(customerAccess.customerEmail, normalizedEmail));
+      // Try to get products from database if available
+      let productsList: Array<{ id: number; product_key: string; name: string }> = [];
+
+      if (process.env.DATABASE_URL) {
+        try {
+          const { db, products, customerAccess } = await import('../lib/db');
+          const { eq } = await import('drizzle-orm');
+
+          if (db) {
+            const accessRecords = await db
+              .select({
+                productId: customerAccess.productId,
+                productKey: products.productKey,
+                name: products.name,
+              })
+              .from(customerAccess)
+              .innerJoin(products, eq(customerAccess.productId, products.id))
+              .where(eq(customerAccess.customerEmail, normalizedEmail));
+
+            productsList = accessRecords.map(r => ({
+              id: r.productId,
+              product_key: r.productKey,
+              name: r.name,
+            }));
+          }
+        } catch (dbError) {
+          console.error('[AUTH] Database error (admin will still have access):', dbError);
+        }
+      }
+
+      // Admin always gets access, even if no products found
+      if (productsList.length === 0) {
+        productsList = [{ id: 0, product_key: 'admin-access', name: 'Admin Access' }];
+      }
+
+      return res.status(200).json({
+        productIds: productsList.map(p => p.id),
+        products: productsList,
+        isAdmin: true,
+      });
     }
 
-    const productIds = accessRecords.map(r => r.productId);
+    // For non-admins, database is required
+    if (!process.env.DATABASE_URL) {
+      return res.status(200).json({
+        productIds: [],
+        products: [],
+        isAdmin: false,
+        message: 'Database not configured',
+      });
+    }
+
+    // Get products for non-admin users
+    const { db, products, customerAccess } = await import('../lib/db');
+    const { eq } = await import('drizzle-orm');
+
+    if (!db) {
+      return res.status(200).json({
+        productIds: [],
+        products: [],
+        isAdmin: false,
+      });
+    }
+
+    const accessRecords = await db
+      .select({
+        productId: customerAccess.productId,
+        productKey: products.productKey,
+        name: products.name,
+      })
+      .from(customerAccess)
+      .innerJoin(products, eq(customerAccess.productId, products.id))
+      .where(eq(customerAccess.customerEmail, normalizedEmail));
+
     const productsList = accessRecords.map(r => ({
       id: r.productId,
       product_key: r.productKey,
       name: r.name,
     }));
 
-    // If admin with no products, still return success with admin flag
-    if (isAdmin && productsList.length === 0) {
-      return res.status(200).json({
-        productIds: [],
-        products: [{ id: 0, product_key: 'admin-access', name: 'Admin Access' }],
-        isAdmin: true,
-      });
-    }
-
     return res.status(200).json({
-      productIds,
+      productIds: productsList.map(p => p.id),
       products: productsList,
-      isAdmin,
+      isAdmin: false,
     });
   } catch (error) {
-    console.error('Check access error:', error);
+    console.error('[AUTH] Check access error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
