@@ -18,11 +18,17 @@ import AuthCallback from './pages/AuthCallback';
 import InfluencersCodeProduct from './pages/InfluencersCodeProduct';
 import NicheFinderProduct from './pages/NicheFinderProduct';
 import PAIDSWorkbookProduct from './pages/PAIDSWorkbookProduct';
+import TaxGuideProduct from './pages/TaxGuideProduct';
+import ContentFoundationsProduct from './pages/ContentFoundationsProduct';
+
+// Checkout pages
+import Checkout from './pages/Checkout';
 
 // Member pages
 import MembersHub from './pages/MembersHub';
 import Members from './pages/Members';
 import StarterKitCourse from './pages/StarterKitCourse';
+import MemberDownload from './pages/MemberDownload';
 import Dashboard from './pages/Dashboard';
 
 // Admin pages
@@ -53,16 +59,21 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/contentpreneur-starter-kit" element={<StarterKitProduct />} />
-          <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/free/paids-workbook" element={<FreeWorkbook leadMagnet="paids-workbook" />} />
           <Route path="/free/niche-finder" element={<FreeWorkbook leadMagnet="niche-finder" />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
 
-          {/* Individual Product Sales Pages */}
+          {/* Product Sales Pages */}
           <Route path="/products/influencers-code" element={<InfluencersCodeProduct />} />
           <Route path="/products/niche-finder" element={<NicheFinderProduct />} />
           <Route path="/products/paids-workbook" element={<PAIDSWorkbookProduct />} />
+          <Route path="/products/tax-guide" element={<TaxGuideProduct />} />
+          <Route path="/products/content-foundations" element={<ContentFoundationsProduct />} />
+
+          {/* Checkout Routes - Generic checkout for all products */}
+          <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />
+          <Route path="/checkout/:productKey" element={<Checkout />} />
 
           {/* Legacy product routes (redirect to new paths) */}
           <Route path="/influencers-code" element={<InfluencersCodeProduct />} />
@@ -74,6 +85,7 @@ function App() {
           <Route path="/members/hub" element={<MembersHub />} />
           <Route path="/members/legacy" element={<Members />} />
           <Route path="/members/starter-kit" element={<StarterKitCourse />} />
+          <Route path="/members/:productKey" element={<MemberDownload />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
           {/* Admin routes */}

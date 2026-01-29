@@ -76,14 +76,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet: string) {
+  // Vercel Blob URLs for lead magnets
+  const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
+
   const leadMagnetConfig: Record<string, { name: string; downloadUrl: string }> = {
     'paids-workbook': {
       name: 'PAIDS Framework Workbook',
-      downloadUrl: 'https://contentpreneurhub.online/downloads/paids-workbook.pdf',
+      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
     },
     'niche-finder': {
       name: 'Niche Finder Workbook',
-      downloadUrl: 'https://contentpreneurhub.online/downloads/niche-finder.pdf',
+      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+    },
+    'tax-guide': {
+      name: 'Tax Guide for Contentpreneurs',
+      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
     },
   };
 
