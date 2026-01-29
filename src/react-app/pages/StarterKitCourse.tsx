@@ -1,108 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, CheckCircle, ChevronLeft, Clock, FileText, Download, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { Play, CheckCircle, ChevronLeft, Clock, FileText, Download, ArrowRight, ArrowLeft, Loader2, Pause } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
+import { COURSE_VIDEOS, DOCUMENTS } from '../config/assets';
 
-interface Module {
-  id: number;
-  label: string;
-  title: string;
-  description: string;
-  duration: string;
-  videoId?: number;
-  isBonus?: boolean;
-}
+// Use the modules from the central assets config
+const modules = COURSE_VIDEOS.starterKit;
 
 export default function StarterKitCourse() {
   const { hasAccessToProduct, isLoading } = useMemberAccess();
   const [activeModule, setActiveModule] = useState<number | null>(null);
   const [completedModules, setCompletedModules] = useState<number[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const modules: Module[] = [
-    {
-      id: 0,
-      label: 'INTRODUCTION',
-      title: 'Welcome to Your Personal Branding Journey',
-      description: 'Welcome to your personal branding journey. Set the foundation for your transformation from content creator to contentpreneur.',
-      duration: '1:19',
-      videoId: 0
-    },
-    {
-      id: 1,
-      label: 'MODULE 1',
-      title: 'What is a Personal Brand',
-      description: 'Understand what personal branding really means and why it\'s the most powerful asset you can build in the digital age.',
-      duration: '1:42',
-      videoId: 1
-    },
-    {
-      id: 2,
-      label: 'MODULE 2',
-      title: 'A Blueprint to Build a Personal Brand',
-      description: 'Get the step-by-step framework to build your personal brand from scratch. This is the exact blueprint used to build a 3M+ following.',
-      duration: '2:26',
-      videoId: 2
-    },
-    {
-      id: 3,
-      label: 'MODULE 3',
-      title: 'The 3Cs - Mindset',
-      description: 'Master the psychological foundations required for success: Confidence, Consistency, and Courage.',
-      duration: '4:16',
-      videoId: 3
-    },
-    {
-      id: 4,
-      label: 'MODULE 4',
-      title: 'SWOT Analysis',
-      description: 'Identify your Strengths, Weaknesses, Opportunities, and Threats to position yourself strategically in your niche.',
-      duration: '9:31',
-      videoId: 4
-    },
-    {
-      id: 5,
-      label: 'MODULE 5',
-      title: '3Es Content Idea Formula',
-      description: 'Learn the proven formula for creating content that Educates, Entertains, and Engages your audience consistently.',
-      duration: '7:10',
-      videoId: 5
-    },
-    {
-      id: 6,
-      label: 'MODULE 6',
-      title: 'Understand Social Media Platforms',
-      description: 'Master each platform\'s unique algorithm, audience, and content strategy for maximum growth and monetization.',
-      duration: '4:09',
-      videoId: 6
-    },
-    {
-      id: 7,
-      label: 'MODULE 7',
-      title: 'Community Building',
-      description: 'Build a loyal community around your personal brand that supports, engages, and buys from you.',
-      duration: '6:32',
-      videoId: 7
-    },
-    {
-      id: 8,
-      label: 'MODULE 8',
-      title: 'PAIDS Framework',
-      description: 'The exact 5-stream income system: Products, Ads/Affiliates, Information, Deals, and Services.',
-      duration: '4:51',
-      videoId: 8
-    },
-    {
-      id: 9,
-      label: 'BONUS - MODULE 9',
-      title: 'Formula to Create Online Asset',
-      description: 'Build assets that generate income 24/7 — email lists, digital products, automated systems, and owned platforms.',
-      duration: '3:20',
-      videoId: 9,
-      isBonus: true
-    },
-  ];
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     // Load completed modules from localStorage
@@ -288,15 +199,43 @@ export default function StarterKitCourse() {
             >
               {/* Video Player */}
               <div className="glass-card p-2 mb-6 glow-gold">
-                <div className="video-container bg-dark-400">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button
-                      onClick={() => setIsPlaying(true)}
-                      className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group"
-                    >
-                      <Play className="text-dark-500 ml-1 group-hover:scale-110 transition" size={32} />
-                    </button>
-                  </div>
+                <div className="relative aspect-video bg-dark-400 rounded-xl overflow-hidden">
+                  {currentModule?.videoUrl ? (
+                    <>
+                      <video
+                        ref={videoRef}
+                        src={currentModule.videoUrl}
+                        className="w-full h-full object-contain"
+                        controls={isPlaying}
+                        onPlay={() => setIsPlaying(true)}
+                        onPause={() => setIsPlaying(false)}
+                        onEnded={() => {
+                          setIsPlaying(false);
+                          // Auto-mark as complete when video ends
+                          if (currentModule && !completedModules.includes(currentModule.id)) {
+                            markComplete(currentModule.id);
+                          }
+                        }}
+                      />
+                      {!isPlaying && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-dark-400/50">
+                          <button
+                            onClick={() => {
+                              setIsPlaying(true);
+                              videoRef.current?.play();
+                            }}
+                            className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group"
+                          >
+                            <Play className="text-dark-500 ml-1 group-hover:scale-110 transition" size={32} />
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <p className="text-white/50">Video not available</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -338,25 +277,29 @@ export default function StarterKitCourse() {
 
                 {/* Resources */}
                 <div className="mt-8 pt-6 border-t border-white/10">
-                  <h3 className="font-semibold text-white mb-4">Module Resources</h3>
+                  <h3 className="font-semibold text-white mb-4">Course Resources</h3>
                   <div className="space-y-2">
                     <a
-                      href="#"
+                      href={DOCUMENTS.paidsFrameworkWorkbook}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
                       <span className="font-medium text-white/70 group-hover:text-white transition-colors">
-                        {currentModule?.label} Worksheet
+                        PAIDS Framework Workbook
                       </span>
                       <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>
                     <a
-                      href="#"
+                      href={DOCUMENTS.nicheFinderWorkbook}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
                       <span className="font-medium text-white/70 group-hover:text-white transition-colors">
-                        Action Checklist
+                        Niche Finder Workbook
                       </span>
                       <Download className="ml-auto text-white/30 group-hover:text-gold-500 transition-colors" size={16} />
                     </a>

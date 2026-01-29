@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function Hero() {
   return (
@@ -116,7 +117,7 @@ export default function Hero() {
               <div className="relative h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-br from-blue-900/20 to-purple-900/20 backdrop-blur-sm">
                 {/* 3. Image Element */}
                 <img
-                  src="https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/unnamed.jpg"
+                  src={IMAGES.heroImage}
                   alt="MN - Mr NoChill - Contentpreneur"
                   className="w-full h-full object-cover object-[center_15%]"
                   loading="eager"

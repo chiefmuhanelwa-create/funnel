@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Package, Megaphone, Info, Users, Wrench, Download } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function PAIDSWorkbookProduct() {
   const pillars = [
@@ -88,19 +89,13 @@ export default function PAIDSWorkbookProduct() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="glass-card p-8 glow-gold">
-                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gold-500/20 to-dark-400 aspect-[3/4] flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="flex justify-center gap-2 mb-6">
-                      {['P', 'A', 'I', 'D', 'S'].map((letter, i) => (
-                        <div key={i} className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold text-xl">
-                          {letter}
-                        </div>
-                      ))}
-                    </div>
-                    <h2 className="text-2xl font-bold text-white">PAIDS Framework</h2>
-                    <p className="text-white/60 mt-2">Complete Implementation Guide</p>
-                  </div>
+              <div className="glass-card p-4 glow-gold">
+                <div className="relative rounded-xl overflow-hidden">
+                  <img
+                    src={IMAGES.paidsWorkbookMockup}
+                    alt="PAIDS Framework Workbook"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
             </motion.div>

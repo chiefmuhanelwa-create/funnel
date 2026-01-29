@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
+import { DOCUMENTS } from '../config/assets';
 
 export default function Members() {
   const {
@@ -33,15 +34,16 @@ export default function Members() {
       name: "The Influencer's Code",
       description: 'Comprehensive eBook on influencer success',
       icon: BookOpen,
-      link: '/members/influencers-code',
+      link: DOCUMENTS.influencersCode,
       type: 'eBook',
+      isDownload: true,
     },
     {
       key: 'niche-finder',
       name: 'Niche Finder Workbook',
       description: 'Find your profitable content niche',
       icon: FileText,
-      link: '/api/files/books/niche-finder.pdf',
+      link: DOCUMENTS.nicheFinderWorkbook,
       type: 'Workbook',
       isDownload: true,
     },
@@ -50,7 +52,7 @@ export default function Members() {
       name: 'PAIDS Framework Workbook',
       description: 'Master the 5 pillars of content success',
       icon: FileText,
-      link: '/api/files/books/paids-workbook.pdf',
+      link: DOCUMENTS.paidsFrameworkWorkbook,
       type: 'Workbook',
       isDownload: true,
     },
@@ -59,7 +61,7 @@ export default function Members() {
       name: 'Creator Tax Guide SA',
       description: 'Essential tax tips for content creators',
       icon: FileText,
-      link: '/api/files/books/tax-guide.pdf',
+      link: DOCUMENTS.taxGuide,
       type: 'Guide',
       isDownload: true,
     },

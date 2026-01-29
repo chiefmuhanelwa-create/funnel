@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Target, Lightbulb, TrendingUp, Download } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function NicheFinderProduct() {
   const exercises = [
@@ -89,13 +90,13 @@ export default function NicheFinderProduct() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="glass-card p-8 glow-gold">
-                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gold-500/20 to-dark-400 aspect-[3/4] flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <FileText size={80} className="text-gold-500 mx-auto mb-6" />
-                    <h2 className="text-2xl font-bold text-white">Niche Finder</h2>
-                    <p className="text-white/60 mt-2">Interactive PDF Workbook</p>
-                  </div>
+              <div className="glass-card p-4 glow-gold">
+                <div className="relative rounded-xl overflow-hidden">
+                  <img
+                    src={IMAGES.nicheWorkbookMockup}
+                    alt="Niche Finder Workbook"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
             </motion.div>

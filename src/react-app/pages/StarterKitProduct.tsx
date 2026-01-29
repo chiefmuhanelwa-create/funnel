@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, Play, ArrowRight, Star, Clock, Users, Award, Shield, Zap, Gift } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function StarterKitProduct() {
   const modules = [
@@ -93,14 +94,16 @@ export default function StarterKitProduct() {
               className="relative"
             >
               <div className="glass-card p-2 glow-gold">
-                <div className="relative rounded-xl overflow-hidden bg-dark-400 aspect-video">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="w-20 h-20 rounded-full bg-gradient-gold flex items-center justify-center hover:scale-105 transition-transform glow-gold group">
-                      <Play className="text-dark-500 ml-1 group-hover:scale-110 transition-transform" size={32} />
-                    </button>
-                  </div>
-                  <div className="absolute bottom-4 left-4 text-white/70 text-sm">
-                    Watch the intro video
+                <div className="relative rounded-xl overflow-hidden">
+                  <img
+                    src={IMAGES.starterKitCourseMockup}
+                    alt="Contentpreneur Starter Kit - 9 Module Course"
+                    className="w-full h-auto rounded-xl"
+                  />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="bg-dark-500/90 backdrop-blur-sm rounded-lg p-3 text-center">
+                      <span className="text-white font-semibold">9-Module Video Course</span>
+                    </div>
                   </div>
                 </div>
               </div>

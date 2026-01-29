@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, BookOpen, ArrowRight, Star, Shield, Zap, Users, Target, TrendingUp } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function InfluencersCodeProduct() {
   const chapters = [
@@ -91,13 +92,13 @@ export default function InfluencersCodeProduct() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="glass-card p-8 glow-gold">
-                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gold-500/20 to-dark-400 aspect-[3/4] flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <BookOpen size={80} className="text-gold-500 mx-auto mb-6" />
-                    <h2 className="text-2xl font-bold text-white">The Influencer's Code</h2>
-                    <p className="text-white/60 mt-2">Complete Digital eBook</p>
-                  </div>
+              <div className="glass-card p-4 glow-gold">
+                <div className="relative rounded-xl overflow-hidden">
+                  <img
+                    src={IMAGES.influencersCodeMockup}
+                    alt="The Influencer's Code - Book Cover"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
             </motion.div>
