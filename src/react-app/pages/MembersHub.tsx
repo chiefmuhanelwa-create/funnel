@@ -20,6 +20,8 @@ import {
   Settings,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
+import PAIDSHub from '../components/PAIDSHub';
+import ToolStackSection from '../components/ToolStackSection';
 
 // Admin emails that can access /admin
 const ADMIN_EMAILS = [
@@ -514,40 +516,14 @@ export default function MembersHub() {
           })}
         </section>
 
-        {/* PAIDS Hub Section */}
-        <section className="mt-12 pt-8 border-t border-white/10">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <DollarSign size={20} className="text-gold-500" />
-            PAIDS Income Streams
-          </h2>
+        {/* PAIDS Hub Section - Full Monetization Hub */}
+        <PAIDSHub userOwnedProductKeys={ownedProductKeys} />
 
-          <div className="grid md:grid-cols-5 gap-4">
-            {[
-              { letter: 'P', title: 'Products', desc: 'Digital & physical goods' },
-              { letter: 'A', title: 'Ads/Affiliates', desc: 'Platform revenue' },
-              { letter: 'I', title: 'Information', desc: 'Courses & ebooks' },
-              { letter: 'D', title: 'Deals', desc: 'Brand partnerships' },
-              { letter: 'S', title: 'Services', desc: 'Coaching & consulting' },
-            ].map((item, index) => (
-              <motion.div
-                key={item.letter}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="card text-center"
-              >
-                <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-gold flex items-center justify-center text-dark-500 font-bold text-xl mb-3">
-                  {item.letter}
-                </div>
-                <h4 className="font-semibold text-white">{item.title}</h4>
-                <p className="text-xs text-white/50 mt-1">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        {/* Tool Stack Section */}
+        <ToolStackSection hasStarterKit={hasAccessToProduct('starter-kit')} />
 
         {/* Quick Links */}
-        <section className="mt-12 pt-8 border-t border-white/10">
+        <section className="py-12 border-t border-white/10">
           <h2 className="text-lg font-semibold text-white mb-4">Quick Links</h2>
           <div className="flex flex-wrap gap-4">
             <a

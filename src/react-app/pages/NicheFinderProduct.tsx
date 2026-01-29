@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Target, Lightbulb, TrendingUp, Download } from 'lucide-react';
+import { CheckCircle, FileText, ArrowRight, ArrowLeft, Star, Shield, Zap, Target, Lightbulb, TrendingUp, Download } from 'lucide-react';
 import { IMAGES } from '../config/assets';
 
 export default function NicheFinderProduct() {
@@ -15,6 +15,17 @@ export default function NicheFinderProduct() {
 
   return (
     <div className="bg-dark-500 pt-20">
+      {/* Back Navigation */}
+      <div className="container-content pt-6">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
+        >
+          <ArrowLeft size={16} />
+          Back to Home
+        </Link>
+      </div>
+
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero" />
