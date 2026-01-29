@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Package, Megaphone, Info, Handshake, Wrench, Download } from 'lucide-react';
+import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Package, Megaphone, Info, Users, Wrench, Download } from 'lucide-react';
 
 export default function PAIDSWorkbookProduct() {
   const pillars = [
     { icon: Package, title: 'Products', desc: 'Create digital products that sell while you sleep', letter: 'P' },
     { icon: Megaphone, title: 'Ads & Affiliates', desc: 'Monetize your audience with strategic promotions', letter: 'A' },
     { icon: Info, title: 'Information', desc: 'Package your knowledge into paid content', letter: 'I' },
-    { icon: Handshake, title: 'Deals', desc: 'Land lucrative brand partnerships', letter: 'D' },
+    { icon: Users, title: 'Deals', desc: 'Land lucrative brand partnerships', letter: 'D' },
     { icon: Wrench, title: 'Services', desc: 'Offer high-ticket consulting and services', letter: 'S' },
   ];
 
