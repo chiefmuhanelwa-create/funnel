@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, products, customerAccess } from '../lib/db';
+import { db, products, customerAccess, ADMIN_EMAILS } from '../lib/db';
 import { eq } from 'drizzle-orm';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,16 +25,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const normalizedEmail = email.toLowerCase().trim();
 
+    // Check if user is admin - admins can log in without purchases
+    const isAdmin = ADMIN_EMAILS.includes(normalizedEmail);
+
     // Get all access records for this email with product info
-    const accessRecords = await db
-      .select({
-        productId: customerAccess.productId,
-        productKey: products.productKey,
-        name: products.name,
-      })
-      .from(customerAccess)
-      .innerJoin(products, eq(customerAccess.productId, products.id))
-      .where(eq(customerAccess.customerEmail, normalizedEmail));
+    let accessRecords: Array<{ productId: number; productKey: string; name: string }> = [];
+
+    if (db) {
+      accessRecords = await db
+        .select({
+          productId: customerAccess.productId,
+          productKey: products.productKey,
+          name: products.name,
+        })
+        .from(customerAccess)
+        .innerJoin(products, eq(customerAccess.productId, products.id))
+        .where(eq(customerAccess.customerEmail, normalizedEmail));
+    }
 
     const productIds = accessRecords.map(r => r.productId);
     const productsList = accessRecords.map(r => ({
@@ -43,7 +50,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       name: r.name,
     }));
 
-    return res.status(200).json({ productIds, products: productsList });
+    // If admin with no products, still return success with admin flag
+    if (isAdmin && productsList.length === 0) {
+      return res.status(200).json({
+        productIds: [],
+        products: [{ id: 0, product_key: 'admin-access', name: 'Admin Access' }],
+        isAdmin: true,
+      });
+    }
+
+    return res.status(200).json({
+      productIds,
+      products: productsList,
+      isAdmin,
+    });
   } catch (error) {
     console.error('Check access error:', error);
     return res.status(500).json({ error: 'Internal server error' });
