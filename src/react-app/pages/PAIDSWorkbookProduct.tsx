@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, FileText, ArrowRight, ArrowLeft, Star, Shield, Zap, Package, Megaphone, Info, Users, Wrench, Download } from 'lucide-react';
+import { CheckCircle, FileText, ArrowRight, Star, Shield, Zap, Package, Megaphone, Info, Users, Wrench, Download } from 'lucide-react';
 import { IMAGES } from '../config/assets';
+import BackButton from '../components/BackButton';
 
 export default function PAIDSWorkbookProduct() {
   const pillars = [
@@ -14,15 +15,9 @@ export default function PAIDSWorkbookProduct() {
 
   return (
     <div className="bg-dark-500 pt-20">
-      {/* Back Navigation */}
+      {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </Link>
+        <BackButton />
       </div>
 
       {/* Hero Section */}

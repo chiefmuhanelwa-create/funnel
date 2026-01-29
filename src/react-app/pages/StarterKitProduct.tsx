@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Play, ArrowRight, ArrowLeft, Star, Clock, Users, Award, Shield, Zap, Gift, Lock, CreditCard, MessageCircle } from 'lucide-react';
+import { CheckCircle, Play, ArrowRight, Star, Clock, Users, Award, Shield, Zap, Gift, Lock, CreditCard, MessageCircle } from 'lucide-react';
 import { IMAGES } from '../config/assets';
 import CountdownTimer from '../components/conversion/CountdownTimer';
 import ExitIntentPopup from '../components/conversion/ExitIntentPopup';
 import MobileCTA from '../components/conversion/MobileCTA';
+import BackButton from '../components/BackButton';
 
 export default function StarterKitProduct() {
   const navigate = useNavigate();
@@ -49,15 +50,9 @@ export default function StarterKitProduct() {
         checkoutUrl="/checkout/starter-kit"
       />
 
-      {/* Back Navigation */}
+      {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </Link>
+        <BackButton />
       </div>
 
       {/* Hero Section */}

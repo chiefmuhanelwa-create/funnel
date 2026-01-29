@@ -210,8 +210,8 @@ export default function CheckoutSuccess() {
               Order Number: <strong className="text-white">{orderDetails.order_number}</strong>
             </p>
           )}
-          <Link to="/" className="mt-6 btn-secondary inline-block">
-            Return Home
+          <Link to="/members" className="mt-6 btn-secondary inline-block">
+            Go to Member Hub
           </Link>
         </motion.div>
       </div>

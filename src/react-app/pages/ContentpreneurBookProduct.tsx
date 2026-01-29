@@ -4,7 +4,6 @@ import {
   CheckCircle,
   BookOpen,
   ArrowRight,
-  ArrowLeft,
   Star,
   Shield,
   Zap,
@@ -15,6 +14,7 @@ import {
   Truck,
 } from 'lucide-react';
 import { IMAGES } from '../config/assets';
+import BackButton from '../components/BackButton';
 
 export default function ContentpreneurBookProduct() {
   const chapters = [
@@ -32,15 +32,9 @@ export default function ContentpreneurBookProduct() {
 
   return (
     <div className="bg-dark-500 pt-20">
-      {/* Back Navigation */}
+      {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </Link>
+        <BackButton />
       </div>
 
       {/* Hero Section */}

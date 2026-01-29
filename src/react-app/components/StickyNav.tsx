@@ -69,7 +69,16 @@ export default function StickyNav() {
                   Logout
                 </button>
               </>
-            ) : null}
+            ) : (
+              /* Member Login for unauthenticated users */
+              <Link
+                to="/members"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gold-500/20 hover:bg-gold-500/30 rounded-full text-gold-500 font-medium text-sm transition-all duration-300 min-h-[44px]"
+              >
+                <Home size={18} />
+                Member Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}

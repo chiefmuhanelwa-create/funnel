@@ -1,6 +1,6 @@
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, BookOpen, Settings, LogOut, Mail, Shield } from 'lucide-react';
+import { User, BookOpen, Settings, LogOut, Mail, Shield, ArrowLeft } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 export default function Dashboard() {
@@ -17,6 +17,15 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back to Hub Navigation */}
+        <Link
+          to="/members"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-6 transition-colors text-sm"
+        >
+          <ArrowLeft size={16} />
+          Back to My Hub
+        </Link>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
