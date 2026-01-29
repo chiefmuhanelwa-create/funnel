@@ -12,24 +12,23 @@ interface EmailAccess {
 }
 
 interface MemberAccessContextType {
-  // OAuth authentication
+  // User authentication state
   user: UserData | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  oauthProductKeys: string[];
 
-  // Email-based access (fallback)
+  // Email-based access
   emailAccess: EmailAccess | null;
 
-  // Combined access check
+  // Access checks
   hasAccessToProduct: (productKey: string) => boolean;
   getAllAccessibleProducts: () => string[];
 
   // Actions
-  login: () => void;
+  loginWithEmail: (email: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   checkEmailAccess: (email: string) => Promise<boolean>;
-  clearEmailAccess: () => void;
+  clearAccess: () => void;
   refreshAccess: () => Promise<void>;
 }
 
@@ -38,154 +37,137 @@ const MemberAccessContext = createContext<MemberAccessContextType | null>(null);
 export function MemberAccessProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [oauthProductKeys, setOauthProductKeys] = useState<string[]>([]);
   const [emailAccess, setEmailAccess] = useState<EmailAccess | null>(null);
 
-  // Check session on mount
+  // Check existing session on mount
   useEffect(() => {
-    checkSession();
-    loadEmailAccessFromStorage();
+    loadAccessFromStorage();
+    setIsLoading(false);
   }, []);
 
-  const checkSession = async () => {
+  const loadAccessFromStorage = () => {
     try {
-      const response = await fetch('/api/auth/me', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        await fetchUserProducts();
-      }
-    } catch (error) {
-      console.error('Session check error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchUserProducts = async () => {
-    try {
-      const response = await fetch('/api/auth/user-products', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setOauthProductKeys(data.productKeys || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch user products:', error);
-    }
-  };
-
-  const loadEmailAccessFromStorage = () => {
-    try {
-      const stored = sessionStorage.getItem('emailAccess');
+      const stored = sessionStorage.getItem('memberAccess');
       if (stored) {
         const parsed = JSON.parse(stored);
         // Check if still valid (24 hours)
         if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
           setEmailAccess(parsed.data);
+          setUser({
+            email: parsed.data.email,
+            name: parsed.data.email.split('@')[0], // Use email prefix as name
+          });
         } else {
-          sessionStorage.removeItem('emailAccess');
+          sessionStorage.removeItem('memberAccess');
         }
       }
     } catch (error) {
-      console.error('Failed to load email access from storage:', error);
+      console.error('Failed to load access from storage:', error);
     }
   };
 
-  const login = () => {
-    // Redirect to OAuth login
-    window.location.href = '/api/auth/google/redirect';
-  };
-
-  const logout = async () => {
+  const loginWithEmail = async (email: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      await fetch('/api/auth/logout', { credentials: 'include' });
-      setUser(null);
-      setOauthProductKeys([]);
-      setEmailAccess(null);
-      sessionStorage.removeItem('emailAccess');
-      window.location.href = '/';
+      const normalizedEmail = email.toLowerCase().trim();
+
+      // Check if email has any purchases
+      const response = await fetch('/api/check-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalizedEmail }),
+      });
+
+      if (!response.ok) {
+        return { success: false, error: 'Failed to check access. Please try again.' };
+      }
+
+      const data = await response.json();
+
+      if (data.products && data.products.length > 0) {
+        const accessData: EmailAccess = {
+          email: normalizedEmail,
+          productKeys: data.products.map((p: any) => p.product_key),
+          products: data.products,
+        };
+
+        setEmailAccess(accessData);
+        setUser({
+          email: normalizedEmail,
+          name: normalizedEmail.split('@')[0],
+        });
+
+        // Store in sessionStorage with timestamp
+        sessionStorage.setItem('memberAccess', JSON.stringify({
+          data: accessData,
+          timestamp: Date.now(),
+        }));
+
+        return { success: true };
+      }
+
+      return {
+        success: false,
+        error: 'No purchases found for this email. Please use the email you used during checkout.',
+      };
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Login error:', error);
+      return { success: false, error: 'Something went wrong. Please try again.' };
     }
+  };
+
+  const logout = () => {
+    setUser(null);
+    setEmailAccess(null);
+    sessionStorage.removeItem('memberAccess');
   };
 
   const checkEmailAccess = async (email: string): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/products/check-access', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data.products && data.products.length > 0) {
-          const accessData: EmailAccess = {
-            email,
-            productKeys: data.products.map((p: any) => p.product_key),
-            products: data.products,
-          };
-
-          setEmailAccess(accessData);
-
-          // Store in sessionStorage with timestamp
-          sessionStorage.setItem('emailAccess', JSON.stringify({
-            data: accessData,
-            timestamp: Date.now(),
-          }));
-
-          return true;
-        }
-      }
-
-      return false;
-    } catch (error) {
-      console.error('Email access check error:', error);
-      return false;
-    }
+    const result = await loginWithEmail(email);
+    return result.success;
   };
 
-  const clearEmailAccess = () => {
+  const clearAccess = () => {
     setEmailAccess(null);
-    sessionStorage.removeItem('emailAccess');
+    setUser(null);
+    sessionStorage.removeItem('memberAccess');
   };
 
   const hasAccessToProduct = useCallback((productKey: string): boolean => {
-    // Check OAuth access first
-    if (oauthProductKeys.includes(productKey)) {
-      return true;
-    }
-
-    // Check email-based access
     if (emailAccess?.productKeys.includes(productKey)) {
       return true;
     }
 
+    // Check for bundle access (starter-kit includes niche-finder and paids-workbook)
+    if (productKey === 'niche-finder' || productKey === 'paids-workbook') {
+      if (emailAccess?.productKeys.includes('starter-kit')) {
+        return true;
+      }
+    }
+
     return false;
-  }, [oauthProductKeys, emailAccess]);
+  }, [emailAccess]);
 
   const getAllAccessibleProducts = useCallback((): string[] => {
     const products = new Set<string>();
 
-    oauthProductKeys.forEach(key => products.add(key));
-    emailAccess?.productKeys.forEach(key => products.add(key));
+    emailAccess?.productKeys.forEach(key => {
+      products.add(key);
+
+      // Add bundled products
+      if (key === 'starter-kit') {
+        products.add('niche-finder');
+        products.add('paids-workbook');
+      }
+    });
 
     return Array.from(products);
-  }, [oauthProductKeys, emailAccess]);
+  }, [emailAccess]);
 
   const refreshAccess = async () => {
     setIsLoading(true);
-    await checkSession();
 
     if (emailAccess?.email) {
-      await checkEmailAccess(emailAccess.email);
+      await loginWithEmail(emailAccess.email);
     }
 
     setIsLoading(false);
@@ -193,16 +175,15 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
 
   const value: MemberAccessContextType = {
     user,
-    isAuthenticated: !!user,
+    isAuthenticated: !!user && !!emailAccess,
     isLoading,
-    oauthProductKeys,
     emailAccess,
     hasAccessToProduct,
     getAllAccessibleProducts,
-    login,
+    loginWithEmail,
     logout,
     checkEmailAccess,
-    clearEmailAccess,
+    clearAccess,
     refreshAccess,
   };
 

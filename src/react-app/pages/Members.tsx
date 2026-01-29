@@ -11,8 +11,7 @@ export default function Members() {
     user,
     hasAccessToProduct,
     getAllAccessibleProducts,
-    login,
-    checkEmailAccess,
+    loginWithEmail,
     emailAccess,
   } = useMemberAccess();
 
@@ -71,10 +70,10 @@ export default function Members() {
     setEmailError('');
     setIsCheckingEmail(true);
 
-    const hasAccess = await checkEmailAccess(emailInput);
+    const result = await loginWithEmail(emailInput);
 
-    if (!hasAccess) {
-      setEmailError('No products found for this email. Make sure you\'re using the email you purchased with.');
+    if (!result.success) {
+      setEmailError(result.error || 'No products found for this email. Make sure you\'re using the email you purchased with.');
     }
 
     setIsCheckingEmail(false);
@@ -112,41 +111,22 @@ export default function Members() {
               Log in to access your purchased courses and resources
             </p>
 
-            <div className="mt-10 space-y-6">
-              {/* OAuth Login */}
-              <div>
-                <button
-                  onClick={login}
-                  className="btn-primary w-full btn-lg"
-                >
-                  Sign in with Google
-                </button>
-                <p className="mt-3 text-sm text-white/40">
-                  Recommended for the best experience
-                </p>
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-dark-500 text-white/40">or</span>
-                </div>
-              </div>
-
-              {/* Email Lookup */}
+            <div className="mt-10">
+              {/* Email Login */}
               <form onSubmit={handleEmailCheck}>
                 <div className="text-left">
-                  <label className="label">Check access with email</label>
+                  <label className="label">Enter Your Purchase Email</label>
                   <input
                     type="email"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     className="input"
-                    placeholder="Enter your purchase email"
+                    placeholder="you@example.com"
                     required
                   />
+                  <p className="mt-2 text-xs text-white/40">
+                    Use the same email you used when purchasing
+                  </p>
                 </div>
 
                 {emailError && (
@@ -158,15 +138,15 @@ export default function Members() {
                 <button
                   type="submit"
                   disabled={isCheckingEmail}
-                  className="mt-4 btn-secondary w-full"
+                  className="mt-4 btn-primary w-full btn-lg"
                 >
                   {isCheckingEmail ? (
                     <span className="flex items-center justify-center">
                       <Loader2 className="animate-spin mr-2" size={20} />
-                      Checking...
+                      Checking Access...
                     </span>
                   ) : (
-                    'Check Access'
+                    'Access My Purchases'
                   )}
                 </button>
               </form>
