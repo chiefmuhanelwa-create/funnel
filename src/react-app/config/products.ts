@@ -61,7 +61,7 @@ export const PRODUCTS: Record<string, Product> = {
     key: 'influencers-code',
     name: "The Influencer's Code",
     shortName: "Influencer's Code",
-    description: 'Bestselling eBook with 6,000+ copies sold. 13 chapters on content monetization, the 3Es Formula, and PAIDS Method.',
+    description: 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization, the 3Es Formula, and PAIDS Method.',
     priceCents: 1900,
     originalPriceCents: 19700,
     icon: '📖',
@@ -69,7 +69,7 @@ export const PRODUCTS: Record<string, Product> = {
     color: 'purple',
     category: 'ebook',
     features: [
-      '13 Chapters on Monetization',
+      '14 Chapters on Monetization',
       'The 3Es Formula',
       'Algorithm Mastery',
       'PAIDS Monetization Method',

@@ -15,7 +15,15 @@ interface OrderBump {
   name: string;
   price: number;
   description: string;
+  imageUrl?: string;
 }
+
+// Product mockup images from Vercel Blob Storage
+const PRODUCT_IMAGES = {
+  influencersCode: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/the-influencer-s-code-mockup--book-cover-.jpeg',
+  taxGuide: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/tax-guide-mockup.jpeg',
+  contentFoundations: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/3-module-course-mockup.jpeg',
+};
 
 interface AppliedDiscount {
   code: string;
@@ -58,12 +66,14 @@ export default function CheckoutStarterKit() {
       name: "The Influencer's Code (eBook)",
       price: 2700,
       description: 'Learn the secrets of successful influencers. Normally $47, yours for just $27 today.',
+      imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {
       key: 'tax-guide',
       name: 'Creator Tax Guide SA',
       price: 1500,
       description: 'Essential tax tips for content creators. Save thousands in taxes.',
+      imageUrl: PRODUCT_IMAGES.taxGuide,
     },
   ];
 
@@ -318,6 +328,15 @@ export default function CheckoutStarterKit() {
                               <CheckCircle className="text-gray-900" size={14} />
                             )}
                           </div>
+                          {bump.imageUrl && (
+                            <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-gray-200">
+                              <img
+                                src={bump.imageUrl}
+                                alt={bump.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
                               <span className="font-medium text-gray-900">{bump.name}</span>

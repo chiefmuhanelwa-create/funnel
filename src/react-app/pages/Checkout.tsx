@@ -31,7 +31,7 @@ const PRODUCTS: Record<string, {
     description: 'The complete blueprint from creator to influential personal brand',
     price: 1900,
     image: IMAGES.influencersCodeMockup,
-    features: ['13 Comprehensive Chapters', '3Es Content Formula', 'DARES Framework', 'Instant PDF Download', 'Lifetime Access'],
+    features: ['14 Comprehensive Chapters', '3Es Content Formula', 'DARES Framework', 'Instant PDF Download', 'Lifetime Access'],
     salesPage: '/products/influencers-code',
   },
   'niche-finder': {
@@ -67,7 +67,7 @@ const PRODUCTS: Record<string, {
     description: 'Essential groundwork for building your authentic brand',
     price: 3700,
     image: IMAGES.contentFoundationsMockup,
-    features: ['4 Video Modules', 'Self Reflection Exercises', 'SWOT Analysis Template', 'Value Alignment Workshop'],
+    features: ['3 Video Modules', 'Self Reflection Exercises', 'SWOT Analysis Template', 'Value Alignment Workshop'],
     salesPage: '/products/content-foundations',
   },
   'coaching-session': {
@@ -95,6 +95,24 @@ const PRODUCTS: Record<string, {
     features: ['100+ Templates', 'Content Calendar Templates', 'Caption Swipe Files', 'Analytics Dashboards', 'Lifetime Access'],
     salesPage: '/products/content-arsenal',
   },
+  'contentpreneur-pro': {
+    key: 'contentpreneur-pro',
+    name: 'Contentpreneur Pro Bundle',
+    description: 'The complete system: All courses, workbooks, and guides. Save $23!',
+    price: 14700,
+    image: IMAGES.starterKitCourseMockup,
+    features: [
+      '9-Module Personal Branding Course',
+      'Content Foundations Course',
+      "The Influencer's Code eBook",
+      'Tax Guide for Contentpreneurs',
+      'Niche Finder Workbook',
+      'PAIDS Framework Workbook',
+      'NoChill Tool Stack Access',
+      'Lifetime Access',
+    ],
+    salesPage: '/contentpreneur-starter-kit',
+  },
 };
 
 // Order bumps configuration
@@ -116,7 +134,7 @@ const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; de
     { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2500, description: '100+ templates to save you 10+ hours every week.' },
   ],
   'content-foundations': [
-    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 4. Only $30 more!' },
+    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 3. Only $30 more!' },
   ],
   'coaching-session': [],
   'contentpreneur-book': [
@@ -125,6 +143,7 @@ const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; de
   'content-arsenal': [
     { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success.' },
   ],
+  'contentpreneur-pro': [],
 };
 
 interface AppliedDiscount {

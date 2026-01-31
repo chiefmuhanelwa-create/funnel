@@ -280,7 +280,13 @@ export default function MembersHub() {
               </button>
 
               <div className="text-center mb-6">
-                <div className="text-5xl mb-4">👑</div>
+                <div className="w-24 h-24 mx-auto rounded-xl overflow-hidden border border-amber-200 shadow-lg mb-4">
+                  <img
+                    src={PRODUCTS['starter-kit'].imageUrl}
+                    alt="Pro Bundle"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <h2 className="text-2xl font-bold text-gray-900">Unlock Everything</h2>
                 <p className="text-gray-500 mt-2">Get the complete Contentpreneur system</p>
               </div>
@@ -288,7 +294,9 @@ export default function MembersHub() {
               <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 mb-6 border border-amber-200">
                 <p className="font-bold text-gray-900 mb-3">Pro Bundle Includes:</p>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  {PRODUCTS['contentpreneur-pro'].features.map((feature, i) => (
+                  {PRODUCTS['contentpreneur-pro'].features
+                    .filter(f => !ownedProducts.some(([, p]) => p.name === f || p.shortName === f))
+                    .map((feature, i) => (
                     <div key={i} className="flex items-center gap-2 text-gray-700">
                       <CheckCircle className="text-amber-500 shrink-0" size={14} />
                       <span>{feature}</span>
@@ -315,7 +323,7 @@ export default function MembersHub() {
                   Not Now
                 </button>
                 <Link
-                  to="/products/contentpreneur-pro"
+                  to="/checkout/contentpreneur-pro"
                   className="flex-1 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all text-center"
                 >
                   Get Pro Bundle →
@@ -448,14 +456,14 @@ export default function MembersHub() {
         {hasStarterKit && (
           <section className="mb-12">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6 md:p-8">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 p-6 md:p-8">
                 <div className="flex items-center gap-4 mb-2">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-3xl shadow-lg">
                     🛠️
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">NoChill Tool Stack</h2>
-                    <p className="text-gray-400">Your Affiliate Money Machine — Click to sign up & start earning</p>
+                    <h2 className="text-2xl font-bold text-gray-900">NoChill Tool Stack</h2>
+                    <p className="text-gray-600">Your Affiliate Money Machine — Click to sign up & start earning</p>
                   </div>
                 </div>
               </div>
@@ -569,7 +577,7 @@ export default function MembersHub() {
                     <span className="text-2xl font-bold text-amber-600">$147</span>
                     <span className="text-gray-400 line-through">$170</span>
                     <Link
-                      to="/products/contentpreneur-pro"
+                      to="/checkout/contentpreneur-pro"
                       className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg shadow-amber-500/25"
                     >
                       Get Pro Bundle →
@@ -590,8 +598,8 @@ export default function MembersHub() {
             <Link to="/contentpreneur-starter-kit" className="text-gray-500 hover:text-gray-900 transition-colors">
               Browse Products
             </Link>
-            <Link to="/" className="text-gray-500 hover:text-gray-900 transition-colors">
-              Back to Homepage
+            <Link to="/members" className="text-gray-500 hover:text-gray-900 transition-colors">
+              Members Home
             </Link>
           </div>
 

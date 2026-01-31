@@ -16,19 +16,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, name, whatsapp, followerCount, currentIncome, goals } = req.body;
+    const {
+      email,
+      name,
+      phone,
+      instagram,
+      currentStatus,
+      goals,
+      challenges,
+      budget,
+      preferredDate,
+      additionalNotes,
+      // Also support legacy field names
+      whatsapp,
+      followerCount,
+      currentIncome,
+    } = req.body;
 
     if (!email || !name) {
       return res.status(400).json({ error: 'Email and name are required' });
     }
 
+    // Combine all notes into goals field for database compatibility
+    const combinedGoals = [
+      goals,
+      challenges ? `Challenges: ${challenges}` : null,
+      additionalNotes ? `Notes: ${additionalNotes}` : null,
+    ].filter(Boolean).join('\n\n');
+
     await db.insert(consultationRequests).values({
       email: email.toLowerCase().trim(),
       name,
-      whatsapp: whatsapp || null,
-      followerCount: followerCount || null,
-      currentIncome: currentIncome || null,
-      goals: goals || null,
+      whatsapp: phone || whatsapp || null,
+      followerCount: instagram || followerCount || null,
+      currentIncome: budget || currentStatus || currentIncome || null,
+      goals: combinedGoals || null,
     });
 
     return res.status(200).json({ success: true, message: 'Consultation request submitted' });

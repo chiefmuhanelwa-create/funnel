@@ -66,7 +66,7 @@ export default function Footer() {
 
         {/* Copyright & Contact */}
         <div className="text-center text-sm text-gray-500">
-          <p>&copy; 2024 NOCHILL PTY LTD. All rights reserved.</p>
+          <p>&copy; 2026 NOCHILL PTY LTD. All rights reserved.</p>
           <p className="mt-1">Turn Your Phone Into a Business.</p>
           <p className="mt-1">
             Questions? Email{' '}

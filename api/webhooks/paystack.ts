@@ -36,7 +36,7 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
   'influencers-code': {
     name: "The Influencer's Code",
     icon: '📖',
-    features: ['13 Chapters on Monetization', 'The 3Es Formula', 'PAIDS Method', 'DARES Scale System'],
+    features: ['14 Chapters on Monetization', 'The 3Es Formula', 'PAIDS Method', 'DARES Scale System'],
   },
   'tax-guide': {
     name: 'Tax Guide for Contentpreneurs',

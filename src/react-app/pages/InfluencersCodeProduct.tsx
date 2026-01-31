@@ -9,11 +9,17 @@ export default function InfluencersCodeProduct() {
     { title: 'Chapter 1: The Influencer Mindset', desc: 'Develop the psychology of successful influencers' },
     { title: 'Chapter 2: Finding Your Unique Voice', desc: 'Stand out in a crowded market' },
     { title: 'Chapter 3: Building Your Personal Brand', desc: 'Create a memorable identity' },
-    { title: 'Chapter 4: Content That Converts', desc: 'Turn followers into customers' },
-    { title: 'Chapter 5: The Engagement Formula', desc: 'Build a loyal community' },
-    { title: 'Chapter 6: Monetization Strategies', desc: 'Multiple income streams explained' },
-    { title: 'Chapter 7: Brand Partnership Secrets', desc: 'Land lucrative deals' },
-    { title: 'Chapter 8: Scaling Your Influence', desc: 'From micro to macro influencer' },
+    { title: 'Chapter 4: The 3Es Content Formula', desc: 'Educate, Entertain, Engage your audience' },
+    { title: 'Chapter 5: Content That Converts', desc: 'Turn followers into customers' },
+    { title: 'Chapter 6: The Engagement Formula', desc: 'Build a loyal community' },
+    { title: 'Chapter 7: Algorithm Mastery', desc: 'Understand how platforms work' },
+    { title: 'Chapter 8: The PAIDS Method', desc: 'Products, Ads, Influence, Digital, Services' },
+    { title: 'Chapter 9: Monetization Strategies', desc: 'Multiple income streams explained' },
+    { title: 'Chapter 10: Brand Partnership Secrets', desc: 'Land lucrative deals' },
+    { title: 'Chapter 11: The DARES Scale System', desc: 'Scale your influence systematically' },
+    { title: 'Chapter 12: Building Your Team', desc: 'From solo creator to CEO' },
+    { title: 'Chapter 13: Long-term Growth', desc: 'Sustainable influencer business' },
+    { title: 'Chapter 14: Your Action Plan', desc: 'Implementation roadmap for success' },
   ];
 
   return (
@@ -54,7 +60,7 @@ export default function InfluencersCodeProduct() {
               <div className="mt-8 flex flex-wrap gap-6">
                 <div className="flex items-center text-gray-600">
                   <BookOpen className="mr-2 text-gold-500" size={18} />
-                  <span>8 Chapters</span>
+                  <span>14 Chapters</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Users className="mr-2 text-gold-500" size={18} />
@@ -123,7 +129,7 @@ export default function InfluencersCodeProduct() {
           >
             <span className="badge badge-gold mb-4">What's Inside</span>
             <h2 className="text-section md:text-section-lg text-gray-900">
-              8 Chapters to <span className="text-gradient-gold">Transform</span> Your Influence
+              14 Chapters to <span className="text-gradient-gold">Transform</span> Your Influence
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
               A complete roadmap from building your brand to monetizing your influence
@@ -273,7 +279,7 @@ export default function InfluencersCodeProduct() {
               <span className="text-gradient-gold">Today</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-              Get instant access to all 8 chapters and start building your influence
+              Get instant access to all 14 chapters and start building your influence
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
