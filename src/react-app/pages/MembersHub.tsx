@@ -157,27 +157,40 @@ const LEVEL_CONFIG = {
   beginner: {
     label: 'Beginner',
     description: 'Perfect for newcomers',
-    bgColor: 'bg-success-500/10',
-    borderColor: 'border-success-500/30',
-    textColor: 'text-success-400',
-    iconBg: 'bg-success-500/20',
+    bgColor: 'bg-green-50',
+    borderColor: 'border-green-200',
+    textColor: 'text-green-600',
+    iconBg: 'bg-green-100',
   },
   intermediate: {
     label: 'Intermediate',
     description: 'For scaling creators',
-    bgColor: 'bg-warning-500/10',
-    borderColor: 'border-warning-500/30',
-    textColor: 'text-warning-400',
-    iconBg: 'bg-warning-500/20',
+    bgColor: 'bg-amber-50',
+    borderColor: 'border-amber-200',
+    textColor: 'text-amber-600',
+    iconBg: 'bg-amber-100',
   },
   advanced: {
     label: 'Advanced',
     description: 'For established professionals',
-    bgColor: 'bg-accent-500/10',
-    borderColor: 'border-accent-500/30',
-    textColor: 'text-accent-400',
-    iconBg: 'bg-accent-500/20',
+    bgColor: 'bg-purple-50',
+    borderColor: 'border-purple-200',
+    textColor: 'text-purple-600',
+    iconBg: 'bg-purple-100',
   },
+};
+
+// Product mockup images/gradients
+const PRODUCT_IMAGES: Record<string, string> = {
+  'starter-kit': '/images/products/starter-kit.jpg',
+  'content-foundations': '/images/products/content-foundations.jpg',
+  'niche-finder': '/images/products/niche-finder.jpg',
+  'paids-workbook': '/images/products/paids-workbook.jpg',
+  'influencers-code': '/images/products/influencers-code.jpg',
+  'contentpreneur-book': '/images/products/contentpreneur-book.jpg',
+  'content-arsenal': '/images/products/content-arsenal.jpg',
+  'tax-guide': '/images/products/tax-guide.jpg',
+  'strategy-call': '/images/products/coaching.jpg',
 };
 
 export default function MembersHub() {
@@ -246,10 +259,10 @@ export default function MembersHub() {
               <Crown size={28} className="text-gray-900" />
             </div>
 
-            <h1 className="text-section text-white">
+            <h1 className="text-section text-gray-900">
               Contentpreneur <span className="text-gradient-gold">Hub</span>
             </h1>
-            <p className="mt-4 text-gray-500">
+            <p className="mt-4 text-gray-600">
               Access your courses, workbooks, and exclusive resources
             </p>
 
@@ -323,7 +336,7 @@ export default function MembersHub() {
             </div>
             <div>
               <span className="badge badge-gold text-xs">Contentpreneur Hub</span>
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-gray-900">
                 Welcome Back{user ? `, ${user.name.split(' ')[0]}` : ''}!
               </h1>
             </div>
@@ -347,7 +360,7 @@ export default function MembersHub() {
         {/* My Content Section */}
         {ownedProductKeys.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
               <CheckCircle size={20} className="text-success-400" />
               My Content
             </h2>
@@ -372,7 +385,7 @@ export default function MembersHub() {
                           <IconComponent size={24} className={levelInfo.textColor} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors truncate">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors truncate">
                             {product.name}
                           </h3>
                           <p className="text-sm text-gray-500 mt-1 line-clamp-2">
@@ -395,7 +408,7 @@ export default function MembersHub() {
         {/* Explore Resources Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-white">Explore Resources</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Explore Resources</h2>
 
             {/* Level Filter */}
             <div className="flex gap-2">
@@ -406,7 +419,7 @@ export default function MembersHub() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     activeLevel === level
                       ? 'bg-gold-500/20 text-gold-500 border border-gold-500/30'
-                      : 'bg-gray-50 text-gray-500 hover:text-white hover:bg-gray-100'
+                      : 'bg-gray-50 text-gray-500 hover:text-gray-900 hover:bg-gray-100'
                   }`}
                 >
                   {level === 'all' ? 'All' : LEVEL_CONFIG[level].label}
@@ -436,10 +449,11 @@ export default function MembersHub() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {levelProducts.map((product, index) => {
                     const isOwned = hasAccessToProduct(product.key);
                     const IconComponent = product.icon;
+                    const productImage = PRODUCT_IMAGES[product.key];
 
                     return (
                       <motion.div
@@ -447,64 +461,81 @@ export default function MembersHub() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className={`card ${levelInfo.bgColor} border ${levelInfo.borderColor} relative overflow-hidden`}
+                        className={`bg-white border ${levelInfo.borderColor} rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300`}
                       >
-                        {/* Owned badge */}
-                        {isOwned && (
-                          <div className="absolute top-3 right-3">
-                            <span className="badge badge-success text-xs">
-                              <CheckCircle size={12} className="mr-1" />
-                              Owned
-                            </span>
-                          </div>
-                        )}
-
-                        <div className="flex items-start gap-4">
-                          <div className={`w-12 h-12 rounded-xl ${levelInfo.iconBg} flex items-center justify-center shrink-0`}>
-                            <IconComponent size={24} className={levelInfo.textColor} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-white pr-16">
-                              {product.name}
-                            </h3>
-                            <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                              {product.description}
-                            </p>
-
-                            {/* Features */}
-                            {product.features && (
-                              <div className="flex flex-wrap gap-2 mt-3">
-                                {product.features.map((feature, i) => (
-                                  <span key={i} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded">
-                                    {feature}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Price & CTA */}
-                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
-                              <p className={`text-lg font-bold ${levelInfo.textColor}`}>
-                                ${(product.price_cents / 100).toFixed(0)}
-                              </p>
-                              {isOwned ? (
-                                <Link
-                                  to={product.accessLink}
-                                  className="text-sm font-medium text-gold-500 hover:text-gold-400 flex items-center gap-1"
-                                >
-                                  Access Now
-                                  <ArrowRight size={14} />
-                                </Link>
-                              ) : (
-                                <Link
-                                  to={product.purchaseLink}
-                                  className="text-sm font-medium text-gray-600 hover:text-white flex items-center gap-1"
-                                >
-                                  Get Started
-                                  <ArrowRight size={14} />
-                                </Link>
-                              )}
+                        {/* Product Image/Mockup */}
+                        <div className={`relative h-40 ${levelInfo.bgColor} flex items-center justify-center overflow-hidden`}>
+                          {productImage ? (
+                            <img
+                              src={productImage}
+                              alt={product.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Fallback to gradient on error
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          ) : null}
+                          {/* Fallback gradient with icon */}
+                          <div className={`absolute inset-0 ${levelInfo.bgColor} flex items-center justify-center`}>
+                            <div className={`w-20 h-20 rounded-2xl ${levelInfo.iconBg} border-2 ${levelInfo.borderColor} flex items-center justify-center shadow-lg`}>
+                              <IconComponent size={40} className={levelInfo.textColor} />
                             </div>
+                          </div>
+
+                          {/* Owned badge */}
+                          {isOwned && (
+                            <div className="absolute top-3 right-3 z-10">
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
+                                <CheckCircle size={12} className="mr-1" />
+                                Owned
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-5">
+                          <h3 className="font-bold text-gray-900 text-lg">
+                            {product.name}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                            {product.description}
+                          </p>
+
+                          {/* Features */}
+                          {product.features && (
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {product.features.map((feature, i) => (
+                                <span key={i} className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Price & CTA */}
+                          <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
+                            <p className={`text-xl font-bold ${levelInfo.textColor}`}>
+                              ${(product.price_cents / 100).toFixed(0)}
+                            </p>
+                            {isOwned ? (
+                              <Link
+                                to={product.accessLink}
+                                className="inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg transition-colors"
+                              >
+                                Access Now
+                                <ArrowRight size={14} className="ml-1" />
+                              </Link>
+                            ) : (
+                              <Link
+                                to={product.purchaseLink}
+                                className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
+                              >
+                                Get Started
+                                <ArrowRight size={14} className="ml-1" />
+                              </Link>
+                            )}
                           </div>
                         </div>
                       </motion.div>
@@ -524,7 +555,7 @@ export default function MembersHub() {
 
         {/* Quick Links */}
         <section className="py-12 border-t border-gray-200">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Links</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h2>
           <div className="flex flex-wrap gap-4">
             <a
               href="mailto:support@contentpreneurhub.online"

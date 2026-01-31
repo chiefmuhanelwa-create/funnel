@@ -1,15 +1,26 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
-import { db, orders, orderItems, customerAccess, products, abandonedCarts, orderEmailsSent, emailSequences, discountCodes } from '../../lib/db';
-import { eq, and, sql } from 'drizzle-orm';
-import { PRODUCT_BUNDLES } from '../../lib/schema';
+import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Product bundles configuration (inline to avoid import issues)
+const PRODUCT_BUNDLES: Record<string, string[]> = {
+  'starter-kit': ['niche-finder', 'paids-workbook'],
+  'contentpreneur-pro': ['starter-kit', 'influencers-code', 'tax-guide', 'content-foundations', 'niche-finder', 'paids-workbook'],
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Check database URL
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    console.error('DATABASE_URL not configured');
+    return res.status(500).json({ error: 'Database not configured' });
   }
 
   try {
@@ -32,59 +43,68 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('Paystack webhook event:', event.event);
 
     if (event.event === 'charge.success') {
+      const sql = neon(databaseUrl);
+
       const { order_id, order_number, product_keys } = event.data.metadata;
       const customerEmail = event.data.customer.email.toLowerCase().trim();
 
       // Update order status
-      await db
-        .update(orders)
-        .set({ paymentStatus: 'completed', updatedAt: new Date() })
-        .where(eq(orders.id, order_id));
+      await sql`
+        UPDATE orders
+        SET payment_status = 'completed', updated_at = NOW()
+        WHERE id = ${order_id}
+      `;
 
       // Get order details
-      const [order] = await db
-        .select()
-        .from(orders)
-        .where(eq(orders.id, order_id));
+      const orderResult = await sql`
+        SELECT id, order_number, customer_email, customer_name, total_amount_cents, currency, discount_code
+        FROM orders
+        WHERE id = ${order_id}
+      `;
 
-      if (!order) {
+      if (orderResult.length === 0) {
         console.error('Order not found:', order_id);
         return res.status(404).json({ error: 'Order not found' });
       }
 
+      const order = orderResult[0];
+
       // Grant product access (including bundles)
-      await grantProductAccess(customerEmail, product_keys, order_id);
+      await grantProductAccess(sql, customerEmail, product_keys, order_id);
 
       // Mark abandoned cart as recovered
-      await db
-        .update(abandonedCarts)
-        .set({ recovered: true, updatedAt: new Date() })
-        .where(eq(abandonedCarts.customerEmail, customerEmail));
+      await sql`
+        UPDATE abandoned_carts
+        SET recovered = true, updated_at = NOW()
+        WHERE customer_email = ${customerEmail}
+      `;
 
       // Increment discount code usage if one was used
-      if (order.discountCode) {
-        await incrementDiscountCodeUsage(order.discountCode);
+      if (order.discount_code) {
+        await sql`
+          UPDATE discount_codes
+          SET current_uses = current_uses + 1, updated_at = NOW()
+          WHERE code = ${order.discount_code.toUpperCase()}
+        `;
+        console.log(`[DISCOUNT] Incremented usage for code: ${order.discount_code}`);
       }
 
       // Send order confirmation email
-      await sendOrderConfirmationEmail(order, product_keys);
+      await sendOrderConfirmationEmail(sql, order, product_keys);
 
       // Check if first purchase and send welcome email
-      const previousOrders = await db
-        .select()
-        .from(orders)
-        .where(and(
-          eq(orders.customerEmail, customerEmail),
-          eq(orders.paymentStatus, 'completed')
-        ));
+      const previousOrdersResult = await sql`
+        SELECT id FROM orders
+        WHERE customer_email = ${customerEmail} AND payment_status = 'completed'
+      `;
 
-      if (previousOrders.length === 1) {
-        await sendWelcomeEmail(customerEmail, order.customerName || 'there');
-        await scheduleWelcomeSequence(customerEmail);
+      if (previousOrdersResult.length === 1) {
+        await sendWelcomeEmail(customerEmail, order.customer_name || 'there');
+        await scheduleWelcomeSequence(sql, customerEmail);
       }
 
       // Sync to ConvertKit (optional)
-      await syncToConvertKit(customerEmail, order.customerName || '', product_keys, order_number);
+      await syncToConvertKit(customerEmail, order.customer_name || '', product_keys, order_number);
     }
 
     return res.status(200).json({ received: true });
@@ -94,7 +114,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-async function grantProductAccess(email: string, productKeys: string[], orderId: number) {
+async function grantProductAccess(sql: any, email: string, productKeys: string[], orderId: number) {
   // Expand product keys to include bundles
   const allKeys = new Set<string>();
   for (const key of productKeys) {
@@ -106,77 +126,105 @@ async function grantProductAccess(email: string, productKeys: string[], orderId:
 
   for (const key of allKeys) {
     try {
-      const [product] = await db
-        .select()
-        .from(products)
-        .where(eq(products.productKey, key));
+      // Get product by key
+      const productResult = await sql`
+        SELECT id FROM products WHERE product_key = ${key}
+      `;
 
-      if (!product) continue;
+      if (productResult.length === 0) continue;
+
+      const productId = productResult[0].id;
 
       // Check existing access
-      const [existing] = await db
-        .select()
-        .from(customerAccess)
-        .where(and(
-          eq(customerAccess.customerEmail, email),
-          eq(customerAccess.productId, product.id)
-        ));
+      const existingResult = await sql`
+        SELECT id FROM customer_access
+        WHERE customer_email = ${email} AND product_id = ${productId}
+      `;
 
-      if (existing) continue;
+      if (existingResult.length > 0) continue;
 
       // Grant access
-      await db.insert(customerAccess).values({
-        customerEmail: email,
-        productId: product.id,
-        orderId,
-      });
+      await sql`
+        INSERT INTO customer_access (customer_email, product_id, order_id)
+        VALUES (${email}, ${productId}, ${orderId})
+      `;
+
+      console.log(`[ACCESS] Granted access to ${key} for ${email}`);
     } catch (error) {
       console.error(`Failed to grant access for ${key}:`, error);
     }
   }
 }
 
-async function sendOrderConfirmationEmail(order: any, productKeys: string[]) {
+async function sendOrderConfirmationEmail(sql: any, order: any, productKeys: string[]) {
   // Check if already sent (deduplication)
-  const [existing] = await db
-    .select()
-    .from(orderEmailsSent)
-    .where(and(
-      eq(orderEmailsSent.orderId, order.id),
-      eq(orderEmailsSent.emailType, 'order_confirmation')
-    ));
+  const existingResult = await sql`
+    SELECT id FROM order_emails_sent
+    WHERE order_id = ${order.id} AND email_type = 'order_confirmation'
+  `;
 
-  if (existing) {
+  if (existingResult.length > 0) {
     console.log('Order confirmation already sent for order:', order.id);
     return;
   }
 
   const currencySymbol = order.currency === 'ZAR' ? 'R' : '$';
-  const formattedTotal = `${currencySymbol}${(order.totalAmountCents / 100).toFixed(2)}`;
+  const formattedTotal = `${currencySymbol}${(order.total_amount_cents / 100).toFixed(2)}`;
 
-  const productList = productKeys.map(key => formatProductName(key)).join(', ');
+  const productList = productKeys.map((key: string) => formatProductName(key)).join(', ');
 
   try {
     await resend.emails.send({
       from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
-      to: order.customerEmail,
-      subject: `Order Confirmation - ${order.orderNumber}`,
+      to: order.customer_email,
+      subject: `Order Confirmation - ${order.order_number}`,
       html: `
-        <h1>Thank you for your order!</h1>
-        <p>Hi ${order.customerName || 'there'},</p>
-        <p>Your payment has been confirmed.</p>
-        <p><strong>Order Number:</strong> ${order.orderNumber}</p>
-        <p><strong>Products:</strong> ${productList}</p>
-        <p><strong>Total:</strong> ${formattedTotal}</p>
-        <p><a href="https://contentpreneurhub.online/members">Access Your Content</a></p>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #f59e0b; margin: 0;">Thank You For Your Order!</h1>
+          </div>
+
+          <p>Hi ${order.customer_name || 'there'},</p>
+
+          <p>Your payment has been confirmed and your content is ready to access!</p>
+
+          <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 20px 0;">
+            <p style="margin: 0 0 10px 0;"><strong>Order Number:</strong> ${order.order_number}</p>
+            <p style="margin: 0 0 10px 0;"><strong>Products:</strong> ${productList}</p>
+            <p style="margin: 0;"><strong>Total:</strong> ${formattedTotal}</p>
+          </div>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="https://contentpreneurhub.online/members" style="display: inline-block; background: linear-gradient(to right, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; font-size: 16px;">
+              Access Your Content Now
+            </a>
+          </div>
+
+          <p style="color: #666; font-size: 14px;">
+            Simply use your purchase email (${order.customer_email}) to log in and access your content.
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+
+          <p style="color: #666; font-size: 12px; text-align: center;">
+            Questions? Reply to this email or contact support@contentpreneurhub.online
+          </p>
+        </body>
+        </html>
       `,
     });
 
     // Record that email was sent
-    await db.insert(orderEmailsSent).values({
-      orderId: order.id,
-      emailType: 'order_confirmation',
-    });
+    await sql`
+      INSERT INTO order_emails_sent (order_id, email_type)
+      VALUES (${order.id}, 'order_confirmation')
+    `;
   } catch (error) {
     console.error('Failed to send order confirmation:', error);
   }
@@ -189,11 +237,46 @@ async function sendWelcomeEmail(email: string, name: string) {
       to: email,
       subject: 'Welcome to Contentpreneur Hub!',
       html: `
-        <h1>Welcome to the Contentpreneur Family!</h1>
-        <p>Hi ${name},</p>
-        <p>Welcome! I'm so excited to have you here.</p>
-        <p>You've just taken the first step towards building a successful content creation business.</p>
-        <p><a href="https://contentpreneurhub.online/members">Start Learning Now</a></p>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #f59e0b; margin: 0;">Welcome to the Contentpreneur Family!</h1>
+          </div>
+
+          <p>Hi ${name},</p>
+
+          <p>Welcome! I'm so excited to have you here.</p>
+
+          <p>You've just taken the first step towards building a successful content creation business. This is going to be a game-changer for you.</p>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="https://contentpreneurhub.online/members" style="display: inline-block; background: linear-gradient(to right, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; font-size: 16px;">
+              Start Learning Now
+            </a>
+          </div>
+
+          <p>Here's what you should do first:</p>
+          <ol>
+            <li>Log in to your member dashboard</li>
+            <li>Start with Module 1 of your course</li>
+            <li>Download your workbooks</li>
+          </ol>
+
+          <p>Remember: Consistency beats intensity. Even 30 minutes a day will transform your business.</p>
+
+          <p>Let's build something amazing together!</p>
+
+          <p style="margin-top: 30px;">
+            - Mr NoChill<br>
+            <span style="color: #666;">Contentpreneur Hub</span>
+          </p>
+        </body>
+        </html>
       `,
     });
   } catch (error) {
@@ -201,16 +284,14 @@ async function sendWelcomeEmail(email: string, name: string) {
   }
 }
 
-async function scheduleWelcomeSequence(email: string) {
+async function scheduleWelcomeSequence(sql: any, email: string) {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  await db.insert(emailSequences).values({
-    customerEmail: email,
-    sequenceType: 'welcome',
-    emailNumber: 2,
-    scheduledFor: tomorrow,
-  });
+  await sql`
+    INSERT INTO email_sequences (customer_email, sequence_type, email_number, scheduled_for)
+    VALUES (${email}, 'welcome', 2, ${tomorrow.toISOString()})
+  `;
 }
 
 async function syncToConvertKit(email: string, firstName: string, productKeys: string[], orderNumber: string) {
@@ -245,22 +326,8 @@ function formatProductName(productKey: string): string {
     'content-foundations': 'Content Foundations Masterclass',
     'contentpreneur-pro': 'Contentpreneur Pro Bundle',
     'coaching-session': '1-on-1 Coaching Session',
+    'content-arsenal': 'Content Arsenal Expansion Pack',
+    'contentpreneur-book': 'Contentpreneur Book',
   };
   return names[productKey] || productKey;
-}
-
-async function incrementDiscountCodeUsage(code: string) {
-  try {
-    await db
-      .update(discountCodes)
-      .set({
-        currentUses: sql`${discountCodes.currentUses} + 1`,
-        updatedAt: new Date()
-      })
-      .where(eq(discountCodes.code, code.toUpperCase()));
-
-    console.log(`[DISCOUNT] Incremented usage for code: ${code}`);
-  } catch (error) {
-    console.error(`[DISCOUNT] Failed to increment usage for code ${code}:`, error);
-  }
 }

@@ -4,7 +4,7 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 
 export default function About() {
   return (
-    <section className="py-16 md:py-32 bg-gradient-to-b from-black via-purple-950/5 to-black relative overflow-hidden">
+    <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl px-4">
         {/* Section 1: Story Headline */}
         <motion.div
@@ -14,8 +14,8 @@ export default function About() {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight">
-            <span className="text-white block">From Bathroom Floors</span>
-            <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 bg-clip-text text-transparent">
+            <span className="text-gray-900 block">From Bathroom Floors</span>
+            <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 bg-clip-text text-transparent">
               To Boardrooms
             </span>
           </h2>
@@ -30,10 +30,10 @@ export default function About() {
         >
           <div className="relative aspect-square">
             {/* 1. Glow (behind) */}
-            <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl blur-2xl md:blur-3xl" />
+            <div className="absolute -inset-4 bg-gradient-to-br from-amber-200/40 to-orange-200/40 rounded-3xl blur-2xl md:blur-3xl" />
 
             {/* 2. Photo Container */}
-            <div className="relative h-full rounded-3xl border border-gray-200 shadow-2xl overflow-hidden">
+            <div className="relative h-full rounded-3xl border border-gray-200 shadow-2xl overflow-hidden bg-white">
               {/* 3. Image */}
               <img
                 src="/images/about-mrnochill.jpg"
@@ -43,7 +43,7 @@ export default function About() {
               />
 
               {/* 4. Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent" />
             </div>
           </div>
         </motion.div>
@@ -57,9 +57,9 @@ export default function About() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-2 bg-gradient-to-r from-red-500/10 to-orange-500/10 rounded-2xl md:rounded-3xl blur-xl" />
-            <div className="relative bg-gradient-to-b from-red-500/10 to-transparent border-2 border-red-500/20 p-6 md:p-12 rounded-2xl md:rounded-3xl">
-              <p className="text-white/80 text-base md:text-lg leading-relaxed">
+            <div className="absolute -inset-2 bg-gradient-to-r from-red-100/50 to-orange-100/50 rounded-2xl md:rounded-3xl blur-xl" />
+            <div className="relative bg-white border-2 border-red-200 p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-sm">
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                 Let me tell you where I started. I dropped out of university twice. I slept on bathroom floors because I couldn't afford rent. I built a following of over 3 million people... and still couldn't pay my bills.
               </p>
               <p className="text-gray-500 text-base md:text-lg leading-relaxed mt-4">
@@ -75,9 +75,9 @@ export default function About() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-2 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 rounded-2xl md:rounded-3xl blur-xl" />
-            <div className="relative bg-gradient-to-b from-orange-500/10 to-transparent border-2 border-orange-500/20 p-6 md:p-12 rounded-2xl md:rounded-3xl">
-              <p className="text-white/80 text-base md:text-lg leading-relaxed">
+            <div className="absolute -inset-2 bg-gradient-to-r from-orange-100/50 to-amber-100/50 rounded-2xl md:rounded-3xl blur-xl" />
+            <div className="relative bg-white border-2 border-orange-200 p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-sm">
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                 Then came the wake-up call. Tax issues I didn't understand. Lost followers because I didn't know how to retain them. Burnout from creating content with no strategy.
               </p>
               <p className="text-gray-500 text-base md:text-lg leading-relaxed mt-4">
@@ -93,9 +93,9 @@ export default function About() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl md:rounded-3xl blur-xl" />
-            <div className="relative bg-gradient-to-b from-green-500/10 to-transparent border-2 border-green-500/20 p-6 md:p-12 rounded-2xl md:rounded-3xl">
-              <p className="text-white/80 text-base md:text-lg leading-relaxed mb-6">
+            <div className="absolute -inset-2 bg-gradient-to-r from-green-100/50 to-emerald-100/50 rounded-2xl md:rounded-3xl blur-xl" />
+            <div className="relative bg-white border-2 border-green-200 p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-sm">
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
                 Today, everything is different. I built a real business with:
               </p>
               <div className="space-y-3">
@@ -108,7 +108,7 @@ export default function About() {
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                    <span className="text-white/80 text-base md:text-lg">{item}</span>
+                    <span className="text-gray-700 text-base md:text-lg">{item}</span>
                   </div>
                 ))}
               </div>
@@ -123,11 +123,11 @@ export default function About() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-12 md:mb-16"
         >
-          <div className="bg-gradient-to-b from-yellow-500/10 to-transparent border-2 border-yellow-500/30 p-6 md:p-12 rounded-2xl md:rounded-3xl text-center">
-            <h3 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 bg-clip-text text-transparent mb-4">
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 p-6 md:p-12 rounded-2xl md:rounded-3xl text-center shadow-sm">
+            <h3 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 bg-clip-text text-transparent mb-4">
               The PAIDS Framework
             </h3>
-            <p className="text-xl md:text-2xl text-yellow-400 font-medium">
+            <p className="text-xl md:text-2xl text-amber-700 font-medium">
               <span className="font-black">P</span>roducts • <span className="font-black">A</span>ds/Affiliates • <span className="font-black">I</span>nformation • <span className="font-black">D</span>eals • <span className="font-black">S</span>ervices
             </p>
           </div>
@@ -140,7 +140,7 @@ export default function About() {
           viewport={{ once: true }}
           className="text-center mb-12 md:mb-16"
         >
-          <h3 className="text-3xl md:text-4xl font-black text-white">
+          <h3 className="text-3xl md:text-4xl font-black text-gray-900">
             Building For Children's Children
           </h3>
         </motion.div>
@@ -154,11 +154,11 @@ export default function About() {
         >
           <div className="relative">
             {/* Stronger glow */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-3xl blur-3xl" />
+            <div className="absolute -inset-4 bg-gradient-to-r from-amber-200/40 to-orange-200/40 rounded-3xl blur-3xl" />
 
-            <div className="relative bg-gradient-to-b from-white/[0.08] to-white/[0.03] border-2 border-yellow-500/30 p-8 md:p-12 rounded-3xl text-center">
+            <div className="relative bg-white border-2 border-amber-300 p-8 md:p-12 rounded-3xl text-center shadow-lg">
               {/* Question Pattern */}
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-8">
+              <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-8">
                 "The Question Isn't 'Can I Do This?'
                 <br />
                 It's 'How Much Longer Am I Going to Wait?'"
@@ -167,7 +167,7 @@ export default function About() {
               {/* CTA Button */}
               <Link
                 to="/contentpreneur-starter-kit"
-                className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black text-xl md:text-2xl rounded-2xl shadow-[0_8px_50px_rgba(234,179,8,0.6)] hover:shadow-[0_8px_60px_rgba(234,179,8,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[64px]"
+                className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xl md:text-2xl rounded-2xl shadow-[0_8px_50px_rgba(245,158,11,0.4)] hover:shadow-[0_8px_60px_rgba(245,158,11,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[64px]"
               >
                 Start Your Journey Now
                 <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />

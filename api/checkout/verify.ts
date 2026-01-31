@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, orders } from '../../lib/db';
-import { eq } from 'drizzle-orm';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -14,6 +13,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Check database URL
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    return res.status(500).json({ error: 'Database not configured' });
   }
 
   try {
@@ -44,32 +49,54 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const paymentStatus = paystackData.data.status === 'success' ? 'completed' : 'pending';
 
-    // Get order
-    const [order] = await db
-      .select()
-      .from(orders)
-      .where(eq(orders.paystackReference, reference));
+    // Create raw SQL connection
+    const sql = neon(databaseUrl);
 
-    if (!order) {
+    // Get order
+    const orderResult = await sql`
+      SELECT id, order_number, payment_status, total_amount_cents, currency
+      FROM orders
+      WHERE paystack_reference = ${reference}
+    `;
+
+    if (orderResult.length === 0) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
+    const order = orderResult[0];
+
     // Update order status if payment successful
-    if (paymentStatus === 'completed' && order.paymentStatus !== 'completed') {
-      await db
-        .update(orders)
-        .set({ paymentStatus: 'completed', updatedAt: new Date() })
-        .where(eq(orders.id, order.id));
+    if (paymentStatus === 'completed' && order.payment_status !== 'completed') {
+      await sql`
+        UPDATE orders
+        SET payment_status = 'completed', updated_at = NOW()
+        WHERE id = ${order.id}
+      `;
     }
+
+    // Get order items
+    const orderItems = await sql`
+      SELECT oi.product_key, oi.price_cents, p.name
+      FROM order_items oi
+      LEFT JOIN products p ON oi.product_id = p.id
+      WHERE oi.order_id = ${order.id}
+    `;
+
+    const items = orderItems.map((item: any) => ({
+      item_id: item.product_key,
+      item_name: item.name || item.product_key,
+      price: item.price_cents / 100,
+    }));
 
     return res.status(200).json({
       success: paymentStatus === 'completed',
       order: {
-        order_number: order.orderNumber,
+        order_number: order.order_number,
         payment_status: paymentStatus,
-        total_amount_cents: order.totalAmountCents,
+        total_amount_cents: order.total_amount_cents,
         currency: order.currency,
       },
+      items,
     });
   } catch (error) {
     console.error('Verify error:', error);

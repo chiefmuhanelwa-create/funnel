@@ -157,7 +157,7 @@ export default function CheckoutSuccess() {
           className="text-center"
         >
           <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
-          <h2 className="mt-4 text-xl font-semibold text-white">
+          <h2 className="mt-4 text-xl font-semibold text-gray-900">
             Verifying your payment...
           </h2>
           <p className="mt-2 text-gray-500">Please wait while we confirm your order</p>
@@ -175,7 +175,7 @@ export default function CheckoutSuccess() {
           className="glass-card max-w-md text-center p-8"
         >
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Something went wrong</h2>
+          <h2 className="mt-4 text-2xl font-bold text-gray-900">Something went wrong</h2>
           <p className="mt-2 text-gray-500">{error}</p>
           <p className="mt-4 text-sm text-gray-400">
             If you believe this is an error, please contact support at{' '}
@@ -200,14 +200,14 @@ export default function CheckoutSuccess() {
           className="glass-card max-w-md text-center p-8"
         >
           <Loader2 className="w-16 h-16 text-yellow-500 mx-auto animate-spin" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Payment Processing</h2>
+          <h2 className="mt-4 text-2xl font-bold text-gray-900">Payment Processing</h2>
           <p className="mt-2 text-gray-500">
             Your payment is still being processed. You'll receive an email confirmation once
             it's complete.
           </p>
           {orderDetails && (
             <p className="mt-4 text-sm text-gray-400">
-              Order Number: <strong className="text-white">{orderDetails.order_number}</strong>
+              Order Number: <strong className="text-gray-900">{orderDetails.order_number}</strong>
             </p>
           )}
           <Link to="/members" className="mt-6 btn-secondary inline-block">
@@ -233,7 +233,7 @@ export default function CheckoutSuccess() {
           <CheckCircle className="w-20 h-20 text-green-500 mx-auto" />
         </motion.div>
 
-        <h1 className="mt-6 text-3xl font-bold text-white">Payment Successful!</h1>
+        <h1 className="mt-6 text-3xl font-bold text-gray-900">Payment Successful!</h1>
 
         <p className="mt-4 text-lg text-gray-500">
           Thank you for your purchase! You now have instant access to your content.
@@ -242,10 +242,10 @@ export default function CheckoutSuccess() {
         {orderDetails && (
           <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
             <div className="text-sm text-gray-500">Order Number</div>
-            <div className="font-mono font-bold text-white">{orderDetails.order_number}</div>
+            <div className="font-mono font-bold text-gray-900">{orderDetails.order_number}</div>
             <div className="mt-2 text-sm text-gray-500">
               Amount Paid:{' '}
-              <span className="font-semibold text-white">
+              <span className="font-semibold text-gray-900">
                 {orderDetails.currency === 'ZAR' ? 'R' : '$'}
                 {(orderDetails.total_amount_cents / 100).toFixed(2)}
               </span>
@@ -268,7 +268,7 @@ export default function CheckoutSuccess() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-200">
-          <h3 className="font-semibold text-white mb-4">What's Next?</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">What's Next?</h3>
           <ol className="text-left text-sm text-gray-500 space-y-2">
             <li className="flex items-start">
               <span className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-sm font-bold mr-3 shrink-0">

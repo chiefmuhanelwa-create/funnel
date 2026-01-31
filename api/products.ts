@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, products, customerAccess } from '../lib/db';
-import { eq, and } from 'drizzle-orm';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
@@ -13,13 +12,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).end();
   }
 
+  // Check database URL
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    return res.status(500).json({ error: 'Database not configured' });
+  }
+
   try {
     if (req.method === 'GET') {
+      const sql = neon(databaseUrl);
+
       // List all active products
-      const allProducts = await db
-        .select()
-        .from(products)
-        .where(eq(products.isActive, true));
+      const allProducts = await sql`
+        SELECT id, product_key, name, description, price_cents, level, is_active
+        FROM products
+        WHERE is_active = true
+        ORDER BY price_cents ASC
+      `;
 
       return res.status(200).json({ products: allProducts });
     }
