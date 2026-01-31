@@ -16,11 +16,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Check database URL
+  // Check required environment variables
   const databaseUrl = process.env.DATABASE_URL;
+  const webhookSecret = process.env.PAYSTACK_WEBHOOK_SECRET;
+
   if (!databaseUrl) {
     console.error('DATABASE_URL not configured');
     return res.status(500).json({ error: 'Database not configured' });
+  }
+
+  if (!webhookSecret) {
+    console.error('PAYSTACK_WEBHOOK_SECRET not configured');
+    return res.status(500).json({ error: 'Webhook secret not configured' });
   }
 
   try {
@@ -30,12 +37,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Verify signature
     const hash = crypto
-      .createHmac('sha512', process.env.PAYSTACK_WEBHOOK_SECRET!)
+      .createHmac('sha512', webhookSecret)
       .update(rawBody)
       .digest('hex');
 
     if (hash !== signature) {
       console.error('Invalid Paystack webhook signature');
+      console.error('Expected:', hash);
+      console.error('Received:', signature);
       return res.status(400).json({ error: 'Invalid signature' });
     }
 
@@ -45,52 +54,86 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (event.event === 'charge.success') {
       const sql = neon(databaseUrl);
 
-      const { order_id, order_number, product_keys } = event.data.metadata;
+      // Extract metadata - handle both string and array formats
+      const metadata = event.data.metadata || {};
+      const orderIdRaw = metadata.order_id;
+      const orderNumber = metadata.order_number;
+      const productKeysRaw = metadata.product_keys;
+
+      // Parse order_id (might be string from metadata)
+      const orderId = typeof orderIdRaw === 'string' ? parseInt(orderIdRaw, 10) : orderIdRaw;
+
+      // Parse product_keys (might be comma-separated string or array)
+      let productKeysList: string[];
+      if (typeof productKeysRaw === 'string') {
+        productKeysList = productKeysRaw.split(',').map(k => k.trim()).filter(k => k);
+      } else if (Array.isArray(productKeysRaw)) {
+        productKeysList = productKeysRaw;
+      } else {
+        productKeysList = [];
+      }
+
       const customerEmail = event.data.customer.email.toLowerCase().trim();
+
+      console.log('[WEBHOOK] Processing order:', { orderId, orderNumber, customerEmail, productKeysList });
+
+      if (!orderId || isNaN(orderId)) {
+        console.error('Invalid order_id in metadata:', orderIdRaw);
+        return res.status(400).json({ error: 'Invalid order_id' });
+      }
 
       // Update order status
       await sql`
         UPDATE orders
         SET payment_status = 'completed', updated_at = NOW()
-        WHERE id = ${order_id}
+        WHERE id = ${orderId}
       `;
+      console.log('[WEBHOOK] Updated order status to completed');
 
       // Get order details
       const orderResult = await sql`
         SELECT id, order_number, customer_email, customer_name, total_amount_cents, currency, discount_code
         FROM orders
-        WHERE id = ${order_id}
+        WHERE id = ${orderId}
       `;
 
       if (orderResult.length === 0) {
-        console.error('Order not found:', order_id);
+        console.error('Order not found:', orderId);
         return res.status(404).json({ error: 'Order not found' });
       }
 
       const order = orderResult[0];
 
       // Grant product access (including bundles)
-      await grantProductAccess(sql, customerEmail, product_keys, order_id);
+      await grantProductAccess(sql, customerEmail, productKeysList, orderId);
 
       // Mark abandoned cart as recovered
-      await sql`
-        UPDATE abandoned_carts
-        SET recovered = true, updated_at = NOW()
-        WHERE customer_email = ${customerEmail}
-      `;
+      try {
+        await sql`
+          UPDATE abandoned_carts
+          SET recovered = true, updated_at = NOW()
+          WHERE customer_email = ${customerEmail}
+        `;
+      } catch (e) {
+        // Ignore - cart might not exist
+      }
 
       // Increment discount code usage if one was used
       if (order.discount_code) {
-        await sql`
-          UPDATE discount_codes
-          SET current_uses = current_uses + 1, updated_at = NOW()
-          WHERE code = ${order.discount_code.toUpperCase()}
-        `;
-        console.log(`[DISCOUNT] Incremented usage for code: ${order.discount_code}`);
+        try {
+          await sql`
+            UPDATE discount_codes
+            SET current_uses = current_uses + 1
+            WHERE code = ${order.discount_code.toUpperCase()}
+          `;
+          console.log(`[DISCOUNT] Incremented usage for code: ${order.discount_code}`);
+        } catch (e) {
+          console.error('Failed to increment discount usage:', e);
+        }
       }
 
       // Send order confirmation email
-      await sendOrderConfirmationEmail(sql, order, product_keys);
+      await sendOrderConfirmationEmail(sql, order, productKeysList);
 
       // Check if first purchase and send welcome email
       const previousOrdersResult = await sql`
@@ -104,13 +147,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       // Sync to ConvertKit (optional)
-      await syncToConvertKit(customerEmail, order.customer_name || '', product_keys, order_number);
+      await syncToConvertKit(customerEmail, order.customer_name || '', productKeysList, orderNumber);
+
+      console.log('[WEBHOOK] Successfully processed charge.success for order:', orderId);
     }
 
     return res.status(200).json({ received: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Webhook processing error:', error);
-    return res.status(500).json({ error: 'Webhook processing failed' });
+    return res.status(500).json({ error: 'Webhook processing failed', message: error?.message });
   }
 }
 
@@ -124,6 +169,8 @@ async function grantProductAccess(sql: any, email: string, productKeys: string[]
     }
   }
 
+  console.log('[ACCESS] Granting access to products:', Array.from(allKeys));
+
   for (const key of allKeys) {
     try {
       // Get product by key
@@ -131,7 +178,10 @@ async function grantProductAccess(sql: any, email: string, productKeys: string[]
         SELECT id FROM products WHERE product_key = ${key}
       `;
 
-      if (productResult.length === 0) continue;
+      if (productResult.length === 0) {
+        console.log(`[ACCESS] Product not found: ${key}`);
+        continue;
+      }
 
       const productId = productResult[0].id;
 
@@ -141,7 +191,10 @@ async function grantProductAccess(sql: any, email: string, productKeys: string[]
         WHERE customer_email = ${email} AND product_id = ${productId}
       `;
 
-      if (existingResult.length > 0) continue;
+      if (existingResult.length > 0) {
+        console.log(`[ACCESS] Already has access to ${key}`);
+        continue;
+      }
 
       // Grant access
       await sql`
@@ -158,14 +211,18 @@ async function grantProductAccess(sql: any, email: string, productKeys: string[]
 
 async function sendOrderConfirmationEmail(sql: any, order: any, productKeys: string[]) {
   // Check if already sent (deduplication)
-  const existingResult = await sql`
-    SELECT id FROM order_emails_sent
-    WHERE order_id = ${order.id} AND email_type = 'order_confirmation'
-  `;
+  try {
+    const existingResult = await sql`
+      SELECT id FROM order_emails_sent
+      WHERE order_id = ${order.id} AND email_type = 'order_confirmation'
+    `;
 
-  if (existingResult.length > 0) {
-    console.log('Order confirmation already sent for order:', order.id);
-    return;
+    if (existingResult.length > 0) {
+      console.log('Order confirmation already sent for order:', order.id);
+      return;
+    }
+  } catch (e) {
+    // Continue if check fails
   }
 
   const currencySymbol = order.currency === 'ZAR' ? 'R' : '$';
@@ -225,6 +282,8 @@ async function sendOrderConfirmationEmail(sql: any, order: any, productKeys: str
       INSERT INTO order_emails_sent (order_id, email_type)
       VALUES (${order.id}, 'order_confirmation')
     `;
+
+    console.log('[EMAIL] Order confirmation sent to:', order.customer_email);
   } catch (error) {
     console.error('Failed to send order confirmation:', error);
   }
@@ -279,19 +338,24 @@ async function sendWelcomeEmail(email: string, name: string) {
         </html>
       `,
     });
+    console.log('[EMAIL] Welcome email sent to:', email);
   } catch (error) {
     console.error('Failed to send welcome email:', error);
   }
 }
 
 async function scheduleWelcomeSequence(sql: any, email: string) {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  try {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-  await sql`
-    INSERT INTO email_sequences (customer_email, sequence_type, email_number, scheduled_for)
-    VALUES (${email}, 'welcome', 2, ${tomorrow.toISOString()})
-  `;
+    await sql`
+      INSERT INTO email_sequences (customer_email, sequence_type, email_number, scheduled_for)
+      VALUES (${email}, 'welcome', 2, ${tomorrow.toISOString()})
+    `;
+  } catch (e) {
+    console.error('Failed to schedule welcome sequence:', e);
+  }
 }
 
 async function syncToConvertKit(email: string, firstName: string, productKeys: string[], orderNumber: string) {
