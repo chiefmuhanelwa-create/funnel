@@ -5,42 +5,53 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// STRICT Product bundles - ONLY these products get unlocked
-// starter-kit ($67) = 9-module course + niche-finder + paids-workbook
-// contentpreneur-pro = everything
+// COMPLETE Product Configuration with Icons
+const PRODUCTS: Record<string, { name: string; icon: string; features?: string[] }> = {
+  'starter-kit': {
+    name: 'Contentpreneur Starter Kit',
+    icon: '🚀',
+    features: [
+      'Introduction Video',
+      'Module 1: What is a Personal Brand',
+      'Module 2: Blueprint to Build a Personal Brand',
+      'Module 3: The 3Cs Framework - Mindset',
+      'Module 4: SWOT Analysis',
+      'Module 5: 3Es Content Idea Formula',
+      'Module 6: Understand Social Media Platforms',
+      'Module 7: Community Building',
+      'Module 8: PAIDS Framework',
+      'Bonus Module 9: Formula to Create Online Asset',
+      'Niche Finder Workbook (PDF)',
+      'PAIDS Framework Workbook (PDF)',
+      'NoChill Tool Stack Access',
+    ],
+  },
+  'niche-finder': { name: 'Niche Finder Workbook', icon: '🎯' },
+  'paids-workbook': { name: 'PAIDS Framework Workbook', icon: '💰' },
+  'content-foundations': {
+    name: 'Content Foundations Course',
+    icon: '📚',
+    features: ['Module 1: Self Reflection', 'Module 2: SWOT Analysis', 'Module 3: Value Alignment'],
+  },
+  'influencers-code': {
+    name: "The Influencer's Code",
+    icon: '📖',
+    features: ['13 Chapters on Monetization', 'The 3Es Formula', 'PAIDS Method', 'DARES Scale System'],
+  },
+  'tax-guide': {
+    name: 'Tax Guide for Contentpreneurs',
+    icon: '📋',
+    features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
+  },
+  'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑' },
+  'strategy-call': { name: '1:1 Coaching Session', icon: '📞' },
+};
+
+// Bundle configurations - STRICT: only these products get unlocked
 const PRODUCT_BUNDLES: Record<string, string[]> = {
   'starter-kit': ['niche-finder', 'paids-workbook'],
   'contentpreneur-pro': ['starter-kit', 'content-foundations', 'influencers-code', 'tax-guide', 'niche-finder', 'paids-workbook'],
 };
-
-// Product display names for emails
-const PRODUCT_NAMES: Record<string, string> = {
-  'starter-kit': 'Contentpreneur Starter Kit (9-Module Course)',
-  'niche-finder': 'Niche Finder Workbook',
-  'paids-workbook': 'PAIDS Framework Workbook',
-  'content-foundations': 'Content Foundations Course',
-  'influencers-code': "The Influencer's Code eBook",
-  'tax-guide': 'Tax Guide for Contentpreneurs',
-  'contentpreneur-pro': 'Contentpreneur Pro Bundle',
-  'strategy-call': '1:1 Coaching Session',
-  'content-arsenal': 'Content Arsenal Pack',
-};
-
-// What's included in starter-kit for display
-const STARTER_KIT_INCLUDES = [
-  'Module 1: What is a Personal Brand',
-  'Module 2: Blueprint to Build a Personal Brand',
-  'Module 3: The 3Cs Framework',
-  'Module 4: SWOT Analysis',
-  'Module 5: 3Es Content Idea Formula',
-  'Module 6: Understand Social Media Platforms',
-  'Module 7: Community Building',
-  'Module 8: PAIDS Framework',
-  'Module 9: Formula to Create Online Asset',
-  'Niche Finder Workbook (PDF)',
-  'PAIDS Framework Workbook (PDF)',
-  'NoChill Tool Stack Access',
-];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -70,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       console.log('[WEBHOOK] Signature verified');
     } else {
-      // No webhook secret configured - verify event with Paystack API instead
+      // No webhook secret - verify via Paystack API
       console.log('[WEBHOOK] No webhook secret - verifying via API');
 
       if (req.body?.data?.reference && paystackSecretKey) {
@@ -99,12 +110,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const orderIdRaw = metadata.order_id;
       const orderNumber = metadata.order_number || 'N/A';
       const productKeysRaw = metadata.product_keys;
-      const originalUsdCents = parseInt(metadata.original_usd_cents || '0', 10);
-      const exchangeRate = parseFloat(metadata.exchange_rate || '18.5');
 
       const orderId = typeof orderIdRaw === 'string' ? parseInt(orderIdRaw, 10) : orderIdRaw;
 
-      // Parse product keys - ONLY grant access to what was purchased
+      // Parse purchased products
       let purchasedProducts: string[] = [];
       if (typeof productKeysRaw === 'string') {
         purchasedProducts = productKeysRaw.split(',').map(k => k.trim()).filter(k => k);
@@ -113,7 +122,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       const customerEmail = event.data.customer.email.toLowerCase().trim();
-      const amountPaid = event.data.amount; // In ZAR cents
+      const amountPaid = event.data.amount; // ZAR cents
 
       console.log('[WEBHOOK] Processing:', { orderId, customerEmail, purchasedProducts, amountPaid });
 
@@ -123,11 +132,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       // Update order status
-      await sql`
-        UPDATE orders
-        SET payment_status = 'completed', updated_at = NOW()
-        WHERE id = ${orderId}
-      `;
+      await sql`UPDATE orders SET payment_status = 'completed', updated_at = NOW() WHERE id = ${orderId}`;
 
       // Get order details
       const orderResult = await sql`
@@ -142,131 +147,117 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       const order = orderResult[0];
 
-      // Grant ONLY purchased products + their bundles
+      // Calculate ALL products to grant (purchased + bundles)
       const productsToGrant = new Set<string>();
-
       for (const productKey of purchasedProducts) {
         productsToGrant.add(productKey);
-        // Add bundle items if applicable
         if (PRODUCT_BUNDLES[productKey]) {
           PRODUCT_BUNDLES[productKey].forEach(k => productsToGrant.add(k));
         }
       }
 
-      console.log('[WEBHOOK] Granting access to:', Array.from(productsToGrant));
+      console.log('[WEBHOOK] Products to grant:', Array.from(productsToGrant));
 
       // Grant access to each product
       for (const productKey of productsToGrant) {
         try {
-          const productResult = await sql`
-            SELECT id FROM products WHERE product_key = ${productKey}
-          `;
-
+          const productResult = await sql`SELECT id FROM products WHERE product_key = ${productKey}`;
           if (productResult.length === 0) {
-            console.log(`[WEBHOOK] Product not found in DB: ${productKey}`);
+            console.log(`[WEBHOOK] Product not in DB: ${productKey}`);
             continue;
           }
 
           const productId = productResult[0].id;
-
-          // Check if access already exists
           const existingAccess = await sql`
-            SELECT id FROM customer_access
-            WHERE customer_email = ${customerEmail} AND product_id = ${productId}
+            SELECT id FROM customer_access WHERE customer_email = ${customerEmail} AND product_id = ${productId}
           `;
 
           if (existingAccess.length > 0) {
-            console.log(`[WEBHOOK] Access already exists: ${productKey}`);
+            console.log(`[WEBHOOK] Already has: ${productKey}`);
             continue;
           }
 
-          // Grant new access
-          await sql`
-            INSERT INTO customer_access (customer_email, product_id, order_id)
-            VALUES (${customerEmail}, ${productId}, ${orderId})
-          `;
-          console.log(`[WEBHOOK] Granted: ${productKey} -> ${customerEmail}`);
+          await sql`INSERT INTO customer_access (customer_email, product_id, order_id) VALUES (${customerEmail}, ${productId}, ${orderId})`;
+          console.log(`[WEBHOOK] Granted: ${productKey}`);
         } catch (err) {
           console.error(`[WEBHOOK] Error granting ${productKey}:`, err);
         }
       }
 
-      // Send order confirmation email with CORRECT content
-      await sendOrderConfirmation(sql, {
-        orderId: order.id,
+      // Send order confirmation email
+      await sendOrderEmail({
         orderNumber: order.order_number,
         customerEmail: order.customer_email,
         customerName: order.customer_name,
         purchasedProducts,
+        allGrantedProducts: Array.from(productsToGrant),
         amountPaidCents: amountPaid,
-        currency: 'ZAR',
       });
 
-      console.log('[WEBHOOK] Successfully processed order:', orderId);
+      console.log('[WEBHOOK] Order processed successfully:', orderId);
     }
 
     return res.status(200).json({ received: true });
   } catch (error: any) {
     console.error('[WEBHOOK] Error:', error);
-    return res.status(500).json({ error: 'Webhook processing failed', message: error?.message });
+    return res.status(500).json({ error: 'Webhook failed', message: error?.message });
   }
 }
 
-async function sendOrderConfirmation(sql: any, params: {
-  orderId: number;
+async function sendOrderEmail(params: {
   orderNumber: string;
   customerEmail: string;
   customerName: string | null;
   purchasedProducts: string[];
+  allGrantedProducts: string[];
   amountPaidCents: number;
-  currency: string;
 }) {
-  const { orderId, orderNumber, customerEmail, customerName, purchasedProducts, amountPaidCents, currency } = params;
+  const { orderNumber, customerEmail, customerName, purchasedProducts, allGrantedProducts, amountPaidCents } = params;
 
-  // Check if already sent
-  try {
-    const existing = await sql`
-      SELECT id FROM order_emails_sent
-      WHERE order_id = ${orderId} AND email_type = 'order_confirmation'
-    `;
-    if (existing.length > 0) {
-      console.log('[EMAIL] Already sent for order:', orderId);
-      return;
-    }
-  } catch (e) {}
+  const formattedAmount = `R${(amountPaidCents / 100).toFixed(2)}`;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
 
-  // Format amount
-  const formattedAmount = currency === 'ZAR'
-    ? `R${(amountPaidCents / 100).toFixed(2)}`
-    : `$${(amountPaidCents / 100).toFixed(2)}`;
-
-  // Build product list HTML - show what they actually get
+  // Build product list HTML with icons
   let productListHtml = '';
 
-  for (const productKey of purchasedProducts) {
-    const productName = PRODUCT_NAMES[productKey] || productKey;
+  for (const key of purchasedProducts) {
+    const product = PRODUCTS[key];
+    if (!product) continue;
 
-    if (productKey === 'starter-kit') {
-      // Show full starter kit contents
-      productListHtml += `
-        <div style="margin-bottom: 20px;">
-          <h3 style="color: #f59e0b; margin: 0 0 10px 0;">${productName}</h3>
-          <p style="color: #666; font-size: 14px; margin: 0 0 10px 0;">Your complete content business system includes:</p>
-          <ul style="margin: 0; padding-left: 20px; color: #333;">
-            ${STARTER_KIT_INCLUDES.map(item => `<li style="margin: 5px 0;">${item}</li>`).join('')}
-          </ul>
+    productListHtml += `
+      <div style="background: #f9fafb; border-radius: 12px; padding: 20px; margin-bottom: 16px; border-left: 4px solid #f59e0b;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <span style="font-size: 28px;">${product.icon}</span>
+          <h3 style="margin: 0; color: #111; font-size: 18px;">${product.name}</h3>
         </div>
-      `;
-    } else {
-      productListHtml += `<p style="margin: 5px 0;">✓ ${productName}</p>`;
+    `;
+
+    if (product.features && product.features.length > 0) {
+      productListHtml += `<ul style="margin: 0; padding-left: 20px; color: #444; font-size: 14px;">`;
+      for (const feature of product.features) {
+        productListHtml += `<li style="margin: 6px 0;">✓ ${feature}</li>`;
+      }
+      productListHtml += `</ul>`;
     }
 
-    // Show bundle items
-    if (PRODUCT_BUNDLES[productKey] && productKey !== 'starter-kit') {
-      PRODUCT_BUNDLES[productKey].forEach(bundleKey => {
-        productListHtml += `<p style="margin: 5px 0; color: #666; font-size: 14px;">  + ${PRODUCT_NAMES[bundleKey] || bundleKey} (included)</p>`;
-      });
+    productListHtml += `</div>`;
+  }
+
+  // Show bundled products separately
+  const bundledProducts = allGrantedProducts.filter(k => !purchasedProducts.includes(k));
+  if (bundledProducts.length > 0) {
+    productListHtml += `
+      <div style="background: #ecfdf5; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+        <p style="margin: 0 0 10px; font-weight: 600; color: #065f46;">🎁 Bonus - Included with your purchase:</p>
+        <ul style="margin: 0; padding-left: 20px; color: #047857; font-size: 14px;">
+    `;
+    for (const key of bundledProducts) {
+      const product = PRODUCTS[key];
+      if (product) {
+        productListHtml += `<li style="margin: 6px 0;">${product.icon} ${product.name}</li>`;
+      }
     }
+    productListHtml += `</ul></div>`;
   }
 
   const emailHtml = `
@@ -276,50 +267,56 @@ async function sendOrderConfirmation(sql: any, params: {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #f3f4f6;">
   <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
 
     <div style="text-align: center; margin-bottom: 30px;">
-      <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f59e0b, #ea580c); border-radius: 12px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-        <span style="font-size: 28px;">🎉</span>
-      </div>
-      <h1 style="color: #111; margin: 0; font-size: 24px;">Payment Confirmed!</h1>
-      <p style="color: #666; margin: 10px 0 0;">Your content is ready</p>
+      <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
+      <h1 style="color: #111; margin: 0; font-size: 26px;">Payment Confirmed!</h1>
+      <p style="color: #666; margin: 10px 0 0;">Your content is ready to access</p>
     </div>
 
-    <p>Hi ${customerName || 'there'},</p>
+    <p style="font-size: 16px;">Hi ${customerName || 'there'},</p>
 
-    <p>Welcome to the contentpreneur movement! Your investment just gave you access to proven systems that have helped build a 3M+ audience.</p>
+    <p style="font-size: 16px;">Welcome to the contentpreneur movement! Your investment just gave you access to the exact systems that helped build a 3M+ audience and multiple income streams.</p>
 
-    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 25px 0;">
-      <p style="margin: 0 0 5px; font-size: 14px; color: #666;">Order Number</p>
-      <p style="margin: 0 0 15px; font-weight: bold; color: #111;">${orderNumber}</p>
-
-      <p style="margin: 0 0 5px; font-size: 14px; color: #666;">Total Paid</p>
-      <p style="margin: 0; font-weight: bold; color: #f59e0b; font-size: 20px;">${formattedAmount}</p>
+    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
+      <p style="margin: 0 0 5px; font-size: 14px; color: #92400e;">Order Number</p>
+      <p style="margin: 0 0 15px; font-weight: bold; color: #78350f; font-size: 16px;">${orderNumber}</p>
+      <p style="margin: 0 0 5px; font-size: 14px; color: #92400e;">Total Paid</p>
+      <p style="margin: 0; font-weight: bold; color: #78350f; font-size: 28px;">${formattedAmount}</p>
     </div>
 
-    <div style="margin: 25px 0;">
-      <h2 style="color: #111; font-size: 18px; margin: 0 0 15px;">What You Get:</h2>
-      ${productListHtml}
-    </div>
+    <h2 style="color: #111; font-size: 20px; margin: 30px 0 20px; border-bottom: 2px solid #f59e0b; padding-bottom: 10px;">
+      📦 What You Get
+    </h2>
 
-    <div style="text-align: center; margin: 30px 0;">
-      <a href="https://contentpreneurhub.online/members" style="display: inline-block; background: linear-gradient(135deg, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 16px 32px; border-radius: 10px; font-weight: bold; font-size: 16px;">
-        Access Your Content →
+    ${productListHtml}
+
+    <div style="text-align: center; margin: 35px 0;">
+      <a href="${appUrl}/members" style="display: inline-block; background: linear-gradient(135deg, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 18px 40px; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);">
+        🚀 Access Your Content Now
       </a>
     </div>
 
-    <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 10px; padding: 15px; margin: 25px 0;">
-      <p style="margin: 0; font-size: 14px; color: #92400e;">
-        <strong>How to login:</strong> Go to the Members area and enter your email: <strong>${customerEmail}</strong>
-      </p>
+    <div style="background: #fef3c7; border: 2px solid #fcd34d; border-radius: 12px; padding: 20px; margin: 25px 0;">
+      <h3 style="margin: 0 0 10px; color: #92400e; font-size: 16px;">🔑 How to Login</h3>
+      <ol style="margin: 0; padding-left: 20px; color: #78350f; font-size: 14px;">
+        <li style="margin: 8px 0;">Go to <a href="${appUrl}/members" style="color: #b45309;">${appUrl}/members</a></li>
+        <li style="margin: 8px 0;">Enter your email: <strong>${customerEmail}</strong></li>
+        <li style="margin: 8px 0;">Click "Access My Content"</li>
+      </ol>
     </div>
 
     <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
 
-    <p style="color: #666; font-size: 13px; text-align: center; margin: 0;">
-      Questions? Reply to this email or contact info@nochill.co.za
+    <div style="text-align: center;">
+      <p style="color: #666; font-size: 14px; margin: 0 0 10px;">Questions? We're here to help!</p>
+      <a href="mailto:info@nochill.co.za" style="color: #f59e0b; font-weight: 600;">info@nochill.co.za</a>
+    </div>
+
+    <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 30px;">
+      © 2026 NOCHILL PTY LTD. All rights reserved.
     </p>
   </div>
 </body>
@@ -330,15 +327,10 @@ async function sendOrderConfirmation(sql: any, params: {
     await resend.emails.send({
       from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
       to: customerEmail,
-      subject: `Order Confirmed - ${orderNumber}`,
+      subject: `🎉 Order Confirmed - ${orderNumber}`,
       html: emailHtml,
     });
-
-    await sql`
-      INSERT INTO order_emails_sent (order_id, email_type)
-      VALUES (${orderId}, 'order_confirmation')
-    `;
-    console.log('[EMAIL] Sent confirmation to:', customerEmail);
+    console.log('[EMAIL] Sent to:', customerEmail);
   } catch (err) {
     console.error('[EMAIL] Failed:', err);
   }
