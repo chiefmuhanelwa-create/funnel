@@ -132,7 +132,7 @@ export default function MemberDownload() {
             <div className="w-16 h-16 mx-auto rounded-2xl bg-gold-500/20 flex items-center justify-center mb-6">
               <Lock size={28} className="text-gold-500" />
             </div>
-            <h1 className="text-section text-white">Access Required</h1>
+            <h1 className="text-section text-gray-900">Access Required</h1>
             <p className="mt-4 text-gray-500">
               Please log in to access your purchased content.
             </p>
@@ -158,7 +158,7 @@ export default function MemberDownload() {
             <div className="w-16 h-16 mx-auto rounded-2xl bg-error-500/20 flex items-center justify-center mb-6">
               <Lock size={28} className="text-error-400" />
             </div>
-            <h1 className="text-section text-white">Access Not Found</h1>
+            <h1 className="text-section text-gray-900">Access Not Found</h1>
             <p className="mt-4 text-gray-500">
               You don't have access to {product.name}. Would you like to purchase it?
             </p>
@@ -183,7 +183,7 @@ export default function MemberDownload() {
         {/* Back to hub */}
         <Link
           to="/members"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-white mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 mb-6 transition-colors"
         >
           <ArrowLeft size={16} />
           Back to My Hub
@@ -207,7 +207,7 @@ export default function MemberDownload() {
                 </div>
                 <div>
                   <span className="badge badge-gold text-xs capitalize">{product.type}</span>
-                  <h1 className="text-2xl font-bold text-white">{product.name}</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
                 </div>
               </div>
 
@@ -215,7 +215,7 @@ export default function MemberDownload() {
 
               {/* Download Files */}
               <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Download size={18} className="text-gold-500" />
                   Your Downloads
                 </h2>
@@ -233,7 +233,7 @@ export default function MemberDownload() {
                           <FileText size={24} className="text-gold-500" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
                             {file.name}
                           </h3>
                           {file.description && (
@@ -253,7 +253,7 @@ export default function MemberDownload() {
               {/* Tips for getting the most out of it */}
               {product.tips && product.tips.length > 0 && (
                 <div className="mt-8 pt-8 border-t border-gray-200">
-                  <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <CheckCircle size={18} className="text-success-400" />
                     Tips for Getting the Most Out of This
                   </h2>
@@ -292,7 +292,7 @@ export default function MemberDownload() {
                   <CheckCircle size={20} className="text-success-400" />
                 </div>
                 <div>
-                  <p className="font-semibold text-white">Access Granted</p>
+                  <p className="font-semibold text-gray-900">Access Granted</p>
                   <p className="text-xs text-gray-500">Lifetime access</p>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function MemberDownload() {
 
             {/* Need Help */}
             <div className="glass-card p-6 mt-6">
-              <h3 className="font-semibold text-white mb-3">Need Help?</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Need Help?</h3>
               <p className="text-sm text-gray-500 mb-4">
                 Having trouble with your download? Contact support and we'll help you out.
               </p>

@@ -38,7 +38,7 @@ export default function PAIDSWorkbookProduct() {
                 Implementation Workbook
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 PAIDS Framework{' '}
                 <span className="text-gradient-gold">Workbook</span>
               </h1>
@@ -119,7 +119,7 @@ export default function PAIDSWorkbookProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">The Framework</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               5 Pillars of Creator <span className="text-gradient-gold">Income</span>
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -140,7 +140,7 @@ export default function PAIDSWorkbookProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold text-2xl mx-auto mb-4">
                   {pillar.letter}
                 </div>
-                <h3 className="font-semibold text-white mb-2">{pillar.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{pillar.title}</h3>
                 <p className="text-sm text-gray-500">{pillar.desc}</p>
               </motion.div>
             ))}
@@ -163,7 +163,7 @@ export default function PAIDSWorkbookProduct() {
               <CheckCircle size={12} className="mr-1" />
               What's Included
             </span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Everything You Need to <span className="text-gradient-gold">Implement PAIDS</span>
             </h2>
           </motion.div>
@@ -190,7 +190,7 @@ export default function PAIDSWorkbookProduct() {
                     <CheckCircle className="text-success-400" size={20} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{item.title}</h3>
+                    <h3 className="font-semibold text-gray-900">{item.title}</h3>
                     <p className="mt-1 text-sm text-gray-500">{item.desc}</p>
                   </div>
                 </div>
@@ -209,7 +209,7 @@ export default function PAIDSWorkbookProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 text-center"
           >
-            <h2 className="text-section text-white mb-6">
+            <h2 className="text-section text-gray-900 mb-6">
               Creators Using PAIDS Have Generated{' '}
               <span className="text-gradient-gold">Over $2M</span>
             </h2>
@@ -239,7 +239,7 @@ export default function PAIDSWorkbookProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Success Stories</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Real Results from <span className="text-gradient-gold">Real Creators</span>
             </h2>
           </motion.div>
@@ -275,7 +275,7 @@ export default function PAIDSWorkbookProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -297,7 +297,7 @@ export default function PAIDSWorkbookProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Build Multiple Income Streams{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>

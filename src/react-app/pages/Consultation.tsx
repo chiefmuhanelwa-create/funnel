@@ -72,7 +72,7 @@ export default function Consultation() {
             <div className="w-20 h-20 rounded-full bg-success-500/20 flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="text-success-400" size={40} />
             </div>
-            <h1 className="text-section text-white mb-4">
+            <h1 className="text-section text-gray-900 mb-4">
               Application <span className="text-gradient-gold">Received!</span>
             </h1>
             <p className="text-gray-500 max-w-lg mx-auto mb-8">
@@ -81,7 +81,7 @@ export default function Consultation() {
             </p>
             <div className="glass-card p-4 mb-8 inline-block">
               <p className="text-sm text-gray-500">
-                Check your inbox for a confirmation email at <strong className="text-white">{formData.email}</strong>
+                Check your inbox for a confirmation email at <strong className="text-gray-900">{formData.email}</strong>
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -104,7 +104,7 @@ export default function Consultation() {
       <div className="container-content pt-6">
         <Link
           to="/products/coaching"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm"
         >
           <ArrowLeft size={16} />
           Back to Coaching
@@ -123,7 +123,7 @@ export default function Consultation() {
                 <Calendar size={12} className="mr-1" />
                 Book Your Session
               </span>
-              <h1 className="text-section md:text-section-lg text-white">
+              <h1 className="text-section md:text-section-lg text-gray-900">
                 Strategy Call <span className="text-gradient-gold">Application</span>
               </h1>
               <p className="mt-4 text-gray-500 max-w-xl mx-auto">
@@ -147,7 +147,7 @@ export default function Consultation() {
               className="lg:col-span-2"
             >
               <form onSubmit={handleSubmit} className="glass-card p-6 md:p-8">
-                <h2 className="text-xl font-semibold text-white mb-6">Your Information</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Your Information</h2>
 
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div>
@@ -203,7 +203,7 @@ export default function Consultation() {
 
                 <div className="divider my-8" />
 
-                <h2 className="text-xl font-semibold text-white mb-6">About Your Business</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">About Your Business</h2>
 
                 <div className="mb-6">
                   <label className="label">Current Status *</label>
@@ -327,7 +327,7 @@ export default function Consultation() {
             >
               {/* What to Expect */}
               <div className="glass-card p-6">
-                <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Calendar size={18} className="text-gold-500" />
                   What to Expect
                 </h3>
@@ -350,7 +350,7 @@ export default function Consultation() {
 
               {/* Investment */}
               <div className="glass-card p-6">
-                <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Target size={18} className="text-gold-500" />
                   Investment
                 </h3>
@@ -365,7 +365,7 @@ export default function Consultation() {
 
               {/* Questions */}
               <div className="glass-card p-6">
-                <h3 className="font-semibold text-white mb-4">Have Questions?</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">Have Questions?</h3>
                 <p className="text-sm text-gray-500 mb-4">
                   Email us at{' '}
                   <a

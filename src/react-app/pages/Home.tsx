@@ -3,11 +3,12 @@ import Hero from '../components/Hero';
 
 // Lazy load below-fold sections
 const ProblemAgitateSection = lazy(() => import('../components/ProblemAgitateSection'));
+const VideoShowcase = lazy(() => import('../components/VideoShowcase'));
 const About = lazy(() => import('../components/About'));
 
 // Fallback maintains scroll position
 function SectionFallback() {
-  return <div className="h-screen" />;
+  return <div className="min-h-[50vh]" />;
 }
 
 export default function Home() {
@@ -19,6 +20,11 @@ export default function Home() {
       {/* Below-fold sections wrapped in Suspense */}
       <Suspense fallback={<SectionFallback />}>
         <ProblemAgitateSection />
+      </Suspense>
+
+      {/* META Event Video Showcase */}
+      <Suspense fallback={<SectionFallback />}>
+        <VideoShowcase />
       </Suspense>
 
       <Suspense fallback={<SectionFallback />}>

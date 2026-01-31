@@ -41,7 +41,7 @@ export default function InfluencersCodeProduct() {
                 Digital eBook
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 The Influencer's{' '}
                 <span className="text-gradient-gold">Code</span>
               </h1>
@@ -122,7 +122,7 @@ export default function InfluencersCodeProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">What's Inside</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               8 Chapters to <span className="text-gradient-gold">Transform</span> Your Influence
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -145,7 +145,7 @@ export default function InfluencersCodeProduct() {
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{chapter.title}</h3>
+                    <h3 className="font-semibold text-gray-900">{chapter.title}</h3>
                     <p className="mt-1 text-sm text-gray-500">{chapter.desc}</p>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export default function InfluencersCodeProduct() {
               <TrendingUp size={12} className="mr-1" />
               Results You'll Get
             </span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Why Creators Love <span className="text-gradient-gold">This Book</span>
             </h2>
           </motion.div>
@@ -192,7 +192,7 @@ export default function InfluencersCodeProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
                   <benefit.icon className="text-gold-500" size={28} />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{benefit.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
                 <p className="text-sm text-gray-500">{benefit.desc}</p>
               </motion.div>
             ))}
@@ -210,7 +210,7 @@ export default function InfluencersCodeProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Reader Reviews</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               What Readers Are <span className="text-gradient-gold">Saying</span>
             </h2>
           </motion.div>
@@ -246,7 +246,7 @@ export default function InfluencersCodeProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -268,7 +268,7 @@ export default function InfluencersCodeProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Start Your Influencer Journey{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>

@@ -73,7 +73,7 @@ export default function StarterKitProduct() {
                 Limited Time: 66% Off
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 Contentpreneur{' '}
                 <span className="text-gradient-gold">Starter Kit</span>
               </h1>
@@ -168,7 +168,7 @@ export default function StarterKitProduct() {
                   />
                   <div className="absolute bottom-4 left-4 right-4">
                     <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
-                      <span className="text-white font-semibold">9-Module Video Course</span>
+                      <span className="text-gray-900 font-semibold">9-Module Video Course</span>
                     </div>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function StarterKitProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Course Curriculum</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               What's Inside the <span className="text-gradient-gold">Starter Kit</span>
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -211,7 +211,7 @@ export default function StarterKitProduct() {
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{module.title}</h3>
+                    <h3 className="font-semibold text-gray-900">{module.title}</h3>
                     <p className="mt-1 text-sm text-gray-500">{module.desc}</p>
                   </div>
                 </div>
@@ -236,7 +236,7 @@ export default function StarterKitProduct() {
               <Gift size={12} className="mr-1" />
               Included Free
             </span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Bonus Resources <span className="text-gradient-gold">(Worth $97)</span>
             </h2>
           </motion.div>
@@ -262,7 +262,7 @@ export default function StarterKitProduct() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-white">{bonus.title}</h3>
+                      <h3 className="font-semibold text-gray-900">{bonus.title}</h3>
                       <span className="text-xs text-gray-400">({bonus.value} value)</span>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">{bonus.desc}</p>
@@ -284,7 +284,7 @@ export default function StarterKitProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Success Stories</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Real Results from <span className="text-gradient-gold">Real Creators</span>
             </h2>
           </motion.div>
@@ -320,7 +320,7 @@ export default function StarterKitProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -341,7 +341,7 @@ export default function StarterKitProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">FAQ</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Common <span className="text-gradient-gold">Questions</span>
             </h2>
           </motion.div>
@@ -373,7 +373,7 @@ export default function StarterKitProduct() {
                 transition={{ delay: index * 0.05 }}
                 className="card"
               >
-                <h3 className="font-semibold text-white mb-2">{faq.q}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
                 <p className="text-gray-500 text-sm">{faq.a}</p>
               </motion.div>
             ))}
@@ -402,7 +402,7 @@ export default function StarterKitProduct() {
               </div>
             </div>
 
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Start Your Content Business{' '}
               <span className="text-gradient-gold">Today</span>
             </h2>

@@ -53,7 +53,7 @@ export default function Hero() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 to="/contentpreneur-starter-kit"
-                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-base sm:text-xl rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[56px] w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-base sm:text-xl rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[56px] w-full sm:w-auto"
               >
                 Get The Full System — $67
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

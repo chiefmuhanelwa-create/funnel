@@ -66,7 +66,7 @@ export default function ContentArsenalProduct() {
                 Template Pack
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 Content Arsenal{' '}
                 <span className="text-gradient-gold">Expansion Pack</span>
               </h1>
@@ -130,7 +130,7 @@ export default function ContentArsenalProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">What's Inside</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               6 Categories of <span className="text-gradient-gold">Power Tools</span>
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -151,7 +151,7 @@ export default function ContentArsenalProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-gold-500/20 flex items-center justify-center mb-4">
                   <template.icon className="text-gold-500" size={28} />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{template.name}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{template.name}</h3>
                 <p className="text-sm text-gold-400">{template.count}</p>
               </motion.div>
             ))}
@@ -174,7 +174,7 @@ export default function ContentArsenalProduct() {
                 <CheckCircle size={12} className="mr-1" />
                 Complete List
               </span>
-              <h2 className="text-section md:text-section-lg text-white">
+              <h2 className="text-section md:text-section-lg text-gray-900">
                 Everything You <span className="text-gradient-gold">Get</span>
               </h2>
               <p className="mt-4 text-gray-500">
@@ -197,7 +197,7 @@ export default function ContentArsenalProduct() {
               viewport={{ once: true }}
             >
               <div className="glass-card p-8 glow-gold">
-                <h3 className="text-xl font-semibold text-white mb-6 text-center">
+                <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">
                   Save 10+ Hours Every Week
                 </h3>
                 <div className="space-y-6">
@@ -207,11 +207,11 @@ export default function ContentArsenalProduct() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
-                      <div className="text-2xl font-bold text-white mb-1">10h</div>
+                      <div className="text-2xl font-bold text-gray-900 mb-1">10h</div>
                       <div className="text-xs text-gray-500">Weekly Savings</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
-                      <div className="text-2xl font-bold text-white mb-1">$0</div>
+                      <div className="text-2xl font-bold text-gray-900 mb-1">$0</div>
                       <div className="text-xs text-gray-500">Per Template</div>
                     </div>
                   </div>
@@ -235,7 +235,7 @@ export default function ContentArsenalProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Perfect For</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Who Is This <span className="text-gradient-gold">For?</span>
             </h2>
           </motion.div>
@@ -269,7 +269,7 @@ export default function ContentArsenalProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="text-gold-500" size={28} />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{item.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </motion.div>
             ))}
@@ -287,7 +287,7 @@ export default function ContentArsenalProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">User Feedback</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Creators Love <span className="text-gradient-gold">These Tools</span>
             </h2>
           </motion.div>
@@ -320,7 +320,7 @@ export default function ContentArsenalProduct() {
                 </div>
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="pt-4 border-t border-gray-200">
-                  <div className="font-semibold text-white">{testimonial.name}</div>
+                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
                   <div className="text-sm text-gray-500">{testimonial.role}</div>
                 </div>
               </motion.div>
@@ -340,7 +340,7 @@ export default function ContentArsenalProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Arm Your Content <span className="text-gradient-gold">Arsenal</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">

@@ -75,7 +75,7 @@ export default function StarterKitCourse() {
 
           {/* Course Header */}
           <div className="mb-10">
-            <h1 className="text-section md:text-section-lg text-white">
+            <h1 className="text-section md:text-section-lg text-gray-900">
               Contentpreneur <span className="text-gradient-gold">Starter Kit</span>
             </h1>
             <p className="mt-3 text-gray-500 max-w-2xl">
@@ -88,7 +88,7 @@ export default function StarterKitCourse() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-gray-500 text-sm">Contentpreneur Starter Kit Course - 9 Modules</p>
-                <h3 className="text-lg font-semibold text-white mt-1">Your Progress</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mt-1">Your Progress</h3>
               </div>
               <div className="text-right">
                 <span className="text-3xl font-bold text-gradient-gold">{progress}%</span>
@@ -104,7 +104,7 @@ export default function StarterKitCourse() {
 
           {/* Course Modules */}
           <div>
-            <h2 className="text-xl font-semibold text-white mb-6">Course Modules</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Course Modules</h2>
             <div className="space-y-3">
               {modules.map((module, index) => {
                 const isCompleted = completedModules.includes(module.id);
@@ -149,7 +149,7 @@ export default function StarterKitCourse() {
                             {module.duration}
                           </div>
                         </div>
-                        <h3 className="font-semibold text-white group-hover:text-gold-500 transition-colors">
+                        <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
                           {module.title}
                         </h3>
                         <p className="text-sm text-gray-500 mt-1 line-clamp-2">
@@ -161,7 +161,7 @@ export default function StarterKitCourse() {
                       <div className="shrink-0 self-center">
                         <ArrowRight
                           size={18}
-                          className="text-white/20 group-hover:text-gold-500 group-hover:translate-x-1 transition-all"
+                          className="text-gray-900/20 group-hover:text-gold-500 group-hover:translate-x-1 transition-all"
                         />
                       </div>
                     </div>
@@ -254,7 +254,7 @@ export default function StarterKitCourse() {
                         {currentModule?.duration}
                       </div>
                     </div>
-                    <h1 className="text-2xl font-bold text-white">
+                    <h1 className="text-2xl font-bold text-gray-900">
                       {currentModule?.title}
                     </h1>
                     <p className="mt-3 text-gray-500">{currentModule?.description}</p>
@@ -277,7 +277,7 @@ export default function StarterKitCourse() {
 
                 {/* Resources */}
                 <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="font-semibold text-white mb-4">Course Resources</h3>
+                  <h3 className="font-semibold text-gray-900 mb-4">Course Resources</h3>
                   <div className="space-y-2">
                     <a
                       href={DOCUMENTS.paidsFrameworkWorkbook}
@@ -286,7 +286,7 @@ export default function StarterKitCourse() {
                       className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-gray-600 group-hover:text-white transition-colors">
+                      <span className="font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
                         PAIDS Framework Workbook
                       </span>
                       <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
@@ -298,7 +298,7 @@ export default function StarterKitCourse() {
                       className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
                     >
                       <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-gray-600 group-hover:text-white transition-colors">
+                      <span className="font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
                         Niche Finder Workbook
                       </span>
                       <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
@@ -332,7 +332,7 @@ export default function StarterKitCourse() {
           {/* Sidebar - Module List */}
           <div className="lg:col-span-1">
             <div className="glass-card p-5 sticky top-24">
-              <h2 className="font-semibold text-white mb-4">
+              <h2 className="font-semibold text-gray-900 mb-4">
                 All Modules
               </h2>
 

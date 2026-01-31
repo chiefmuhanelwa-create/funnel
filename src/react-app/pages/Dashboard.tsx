@@ -33,7 +33,7 @@ export default function Dashboard() {
           {/* Header */}
           <div className="card mb-8">
             <div className="flex items-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-600 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-600 to-purple-600 flex items-center justify-center text-gray-900 text-2xl font-bold">
                 {userName.charAt(0).toUpperCase()}
               </div>
               <div className="ml-6">

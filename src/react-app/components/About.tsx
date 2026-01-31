@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, ArrowRight } from 'lucide-react';
+import { IMAGES } from '../config/assets';
 
 export default function About() {
   return (
@@ -36,7 +37,7 @@ export default function About() {
             <div className="relative h-full rounded-3xl border border-gray-200 shadow-2xl overflow-hidden bg-white">
               {/* 3. Image */}
               <img
-                src="/images/about-mrnochill.jpg"
+                src={IMAGES.heroImage}
                 alt="MN - Mr NoChill - Contentpreneur"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -60,7 +61,7 @@ export default function About() {
             <div className="absolute -inset-2 bg-gradient-to-r from-red-100/50 to-orange-100/50 rounded-2xl md:rounded-3xl blur-xl" />
             <div className="relative bg-white border-2 border-red-200 p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-sm">
               <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                Let me tell you where I started. I dropped out of university twice. I slept on bathroom floors because I couldn't afford rent. I built a following of over 3 million people... and still couldn't pay my bills.
+                Let me tell you where I started. I dropped out of university twice. I slept on bathroom floors for months because I couldn't afford rent. I built a following of over 3 million people... and still couldn't pay my bills.
               </p>
               <p className="text-gray-500 text-base md:text-lg leading-relaxed mt-4">
                 Followers don't pay rent. Engagement doesn't buy groceries. I learned this the hard way.
@@ -103,7 +104,7 @@ export default function About() {
                   'Digital and physical products selling daily',
                   'Digital courses with thousands of students',
                   'An email list of 100K+ subscribers',
-                  'Brand partnerships with major companies',
+                  'Brand partnerships with Netflix, Samsung, Coca-Cola & 50+ more',
                   '5 separate income streams',
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -116,7 +117,43 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Section 4: PAIDS Framework Highlight */}
+        {/* Section 4: Achievement Photo - With Vusi Thembekwayo */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto mb-12 md:mb-16"
+        >
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            {/* Photo */}
+            <div className="relative">
+              <div className="absolute -inset-2 bg-gradient-to-r from-amber-200/40 to-orange-200/40 rounded-2xl blur-xl" />
+              <div className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+                <img
+                  src={IMAGES.vusiPhoto}
+                  alt="MN with Vusi Thembekwayo - Africa's Top Business Speaker"
+                  className="w-full aspect-[4/3] object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Caption */}
+            <div className="text-center md:text-left">
+              <p className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
+                "The people you surround yourself with determine your success"
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                With Vusi Thembekwayo—Africa's top business speaker and a mentor who taught me that your network is your net worth. From sleeping on bathroom floors to sharing stages with legends.
+              </p>
+              <p className="mt-4 text-sm text-amber-600 font-semibold">
+                The journey continues. The frameworks multiply. The impact compounds.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Section 5: PAIDS Framework Highlight */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,10 +167,13 @@ export default function About() {
             <p className="text-xl md:text-2xl text-amber-700 font-medium">
               <span className="font-black">P</span>roducts • <span className="font-black">A</span>ds/Affiliates • <span className="font-black">I</span>nformation • <span className="font-black">D</span>eals • <span className="font-black">S</span>ervices
             </p>
+            <p className="mt-4 text-gray-600">
+              The exact 5-stream income system that took me from broke to building generational wealth.
+            </p>
           </div>
         </motion.div>
 
-        {/* Section 5: Mission Statement */}
+        {/* Section 6: Mission Statement */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,9 +183,13 @@ export default function About() {
           <h3 className="text-3xl md:text-4xl font-black text-gray-900">
             Building For Children's Children
           </h3>
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            Proverbs 13:22 says "A good man leaves an inheritance to his children's children."
+            This isn't about getting rich—it's about building systems that outlive us.
+          </p>
         </motion.div>
 
-        {/* Section 6: Final CTA Card */}
+        {/* Section 7: Final CTA Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -167,11 +211,15 @@ export default function About() {
               {/* CTA Button */}
               <Link
                 to="/contentpreneur-starter-kit"
-                className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xl md:text-2xl rounded-2xl shadow-[0_8px_50px_rgba(245,158,11,0.4)] hover:shadow-[0_8px_60px_rgba(245,158,11,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[64px]"
+                className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-xl md:text-2xl rounded-2xl shadow-[0_8px_50px_rgba(245,158,11,0.4)] hover:shadow-[0_8px_60px_rgba(245,158,11,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-h-[64px]"
               >
                 Start Your Journey Now
                 <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
               </Link>
+
+              <p className="mt-4 text-gray-500">
+                Get the full system for $67 — Instant Access
+              </p>
             </div>
           </div>
         </motion.div>

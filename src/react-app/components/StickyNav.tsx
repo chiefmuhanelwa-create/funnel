@@ -73,7 +73,7 @@ export default function StickyNav() {
               /* Member Login for unauthenticated users */
               <Link
                 to="/members"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 rounded-full text-white font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 rounded-full text-gray-900 font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md"
               >
                 <User size={18} />
                 Member Login
@@ -121,7 +121,7 @@ export default function StickyNav() {
                   <div className="text-center py-2">
                     <Link
                       to="/members"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 rounded-full text-white font-medium transition-all"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 rounded-full text-gray-900 font-medium transition-all"
                     >
                       <User size={18} />
                       Member Login

@@ -58,7 +58,7 @@ export default function CoachingProduct() {
                 Limited Availability
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 1-on-1 Strategy Call with{' '}
                 <span className="text-gradient-gold">Mr. NoChill</span>
               </h1>
@@ -115,7 +115,7 @@ export default function CoachingProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">What's Included</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               More Than Just a <span className="text-gradient-gold">Call</span>
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -136,7 +136,7 @@ export default function CoachingProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="text-gold-500" size={28} />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{item.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </motion.div>
             ))}
@@ -159,7 +159,7 @@ export default function CoachingProduct() {
                 <Target size={12} className="mr-1" />
                 Session Focus
               </span>
-              <h2 className="text-section md:text-section-lg text-white">
+              <h2 className="text-section md:text-section-lg text-gray-900">
                 We'll Cover <span className="text-gradient-gold">Everything</span>
               </h2>
               <p className="mt-4 text-gray-500">
@@ -190,7 +190,7 @@ export default function CoachingProduct() {
               viewport={{ once: true }}
             >
               <div className="glass-card p-8">
-                <h3 className="text-xl font-semibold text-white mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-6">
                   This is Perfect For You If:
                 </h3>
                 <ul className="space-y-4">
@@ -219,7 +219,7 @@ export default function CoachingProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Client Results</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Transformation <span className="text-gradient-gold">Stories</span>
             </h2>
           </motion.div>
@@ -255,7 +255,7 @@ export default function CoachingProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -275,7 +275,7 @@ export default function CoachingProduct() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-section text-white">
+            <h2 className="text-section text-gray-900">
               Frequently Asked <span className="text-gradient-gold">Questions</span>
             </h2>
           </motion.div>
@@ -307,7 +307,7 @@ export default function CoachingProduct() {
                 transition={{ delay: index * 0.05 }}
                 className="card"
               >
-                <h3 className="font-semibold text-white mb-2">{faq.q}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-gray-500">{faq.a}</p>
               </motion.div>
             ))}
@@ -326,7 +326,7 @@ export default function CoachingProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Ready to <span className="text-gradient-gold">Level Up?</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">

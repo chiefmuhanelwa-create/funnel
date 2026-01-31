@@ -37,7 +37,7 @@ export default function TaxGuideProduct() {
                 SA Creator Tax Guide
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 Tax Guide for{' '}
                 <span className="text-gradient-gold">Contentpreneurs</span>
               </h1>
@@ -118,7 +118,7 @@ export default function TaxGuideProduct() {
             className="glass-card p-10 text-center"
           >
             <AlertTriangle size={48} className="text-warning-400 mx-auto mb-6" />
-            <h2 className="text-section text-white mb-4">
+            <h2 className="text-section text-gray-900 mb-4">
               Are You Tax Compliant as a <span className="text-gradient-gold">Content Creator?</span>
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
@@ -153,7 +153,7 @@ export default function TaxGuideProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">What's Inside</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Everything You Need for <span className="text-gradient-gold">Tax Compliance</span>
             </h2>
           </motion.div>
@@ -173,7 +173,7 @@ export default function TaxGuideProduct() {
                     <topic.icon size={24} className="text-gray-900" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{topic.title}</h3>
+                    <h3 className="font-semibold text-gray-900">{topic.title}</h3>
                     <p className="mt-1 text-sm text-gray-500">{topic.desc}</p>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function TaxGuideProduct() {
             className="mt-12 max-w-4xl mx-auto"
           >
             <div className="glass-card p-6">
-              <h3 className="font-semibold text-white mb-4">Also Includes:</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">Also Includes:</h3>
               <div className="grid md:grid-cols-2 gap-3">
                 {[
                   'Complete VDP (Voluntary Disclosure) walkthrough',
@@ -219,7 +219,7 @@ export default function TaxGuideProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Success Stories</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Creators Who Got <span className="text-gradient-gold">Tax Compliant</span>
             </h2>
           </motion.div>
@@ -255,7 +255,7 @@ export default function TaxGuideProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -277,7 +277,7 @@ export default function TaxGuideProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Get Tax Compliant <span className="text-gradient-gold">Today</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">

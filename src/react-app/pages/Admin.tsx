@@ -267,7 +267,7 @@ export default function Admin() {
       <div className="min-h-screen flex items-center justify-center bg-white pt-20">
         <div className="glass-card max-w-md text-center p-8">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
+          <h2 className="mt-4 text-2xl font-bold text-gray-900">Access Denied</h2>
           <p className="mt-2 text-gray-500">
             You don't have permission to access the admin panel.
           </p>
@@ -279,7 +279,7 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-white pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-white mb-8">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8">
@@ -295,7 +295,7 @@ export default function Admin() {
               className={`flex items-center px-4 py-2 rounded-xl font-medium transition ${
                 activeTab === tab.key
                   ? 'bg-gold-500 text-gray-900'
-                  : 'bg-gray-100 text-white hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
               }`}
             >
               <tab.icon className="mr-2" size={20} />
@@ -321,7 +321,7 @@ export default function Admin() {
           <div className="space-y-6">
             {/* Upload Form */}
             <div className="glass-card p-6">
-              <h2 className="text-xl font-bold text-white mb-4">Upload Files</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Upload Files</h2>
               <div className="grid md:grid-cols-3 gap-4 mb-4">
                 <div>
                   <label className="label">File Type</label>
@@ -410,7 +410,7 @@ export default function Admin() {
 
             {/* Files List */}
             <div className="glass-card p-6">
-              <h2 className="text-xl font-bold text-white mb-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
                 Uploaded Files ({files.length})
               </h2>
               {isLoading ? (
@@ -440,7 +440,7 @@ export default function Admin() {
                             <div className="flex items-center gap-3">
                               {getFileIcon(file.pathname)}
                               <div>
-                                <p className="text-white font-medium text-sm truncate max-w-xs">
+                                <p className="text-gray-900 font-medium text-sm truncate max-w-xs">
                                   {file.pathname.split('/').pop()}
                                 </p>
                                 <p className="text-gray-400 text-xs">{file.pathname}</p>
@@ -494,24 +494,24 @@ export default function Admin() {
 
             {/* Usage Instructions */}
             <div className="glass-card p-6">
-              <h2 className="text-xl font-bold text-white mb-4">How to Use Files</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">How to Use Files</h2>
               <div className="space-y-4 text-sm text-gray-600">
                 <div>
-                  <h3 className="font-medium text-white mb-1">Hero Images:</h3>
+                  <h3 className="font-medium text-gray-900 mb-1">Hero Images:</h3>
                   <p>
                     Upload to <code className="text-gold-400">images/</code> folder, then use URL in
                     Hero.tsx component.
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-white mb-1">PDFs (eBooks, Workbooks):</h3>
+                  <h3 className="font-medium text-gray-900 mb-1">PDFs (eBooks, Workbooks):</h3>
                   <p>
                     Upload to <code className="text-gold-400">books/</code> folder. Update product
                     links in Members.tsx to point to the URL.
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-white mb-1">Course Videos:</h3>
+                  <h3 className="font-medium text-gray-900 mb-1">Course Videos:</h3>
                   <p>
                     Upload to <code className="text-gold-400">videos/</code> folder. Add video URLs
                     to product_files table in database.
@@ -525,7 +525,7 @@ export default function Admin() {
         {/* Media Tab */}
         {activeTab === 'media' && (
           <div className="glass-card p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Media Library</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Media Library</h2>
             {isLoading ? (
               <div className="text-center py-8">
                 <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
@@ -546,7 +546,7 @@ export default function Admin() {
                   <tbody>
                     {media.map((item) => (
                       <tr key={item.id} className="border-b border-white/5 hover:bg-gray-50">
-                        <td className="py-3 px-4 text-white">{item.title}</td>
+                        <td className="py-3 px-4 text-gray-900">{item.title}</td>
                         <td className="py-3 px-4 text-gray-500 capitalize">{item.type}</td>
                         <td className="py-3 px-4 text-gray-500">{item.category || '-'}</td>
                         <td className="py-3 px-4">
@@ -572,7 +572,7 @@ export default function Admin() {
         {/* Contacts Tab */}
         {activeTab === 'contacts' && (
           <div className="glass-card p-6">
-            <h2 className="text-xl font-bold text-white mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               Email Subscribers ({contacts.length})
             </h2>
             {isLoading ? (
@@ -595,7 +595,7 @@ export default function Admin() {
                   <tbody>
                     {contacts.map((contact) => (
                       <tr key={contact.id} className="border-b border-white/5 hover:bg-gray-50">
-                        <td className="py-3 px-4 text-white">{contact.email}</td>
+                        <td className="py-3 px-4 text-gray-900">{contact.email}</td>
                         <td className="py-3 px-4 text-gray-500">{contact.first_name || '-'}</td>
                         <td className="py-3 px-4 text-gray-500">{contact.lead_magnet || '-'}</td>
                         <td className="py-3 px-4 text-gray-500">
@@ -613,7 +613,7 @@ export default function Admin() {
         {/* Orders Tab */}
         {activeTab === 'orders' && (
           <div className="glass-card p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Orders ({orders.length})</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Orders ({orders.length})</h2>
             {isLoading ? (
               <div className="text-center py-8">
                 <Loader2 className="w-8 h-8 text-gold-500 animate-spin mx-auto" />
@@ -635,11 +635,11 @@ export default function Admin() {
                   <tbody>
                     {orders.map((order) => (
                       <tr key={order.id} className="border-b border-white/5 hover:bg-gray-50">
-                        <td className="py-3 px-4 font-mono text-sm text-white">
+                        <td className="py-3 px-4 font-mono text-sm text-gray-900">
                           {order.order_number}
                         </td>
                         <td className="py-3 px-4 text-gray-500">{order.customer_email}</td>
-                        <td className="py-3 px-4 text-white">
+                        <td className="py-3 px-4 text-gray-900">
                           {order.currency === 'ZAR' ? 'R' : '$'}
                           {(order.total_amount_cents / 100).toFixed(2)}
                         </td>

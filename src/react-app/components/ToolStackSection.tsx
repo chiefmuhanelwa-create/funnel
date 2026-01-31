@@ -96,7 +96,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900">
             The NoChill <span className="text-gradient-gold">Tool Stack</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -123,10 +123,10 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                        <IconComponent size={28} className="text-white" />
+                        <IconComponent size={28} className="text-gray-900" />
                       </div>
                       <div>
-                        <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-white">
+                        <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-gray-900">
                           {section.title}
                         </h3>
                         <p className="text-sm md:text-base text-blue-200 mt-1">
@@ -210,7 +210,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
             viewport={{ once: true }}
             className="mt-16 md:mt-20 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 text-center"
           >
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-4">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4">
               Want My Complete Setup?
             </h3>
             <p className="text-gray-500 max-w-xl mx-auto mb-8">

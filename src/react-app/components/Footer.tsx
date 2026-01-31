@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="flex justify-center mb-8">
             <Link
               to="/members"
-              className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-amber-500 hover:bg-amber-600 rounded-xl md:rounded-2xl text-white font-semibold text-sm md:text-base transition-all duration-300 min-h-[44px]"
+              className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-amber-500 hover:bg-amber-600 rounded-xl md:rounded-2xl text-gray-900 font-semibold text-sm md:text-base transition-all duration-300 min-h-[44px]"
             >
               <LogIn size={18} />
               Member Login

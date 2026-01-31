@@ -5,6 +5,7 @@ import { loadAnalytics } from './utils/loadAnalytics';
 // Components
 import StickyNav from './components/StickyNav';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Public pages - eagerly loaded
 import Home from './pages/Home';
@@ -57,6 +58,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <ScrollToTop />
       <StickyNav />
       <main className="flex-1">
         <Routes>

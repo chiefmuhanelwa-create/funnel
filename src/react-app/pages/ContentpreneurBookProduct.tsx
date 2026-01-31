@@ -55,7 +55,7 @@ export default function ContentpreneurBookProduct() {
                 eBook + Physical Book
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 The Contentpreneur{' '}
                 <span className="text-gradient-gold">Guide</span>
               </h1>
@@ -148,7 +148,7 @@ export default function ContentpreneurBookProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">What's Inside</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               10 Chapters of <span className="text-gradient-gold">Pure Value</span>
             </h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -170,7 +170,7 @@ export default function ContentpreneurBookProduct() {
                   <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center text-gray-900 font-bold shrink-0">
                     {index + 1}
                   </div>
-                  <h3 className="font-semibold text-white">{chapter}</h3>
+                  <h3 className="font-semibold text-gray-900">{chapter}</h3>
                 </div>
               </motion.div>
             ))}
@@ -193,7 +193,7 @@ export default function ContentpreneurBookProduct() {
               <Package size={12} className="mr-1" />
               Bundle Benefits
             </span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Why Get <span className="text-gradient-gold">Both Versions?</span>
             </h2>
           </motion.div>
@@ -209,7 +209,7 @@ export default function ContentpreneurBookProduct() {
                 <div className="w-12 h-12 rounded-xl bg-accent-500/20 flex items-center justify-center">
                   <Zap className="text-accent-400" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-white">Digital eBook</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Digital eBook</h3>
               </div>
               <ul className="space-y-3">
                 {[
@@ -237,7 +237,7 @@ export default function ContentpreneurBookProduct() {
                 <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center">
                   <BookOpen className="text-gold-500" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-white">Physical Book</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Physical Book</h3>
               </div>
               <ul className="space-y-3">
                 {[
@@ -268,7 +268,7 @@ export default function ContentpreneurBookProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Reader Reviews</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               What Readers Are <span className="text-gradient-gold">Saying</span>
             </h2>
           </motion.div>
@@ -306,7 +306,7 @@ export default function ContentpreneurBookProduct() {
                 </div>
                 <p className="text-gray-600 mb-6 text-sm">"{testimonial.quote}"</p>
                 <div className="pt-4 border-t border-gray-200">
-                  <div className="font-semibold text-white">{testimonial.name}</div>
+                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
                   <div className="text-sm text-gray-500">{testimonial.role}</div>
                 </div>
               </motion.div>
@@ -328,17 +328,17 @@ export default function ContentpreneurBookProduct() {
               <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center">
                 <Truck className="text-gold-500" size={24} />
               </div>
-              <h3 className="text-xl font-semibold text-white">Shipping Information</h3>
+              <h3 className="text-xl font-semibold text-gray-900">Shipping Information</h3>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-medium text-white mb-2">South Africa</h4>
+                <h4 className="font-medium text-gray-900 mb-2">South Africa</h4>
                 <p className="text-sm text-gray-500">
                   Free shipping on all orders. Delivery within 5-7 business days.
                 </p>
               </div>
               <div>
-                <h4 className="font-medium text-white mb-2">International</h4>
+                <h4 className="font-medium text-gray-900 mb-2">International</h4>
                 <p className="text-sm text-gray-500">
                   Flat rate shipping available. Delivery within 10-14 business days.
                 </p>
@@ -362,7 +362,7 @@ export default function ContentpreneurBookProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Get the Complete <span className="text-gradient-gold">Package</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">

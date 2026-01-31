@@ -190,7 +190,7 @@ export default function PAIDSHub({ userOwnedProductKeys }: PAIDSHubProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900">
             Your <span className="text-gradient-gold">Monetization Hub</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
@@ -213,10 +213,10 @@ export default function PAIDSHub({ userOwnedProductKeys }: PAIDSHubProps) {
                 <div
                   className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center`}
                 >
-                  <category.icon size={28} className="text-white" />
+                  <category.icon size={28} className="text-gray-900" />
                 </div>
                 <div>
-                  <h3 className="text-xl md:text-2xl font-black text-white tracking-tight">
+                  <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
                     {category.letter} — {category.title}
                   </h3>
                   <p className="text-sm text-gray-500">{category.description}</p>
@@ -244,12 +244,12 @@ export default function PAIDSHub({ userOwnedProductKeys }: PAIDSHubProps) {
                         {/* Status Badge */}
                         <div className="absolute top-3 right-3">
                           {owned ? (
-                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold shadow-lg">
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-gray-900 text-xs font-bold shadow-lg">
                               <CheckCircle size={12} />
                               OWNED
                             </span>
                           ) : item.type === 'free' ? (
-                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold shadow-lg">
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-gray-900 text-xs font-bold shadow-lg">
                               FREE
                             </span>
                           ) : (

@@ -37,7 +37,7 @@ export default function ContentFoundationsProduct() {
                 4-Module Course
               </span>
 
-              <h1 className="text-hero md:text-hero-lg text-white leading-tight">
+              <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
                 Content{' '}
                 <span className="text-gradient-gold">Foundations</span>
               </h1>
@@ -130,7 +130,7 @@ export default function ContentFoundationsProduct() {
             className="glass-card p-10 text-center"
           >
             <Target size={48} className="text-gold-500 mx-auto mb-6" />
-            <h2 className="text-section text-white mb-4">
+            <h2 className="text-section text-gray-900 mb-4">
               This Course is <span className="text-gradient-gold">Perfect For You</span> If...
             </h2>
             <div className="mt-8 grid md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
@@ -162,7 +162,7 @@ export default function ContentFoundationsProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Course Curriculum</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               4 Modules to Build Your <span className="text-gradient-gold">Foundation</span>
             </h2>
           </motion.div>
@@ -182,7 +182,7 @@ export default function ContentFoundationsProduct() {
                     <module.icon size={28} className="text-gray-900" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-lg">{module.title}</h3>
+                    <h3 className="font-semibold text-gray-900 text-lg">{module.title}</h3>
                     <p className="mt-2 text-gray-500">{module.desc}</p>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default function ContentFoundationsProduct() {
               <CheckCircle size={12} className="mr-1" />
               By the End of This Course
             </span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               You'll Have <span className="text-gradient-gold">Complete Clarity</span>
             </h2>
           </motion.div>
@@ -227,7 +227,7 @@ export default function ContentFoundationsProduct() {
                 <div className="w-14 h-14 rounded-2xl bg-success-500/20 flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="text-success-400" size={28} />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{result.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{result.title}</h3>
                 <p className="text-sm text-gray-500">{result.desc}</p>
               </motion.div>
             ))}
@@ -245,7 +245,7 @@ export default function ContentFoundationsProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Success Stories</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Creators Who Started With <span className="text-gradient-gold">Foundations</span>
             </h2>
           </motion.div>
@@ -281,7 +281,7 @@ export default function ContentFoundationsProduct() {
                 <p className="text-gray-600 mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div>
-                    <div className="font-semibold text-white">{testimonial.name}</div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <span className="badge badge-success">{testimonial.result}</span>
@@ -302,7 +302,7 @@ export default function ContentFoundationsProduct() {
             className="text-center mb-16"
           >
             <span className="badge badge-gold mb-4">Choose Your Path</span>
-            <h2 className="text-section md:text-section-lg text-white">
+            <h2 className="text-section md:text-section-lg text-gray-900">
               Foundations vs <span className="text-gradient-gold">Full Starter Kit</span>
             </h2>
           </motion.div>
@@ -310,7 +310,7 @@ export default function ContentFoundationsProduct() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Foundations */}
             <div className="glass-card p-8">
-              <h3 className="text-xl font-bold text-white mb-2">Content Foundations</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Content Foundations</h3>
               <p className="text-gray-500 mb-4">Perfect for beginners</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$37</div>
               <ul className="space-y-3 mb-8">
@@ -331,7 +331,7 @@ export default function ContentFoundationsProduct() {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="badge badge-gold">BEST VALUE</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Contentpreneur Starter Kit</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Contentpreneur Starter Kit</h3>
               <p className="text-gray-500 mb-4">Complete system</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$67</div>
               <ul className="space-y-3 mb-8">
@@ -361,7 +361,7 @@ export default function ContentFoundationsProduct() {
             viewport={{ once: true }}
             className="glass-card p-10 md:p-14 text-center glow-gold-lg"
           >
-            <h2 className="text-section md:text-section-lg text-white mb-4">
+            <h2 className="text-section md:text-section-lg text-gray-900 mb-4">
               Build Your Foundation <span className="text-gradient-gold">Today</span>
             </h2>
             <p className="text-gray-500 mb-8 max-w-xl mx-auto">

@@ -35,7 +35,19 @@ export const IMAGES = {
   influencersCodeMockup: `${BLOB_BASE}/images/the-influencer-s-code-mockup--book-cover-.jpeg`,
 
   // Hero/Profile Images
-  heroImage: `${BLOB_BASE}/images/unnamed.jpg`,
+  heroImage: 'https://019bb654-d68c-7f4b-bdd4-908a2a75512e.mochausercontent.com/unnamed.jpg',
+
+  // Story/About Images
+  vusiPhoto: `${BLOB_BASE}/images/img-2566.jpg`,
+  aboutPhoto: `${BLOB_BASE}/images/unnamed.jpg`,
+} as const;
+
+// ============================================
+// FEATURED VIDEOS
+// ============================================
+export const VIDEOS = {
+  // META Event Speaking Video (June 2025)
+  metaEvent: `${BLOB_BASE}/videos/nochill-x-meta---28-june-2025-v2-mOUwfO6QILpGKHA2JtXQkaLtSgQp8M.mp4`,
 } as const;
 
 // ============================================

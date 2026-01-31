@@ -106,7 +106,7 @@ export default function Members() {
               <User size={28} className="text-gray-900" />
             </div>
 
-            <h1 className="text-section text-white">
+            <h1 className="text-section text-gray-900">
               Access Your <span className="text-gradient-gold">Content</span>
             </h1>
             <p className="mt-4 text-gray-500">
@@ -180,7 +180,7 @@ export default function Members() {
         >
           {/* Welcome header */}
           <div className="mb-10">
-            <h1 className="text-section text-white">
+            <h1 className="text-section text-gray-900">
               Welcome back{user ? `, ${user.name.split(' ')[0]}` : ''}!
             </h1>
             <p className="mt-2 text-gray-500">
@@ -218,7 +218,7 @@ export default function Members() {
                         </div>
                         <div className="flex-1">
                           <span className="badge badge-gold text-xs">{product.type}</span>
-                          <h3 className="mt-2 font-semibold text-white group-hover:text-gold-500 transition-colors">
+                          <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
                             {product.name}
                           </h3>
                           <p className="mt-1 text-sm text-gray-500">
@@ -239,7 +239,7 @@ export default function Members() {
                         </div>
                         <div className="flex-1">
                           <span className="badge badge-gold text-xs">{product.type}</span>
-                          <h3 className="mt-2 font-semibold text-white group-hover:text-gold-500 transition-colors">
+                          <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
                             {product.name}
                           </h3>
                           <p className="mt-1 text-sm text-gray-500">
@@ -260,7 +260,7 @@ export default function Members() {
 
           {/* Quick links */}
           <div className="mt-12 pt-8 border-t border-gray-200">
-            <h2 className="text-lg font-semibold text-white mb-4">Need help?</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Need help?</h2>
             <div className="flex flex-wrap gap-4">
               <a
                 href="mailto:support@contentpreneurhub.online"
