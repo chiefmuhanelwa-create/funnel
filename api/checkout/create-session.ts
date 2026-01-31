@@ -82,17 +82,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Invalid payment key format', step: 'env_check' });
   }
 
-  let sql: ReturnType<typeof neon>;
+  // Validate DATABASE_URL format
+  const dbUrlValid = databaseUrl.startsWith('postgres://') || databaseUrl.startsWith('postgresql://');
+  if (!dbUrlValid) {
+    console.error('Invalid DATABASE_URL format:', databaseUrl.substring(0, 20) + '...');
+    return res.status(500).json({
+      error: 'Invalid database URL format',
+      step: 'env_check',
+      hint: 'DATABASE_URL should start with postgres:// or postgresql://'
+    });
+  }
 
-  // Step 2: Connect to database
+  // Create SQL query function
+  const sql = neon(databaseUrl);
+
+  // Step 2: Test database connection with simple query
   try {
-    sql = neon(databaseUrl);
+    const testResult = await sql`SELECT 1 as connected`;
+    if (!testResult || testResult.length === 0) {
+      throw new Error('Connection test returned no results');
+    }
+    console.log('Database connection successful');
   } catch (error: any) {
-    console.error('Failed to create database connection:', error);
+    console.error('Database connection test failed:', error);
     return res.status(500).json({
       error: 'Database connection failed',
       step: 'db_connect',
-      message: error?.message
+      message: error?.message,
+      hint: 'Check DATABASE_URL in Vercel environment variables'
     });
   }
 
