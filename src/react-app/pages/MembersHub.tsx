@@ -4,210 +4,120 @@ import { motion } from 'framer-motion';
 import {
   Crown,
   Play,
-  BookOpen,
   FileText,
   Loader2,
   ArrowRight,
   Lock,
   CheckCircle,
-  Zap,
-  Target,
-  DollarSign,
-  Users,
-  Calendar,
-  Download,
+  LogOut,
+  Mail,
+  BookOpen,
+  Wrench,
   ExternalLink,
+  ChevronRight,
+  Sparkles,
+  Target,
+  Zap,
+  DollarSign,
   Settings,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
-import PAIDSHub from '../components/PAIDSHub';
-import ToolStackSection from '../components/ToolStackSection';
 
-// Admin emails that can access /admin
-const ADMIN_EMAILS = [
-  'info@nochill.co.za',
-  'ndivhuwo@nochill.co.za',
-  'chiefmuhanelwa@gmail.com',
-];
+// Admin emails
+const ADMIN_EMAILS = ['info@nochill.co.za', 'ndivhuwo@nochill.co.za', 'chiefmuhanelwa@gmail.com'];
 
-interface Product {
-  id: number;
-  key: string;
-  name: string;
-  description: string;
-  price_cents: number;
-  level: 'beginner' | 'intermediate' | 'advanced';
-  icon: React.ElementType;
-  accessLink: string;
-  purchaseLink: string;
-  features?: string[];
-}
-
-const PRODUCTS: Product[] = [
-  // Beginner Level
-  {
-    id: 1,
-    key: 'starter-kit',
+// Product definitions with access links
+const PRODUCTS = {
+  'starter-kit': {
     name: '9-Module Personal Branding Course',
-    description: 'Complete system to build your personal brand and monetize your content',
-    price_cents: 6700,
-    level: 'beginner',
+    description: 'Complete system to build and monetize your personal brand',
     icon: Play,
+    color: 'amber',
     accessLink: '/members/starter-kit',
-    purchaseLink: '/contentpreneur-starter-kit',
-    features: ['9 Video Modules', 'PAIDS Framework', 'Workbooks Included'],
   },
-  {
-    id: 10,
-    key: 'content-foundations',
-    name: '4-Module Content Creation Foundations',
-    description: 'Essential groundwork for building your authentic brand',
-    price_cents: 3700,
-    level: 'beginner',
-    icon: Target,
-    accessLink: '/members/content-foundations',
-    purchaseLink: '/products/content-foundations',
-    features: ['Self Reflection', 'SWOT Analysis', 'Value Alignment'],
-  },
-  {
-    id: 7,
-    key: 'niche-finder',
+  'niche-finder': {
     name: 'Niche Finder Workbook',
     description: 'Find your profitable niche in 90 minutes',
-    price_cents: 1700,
-    level: 'beginner',
-    icon: FileText,
+    icon: Target,
+    color: 'blue',
     accessLink: '/members/niche-finder',
-    purchaseLink: '/products/niche-finder',
   },
-  {
-    id: 8,
-    key: 'paids-workbook',
+  'paids-workbook': {
     name: 'PAIDS Framework Workbook',
-    description: 'Build 5 income streams in 30 days',
-    price_cents: 1700,
-    level: 'beginner',
+    description: 'Build 5 income streams step by step',
     icon: FileText,
+    color: 'green',
     accessLink: '/members/paids-workbook',
-    purchaseLink: '/products/paids-workbook',
   },
-  // Intermediate Level
-  {
-    id: 2,
-    key: 'influencers-code',
+  'content-foundations': {
+    name: 'Content Foundations Course',
+    description: 'Master the fundamentals of content creation',
+    icon: BookOpen,
+    color: 'purple',
+    accessLink: '/members/content-foundations',
+  },
+  'influencers-code': {
     name: "The Influencer's Code",
-    description: 'Complete blueprint from creator to influential personal brand',
-    price_cents: 1900,
-    level: 'intermediate',
-    icon: BookOpen,
+    description: 'Complete blueprint from creator to influential brand',
+    icon: Sparkles,
+    color: 'pink',
     accessLink: '/members/influencers-code',
-    purchaseLink: '/products/influencers-code',
-    features: ['13 Chapters', '3Es Formula', 'DARES Framework'],
   },
-  {
-    id: 6,
-    key: 'contentpreneur-book',
-    name: 'Contentpreneur Ebook + Physical Book',
-    description: 'The complete contentpreneur guide in digital and print',
-    price_cents: 2700,
-    level: 'intermediate',
-    icon: BookOpen,
-    accessLink: '/members/contentpreneur-book',
-    purchaseLink: '/products/contentpreneur-book',
-  },
-  {
-    id: 3,
-    key: 'content-arsenal',
-    name: 'Content Arsenal Expansion Pack',
-    description: 'Advanced content creation tools and templates',
-    price_cents: 3700,
-    level: 'intermediate',
-    icon: Zap,
-    accessLink: '/members/content-arsenal',
-    purchaseLink: '/products/content-arsenal',
-  },
-  {
-    id: 9,
-    key: 'tax-guide',
+  'tax-guide': {
     name: 'Tax Guide for Contentpreneurs',
-    description: 'SARS compliance guide for South African creators',
-    price_cents: 4700,
-    level: 'intermediate',
+    description: 'SARS compliance guide for SA creators',
     icon: FileText,
+    color: 'slate',
     accessLink: '/members/tax-guide',
-    purchaseLink: '/products/tax-guide',
-    features: ['VDP Process', '6 Tax Types', '35% Rule'],
   },
-  // Advanced Level
-  {
-    id: 5,
-    key: 'strategy-call',
-    name: '1:1 Coaching Session',
-    description: '60-minute personalized strategy call with Mr. NoChill',
-    price_cents: 150000,
-    level: 'advanced',
-    icon: Calendar,
-    accessLink: '/consultation',
-    purchaseLink: '/products/coaching',
-    features: ['90-Day Roadmap', 'Custom Strategy', 'Templates Included'],
-  },
-];
+} as const;
 
-const LEVEL_CONFIG = {
-  beginner: {
-    label: 'Beginner',
-    description: 'Perfect for newcomers',
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-200',
-    textColor: 'text-green-600',
-    iconBg: 'bg-green-100',
+// Tool Stack data
+const TOOL_STACK = {
+  thinking: {
+    title: 'POWER 1 — THINKING & STRATEGY',
+    subtitle: 'Where ideas, clarity and decisions come from',
+    tools: [
+      { name: 'ChatGPT', role: 'Brain', desc: 'Ideas, scripts, captions, strategy', icon: '🧠' },
+      { name: 'Claude', role: 'Writing Partner', desc: 'Long-form content, deep thinking', icon: '✍️' },
+      { name: 'Perplexity', role: 'Research', desc: 'Fast accurate data gathering', icon: '🔍' },
+      { name: 'Notion', role: 'Command Center', desc: 'Everything organized in one place', icon: '📋' },
+    ],
   },
-  intermediate: {
-    label: 'Intermediate',
-    description: 'For scaling creators',
-    bgColor: 'bg-amber-50',
-    borderColor: 'border-amber-200',
-    textColor: 'text-amber-600',
-    iconBg: 'bg-amber-100',
+  creation: {
+    title: 'POWER 2 — CONTENT CREATION',
+    subtitle: 'How I produce content at scale',
+    tools: [
+      { name: 'CapCut', role: 'Video Editor', desc: 'Fast mobile & desktop editing', icon: '🎬' },
+      { name: 'Canva', role: 'Graphics', desc: 'Thumbnails, posts, stories', icon: '🎨' },
+      { name: 'Descript', role: 'Audio/Video', desc: 'Podcast editing, transcription', icon: '🎙️' },
+    ],
   },
-  advanced: {
-    label: 'Advanced',
-    description: 'For established professionals',
-    bgColor: 'bg-purple-50',
-    borderColor: 'border-purple-200',
-    textColor: 'text-purple-600',
-    iconBg: 'bg-purple-100',
+  automation: {
+    title: 'POWER 3 — AUTOMATION & WORKFLOW',
+    subtitle: 'Systems that save 20+ hours per week',
+    tools: [
+      { name: 'Zapier', role: 'Automation', desc: 'Connect all your tools', icon: '⚡' },
+      { name: 'Later', role: 'Scheduling', desc: 'Social media scheduling', icon: '📅' },
+      { name: 'Slack', role: 'Communication', desc: 'Team coordination', icon: '💬' },
+    ],
   },
-};
-
-// Product mockup images/gradients
-const PRODUCT_IMAGES: Record<string, string> = {
-  'starter-kit': '/images/products/starter-kit.jpg',
-  'content-foundations': '/images/products/content-foundations.jpg',
-  'niche-finder': '/images/products/niche-finder.jpg',
-  'paids-workbook': '/images/products/paids-workbook.jpg',
-  'influencers-code': '/images/products/influencers-code.jpg',
-  'contentpreneur-book': '/images/products/contentpreneur-book.jpg',
-  'content-arsenal': '/images/products/content-arsenal.jpg',
-  'tax-guide': '/images/products/tax-guide.jpg',
-  'strategy-call': '/images/products/coaching.jpg',
+  monetization: {
+    title: 'POWER 4 — MONETIZATION & SALES',
+    subtitle: 'Where followers become income',
+    tools: [
+      { name: 'Gumroad', role: 'Digital Sales', desc: 'Sell courses & ebooks', icon: '💰' },
+      { name: 'Stripe', role: 'Payments', desc: 'Accept payments globally', icon: '💳' },
+      { name: 'ConvertKit', role: 'Email', desc: 'Build & nurture your list', icon: '📧' },
+    ],
+  },
 };
 
 export default function MembersHub() {
-  const {
-    isAuthenticated,
-    isLoading,
-    user,
-    hasAccessToProduct,
-    loginWithEmail,
-    logout,
-    emailAccess,
-  } = useMemberAccess();
-
+  const { isAuthenticated, isLoading, user, hasAccessToProduct, loginWithEmail, logout, emailAccess } = useMemberAccess();
   const [emailInput, setEmailInput] = useState('');
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
-  const [activeLevel, setActiveLevel] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
 
   const handleEmailCheck = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -215,185 +125,182 @@ export default function MembersHub() {
     setIsCheckingEmail(true);
 
     const result = await loginWithEmail(emailInput);
-
     if (!result.success) {
-      setEmailError(result.error || "No products found for this email. Make sure you're using the email you purchased with.");
+      setEmailError(result.error || 'No products found for this email.');
     }
-
     setIsCheckingEmail(false);
   };
 
-  // Get owned product keys
-  const ownedProductKeys = PRODUCTS.filter(p => hasAccessToProduct(p.key)).map(p => p.key);
-
-  // Check if user is admin
   const isAdmin = user && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const hasStarterKit = hasAccessToProduct('starter-kit');
 
-  // Filter products by level
-  const filteredProducts = activeLevel === 'all'
-    ? PRODUCTS
-    : PRODUCTS.filter(p => p.level === activeLevel);
+  // Get owned products
+  const ownedProducts = Object.entries(PRODUCTS).filter(([key]) => hasAccessToProduct(key));
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white pt-20">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto" />
-          <p className="mt-4 text-gray-500">Loading your hub...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
       </div>
     );
   }
 
-  // Login screen
+  // Login Screen
   if (!isAuthenticated && !emailAccess) {
     return (
-      <div className="min-h-screen bg-white pt-20">
-        <div className="container-tight py-16">
+      <div className="min-h-screen bg-gray-50 pt-20">
+        <div className="max-w-md mx-auto px-4 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card p-10 text-center"
+            className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8"
           >
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-gold flex items-center justify-center mb-6">
-              <Crown size={28} className="text-gray-900" />
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4">
+                <Crown size={28} className="text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900">Members Area</h1>
+              <p className="text-gray-500 mt-2">Access your purchased content</p>
             </div>
 
-            <h1 className="text-section text-gray-900">
-              Contentpreneur <span className="text-gradient-gold">Hub</span>
-            </h1>
-            <p className="mt-4 text-gray-600">
-              Access your courses, workbooks, and exclusive resources
-            </p>
+            <form onSubmit={handleEmailCheck}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Your Purchase Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
 
-            <div className="mt-10">
-              {/* Email Login */}
-              <form onSubmit={handleEmailCheck}>
-                <div className="text-left">
-                  <label className="label">Enter Your Purchase Email</label>
-                  <input
-                    type="email"
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    className="input"
-                    placeholder="you@example.com"
-                    required
-                  />
-                  <p className="mt-2 text-xs text-gray-400">
-                    Use the same email you used when purchasing
-                  </p>
-                </div>
+              {emailError && (
+                <p className="mt-3 text-sm text-red-600 bg-red-50 p-3 rounded-lg">{emailError}</p>
+              )}
 
-                {emailError && (
-                  <div className="mt-3 p-4 bg-error-500/10 border border-error-500/20 text-error-400 rounded-xl text-sm">
-                    {emailError}
-                  </div>
+              <button
+                type="submit"
+                disabled={isCheckingEmail}
+                className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isCheckingEmail ? (
+                  <>
+                    <Loader2 className="animate-spin" size={20} />
+                    Checking...
+                  </>
+                ) : (
+                  <>
+                    Access My Content
+                    <ArrowRight size={20} />
+                  </>
                 )}
+              </button>
+            </form>
 
-                <button
-                  type="submit"
-                  disabled={isCheckingEmail}
-                  className="mt-4 btn-primary w-full btn-lg"
-                >
-                  {isCheckingEmail ? (
-                    <span className="flex items-center justify-center">
-                      <Loader2 className="animate-spin mr-2" size={20} />
-                      Checking Access...
-                    </span>
-                  ) : (
-                    'Access My Purchases'
-                  )}
-                </button>
-              </form>
+            <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+              <p className="text-gray-500 text-sm">
+                Don't have access?{' '}
+                <Link to="/contentpreneur-starter-kit" className="text-amber-600 font-medium hover:text-amber-700">
+                  Get the Starter Kit
+                </Link>
+              </p>
             </div>
-
-            <div className="divider my-10" />
-
-            <p className="text-gray-500">
-              Don't have access yet?{' '}
-              <Link to="/contentpreneur-starter-kit" className="text-gold-500 font-semibold hover:text-gold-400">
-                Get the Starter Kit
-              </Link>
-            </p>
           </motion.div>
         </div>
       </div>
     );
   }
 
+  // Authenticated Dashboard
   return (
-    <div className="min-h-screen bg-white pt-20">
-      <div className="container-content py-12">
-        {/* Welcome Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
-              <Crown size={24} className="text-gray-900" />
-            </div>
-            <div>
-              <span className="badge badge-gold text-xs">Contentpreneur Hub</span>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Welcome Back{user ? `, ${user.name.split(' ')[0]}` : ''}!
-              </h1>
-            </div>
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Welcome back{user ? `, ${user.name.split('@')[0]}` : ''}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">{user?.email}</p>
           </div>
-          {user && (
-            <div className="flex items-center gap-4">
-              <p className="text-gray-400 text-sm">{user.email}</p>
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 bg-gold-500 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gold-400 transition-colors"
-                >
-                  <Settings size={16} />
-                  Admin Panel
-                </Link>
-              )}
-            </div>
-          )}
-        </motion.div>
+          <div className="flex items-center gap-3">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+              >
+                <Settings size={16} />
+                Admin
+              </Link>
+            )}
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          </div>
+        </div>
 
         {/* My Content Section */}
-        {ownedProductKeys.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-              <CheckCircle size={20} className="text-success-400" />
-              My Content
-            </h2>
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <CheckCircle className="text-green-500" size={20} />
+            My Content
+          </h2>
+
+          {ownedProducts.length === 0 ? (
+            <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
+              <Lock className="mx-auto text-gray-400 mb-3" size={40} />
+              <p className="text-gray-600">No products found for your account.</p>
+              <Link
+                to="/contentpreneur-starter-kit"
+                className="inline-block mt-4 text-amber-600 font-medium hover:text-amber-700"
+              >
+                Browse Products →
+              </Link>
+            </div>
+          ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {PRODUCTS.filter(p => hasAccessToProduct(p.key)).map((product, index) => {
-                const levelInfo = LEVEL_CONFIG[product.level];
+              {ownedProducts.map(([key, product]) => {
                 const IconComponent = product.icon;
+                const colorClasses = {
+                  amber: 'bg-amber-50 text-amber-600 border-amber-200',
+                  blue: 'bg-blue-50 text-blue-600 border-blue-200',
+                  green: 'bg-green-50 text-green-600 border-green-200',
+                  purple: 'bg-purple-50 text-purple-600 border-purple-200',
+                  pink: 'bg-pink-50 text-pink-600 border-pink-200',
+                  slate: 'bg-slate-50 text-slate-600 border-slate-200',
+                }[product.color];
 
                 return (
                   <motion.div
-                    key={product.key}
+                    key={key}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
                   >
                     <Link
                       to={product.accessLink}
-                      className="card card-hover block h-full group"
+                      className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-all group"
                     >
                       <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 rounded-xl ${levelInfo.iconBg} flex items-center justify-center shrink-0`}>
-                          <IconComponent size={24} className={levelInfo.textColor} />
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${colorClasses}`}>
+                          <IconComponent size={24} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors truncate">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
                             {product.name}
                           </h3>
-                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                            {product.description}
-                          </p>
-                          <span className="mt-3 inline-flex items-center text-gold-500 font-medium text-sm group-hover:gap-2 transition-all">
+                          <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+                          <span className="inline-flex items-center mt-3 text-amber-600 text-sm font-medium">
                             Access Now
-                            <ArrowRight size={16} className="ml-1" />
+                            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                           </span>
                         </div>
                       </div>
@@ -402,190 +309,106 @@ export default function MembersHub() {
                 );
               })}
             </div>
+          )}
+        </section>
+
+        {/* Tool Stack Section - Only for Starter Kit owners */}
+        {hasStarterKit && (
+          <section className="mb-12">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 text-white">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center">
+                  <Wrench size={24} className="text-gray-900" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">NoChill Tool Stack</h2>
+                  <p className="text-gray-400 text-sm">Your Affiliate Money Machine</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {Object.entries(TOOL_STACK).map(([key, section]) => (
+                  <div key={key} className="bg-white/5 rounded-xl p-5 border border-white/10">
+                    <h3 className="text-amber-400 font-semibold text-sm mb-1">{section.title}</h3>
+                    <p className="text-gray-400 text-xs mb-4">{section.subtitle}</p>
+
+                    <div className="space-y-3">
+                      {section.tools.map((tool) => (
+                        <div key={tool.name} className="flex items-center gap-3">
+                          <span className="text-2xl">{tool.icon}</span>
+                          <div>
+                            <p className="font-medium text-white text-sm">{tool.name}</p>
+                            <p className="text-gray-400 text-xs">{tool.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-6 text-center text-gray-400 text-sm">
+                These are the exact tools I use to run a content business generating multiple income streams.
+              </p>
+            </div>
           </section>
         )}
 
-        {/* Explore Resources Section */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Explore Resources</h2>
+        {/* Upgrade Section - Only show if doesn't have everything */}
+        {!hasAccessToProduct('contentpreneur-pro') && (
+          <section className="mb-12">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Expand Your Library</h2>
 
-            {/* Level Filter */}
-            <div className="flex gap-2">
-              {(['all', 'beginner', 'intermediate', 'advanced'] as const).map((level) => (
-                <button
-                  key={level}
-                  onClick={() => setActiveLevel(level)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    activeLevel === level
-                      ? 'bg-gold-500/20 text-gold-500 border border-gold-500/30'
-                      : 'bg-gray-50 text-gray-500 hover:text-gray-900 hover:bg-gray-100'
-                  }`}
-                >
-                  {level === 'all' ? 'All' : LEVEL_CONFIG[level].label}
-                </button>
-              ))}
+            <div className="grid md:grid-cols-2 gap-4">
+              {Object.entries(PRODUCTS)
+                .filter(([key]) => !hasAccessToProduct(key))
+                .slice(0, 4)
+                .map(([key, product]) => {
+                  const IconComponent = product.icon;
+
+                  return (
+                    <div
+                      key={key}
+                      className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                        <Lock size={20} className="text-gray-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                        <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+                        <Link
+                          to={`/products/${key}`}
+                          className="inline-flex items-center mt-2 text-amber-600 text-sm font-medium hover:text-amber-700"
+                        >
+                          Learn More
+                          <ExternalLink size={14} className="ml-1" />
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
-          </div>
-
-          {/* Products by Level */}
-          {(['beginner', 'intermediate', 'advanced'] as const).map((level) => {
-            const levelProducts = filteredProducts.filter(p => p.level === level);
-            if (levelProducts.length === 0) return null;
-
-            const levelInfo = LEVEL_CONFIG[level];
-
-            return (
-              <div key={level} className="mb-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-8 h-8 rounded-lg ${levelInfo.iconBg} flex items-center justify-center`}>
-                    {level === 'beginner' && <Target size={16} className={levelInfo.textColor} />}
-                    {level === 'intermediate' && <Zap size={16} className={levelInfo.textColor} />}
-                    {level === 'advanced' && <Crown size={16} className={levelInfo.textColor} />}
-                  </div>
-                  <div>
-                    <h3 className={`font-semibold ${levelInfo.textColor}`}>{levelInfo.label}</h3>
-                    <p className="text-xs text-gray-400">{levelInfo.description}</p>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {levelProducts.map((product, index) => {
-                    const isOwned = hasAccessToProduct(product.key);
-                    const IconComponent = product.icon;
-                    const productImage = PRODUCT_IMAGES[product.key];
-
-                    return (
-                      <motion.div
-                        key={product.key}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className={`bg-white border ${levelInfo.borderColor} rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300`}
-                      >
-                        {/* Product Image/Mockup */}
-                        <div className={`relative h-40 ${levelInfo.bgColor} flex items-center justify-center overflow-hidden`}>
-                          {productImage ? (
-                            <img
-                              src={productImage}
-                              alt={product.name}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                // Fallback to gradient on error
-                                e.currentTarget.style.display = 'none';
-                              }}
-                            />
-                          ) : null}
-                          {/* Fallback gradient with icon */}
-                          <div className={`absolute inset-0 ${levelInfo.bgColor} flex items-center justify-center`}>
-                            <div className={`w-20 h-20 rounded-2xl ${levelInfo.iconBg} border-2 ${levelInfo.borderColor} flex items-center justify-center shadow-lg`}>
-                              <IconComponent size={40} className={levelInfo.textColor} />
-                            </div>
-                          </div>
-
-                          {/* Owned badge */}
-                          {isOwned && (
-                            <div className="absolute top-3 right-3 z-10">
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
-                                <CheckCircle size={12} className="mr-1" />
-                                Owned
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-5">
-                          <h3 className="font-bold text-gray-900 text-lg">
-                            {product.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                            {product.description}
-                          </p>
-
-                          {/* Features */}
-                          {product.features && (
-                            <div className="flex flex-wrap gap-2 mt-3">
-                              {product.features.map((feature, i) => (
-                                <span key={i} className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
-                                  {feature}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Price & CTA */}
-                          <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
-                            <p className={`text-xl font-bold ${levelInfo.textColor}`}>
-                              ${(product.price_cents / 100).toFixed(0)}
-                            </p>
-                            {isOwned ? (
-                              <Link
-                                to={product.accessLink}
-                                className="inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-gray-900 text-sm font-medium rounded-lg transition-colors"
-                              >
-                                Access Now
-                                <ArrowRight size={14} className="ml-1" />
-                              </Link>
-                            ) : (
-                              <Link
-                                to={product.purchaseLink}
-                                className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
-                              >
-                                Get Started
-                                <ArrowRight size={14} className="ml-1" />
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </section>
-
-        {/* PAIDS Hub Section - Full Monetization Hub */}
-        <PAIDSHub userOwnedProductKeys={ownedProductKeys} />
-
-        {/* Tool Stack Section */}
-        <ToolStackSection hasStarterKit={hasAccessToProduct('starter-kit')} />
+          </section>
+        )}
 
         {/* Quick Links */}
-        <section className="py-12 border-t border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h2>
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="mailto:support@contentpreneurhub.online"
-              className="text-gray-500 hover:text-gold-500 text-sm transition-colors flex items-center gap-1"
-            >
+        <section className="border-t border-gray-200 pt-8">
+          <div className="flex flex-wrap gap-6 text-sm">
+            <a href="mailto:info@nochill.co.za" className="text-gray-500 hover:text-gray-900 transition-colors">
               Contact Support
-              <ExternalLink size={14} />
             </a>
-            <Link
-              to="/dashboard"
-              className="text-gray-500 hover:text-gold-500 text-sm transition-colors"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/contentpreneur-starter-kit"
-              className="text-gray-500 hover:text-gold-500 text-sm transition-colors"
-            >
+            <Link to="/contentpreneur-starter-kit" className="text-gray-500 hover:text-gray-900 transition-colors">
               Browse Products
             </Link>
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className="text-gold-500 hover:text-gold-400 text-sm transition-colors flex items-center gap-1"
-              >
-                <Settings size={14} />
-                Admin Panel
-              </Link>
-            )}
+            <Link to="/" className="text-gray-500 hover:text-gray-900 transition-colors">
+              Back to Homepage
+            </Link>
           </div>
+
+          <p className="mt-6 text-gray-400 text-xs">
+            © 2026 NOCHILL PTY LTD. All rights reserved.
+          </p>
         </section>
       </div>
     </div>
