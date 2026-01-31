@@ -1,65 +1,112 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { neon } from '@neondatabase/serverless';
 
-// Simple test endpoint to verify API is working
+// Enhanced diagnostic endpoint
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json');
 
+  const diagnostics: Record<string, any> = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    env: {},
+    database: {},
+    products: {},
+    paystack: {},
+    exchangeRate: {},
+  };
+
   try {
     // Check environment variables
-    const hasDatabase = !!process.env.DATABASE_URL;
-    const hasPaystack = !!process.env.PAYSTACK_SECRET_KEY;
+    const databaseUrl = process.env.DATABASE_URL;
+    const paystackKey = process.env.PAYSTACK_SECRET_KEY;
 
-    // Test neon import
-    let neonImportOk = false;
-    try {
-      const { neon } = await import('@neondatabase/serverless');
-      neonImportOk = typeof neon === 'function';
-    } catch (e) {
-      neonImportOk = false;
+    diagnostics.env = {
+      hasDatabase: !!databaseUrl,
+      hasPaystack: !!paystackKey,
+      paystackKeyPrefix: paystackKey ? paystackKey.substring(0, 8) + '...' : null,
+      nodeEnv: process.env.NODE_ENV,
+      vercelEnv: process.env.VERCEL_ENV,
+    };
+
+    // Test database connection and products
+    if (databaseUrl) {
+      try {
+        const sql = neon(databaseUrl);
+
+        // Test simple query
+        const testResult = await sql`SELECT 1 as test`;
+        diagnostics.database.connectionOk = testResult[0]?.test === 1;
+
+        // Check products table
+        const products = await sql`
+          SELECT product_key, name, price_cents, is_active
+          FROM products
+          ORDER BY product_key
+        `;
+        diagnostics.products.count = products.length;
+        diagnostics.products.list = products.map((p: any) => ({
+          key: p.product_key,
+          name: p.name,
+          priceCents: p.price_cents,
+          active: p.is_active,
+        }));
+
+        // Check for expected product keys
+        const expectedKeys = ['starter-kit', 'content-foundations', 'niche-finder', 'paids-workbook', 'influencers-code'];
+        const existingKeys = products.map((p: any) => p.product_key);
+        diagnostics.products.missingKeys = expectedKeys.filter(k => !existingKeys.includes(k));
+        diagnostics.products.hasStarterKit = existingKeys.includes('starter-kit');
+
+        // Check orders table structure
+        try {
+          const ordersCheck = await sql`
+            SELECT column_name, data_type
+            FROM information_schema.columns
+            WHERE table_name = 'orders'
+          `;
+          diagnostics.database.ordersColumns = ordersCheck.map((c: any) => c.column_name);
+        } catch (e: any) {
+          diagnostics.database.ordersColumnsError = e.message;
+        }
+
+      } catch (e: any) {
+        diagnostics.database.connectionOk = false;
+        diagnostics.database.error = e.message;
+      }
     }
 
-    // Test drizzle import
-    let drizzleImportOk = false;
+    // Test exchange rate API
     try {
-      const { drizzle } = await import('drizzle-orm/neon-http');
-      drizzleImportOk = typeof drizzle === 'function';
-    } catch (e) {
-      drizzleImportOk = false;
-    }
-
-    // Test schema import
-    let schemaImportOk = false;
-    let schemaError = null;
-    try {
-      const schema = await import('../../lib/schema');
-      schemaImportOk = !!schema.products && !!schema.orders;
+      const rateResponse = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
+      const rateData = await rateResponse.json() as any;
+      diagnostics.exchangeRate.success = true;
+      diagnostics.exchangeRate.rate = rateData.rates?.ZAR;
     } catch (e: any) {
-      schemaImportOk = false;
-      schemaError = e?.message || String(e);
+      diagnostics.exchangeRate.success = false;
+      diagnostics.exchangeRate.error = e.message;
     }
 
-    return res.status(200).json({
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      env: {
-        hasDatabase,
-        hasPaystack,
-        nodeEnv: process.env.NODE_ENV,
-        vercelEnv: process.env.VERCEL_ENV,
-      },
-      imports: {
-        neonImportOk,
-        drizzleImportOk,
-        schemaImportOk,
-        schemaError,
-      },
-    });
+    // Test Paystack API (just check if key works)
+    if (paystackKey) {
+      try {
+        const paystackResponse = await fetch('https://api.paystack.co/balance', {
+          headers: { 'Authorization': `Bearer ${paystackKey}` },
+        });
+        const paystackData = await paystackResponse.json() as any;
+        diagnostics.paystack.keyValid = paystackData.status === true;
+        diagnostics.paystack.message = paystackData.message;
+      } catch (e: any) {
+        diagnostics.paystack.keyValid = false;
+        diagnostics.paystack.error = e.message;
+      }
+    }
+
+    return res.status(200).json(diagnostics);
+
   } catch (error: any) {
-    return res.status(500).json({
-      status: 'error',
-      message: error?.message || 'Unknown error',
-      stack: error?.stack,
-    });
+    diagnostics.status = 'error';
+    diagnostics.error = error?.message || 'Unknown error';
+    return res.status(500).json(diagnostics);
   }
 }
