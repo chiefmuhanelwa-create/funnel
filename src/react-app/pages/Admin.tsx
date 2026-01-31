@@ -7,8 +7,6 @@ import {
   ShoppingCart,
   Upload,
   Trash2,
-  Eye,
-  EyeOff,
   Loader2,
   AlertCircle,
   FileText,
@@ -17,9 +15,14 @@ import {
   Check,
   FolderOpen,
   ExternalLink,
+  Key,
+  Plus,
+  X,
+  Search,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { upload } from '@vercel/blob/client';
+import { PRODUCTS } from '../config/products';
 
 interface MediaItem {
   id: number;
@@ -56,13 +59,21 @@ interface BlobFile {
   uploadedAt: string;
 }
 
+interface AccessRecord {
+  customer_email: string;
+  product_keys: string[];
+  product_names: string[];
+  first_access: string;
+  product_count: number;
+}
+
 const ADMIN_EMAILS = [
   'info@nochill.co.za',
   'ndivhuwo@nochill.co.za',
   'chiefmuhanelwa@gmail.com',
 ];
 
-type TabKey = 'files' | 'media' | 'contacts' | 'orders';
+type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access';
 
 export default function Admin() {
   const { isAuthenticated, user, isLoading: authLoading } = useMemberAccess();
@@ -71,9 +82,17 @@ export default function Admin() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [files, setFiles] = useState<BlobFile[]>([]);
+  const [accessRecords, setAccessRecords] = useState<AccessRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Access management state
+  const [grantEmail, setGrantEmail] = useState('');
+  const [grantProduct, setGrantProduct] = useState('starter-kit');
+  const [isGranting, setIsGranting] = useState(false);
+  const [searchEmail, setSearchEmail] = useState('');
+  const [showGrantForm, setShowGrantForm] = useState(false);
 
   // Upload state
   const [isUploading, setIsUploading] = useState(false);
@@ -118,11 +137,92 @@ export default function Admin() {
         });
         const data = await res.json();
         setOrders(data.orders || []);
+      } else if (activeTab === 'access') {
+        const res = await fetch('/api/admin/access', {
+          headers: { 'X-Admin-Email': user?.email || '' },
+        });
+        const data = await res.json();
+        setAccessRecords(data.access || []);
       }
     } catch (err) {
       setError('Failed to fetch data');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGrantAccess = async () => {
+    if (!grantEmail || !grantProduct) {
+      setError('Email and product are required');
+      return;
+    }
+
+    setIsGranting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('/api/admin/access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Email': user?.email || '',
+        },
+        body: JSON.stringify({
+          email: grantEmail,
+          productKey: grantProduct,
+          includeBundles: true,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to grant access');
+      }
+
+      setSuccess(data.message);
+      setGrantEmail('');
+      setShowGrantForm(false);
+      fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to grant access');
+    } finally {
+      setIsGranting(false);
+    }
+  };
+
+  const handleRevokeAccess = async (email: string, productKey?: string) => {
+    const action = productKey ? `revoke access to ${productKey}` : 'revoke ALL access';
+    if (!confirm(`Are you sure you want to ${action} for ${email}?`)) return;
+
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('/api/admin/access', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Email': user?.email || '',
+        },
+        body: JSON.stringify({
+          email,
+          productKey,
+          revokeAll: !productKey,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to revoke access');
+      }
+
+      setSuccess(data.message);
+      fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to revoke access');
     }
   };
 
@@ -285,9 +385,10 @@ export default function Admin() {
         <div className="flex flex-wrap gap-2 mb-8">
           {[
             { key: 'files' as TabKey, label: 'Files', icon: FolderOpen },
-            { key: 'media' as TabKey, label: 'Media', icon: Image },
-            { key: 'contacts' as TabKey, label: 'Contacts', icon: Users },
+            { key: 'access' as TabKey, label: 'Access', icon: Key },
             { key: 'orders' as TabKey, label: 'Orders', icon: ShoppingCart },
+            { key: 'contacts' as TabKey, label: 'Contacts', icon: Users },
+            { key: 'media' as TabKey, label: 'Media', icon: Image },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -665,6 +766,153 @@ export default function Admin() {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Access Management Tab */}
+        {activeTab === 'access' && (
+          <div className="space-y-6">
+            {/* Grant Access Form */}
+            <div className="glass-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Customer Access Management</h2>
+                <button
+                  onClick={() => setShowGrantForm(!showGrantForm)}
+                  className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+                >
+                  {showGrantForm ? <X size={18} /> : <Plus size={18} />}
+                  {showGrantForm ? 'Cancel' : 'Grant Access'}
+                </button>
+              </div>
+
+              {showGrantForm && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+                  <h3 className="font-medium text-gray-900 mb-3">Grant Product Access</h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Customer Email
+                      </label>
+                      <input
+                        type="email"
+                        value={grantEmail}
+                        onChange={(e) => setGrantEmail(e.target.value)}
+                        placeholder="customer@example.com"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Product
+                      </label>
+                      <select
+                        value={grantProduct}
+                        onChange={(e) => setGrantProduct(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                      >
+                        {Object.entries(PRODUCTS).map(([key, product]) => (
+                          <option key={key} value={key}>
+                            {product.icon} {product.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex items-end">
+                      <button
+                        onClick={handleGrantAccess}
+                        disabled={isGranting || !grantEmail}
+                        className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                      >
+                        {isGranting ? (
+                          <Loader2 className="animate-spin" size={18} />
+                        ) : (
+                          <Check size={18} />
+                        )}
+                        Grant Access
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-xs text-amber-700 mt-2">
+                    Bundle products (Starter Kit, Pro Bundle) will automatically include all bundled items.
+                  </p>
+                </div>
+              )}
+
+              {/* Search */}
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  type="text"
+                  value={searchEmail}
+                  onChange={(e) => setSearchEmail(e.target.value)}
+                  placeholder="Search by email..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                />
+              </div>
+
+              {/* Access Records Table */}
+              {isLoading ? (
+                <div className="text-center py-8">
+                  <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
+                </div>
+              ) : accessRecords.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">No customer access records found</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Email</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Products</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Since</th>
+                        <th className="text-left py-3 px-4 text-gray-600 font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {accessRecords
+                        .filter(
+                          (record) =>
+                            !searchEmail ||
+                            record.customer_email.toLowerCase().includes(searchEmail.toLowerCase())
+                        )
+                        .map((record) => (
+                          <tr
+                            key={record.customer_email}
+                            className="border-b border-gray-100 hover:bg-gray-50"
+                          >
+                            <td className="py-3 px-4">
+                              <span className="font-medium text-gray-900">{record.customer_email}</span>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="flex flex-wrap gap-1">
+                                {record.product_keys.map((key, i) => (
+                                  <span
+                                    key={key}
+                                    className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-800"
+                                  >
+                                    {PRODUCTS[key]?.icon || '📦'} {PRODUCTS[key]?.shortName || key}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-gray-500 text-sm">
+                              {new Date(record.first_access).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4">
+                              <button
+                                onClick={() => handleRevokeAccess(record.customer_email)}
+                                className="text-red-600 hover:text-red-800 text-sm font-medium"
+                              >
+                                Revoke All
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

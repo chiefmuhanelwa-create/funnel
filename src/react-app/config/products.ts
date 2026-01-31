@@ -205,17 +205,17 @@ export const UPGRADE_PATHS: Record<string, { to: string; price: number; savings:
   'content-foundations': { to: 'starter-kit', price: 3000, savings: 3700 },
 };
 
-// Tool Stack with affiliate links
+// Tool Stack with affiliate links - Complete NoChill Contentpreneur Tool Stack
 export const TOOL_STACK = {
   thinking: {
     title: 'POWER 1 — THINKING & STRATEGY',
     subtitle: 'Where ideas, clarity and decisions come from',
     icon: '🧠',
     tools: [
-      { name: 'ChatGPT', role: 'Brain', desc: 'Ideas, scripts, captions, strategy', icon: '🤖', link: 'https://chat.openai.com' },
-      { name: 'Claude', role: 'Writing Partner', desc: 'Long-form content, deep thinking', icon: '✍️', link: 'https://claude.ai' },
-      { name: 'Perplexity', role: 'Research', desc: 'Fast accurate data gathering', icon: '🔍', link: 'https://perplexity.ai' },
-      { name: 'Notion', role: 'Command Center', desc: 'Everything organized in one place', icon: '📋', link: 'https://notion.so' },
+      { name: 'ChatGPT', role: 'AI Brain', desc: 'Idea generation, script writing, caption creation', icon: '🤖', link: 'https://chat.openai.com', pricing: 'Free | $20/mo' },
+      { name: 'Claude', role: 'Writing Partner', desc: 'Long-form content, deep thinking, nuanced writing', icon: '✍️', link: 'https://claude.ai', pricing: 'Free | $20/mo' },
+      { name: 'Perplexity', role: 'Research Engine', desc: 'Fast, accurate data gathering with sources', icon: '🔍', link: 'https://perplexity.ai', pricing: 'Free | $20/mo' },
+      { name: 'Notion', role: 'Command Center', desc: 'Content calendar, products, clients - all organized', icon: '📋', link: 'https://notion.so', pricing: 'Free | $10/mo' },
     ],
   },
   creation: {
@@ -223,10 +223,10 @@ export const TOOL_STACK = {
     subtitle: 'How I produce content at scale',
     icon: '🎬',
     tools: [
-      { name: 'CapCut', role: 'Video Editor', desc: 'Fast mobile & desktop editing', icon: '🎬', link: 'https://capcut.com' },
-      { name: 'Canva', role: 'Graphics', desc: 'Thumbnails, posts, stories', icon: '🎨', link: 'https://canva.com' },
-      { name: 'Descript', role: 'Audio/Video', desc: 'Podcast editing, transcription', icon: '🎙️', link: 'https://descript.com' },
-      { name: 'Riverside', role: 'Recording', desc: 'Studio-quality remote recording', icon: '🎧', link: 'https://riverside.fm' },
+      { name: 'CapCut', role: 'Video Editor', desc: 'Fast mobile & desktop editing with auto-captions', icon: '🎬', link: 'https://capcut.com', pricing: 'Free | $9.99/mo' },
+      { name: 'Canva', role: 'Design Studio', desc: 'Graphics, thumbnails, templates, brand kit', icon: '🎨', link: 'https://canva.com', pricing: 'Free | $12.99/mo' },
+      { name: 'Descript', role: 'Audio/Video Magic', desc: 'Edit videos by editing text, Studio Sound', icon: '🎙️', link: 'https://descript.com', pricing: 'Free | $12/mo' },
+      { name: 'Riverside', role: 'Recording Studio', desc: 'Studio-quality remote recording', icon: '🎧', link: 'https://riverside.fm', pricing: 'Free | $15/mo' },
     ],
   },
   automation: {
@@ -234,10 +234,10 @@ export const TOOL_STACK = {
     subtitle: 'Systems that save 20+ hours per week',
     icon: '⚡',
     tools: [
-      { name: 'Zapier', role: 'Automation', desc: 'Connect all your tools', icon: '⚡', link: 'https://zapier.com' },
-      { name: 'Later', role: 'Scheduling', desc: 'Social media scheduling', icon: '📅', link: 'https://later.com' },
-      { name: 'Buffer', role: 'Publishing', desc: 'Multi-platform posting', icon: '📤', link: 'https://buffer.com' },
-      { name: 'Make', role: 'Workflows', desc: 'Advanced automation', icon: '🔧', link: 'https://make.com' },
+      { name: 'Make.com', role: 'Automation Hub', desc: 'Connect apps, automate complex workflows', icon: '🔧', link: 'https://make.com', pricing: 'Free | $9/mo' },
+      { name: 'Zapier', role: 'Workflow Builder', desc: 'No-code automation for simple tasks', icon: '⚡', link: 'https://zapier.com', pricing: 'Free | $20/mo' },
+      { name: 'Buffer', role: 'Social Scheduling', desc: 'Post everywhere from one dashboard', icon: '📤', link: 'https://buffer.com', pricing: 'Free | $6/mo' },
+      { name: 'ManyChat', role: 'DM Automation', desc: 'Convert followers to customers via DMs', icon: '💬', link: 'https://manychat.com', pricing: 'Free | $15/mo' },
     ],
   },
   monetization: {
@@ -245,10 +245,41 @@ export const TOOL_STACK = {
     subtitle: 'Where followers become income',
     icon: '💰',
     tools: [
-      { name: 'Gumroad', role: 'Digital Sales', desc: 'Sell courses & ebooks', icon: '💰', link: 'https://gumroad.com' },
-      { name: 'Paystack', role: 'Payments', desc: 'Accept African payments', icon: '💳', link: 'https://paystack.com' },
-      { name: 'ConvertKit', role: 'Email', desc: 'Build & nurture your list', icon: '📧', link: 'https://convertkit.com' },
-      { name: 'Calendly', role: 'Bookings', desc: 'Schedule calls & coaching', icon: '📆', link: 'https://calendly.com' },
+      { name: 'Gumroad', role: 'Digital Products', desc: 'Sell ebooks, courses, templates instantly', icon: '💰', link: 'https://gumroad.com', pricing: 'Free + 10% | $10/mo + 3.5%' },
+      { name: 'Paystack', role: 'Payments', desc: 'Accept African payments seamlessly', icon: '💳', link: 'https://paystack.com', pricing: '1.5% + fees' },
+      { name: 'ConvertKit', role: 'Email Marketing', desc: 'Build and monetize your email list', icon: '📧', link: 'https://convertkit.com', pricing: 'Free | $9/mo' },
+      { name: 'Calendly', role: 'Booking System', desc: 'Automate consultation scheduling', icon: '📆', link: 'https://calendly.com', pricing: 'Free | $8/mo' },
+    ],
+  },
+};
+
+// Extended Tool Stack with additional recommendations
+export const EXTENDED_TOOLS = {
+  videoEditing: {
+    title: 'Video Editing Tools',
+    beginner: [
+      { name: 'InShot', desc: 'Simple mobile editing', pricing: 'Free | $3/mo', link: 'https://inshot.com' },
+      { name: 'VLLO', desc: 'Great filters & effects', pricing: 'Free | $6/mo', link: 'https://vllo.io' },
+    ],
+    intermediate: [
+      { name: 'Filmora', desc: 'User-friendly desktop editor', pricing: '$50/year', link: 'https://filmora.wondershare.com' },
+      { name: 'DaVinci Resolve', desc: 'Professional color grading', pricing: 'FREE', link: 'https://blackmagicdesign.com/products/davinciresolve' },
+    ],
+    advanced: [
+      { name: 'Adobe Premiere Pro', desc: 'Industry standard editing', pricing: '$22.99/mo', link: 'https://adobe.com/premiere' },
+      { name: 'After Effects', desc: 'Motion graphics & animation', pricing: '$22.99/mo', link: 'https://adobe.com/aftereffects' },
+    ],
+  },
+  stockResources: {
+    title: 'Stock Photos & Videos',
+    free: [
+      { name: 'Unsplash', desc: 'High-quality stock photos', link: 'https://unsplash.com' },
+      { name: 'Pexels', desc: 'Free photos & videos', link: 'https://pexels.com' },
+      { name: 'Pixabay', desc: 'Images, videos, music', link: 'https://pixabay.com' },
+    ],
+    paid: [
+      { name: 'Envato Elements', desc: 'Unlimited downloads', pricing: '$16.50/mo', link: 'https://elements.envato.com' },
+      { name: 'Storyblocks', desc: 'Unlimited video stock', pricing: '$25/mo', link: 'https://storyblocks.com' },
     ],
   },
 };
