@@ -93,6 +93,7 @@ export default function Admin() {
   const [isGranting, setIsGranting] = useState(false);
   const [searchEmail, setSearchEmail] = useState('');
   const [showGrantForm, setShowGrantForm] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
 
   // Upload state
   const [isUploading, setIsUploading] = useState(false);
@@ -223,6 +224,36 @@ export default function Admin() {
       fetchData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to revoke access');
+    }
+  };
+
+  const handleSeedProducts = async () => {
+    if (!confirm('This will seed all products into the database. Continue?')) return;
+
+    setIsSeeding(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('/api/admin/seed-products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Email': user?.email || '',
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to seed products');
+      }
+
+      setSuccess(`${data.message}. Products in database: ${data.products?.length || 0}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to seed products');
+    } finally {
+      setIsSeeding(false);
     }
   };
 
@@ -776,13 +807,23 @@ export default function Admin() {
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-gray-900">Customer Access Management</h2>
-                <button
-                  onClick={() => setShowGrantForm(!showGrantForm)}
-                  className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
-                >
-                  {showGrantForm ? <X size={18} /> : <Plus size={18} />}
-                  {showGrantForm ? 'Cancel' : 'Grant Access'}
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleSeedProducts}
+                    disabled={isSeeding}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  >
+                    {isSeeding ? <Loader2 className="animate-spin" size={18} /> : null}
+                    {isSeeding ? 'Seeding...' : 'Seed Products DB'}
+                  </button>
+                  <button
+                    onClick={() => setShowGrantForm(!showGrantForm)}
+                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+                  >
+                    {showGrantForm ? <X size={18} /> : <Plus size={18} />}
+                    {showGrantForm ? 'Cancel' : 'Grant Access'}
+                  </button>
+                </div>
               </div>
 
               {showGrantForm && (
