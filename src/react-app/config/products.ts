@@ -8,13 +8,25 @@ export interface Product {
   description: string;
   priceCents: number;
   originalPriceCents?: number;
-  icon: string; // Emoji icon
+  icon: string; // Emoji icon (fallback)
+  imageUrl?: string; // Product mockup image URL
   color: string; // Tailwind color class
   features: string[];
   accessLink: string;
   purchaseLink: string;
   category: 'course' | 'ebook' | 'workbook' | 'guide' | 'bundle' | 'service';
 }
+
+// Image URLs from Vercel Blob Storage
+const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
+const PRODUCT_IMAGES = {
+  starterKit: `${BLOB_BASE}/images/9-modules-course-mockup--starter-kit-.jpeg`,
+  contentFoundations: `${BLOB_BASE}/images/3-module-course-mockup.jpeg`,
+  influencersCode: `${BLOB_BASE}/images/the-influencer-s-code-mockup--book-cover-.jpeg`,
+  taxGuide: `${BLOB_BASE}/images/tax-guide-mockup.jpeg`,
+  nicheFinder: `${BLOB_BASE}/images/niche-workbook-mockup.jpeg`,
+  paidsWorkbook: `${BLOB_BASE}/images/paids-mockup.jpeg`,
+};
 
 export const PRODUCTS: Record<string, Product> = {
   'starter-kit': {
@@ -24,6 +36,7 @@ export const PRODUCTS: Record<string, Product> = {
     description: 'Complete system to build and monetize your personal brand with 9 video modules, workbooks, and the NoChill Tool Stack.',
     priceCents: 6700,
     icon: '🚀',
+    imageUrl: PRODUCT_IMAGES.starterKit,
     color: 'amber',
     category: 'course',
     features: [
@@ -52,6 +65,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 1900,
     originalPriceCents: 19700,
     icon: '📖',
+    imageUrl: PRODUCT_IMAGES.influencersCode,
     color: 'purple',
     category: 'ebook',
     features: [
@@ -71,6 +85,7 @@ export const PRODUCTS: Record<string, Product> = {
     description: 'Master content creation fundamentals with 3 comprehensive video modules.',
     priceCents: 3700,
     icon: '🎯',
+    imageUrl: PRODUCT_IMAGES.contentFoundations,
     color: 'blue',
     category: 'course',
     features: [
@@ -88,6 +103,7 @@ export const PRODUCTS: Record<string, Product> = {
     description: 'Essential tax strategies and legal protection for South African content creators.',
     priceCents: 4700,
     icon: '📋',
+    imageUrl: PRODUCT_IMAGES.taxGuide,
     color: 'slate',
     category: 'guide',
     features: [
@@ -107,6 +123,7 @@ export const PRODUCTS: Record<string, Product> = {
     description: 'Step-by-step PDF workbook to discover your profitable content niche in 90 minutes.',
     priceCents: 1500,
     icon: '🎯',
+    imageUrl: PRODUCT_IMAGES.nicheFinder,
     color: 'green',
     category: 'workbook',
     features: [
@@ -124,6 +141,7 @@ export const PRODUCTS: Record<string, Product> = {
     description: 'Master the PAIDS monetization framework to build 5 income streams.',
     priceCents: 1500,
     icon: '💰',
+    imageUrl: PRODUCT_IMAGES.paidsWorkbook,
     color: 'emerald',
     category: 'workbook',
     features: [

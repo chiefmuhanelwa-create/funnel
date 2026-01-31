@@ -390,9 +390,15 @@ export default function MembersHub() {
                       className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:border-amber-300 transition-all group"
                     >
                       <div className="flex items-start gap-4">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 ${colors.bg} ${colors.border} border text-3xl`}>
-                          {product.icon}
-                        </div>
+                        {product.imageUrl ? (
+                          <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-gray-200">
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 ${colors.bg} ${colors.border} border text-3xl`}>
+                            {product.icon}
+                          </div>
+                        )}
                         <div className="flex-1 min-w-0">
                           <h3 className="font-bold text-gray-900 group-hover:text-amber-600 transition-colors">
                             {product.name}
@@ -518,9 +524,15 @@ export default function MembersHub() {
                   key={key}
                   className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4 hover:border-amber-200 transition-colors"
                 >
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 bg-gray-100 text-2xl opacity-60">
-                    {product.icon}
-                  </div>
+                  {product.imageUrl ? (
+                    <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-gray-200 opacity-60">
+                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover grayscale" />
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 bg-gray-100 text-2xl opacity-60">
+                      {product.icon}
+                    </div>
+                  )}
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-gray-900">{product.name}</h3>
