@@ -49,26 +49,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const databaseUrl = process.env.DATABASE_URL;
   const webhookSecret = process.env.PAYSTACK_WEBHOOK_SECRET;
+  const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
 
   if (!databaseUrl) {
     console.error('[WEBHOOK] DATABASE_URL not configured');
     return res.status(500).json({ error: 'Database not configured' });
   }
 
-  if (!webhookSecret) {
-    console.error('[WEBHOOK] PAYSTACK_WEBHOOK_SECRET not configured');
-    return res.status(500).json({ error: 'Webhook secret not configured' });
-  }
-
   try {
-    // Verify signature
-    const rawBody = JSON.stringify(req.body);
+    // Verify signature if webhook secret is configured
     const signature = req.headers['x-paystack-signature'] as string;
-    const hash = crypto.createHmac('sha512', webhookSecret).update(rawBody).digest('hex');
 
-    if (hash !== signature) {
-      console.error('[WEBHOOK] Invalid signature');
-      return res.status(400).json({ error: 'Invalid signature' });
+    if (webhookSecret && signature) {
+      const rawBody = JSON.stringify(req.body);
+      const hash = crypto.createHmac('sha512', webhookSecret).update(rawBody).digest('hex');
+
+      if (hash !== signature) {
+        console.error('[WEBHOOK] Invalid signature');
+        return res.status(400).json({ error: 'Invalid signature' });
+      }
+      console.log('[WEBHOOK] Signature verified');
+    } else {
+      // No webhook secret configured - verify event with Paystack API instead
+      console.log('[WEBHOOK] No webhook secret - verifying via API');
+
+      if (req.body?.data?.reference && paystackSecretKey) {
+        const verifyResponse = await fetch(
+          `https://api.paystack.co/transaction/verify/${req.body.data.reference}`,
+          { headers: { 'Authorization': `Bearer ${paystackSecretKey}` } }
+        );
+        const verifyData = await verifyResponse.json() as any;
+
+        if (!verifyData.status || verifyData.data?.status !== 'success') {
+          console.error('[WEBHOOK] Payment verification failed');
+          return res.status(400).json({ error: 'Payment not verified' });
+        }
+        console.log('[WEBHOOK] Payment verified via API');
+      }
     }
 
     const event = req.body;
