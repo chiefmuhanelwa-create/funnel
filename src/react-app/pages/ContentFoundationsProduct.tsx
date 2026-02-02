@@ -6,10 +6,9 @@ import BackButton from '../components/BackButton';
 
 export default function ContentFoundationsProduct() {
   const modules = [
-    { icon: Heart, title: 'Module 1: Self Reflection', desc: 'Discover your authentic voice and unique strengths' },
-    { icon: Target, title: 'Module 2: SWOT Analysis', desc: 'Identify opportunities and overcome weaknesses' },
-    { icon: Compass, title: 'Module 3: Value Alignment', desc: 'Build content that reflects your true values' },
-    { icon: Users, title: 'Module 4: Audience Connection', desc: 'Understand who you want to serve and why' },
+    { icon: Heart, title: 'Module 1: Self Reflection', desc: 'Discover your authentic voice and unique strengths through guided exercises' },
+    { icon: Target, title: 'Module 2: SWOT Analysis', desc: 'Identify your Strengths, Weaknesses, Opportunities & Threats as a creator' },
+    { icon: Compass, title: 'Module 3: Value Alignment', desc: 'Build content that reflects your true values and resonates with your ideal audience' },
   ];
 
   return (
@@ -34,7 +33,7 @@ export default function ContentFoundationsProduct() {
             >
               <span className="badge badge-gold mb-4">
                 <Play size={12} className="mr-1" />
-                4-Module Course
+                3-Module Course
               </span>
 
               <h1 className="text-hero md:text-hero-lg text-gray-900 leading-tight">
@@ -50,7 +49,7 @@ export default function ContentFoundationsProduct() {
               <div className="mt-8 flex flex-wrap gap-6">
                 <div className="flex items-center text-gray-600">
                   <Play className="mr-2 text-gold-500" size={18} />
-                  <span>4 Video Modules</span>
+                  <span>3 Video Modules</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Target className="mr-2 text-gold-500" size={18} />
@@ -163,7 +162,7 @@ export default function ContentFoundationsProduct() {
           >
             <span className="badge badge-gold mb-4">Course Curriculum</span>
             <h2 className="text-section md:text-section-lg text-gray-900">
-              4 Modules to Build Your <span className="text-gradient-gold">Foundation</span>
+              3 Modules to Build Your <span className="text-gradient-gold">Foundation</span>
             </h2>
           </motion.div>
 
@@ -314,7 +313,7 @@ export default function ContentFoundationsProduct() {
               <p className="text-gray-500 mb-4">Perfect for beginners</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$37</div>
               <ul className="space-y-3 mb-8">
-                {['4 Video Modules', 'Self Reflection Workshop', 'SWOT Analysis Template', 'Value Alignment Exercise', 'Lifetime Access'].map((item, i) => (
+                {['3 Video Modules', 'Self Reflection Workshop', 'SWOT Analysis Template', 'Value Alignment Exercise', 'Lifetime Access'].map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
                     <CheckCircle size={16} className="text-success-400 shrink-0" />
                     {item}
@@ -335,7 +334,7 @@ export default function ContentFoundationsProduct() {
               <p className="text-gray-500 mb-4">Complete system</p>
               <div className="text-3xl font-bold text-gradient-gold mb-6">$67</div>
               <ul className="space-y-3 mb-8">
-                {['9 Video Modules', 'Everything in Foundations', 'PAIDS Framework Workbook', 'Niche Finder Workbook', 'Brand Pitch Templates', 'Content Calendar', 'Lifetime Access + Updates'].map((item, i) => (
+                {['9 Video Modules + Intro', 'Everything in Foundations', 'PAIDS Framework Workbook', 'Niche Finder Workbook', 'NoChill Tool Stack Access', 'Lifetime Access + Updates'].map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
                     <CheckCircle size={16} className="text-gold-500 shrink-0" />
                     {item}

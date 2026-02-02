@@ -11,17 +11,17 @@ const ADMIN_EMAILS = [
 // File type configurations
 const FILE_CONFIGS = {
   image: {
-    maxSize: 5 * 1024 * 1024, // 5MB
+    maxSize: 10 * 1024 * 1024, // 10MB
     allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
     folder: 'images',
   },
   pdf: {
-    maxSize: 50 * 1024 * 1024, // 50MB
+    maxSize: 100 * 1024 * 1024, // 100MB
     allowedTypes: ['application/pdf'],
     folder: 'books',
   },
   video: {
-    maxSize: 500 * 1024 * 1024, // 500MB
+    maxSize: 2 * 1024 * 1024 * 1024, // 2GB
     allowedTypes: ['video/mp4', 'video/webm', 'video/quicktime'],
     folder: 'videos',
   },

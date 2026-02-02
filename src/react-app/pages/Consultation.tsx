@@ -13,7 +13,11 @@ import {
   Target,
   FileText,
   AlertCircle,
+  ExternalLink,
 } from 'lucide-react';
+
+// Calendly URL - update this with your actual Calendly link
+const CALENDLY_URL = 'https://calendly.com/mrnochill/strategy-session';
 
 export default function Consultation() {
   const [formData, setFormData] = useState({
@@ -124,12 +128,36 @@ export default function Consultation() {
                 Book Your Session
               </span>
               <h1 className="text-section md:text-section-lg text-gray-900">
-                Strategy Call <span className="text-gradient-gold">Application</span>
+                1:1 Strategy <span className="text-gradient-gold">Session</span>
               </h1>
               <p className="mt-4 text-gray-500 max-w-xl mx-auto">
-                Complete this form to apply for a 1-on-1 strategy session.
-                Due to limited availability, we review all applications to ensure fit.
+                Get personalized guidance from Mr. NoChill. Choose to book directly
+                or fill out an application if you have specific questions.
               </p>
+
+              {/* Direct Calendly Booking */}
+              <div className="mt-8 p-6 bg-gradient-to-r from-rose-50 to-amber-50 rounded-2xl border border-rose-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ready to Book?</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Schedule your 60-minute strategy session directly via Calendly
+                </p>
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary inline-flex items-center gap-2"
+                >
+                  <Calendar size={18} />
+                  Book on Calendly
+                  <ExternalLink size={16} />
+                </a>
+              </div>
+
+              <div className="mt-8 flex items-center justify-center gap-4">
+                <div className="h-px bg-gray-200 flex-1 max-w-[100px]" />
+                <span className="text-gray-400 text-sm">or fill out application below</span>
+                <div className="h-px bg-gray-200 flex-1 max-w-[100px]" />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -358,9 +386,18 @@ export default function Consultation() {
                   <span className="text-3xl font-bold text-gradient-gold">$1,500</span>
                   <span className="text-gray-400 line-through">$2,500</span>
                 </div>
-                <p className="text-sm text-gray-500">
-                  Payment details will be sent after your application is approved.
+                <p className="text-sm text-gray-500 mb-4">
+                  60-minute personalized strategy session with Mr. NoChill.
                 </p>
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full text-center flex items-center justify-center gap-2"
+                >
+                  <Calendar size={16} />
+                  Book Now
+                </a>
               </div>
 
               {/* Questions */}

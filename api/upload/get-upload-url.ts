@@ -17,9 +17,9 @@ const getAdminEmails = (): string[] => {
 
 // File type configurations
 const FILE_CONFIGS: Record<string, { maxSize: number; folder: string }> = {
-  image: { maxSize: 5 * 1024 * 1024, folder: 'images' },
-  pdf: { maxSize: 50 * 1024 * 1024, folder: 'books' },
-  video: { maxSize: 500 * 1024 * 1024, folder: 'videos' },
+  image: { maxSize: 10 * 1024 * 1024, folder: 'images' },       // 10MB for images
+  pdf: { maxSize: 100 * 1024 * 1024, folder: 'books' },         // 100MB for PDFs
+  video: { maxSize: 2 * 1024 * 1024 * 1024, folder: 'videos' }, // 2GB for videos
 };
 
 // Simple in-memory upload session tokens (valid for 5 minutes)

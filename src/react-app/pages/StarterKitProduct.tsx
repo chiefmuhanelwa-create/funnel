@@ -24,15 +24,16 @@ export default function StarterKitProduct() {
     navigate(`/checkout/starter-kit?discount=${code}`);
   };
   const modules = [
-    { title: 'Module 1: Finding Your Niche', desc: 'Discover your unique positioning in the content market' },
-    { title: 'Module 2: Understanding Your Audience', desc: 'Deep dive into audience research and personas' },
-    { title: 'Module 3: Content Strategy Foundations', desc: 'Build a content plan that actually works' },
-    { title: 'Module 4: The PAIDS Framework Deep Dive', desc: 'Master all five pillars of the system' },
-    { title: 'Module 5: Monetization Strategies', desc: 'Multiple income streams explained' },
-    { title: 'Module 6: Brand Partnerships 101', desc: 'Land your first (or next) brand deal' },
-    { title: 'Module 7: Building Your Distribution', desc: 'Get your content seen by the right people' },
-    { title: 'Module 8: Systems & Automation', desc: 'Scale without burning out' },
-    { title: 'Module 9: Launch Your Business', desc: 'Action plan to implement everything' },
+    { title: 'Introduction', desc: 'Welcome & how to get the most from this course' },
+    { title: 'Module 1: What is a Personal Brand', desc: 'Understand the foundation of building your brand identity' },
+    { title: 'Module 2: Blueprint to Build a Personal Brand', desc: 'Step-by-step framework to create your unique brand' },
+    { title: 'Module 3: The 3Cs Framework - Mindset', desc: 'Master the mindset principles for creator success' },
+    { title: 'Module 4: SWOT Analysis', desc: 'Identify your strengths, weaknesses, opportunities & threats' },
+    { title: 'Module 5: 3Es Content Idea Formula', desc: 'Never run out of content ideas with this proven formula' },
+    { title: 'Module 6: Understand Social Media Platforms', desc: 'Leverage each platform for maximum reach' },
+    { title: 'Module 7: Community Building', desc: 'Build an engaged audience that buys from you' },
+    { title: 'Module 8: PAIDS Framework', desc: 'Master all 5 income pillars: Products, Ads, Influence, Digital, Services' },
+    { title: 'Module 9: Formula to Create Online Asset', desc: 'Create digital products that generate passive income' },
   ];
 
   return (
@@ -243,10 +244,10 @@ export default function StarterKitProduct() {
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
-              { title: 'Niche Finder Workbook', value: '$27', desc: 'Step-by-step exercises to find your profitable niche' },
-              { title: 'PAIDS Framework Workbook', value: '$27', desc: 'Implement each pillar with guided worksheets' },
-              { title: 'Brand Pitch Templates', value: '$27', desc: 'Proven email templates for brand outreach' },
-              { title: 'Content Calendar Template', value: '$16', desc: 'Plan 30 days of content in 30 minutes' },
+              { title: 'Niche Finder Workbook (PDF)', value: '$27', desc: 'Step-by-step exercises to find your profitable niche in 90 minutes' },
+              { title: 'PAIDS Framework Workbook (PDF)', value: '$27', desc: 'Implement all 5 income pillars with guided worksheets' },
+              { title: 'NoChill Tool Stack Access', value: '$47', desc: 'Complete list of tools used to build a 3M+ audience with affiliate links' },
+              { title: 'Lifetime Updates', value: 'Priceless', desc: 'Get all future course updates and additions at no extra cost' },
             ].map((bonus, index) => (
               <motion.div
                 key={index}
