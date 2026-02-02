@@ -6,6 +6,8 @@ import { loadAnalytics } from './utils/loadAnalytics';
 import StickyNav from './components/StickyNav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import WhatsAppButton from './components/WhatsAppButton';
+import LeadMagnetPopup from './components/conversion/LeadMagnetPopup';
 
 // Public pages - eagerly loaded
 import Home from './pages/Home';
@@ -106,6 +108,18 @@ function App() {
         </Routes>
       </main>
       <Footer />
+
+      {/* Global conversion components */}
+      <WhatsAppButton phoneNumber="+27XXXXXXXXX" />
+      <LeadMagnetPopup
+        delaySeconds={30}
+        showOnExit={true}
+        showOnScroll={false}
+        title="Get the FREE Content Ideas Cheat Sheet"
+        description="Discover the exact formula for creating viral content that builds your audience and grows your income."
+        leadMagnetName="Content Ideas Cheat Sheet"
+        buttonText="Send Me the Free Guide"
+      />
     </div>
   );
 }

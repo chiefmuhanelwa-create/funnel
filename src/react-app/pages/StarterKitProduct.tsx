@@ -275,6 +275,82 @@ export default function StarterKitProduct() {
         </div>
       </section>
 
+      {/* Comparison Table - What Others Charge */}
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+
+        <div className="container-content relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="badge badge-gold mb-4">Value Comparison</span>
+            <h2 className="text-section md:text-section-lg text-gray-900">
+              What Others <span className="text-gradient-gold">Charge</span>
+            </h2>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
+              See how the Starter Kit compares to similar courses and coaching programs
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-4 px-4 text-gray-500 font-medium">What You Get</th>
+                  <th className="text-center py-4 px-4 text-gray-500 font-medium">Others</th>
+                  <th className="text-center py-4 px-4 text-amber-600 font-bold">Starter Kit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Video Course (9+ Modules)', others: '$197 - $497', us: true },
+                  { feature: 'Niche Finder Workbook', others: '$27 - $47', us: true },
+                  { feature: 'Monetization Framework', others: '$97 - $197', us: true },
+                  { feature: 'Tool Stack with Affiliate Links', others: 'Not included', us: true },
+                  { feature: 'Lifetime Access + Updates', others: '1 year only', us: true },
+                  { feature: 'Community Support', others: '$19/mo', us: true },
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-gray-100">
+                    <td className="py-4 px-4 text-gray-900">{row.feature}</td>
+                    <td className="py-4 px-4 text-center text-gray-500">{row.others}</td>
+                    <td className="py-4 px-4 text-center">
+                      {row.us ? (
+                        <CheckCircle className="inline text-green-500" size={20} />
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-amber-50">
+                  <td className="py-4 px-4 font-semibold text-gray-900">Total Value</td>
+                  <td className="py-4 px-4 text-center font-semibold text-gray-600">$500+</td>
+                  <td className="py-4 px-4 text-center">
+                    <span className="text-2xl font-bold text-gradient-gold">$67</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              to="/checkout/starter-kit"
+              className="btn-primary btn-lg inline-flex group"
+            >
+              Get Started for Just $67
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+            </Link>
+            <p className="mt-4 text-sm text-gray-500">
+              That's less than a nice dinner out — for a complete business education
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-20 md:py-28 section-gradient">
         <div className="container-content">

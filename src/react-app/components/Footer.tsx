@@ -1,9 +1,33 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Twitter, Linkedin, Music, LogIn } from 'lucide-react';
+import { Instagram, Youtube, Twitter, Linkedin, Music, LogIn, Mail, Loader2, CheckCircle } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 export default function Footer() {
   const { isAuthenticated } = useMemberAccess();
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) return;
+
+    setIsSubmitting(true);
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'newsletter', tags: ['newsletter'] }),
+      });
+      setIsSubscribed(true);
+      setEmail('');
+    } catch (err) {
+      console.error('Subscribe failed:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const socialLinks = [
     {
@@ -36,6 +60,44 @@ export default function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="container mx-auto max-w-7xl px-4 py-8 md:py-12">
+        {/* Newsletter Signup */}
+        <div className="max-w-md mx-auto mb-10 text-center">
+          <h3 className="text-lg font-bold text-gray-900 mb-2">
+            Join 10,000+ Contentpreneurs
+          </h3>
+          <p className="text-sm text-gray-500 mb-4">
+            Get weekly tips to grow your content business. No spam, ever.
+          </p>
+
+          {isSubscribed ? (
+            <div className="flex items-center justify-center gap-2 text-green-600 bg-green-50 py-3 px-4 rounded-xl">
+              <CheckCircle size={20} />
+              <span className="font-medium">You're subscribed! Check your inbox.</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="flex gap-2">
+              <div className="relative flex-1">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white text-sm"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-5 py-3 bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold rounded-xl transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
+              >
+                {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : 'Subscribe'}
+              </button>
+            </form>
+          )}
+        </div>
+
         {/* Member Login Button (if not authenticated) */}
         {!isAuthenticated && (
           <div className="flex justify-center mb-8">
