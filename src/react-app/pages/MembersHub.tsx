@@ -44,6 +44,20 @@ export default function MembersHub() {
   const [showCoachingUpsell, setShowCoachingUpsell] = useState(false);
   const [showProBundleUpsell, setShowProBundleUpsell] = useState(false);
 
+  // Check if popups were already dismissed (persist across sessions)
+  const coachingPopupDismissed = localStorage.getItem('coaching_popup_dismissed');
+  const proBundlePopupDismissed = localStorage.getItem('pro_bundle_popup_dismissed');
+
+  const handleDismissCoachingPopup = () => {
+    setShowCoachingUpsell(false);
+    localStorage.setItem('coaching_popup_dismissed', 'true');
+  };
+
+  const handleDismissProBundlePopup = () => {
+    setShowProBundleUpsell(false);
+    localStorage.setItem('pro_bundle_popup_dismissed', 'true');
+  };
+
   const handleEmailCheck = async (e: React.FormEvent) => {
     e.preventDefault();
     setEmailError('');
@@ -67,24 +81,26 @@ export default function MembersHub() {
   );
 
   // Show coaching upsell after 10 seconds for starter kit owners who don't have coaching
+  // Only show if not previously dismissed
   useEffect(() => {
-    if (hasStarterKit && !hasAccessToProduct('strategy-call')) {
+    if (hasStarterKit && !hasAccessToProduct('strategy-call') && !coachingPopupDismissed) {
       const timer = setTimeout(() => {
         setShowCoachingUpsell(true);
       }, 10000);
       return () => clearTimeout(timer);
     }
-  }, [hasStarterKit]);
+  }, [hasStarterKit, coachingPopupDismissed]);
 
   // Show Pro Bundle upsell for users with individual products but not Pro Bundle
+  // Only show if not previously dismissed
   useEffect(() => {
-    if (ownedProducts.length > 0 && !hasProBundle && lockedProducts.length > 2) {
+    if (ownedProducts.length > 0 && !hasProBundle && lockedProducts.length > 2 && !proBundlePopupDismissed) {
       const timer = setTimeout(() => {
         setShowProBundleUpsell(true);
       }, 30000);
       return () => clearTimeout(timer);
     }
-  }, [ownedProducts.length, hasProBundle, lockedProducts.length]);
+  }, [ownedProducts.length, hasProBundle, lockedProducts.length, proBundlePopupDismissed]);
 
   if (isLoading) {
     return (
@@ -176,7 +192,7 @@ export default function MembersHub() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowCoachingUpsell(false)}
+            onClick={handleDismissCoachingPopup}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -186,7 +202,7 @@ export default function MembersHub() {
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => setShowCoachingUpsell(false)}
+                onClick={handleDismissCoachingPopup}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
               >
                 <X size={24} />
@@ -237,13 +253,14 @@ export default function MembersHub() {
 
               <div className="flex gap-3">
                 <button
-                  onClick={() => setShowCoachingUpsell(false)}
+                  onClick={handleDismissCoachingPopup}
                   className="flex-1 py-3 px-4 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Maybe Later
                 </button>
                 <Link
                   to="/consultation"
+                  onClick={handleDismissCoachingPopup}
                   className="flex-1 py-3 px-4 bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold rounded-xl hover:from-rose-600 hover:to-rose-700 transition-all text-center flex items-center justify-center gap-2"
                 >
                   <Calendar size={18} />
@@ -263,7 +280,7 @@ export default function MembersHub() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowProBundleUpsell(false)}
+            onClick={handleDismissProBundlePopup}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -273,7 +290,7 @@ export default function MembersHub() {
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => setShowProBundleUpsell(false)}
+                onClick={handleDismissProBundlePopup}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
               >
                 <X size={24} />
@@ -317,13 +334,14 @@ export default function MembersHub() {
 
               <div className="flex gap-3">
                 <button
-                  onClick={() => setShowProBundleUpsell(false)}
+                  onClick={handleDismissProBundlePopup}
                   className="flex-1 py-3 px-4 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Not Now
                 </button>
                 <Link
                   to="/checkout/contentpreneur-pro"
+                  onClick={handleDismissProBundlePopup}
                   className="flex-1 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all text-center"
                 >
                   Get Pro Bundle →

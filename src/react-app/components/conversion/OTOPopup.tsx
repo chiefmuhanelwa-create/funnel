@@ -77,33 +77,33 @@ export default function OTOPopup({
             {/* Close Button */}
             <button
               onClick={onDecline}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-white transition-colors z-10"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-300 text-gray-500 hover:text-gray-700 transition-colors z-10"
             >
               <X size={18} />
             </button>
 
             {/* Countdown Timer */}
-            <div className="flex items-center justify-center gap-2 mb-4 bg-red-500/20 border border-red-500/30 rounded-full px-4 py-2">
-              <Clock size={16} className="text-red-400" />
-              <span className="text-red-400 font-mono font-bold">{formatTime(timeLeft)}</span>
-              <span className="text-red-300 text-sm">remaining</span>
+            <div className="flex items-center justify-center gap-2 mb-4 bg-red-100 border border-red-300 rounded-full px-4 py-2">
+              <Clock size={16} className="text-red-600" />
+              <span className="text-red-600 font-mono font-bold">{formatTime(timeLeft)}</span>
+              <span className="text-red-500 text-sm">remaining</span>
             </div>
 
             {/* OTO Badge */}
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles size={18} className="text-yellow-400" />
-              <span className="text-yellow-400 font-bold uppercase tracking-wide text-sm">
+              <Sparkles size={18} className="text-amber-500" />
+              <span className="text-amber-600 font-bold uppercase tracking-wide text-sm">
                 One-Time Special Offer
               </span>
             </div>
 
             {/* Headline */}
-            <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">
               Wait! Before You Go...
             </h2>
             <p className="text-gray-500 text-center mb-6">
               Add {productName} for{' '}
-              <span className="text-yellow-400 font-bold">{savingsPercent}% OFF</span>
+              <span className="text-amber-600 font-bold">{savingsPercent}% OFF</span>
             </p>
 
             {/* Product Details */}
@@ -113,7 +113,7 @@ export default function OTOPopup({
                   <BookOpen size={28} className="text-gray-900" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg">{productName}</h3>
+                  <h3 className="font-bold text-gray-900 text-lg">{productName}</h3>
                   <p className="text-gray-500 text-sm mt-1">
                     The #1 bestselling book on content monetization. 6,000+ copies sold.
                   </p>
@@ -124,7 +124,7 @@ export default function OTOPopup({
               <ul className="space-y-2">
                 {features.map((feature, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                    <Check size={16} className="text-green-400 shrink-0" />
+                    <Check size={16} className="text-green-600 shrink-0" />
                     {feature}
                   </li>
                 ))}
@@ -132,13 +132,13 @@ export default function OTOPopup({
             </div>
 
             {/* Pricing */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-4 mb-6">
+            <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-xl p-4 mb-6">
               <div>
                 <p className="text-gray-500 text-sm line-through">${originalPrice}</p>
-                <p className="text-2xl font-bold text-green-400">${otoPrice}</p>
+                <p className="text-2xl font-bold text-green-600">${otoPrice}</p>
               </div>
               <div className="text-right">
-                <span className="inline-block bg-green-500 text-gray-900 font-bold text-sm px-3 py-1 rounded-full">
+                <span className="inline-block bg-green-500 text-white font-bold text-sm px-3 py-1 rounded-full">
                   Save ${savings}
                 </span>
                 <p className="text-gray-500 text-xs mt-1">{savingsPercent}% OFF</p>

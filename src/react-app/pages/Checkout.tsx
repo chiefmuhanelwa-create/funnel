@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Shield, CreditCard, Loader2, Lock, Zap, Tag, X, ArrowLeft } from 'lucide-react';
+import { CheckCircle, Shield, CreditCard, Loader2, Lock, Zap, Tag, X, ArrowLeft, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { analytics } from '../utils/analytics';
 import { IMAGES } from '../config/assets';
+import { useMemberAccess } from '../context/MemberAccessContext';
+
+// Product bundles - what products are included when you own a product
+const PRODUCT_BUNDLES: Record<string, string[]> = {
+  'starter-kit': ['niche-finder', 'paids-workbook'],
+  'contentpreneur-pro': ['starter-kit', 'content-foundations', 'influencers-code', 'tax-guide', 'niche-finder', 'paids-workbook'],
+};
 
 // Product configuration
 const PRODUCTS: Record<string, {
@@ -155,8 +162,9 @@ interface AppliedDiscount {
 
 export default function Checkout() {
   const { productKey } = useParams<{ productKey: string }>();
+  const { getAllAccessibleProducts, isAuthenticated, user } = useMemberAccess();
   const product = productKey ? PRODUCTS[productKey] : null;
-  const bumps = productKey ? ORDER_BUMPS[productKey] || [] : [];
+  const allBumps = productKey ? ORDER_BUMPS[productKey] || [] : [];
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -164,12 +172,70 @@ export default function Checkout() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [exchangeRate, setExchangeRate] = useState(18.5);
+  const [ownedProducts, setOwnedProducts] = useState<string[]>([]);
+  const [checkingOwnership, setCheckingOwnership] = useState(false);
 
   // Discount code state
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
   const [discountError, setDiscountError] = useState('');
   const [checkingDiscount, setCheckingDiscount] = useState(false);
+
+  // Pre-fill email if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user?.email) {
+      setEmail(user.email);
+      // Get owned products from context
+      const owned = getAllAccessibleProducts();
+      setOwnedProducts(owned);
+    }
+  }, [isAuthenticated, user, getAllAccessibleProducts]);
+
+  // Check email ownership when email changes (debounced)
+  useEffect(() => {
+    const checkOwnership = async () => {
+      if (!email || email.length < 5 || !email.includes('@')) return;
+
+      setCheckingOwnership(true);
+      try {
+        const response = await fetch('/api/check-access', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.toLowerCase().trim() }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.products && data.products.length > 0) {
+            // Get all owned products including bundles
+            const owned = new Set<string>();
+            data.products.forEach((p: any) => {
+              owned.add(p.product_key);
+              // Add bundle products
+              if (PRODUCT_BUNDLES[p.product_key]) {
+                PRODUCT_BUNDLES[p.product_key].forEach(k => owned.add(k));
+              }
+            });
+            setOwnedProducts(Array.from(owned));
+          } else {
+            setOwnedProducts([]);
+          }
+        }
+      } catch (err) {
+        console.log('Could not check ownership:', err);
+      } finally {
+        setCheckingOwnership(false);
+      }
+    };
+
+    const timeoutId = setTimeout(checkOwnership, 500);
+    return () => clearTimeout(timeoutId);
+  }, [email]);
+
+  // Filter bumps to exclude owned products
+  const bumps = useMemo(() => {
+    return allBumps.filter(bump => !ownedProducts.includes(bump.key));
+  }, [allBumps, ownedProducts]);
 
   useEffect(() => {
     if (!product) return;
@@ -404,12 +470,18 @@ export default function Checkout() {
                 </div>
 
                 {/* Order Bumps */}
-                {bumps.length > 0 && (
+                {(bumps.length > 0 || (allBumps.length > 0 && ownedProducts.length > 0)) && (
                   <div className="border-t border-gray-200 pt-6 mb-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                       <Zap size={18} className="text-gold-500" />
                       Special Offers (One-Time Only)
                     </h2>
+                    {bumps.length === 0 && allBumps.length > 0 && (
+                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm mb-4">
+                        <CheckCircle size={16} />
+                        <span>You already own the add-on products available for this checkout!</span>
+                      </div>
+                    )}
                     <div className="space-y-3">
                       {bumps.map((bump) => (
                         <div

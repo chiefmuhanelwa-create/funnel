@@ -76,7 +76,7 @@ export const PRODUCTS: Record<string, Product> = {
       'DARES Scale System',
     ],
     accessLink: '/members/influencers-code',
-    purchaseLink: '/products/influencers-code',
+    purchaseLink: '/checkout/influencers-code',
   },
   'content-foundations': {
     key: 'content-foundations',
@@ -94,7 +94,7 @@ export const PRODUCTS: Record<string, Product> = {
       'Module 3: Value Alignment',
     ],
     accessLink: '/members/content-foundations',
-    purchaseLink: '/products/content-foundations',
+    purchaseLink: '/checkout/content-foundations',
   },
   'tax-guide': {
     key: 'tax-guide',
@@ -114,7 +114,7 @@ export const PRODUCTS: Record<string, Product> = {
       'Legal Protection Essentials',
     ],
     accessLink: '/members/tax-guide',
-    purchaseLink: '/products/tax-guide',
+    purchaseLink: '/checkout/tax-guide',
   },
   'niche-finder': {
     key: 'niche-finder',
@@ -132,7 +132,7 @@ export const PRODUCTS: Record<string, Product> = {
       'Audience Profiling',
     ],
     accessLink: '/members/niche-finder',
-    purchaseLink: '/products/niche-finder',
+    purchaseLink: '/checkout/niche-finder',
   },
   'paids-workbook': {
     key: 'paids-workbook',
@@ -152,7 +152,7 @@ export const PRODUCTS: Record<string, Product> = {
       'Services Income Stream',
     ],
     accessLink: '/members/paids-workbook',
-    purchaseLink: '/products/paids-workbook',
+    purchaseLink: '/checkout/paids-workbook',
   },
   'contentpreneur-pro': {
     key: 'contentpreneur-pro',
@@ -174,7 +174,7 @@ export const PRODUCTS: Record<string, Product> = {
       'NoChill Tool Stack Access',
     ],
     accessLink: '/members',
-    purchaseLink: '/products/contentpreneur-pro',
+    purchaseLink: '/checkout/contentpreneur-pro',
   },
   'strategy-call': {
     key: 'strategy-call',
@@ -192,7 +192,7 @@ export const PRODUCTS: Record<string, Product> = {
       'Follow-up Email Support',
     ],
     accessLink: '/consultation',
-    purchaseLink: '/products/coaching',
+    purchaseLink: '/checkout/coaching-session',
   },
 };
 
