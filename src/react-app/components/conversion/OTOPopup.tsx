@@ -74,12 +74,17 @@ export default function OTOPopup({
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-lg bg-gradient-to-br from-gray-100 to-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-2xl my-8"
           >
-            {/* Close Button */}
+            {/* Close Button - larger touch target for mobile */}
             <button
-              onClick={onDecline}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-300 text-gray-500 hover:text-gray-700 transition-colors z-10"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDecline();
+              }}
+              className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-600 hover:text-gray-800 transition-colors z-20 touch-manipulation"
+              aria-label="Close popup"
             >
-              <X size={18} />
+              <X size={20} />
             </button>
 
             {/* Countdown Timer */}
@@ -166,11 +171,14 @@ export default function OTOPopup({
               </motion.button>
 
               <button
-                onClick={onDecline}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDecline();
+                }}
                 disabled={isProcessing}
-                className="w-full text-sm text-gray-400 hover:text-gray-500 transition-colors py-2"
+                className="w-full text-sm text-gray-500 hover:text-gray-700 transition-colors py-3 underline touch-manipulation"
               >
-                No thanks, I'll pay full price later
+                No thanks, I'll pass on this offer
               </button>
             </div>
 

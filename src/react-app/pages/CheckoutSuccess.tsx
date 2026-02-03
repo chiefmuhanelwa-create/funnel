@@ -139,11 +139,15 @@ export default function CheckoutSuccess() {
   };
 
   const handleDeclineOTO = () => {
-    // Track decline event
-    analytics.customEvent('oto_declined', {
-      product: 'influencers-code',
-      original_order: reference,
-    });
+    // Track decline event (wrapped in try-catch to ensure popup closes)
+    try {
+      analytics.customEvent('oto_declined', {
+        product: 'influencers-code',
+        original_order: reference,
+      });
+    } catch (e) {
+      console.log('Analytics error:', e);
+    }
 
     setShowOTO(false);
   };

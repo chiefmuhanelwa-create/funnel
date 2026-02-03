@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import { loadAnalytics } from './utils/loadAnalytics';
 
@@ -58,9 +58,21 @@ function PageLoader() {
 }
 
 function App() {
+  const location = useLocation();
+
   useEffect(() => {
     loadAnalytics();
   }, []);
+
+  // Hide lead magnet popup on checkout, success, members, and tool pages
+  const hideLeadMagnetPopup = [
+    '/checkout',
+    '/members',
+    '/dashboard',
+    '/admin',
+    '/tools',
+    '/auth',
+  ].some(path => location.pathname.startsWith(path));
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -120,15 +132,17 @@ function App() {
 
       {/* Global conversion components */}
       <WhatsAppButton phoneNumber="+27XXXXXXXXX" />
-      <LeadMagnetPopup
-        delaySeconds={30}
-        showOnExit={true}
-        showOnScroll={false}
-        title="Get the FREE Content Ideas Cheat Sheet"
-        description="Discover the exact formula for creating viral content that builds your audience and grows your income."
-        leadMagnetName="Content Ideas Cheat Sheet"
-        buttonText="Send Me the Free Guide"
-      />
+      {!hideLeadMagnetPopup && (
+        <LeadMagnetPopup
+          delaySeconds={30}
+          showOnExit={true}
+          showOnScroll={false}
+          title="Get the FREE Content Ideas Cheat Sheet"
+          description="Discover the exact formula for creating viral content that builds your audience and grows your income."
+          leadMagnetName="Content Ideas Cheat Sheet"
+          buttonText="Send Me the Free Guide"
+        />
+      )}
     </div>
   );
 }
