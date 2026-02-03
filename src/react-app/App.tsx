@@ -29,6 +29,7 @@ import Consultation from './pages/Consultation';
 import FreeTools from './pages/FreeTools';
 import RateCardPro from './pages/RateCardPro';
 import TaxTools from './pages/TaxTools';
+import LeadMagnetLanding from './pages/LeadMagnetLanding';
 
 // Checkout pages
 import Checkout from './pages/Checkout';
@@ -63,7 +64,7 @@ function App() {
     loadAnalytics();
   }, []);
 
-  // Hide lead magnet popup on checkout, success, members, and tool pages
+  // Hide lead magnet popup on checkout, success, members, tool, and landing pages
   const hideLeadMagnetPopup = [
     '/checkout',
     '/members',
@@ -71,6 +72,7 @@ function App() {
     '/admin',
     '/tools',
     '/auth',
+    '/lp',
   ].some(path => location.pathname.startsWith(path));
 
   return (
@@ -99,6 +101,9 @@ function App() {
           <Route path="/free/:toolKey" element={<FreeTools />} />
           <Route path="/tools/ratecard" element={<RateCardPro />} />
           <Route path="/tools/tax" element={<TaxTools />} />
+
+          {/* Hidden Landing Pages for Ads (not in navigation) */}
+          <Route path="/lp/:leadKey" element={<LeadMagnetLanding />} />
 
           {/* Checkout Routes - Generic checkout for all products */}
           <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />

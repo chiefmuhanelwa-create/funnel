@@ -71,23 +71,7 @@ export default function Hero() {
               <SocialProof variant="purchases" minViewers={3} maxViewers={12} />
             </div>
 
-            {/* Element 6: SECONDARY CTA - Free Lead Magnet */}
-            <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link
-                to="/tools/ratecard"
-                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-amber-300 text-gray-700 font-semibold text-sm sm:text-lg rounded-2xl transition-all duration-300 min-h-[52px] w-full sm:w-auto shadow-sm"
-              >
-                Or Try The Free Rate Calculator
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            {/* Element 7: Free Offer Note */}
-            <p className="mt-3 text-xs sm:text-sm text-gray-500 text-center lg:text-left">
-              Calculate your influencer rates free — no credit card required
-            </p>
-
-            {/* Element 8: Trust Stats Row */}
+            {/* Element 6: Trust Stats Row */}
             <div className="mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6">
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-black text-gray-900">3M+</div>
@@ -100,8 +84,8 @@ export default function Hero() {
               </div>
               <div className="w-px h-12 bg-gray-200 hidden sm:block" />
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-black text-gray-900">2 Ways</div>
-                <div className="text-xs sm:text-sm text-gray-500">To Start</div>
+                <div className="text-2xl sm:text-3xl font-black text-gray-900">50+</div>
+                <div className="text-xs sm:text-sm text-gray-500">Brand Deals</div>
               </div>
             </div>
           </motion.div>
