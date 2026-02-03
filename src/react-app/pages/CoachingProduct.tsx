@@ -312,11 +312,11 @@ export default function CoachingProduct() {
                 </h3>
                 <ul className="space-y-4">
                   {[
-                    'You're creating content but not making money from it',
-                    'You're undercharging for brand deals (or not getting any)',
-                    'You're stuck at a growth plateau and nothing's working',
-                    'You want a clear action plan, not more generic advice',
-                    'You're ready to treat content creation as a business',
+                    "You're creating content but not making money from it",
+                    "You're undercharging for brand deals (or not getting any)",
+                    "You're stuck at a growth plateau and nothing's working",
+                    "You want a clear action plan, not more generic advice",
+                    "You're ready to treat content creation as a business",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <div className="w-6 h-6 rounded-full bg-gold-500/20 flex items-center justify-center shrink-0 mt-0.5">

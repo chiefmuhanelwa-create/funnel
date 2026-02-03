@@ -229,7 +229,7 @@ export default function Consultation() {
               },
               {
                 title: 'Your Challenges',
-                desc: 'Specific roadblocks and obstacles you're facing right now',
+                desc: "Specific roadblocks and obstacles you're facing right now",
               },
             ].map((item, index) => (
               <motion.div
