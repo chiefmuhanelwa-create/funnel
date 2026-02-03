@@ -27,6 +27,7 @@ import CoachingProduct from './pages/CoachingProduct';
 import ContentpreneurBookProduct from './pages/ContentpreneurBookProduct';
 import ContentArsenalProduct from './pages/ContentArsenalProduct';
 import Consultation from './pages/Consultation';
+import FreeTools from './pages/FreeTools';
 
 // Checkout pages
 import Checkout from './pages/Checkout';
@@ -83,6 +84,8 @@ function App() {
           <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
           <Route path="/products/content-arsenal" element={<ContentArsenalProduct />} />
           <Route path="/consultation" element={<Consultation />} />
+          <Route path="/free" element={<FreeTools />} />
+          <Route path="/free/:toolKey" element={<FreeTools />} />
 
           {/* Checkout Routes - Generic checkout for all products */}
           <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />

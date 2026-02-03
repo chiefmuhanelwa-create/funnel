@@ -6,6 +6,7 @@ import { IMAGES } from '../config/assets';
 import CountdownTimer from '../components/conversion/CountdownTimer';
 import ExitIntentPopup from '../components/conversion/ExitIntentPopup';
 import MobileCTA from '../components/conversion/MobileCTA';
+import SocialProof, { RecentPurchasePopup } from '../components/conversion/SocialProof';
 import BackButton from '../components/BackButton';
 
 export default function StarterKitProduct() {
@@ -50,6 +51,11 @@ export default function StarterKitProduct() {
         originalPrice="$197"
         checkoutUrl="/checkout/starter-kit"
       />
+      <RecentPurchasePopup
+        productName="Contentpreneur Starter Kit"
+        delaySeconds={20}
+        durationSeconds={5}
+      />
 
       {/* Back Navigation - Context aware */}
       <div className="container-content pt-6">
@@ -83,6 +89,10 @@ export default function StarterKitProduct() {
                 The complete 9-module course to launch and grow your content creator business.
                 Learn the exact PAIDS Framework that has generated over $2M in creator revenue.
               </p>
+
+              <div className="mt-6">
+                <SocialProof variant="viewers" minViewers={5} maxViewers={18} />
+              </div>
 
               <div className="mt-8 flex flex-wrap gap-6">
                 <div className="flex items-center text-gray-600">

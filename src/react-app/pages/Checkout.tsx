@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { analytics } from '../utils/analytics';
 import { IMAGES } from '../config/assets';
 import { useMemberAccess } from '../context/MemberAccessContext';
+import SocialProof from '../components/conversion/SocialProof';
 
 // Product bundles - what products are included when you own a product
 const PRODUCT_BUNDLES: Record<string, string[]> = {
@@ -181,6 +182,9 @@ export default function Checkout() {
   const [discountError, setDiscountError] = useState('');
   const [checkingDiscount, setCheckingDiscount] = useState(false);
 
+  // Cart tracking state
+  const [cartTracked, setCartTracked] = useState(false);
+
   // Pre-fill email if user is authenticated
   useEffect(() => {
     if (isAuthenticated && user?.email) {
@@ -190,6 +194,50 @@ export default function Checkout() {
       setOwnedProducts(owned);
     }
   }, [isAuthenticated, user, getAllAccessibleProducts]);
+
+  // Track checkout started when email is captured
+  useEffect(() => {
+    if (email && email.includes('@') && productKey && !cartTracked) {
+      const trackCart = async () => {
+        try {
+          await fetch('/api/track-cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: email.toLowerCase().trim(),
+              productKey,
+              action: 'checkout_started',
+              metadata: { name, bumps: selectedBumps },
+            }),
+          });
+          setCartTracked(true);
+        } catch (err) {
+          console.log('Cart tracking error:', err);
+        }
+      };
+
+      const timeoutId = setTimeout(trackCart, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [email, productKey, cartTracked, name, selectedBumps]);
+
+  // Track abandonment when user leaves page without completing
+  useEffect(() => {
+    if (!cartTracked || !email || !productKey) return;
+
+    const handleBeforeUnload = () => {
+      // Use sendBeacon for reliable tracking before page closes
+      const data = JSON.stringify({
+        email: email.toLowerCase().trim(),
+        productKey,
+        action: 'checkout_abandoned',
+      });
+      navigator.sendBeacon('/api/track-cart', data);
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [cartTracked, email, productKey]);
 
   // Check email ownership when email changes (debounced)
   useEffect(() => {
@@ -353,6 +401,15 @@ export default function Checkout() {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Mark cart as completed before redirect
+      if (cartTracked && email && productKey) {
+        navigator.sendBeacon('/api/track-cart', JSON.stringify({
+          email: email.toLowerCase().trim(),
+          productKey,
+          action: 'checkout_completed',
+        }));
       }
 
       // Redirect to Paystack
@@ -565,6 +622,9 @@ export default function Checkout() {
           {/* Order Summary */}
           <div className="lg:col-span-2">
             <div className="glass-card p-6 sticky top-24">
+              <div className="mb-4">
+                <SocialProof variant="purchases" minViewers={2} maxViewers={8} className="text-xs" />
+              </div>
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
 
               {/* Product Image */}

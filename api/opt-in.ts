@@ -12,30 +12,55 @@ const CONVERTKIT_TAG_LEAD_MAGNET = process.env.CONVERTKIT_TAG_LEAD_MAGNET || '';
 // Vercel Blob URLs for lead magnets
 const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 
-const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: string; upsell: string }> = {
+const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: string; upsell: string; upsellUrl: string }> = {
   'paids-workbook': {
     name: 'PAIDS Framework Workbook',
     downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
     icon: '💰',
-    upsell: 'Learn to implement all 5 income streams with the Contentpreneur Starter Kit',
+    upsell: 'Learn to implement all 5 income streams with the 9-Module Contentpreneur Starter Kit',
+    upsellUrl: '/checkout/starter-kit',
   },
   'niche-finder': {
     name: 'Niche Finder Workbook',
     downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
     icon: '🎯',
-    upsell: 'Discover how to monetize your niche with the Contentpreneur Starter Kit',
+    upsell: 'Build your authentic brand with the 3-Module Content Foundations course',
+    upsellUrl: '/checkout/content-foundations',
   },
   'tax-guide': {
     name: 'Tax Guide for Contentpreneurs',
     downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
     icon: '📋',
     upsell: 'Get the complete business blueprint with the Contentpreneur Starter Kit',
+    upsellUrl: '/checkout/starter-kit',
   },
   'content-ideas': {
     name: 'Content Ideas Cheat Sheet',
     downloadUrl: `${BLOB_BASE}/books/content-ideas-cheatsheet.pdf`,
     icon: '💡',
     upsell: 'Master content creation with the Contentpreneur Starter Kit',
+    upsellUrl: '/checkout/starter-kit',
+  },
+  'ratecard-pro': {
+    name: 'RateCard Pro Template',
+    downloadUrl: `${BLOB_BASE}/books/ratecard-pro-template.pdf`,
+    icon: '📊',
+    upsell: 'Learn to land $5K+ brand deals with The Influencer\'s Code',
+    upsellUrl: '/checkout/influencers-code',
+  },
+  'media-kit': {
+    name: 'Media Kit Generator',
+    downloadUrl: `${BLOB_BASE}/books/media-kit-templates.pdf`,
+    icon: '🎨',
+    upsell: 'Get 100+ templates to 10x your content with the Content Arsenal Pack',
+    upsellUrl: '/checkout/content-arsenal',
+  },
+  'tax-calculator': {
+    name: 'Tax Calculator + Invoice Generator',
+    downloadUrl: `${BLOB_BASE}/books/tax-calculator-invoice-generator.pdf`,
+    icon: '🧮',
+    upsell: 'Master SARS compliance with the complete Tax Guide for Contentpreneurs',
+    upsellUrl: '/checkout/tax-guide',
   },
 };
 
@@ -128,6 +153,7 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
     downloadUrl: 'https://funnel-nochill.vercel.app/members',
     icon: '🎁',
     upsell: 'Take the next step with the Contentpreneur Starter Kit',
+    upsellUrl: '/checkout/starter-kit',
   };
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
@@ -172,7 +198,7 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
     <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
       <p style="margin: 0 0 5px; font-size: 14px; color: #92400e;">Ready to go deeper?</p>
       <p style="margin: 0 0 15px; font-size: 16px; color: #78350f; font-weight: 600;">${config.upsell}</p>
-      <a href="${appUrl}/contentpreneur-starter-kit" style="display: inline-block; background: #111; color: white; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: bold; font-size: 14px;">
+      <a href="${appUrl}${config.upsellUrl}" style="display: inline-block; background: #111; color: white; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: bold; font-size: 14px;">
         Check It Out →
       </a>
     </div>
