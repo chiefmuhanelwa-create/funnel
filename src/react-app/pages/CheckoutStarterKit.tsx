@@ -64,15 +64,15 @@ export default function CheckoutStarterKit() {
     {
       key: 'influencers-code',
       name: "The Influencer's Code (eBook)",
-      price: 2700,
-      description: 'Learn the secrets of successful influencers. Normally $47, yours for just $27 today.',
+      price: 1200,
+      description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.',
       imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {
       key: 'tax-guide',
       name: 'Creator Tax Guide SA',
-      price: 1500,
-      description: 'Essential tax tips for content creators. Save thousands in taxes.',
+      price: 2700,
+      description: 'Essential 115-page tax guide for creators. Normally $47, yours for just $27.',
       imageUrl: PRODUCT_IMAGES.taxGuide,
     },
   ];
@@ -464,8 +464,7 @@ export default function CheckoutStarterKit() {
                     '9 Video Modules',
                     'Niche Finder Workbook',
                     'PAIDS Framework Workbook',
-                    'Brand Pitch Templates',
-                    'Content Calendar Template',
+                    'NoChill Tool Stack',
                     'Lifetime Access',
                   ].map((item, index) => (
                     <li key={index} className="flex items-center text-sm text-gray-500">

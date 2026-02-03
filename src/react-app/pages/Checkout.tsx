@@ -30,7 +30,7 @@ const PRODUCTS: Record<string, {
     description: 'Complete 9-module course to build your personal brand and monetize your content',
     price: 6700,
     image: IMAGES.starterKitCourseMockup,
-    features: ['9 Video Modules', 'Niche Finder Workbook', 'PAIDS Framework Workbook', 'Brand Pitch Templates', 'Content Calendar Template', 'Lifetime Access'],
+    features: ['9 Video Modules', 'Niche Finder Workbook', 'PAIDS Framework Workbook', 'NoChill Tool Stack', 'Lifetime Access'],
     salesPage: '/contentpreneur-starter-kit',
   },
   'influencers-code': {
@@ -123,33 +123,33 @@ const PRODUCTS: Record<string, {
   },
 };
 
-// Order bumps configuration
+// Order bumps configuration - discounted prices when purchased together
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
   'starter-kit': [
-    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 2700, description: 'Learn the secrets of successful influencers. Normally $47, yours for just $27 today.' },
-    { key: 'tax-guide', name: 'Creator Tax Guide SA', price: 1500, description: 'Essential tax tips for content creators. Save thousands in taxes.' },
+    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 1200, description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.' },
+    { key: 'tax-guide', name: 'Creator Tax Guide SA', price: 2700, description: 'Essential 115-page tax guide for creators. Normally $47, yours for just $27.' },
   ],
   'influencers-code': [
-    { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide.' },
+    { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },
   ],
   'niche-finder': [
-    { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide.' },
+    { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },
   ],
   'paids-workbook': [
-    { key: 'niche-finder', name: 'Niche Finder Workbook', price: 1200, description: 'Find your perfect niche first. Bundle price.' },
+    { key: 'niche-finder', name: 'Niche Finder Workbook', price: 1200, description: 'Find your perfect niche first. Normally $17.' },
   ],
   'tax-guide': [
-    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2500, description: '100+ templates to save you 10+ hours every week.' },
+    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2700, description: '100+ templates to save you 10+ hours every week. Normally $37.' },
   ],
   'content-foundations': [
-    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 3. Only $30 more!' },
+    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 3. Save $30!' },
   ],
   'coaching-session': [],
   'contentpreneur-book': [
-    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2500, description: '100+ templates to jumpstart your content business.' },
+    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2700, description: '100+ templates to jumpstart your content business. Normally $37.' },
   ],
   'content-arsenal': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
   ],
   'contentpreneur-pro': [],
 };

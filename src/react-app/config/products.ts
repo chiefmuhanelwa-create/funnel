@@ -249,12 +249,32 @@ export const PRODUCT_BUNDLES: Record<string, string[]> = {
   ],
 };
 
-// Order bump configurations for checkout pages
+// Order bump configurations for checkout pages (discounted prices when purchased together)
 export const ORDER_BUMPS: Record<string, Array<{ key: string; discountedPrice: number; savings: string }>> = {
   'starter-kit': [
-    { key: 'influencers-code', discountedPrice: 1900, savings: '90% OFF' },
-    { key: 'tax-guide', discountedPrice: 4700, savings: '' },
-    { key: 'content-foundations', discountedPrice: 3700, savings: '' },
+    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
+    { key: 'tax-guide', discountedPrice: 2700, savings: '43% OFF' },
+  ],
+  'influencers-code': [
+    { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
+  ],
+  'niche-finder': [
+    { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
+  ],
+  'paids-workbook': [
+    { key: 'niche-finder', discountedPrice: 1200, savings: '29% OFF' },
+  ],
+  'tax-guide': [
+    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+  ],
+  'content-foundations': [
+    { key: 'starter-kit', discountedPrice: 3000, savings: 'Upgrade' },
+  ],
+  'contentpreneur-book': [
+    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+  ],
+  'content-arsenal': [
+    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
   ],
 };
 
