@@ -28,6 +28,8 @@ import ContentpreneurBookProduct from './pages/ContentpreneurBookProduct';
 import ContentArsenalProduct from './pages/ContentArsenalProduct';
 import Consultation from './pages/Consultation';
 import FreeTools from './pages/FreeTools';
+import RateCardPro from './pages/RateCardPro';
+import TaxTools from './pages/TaxTools';
 
 // Checkout pages
 import Checkout from './pages/Checkout';
@@ -86,6 +88,8 @@ function App() {
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/free" element={<FreeTools />} />
           <Route path="/free/:toolKey" element={<FreeTools />} />
+          <Route path="/tools/ratecard" element={<RateCardPro />} />
+          <Route path="/tools/tax" element={<TaxTools />} />
 
           {/* Checkout Routes - Generic checkout for all products */}
           <Route path="/checkout/starter-kit" element={<CheckoutStarterKit />} />

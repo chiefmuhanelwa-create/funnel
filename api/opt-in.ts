@@ -12,7 +12,7 @@ const CONVERTKIT_TAG_LEAD_MAGNET = process.env.CONVERTKIT_TAG_LEAD_MAGNET || '';
 // Vercel Blob URLs for lead magnets
 const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 
-const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: string; upsell: string; upsellUrl: string }> = {
+const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: string; upsell: string; upsellUrl: string; externalTool?: string }> = {
   'paids-workbook': {
     name: 'PAIDS Framework Workbook',
     downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
@@ -42,11 +42,12 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
     upsellUrl: '/checkout/starter-kit',
   },
   'ratecard-pro': {
-    name: 'RateCard Pro Template',
-    downloadUrl: `${BLOB_BASE}/books/ratecard-pro-template.pdf`,
+    name: 'RateCard Pro Calculator',
+    downloadUrl: 'https://influencerpricing.online',
     icon: '📊',
     upsell: 'Learn to land $5K+ brand deals with The Influencer\'s Code',
     upsellUrl: '/checkout/influencers-code',
+    externalTool: 'https://influencerpricing.online',
   },
   'media-kit': {
     name: 'Media Kit Generator',
@@ -57,10 +58,11 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
   },
   'tax-calculator': {
     name: 'Tax Calculator + Invoice Generator',
-    downloadUrl: `${BLOB_BASE}/books/tax-calculator-invoice-generator.pdf`,
+    downloadUrl: 'https://contentprenuership.com',
     icon: '🧮',
-    upsell: 'Master SARS compliance with the complete Tax Guide for Contentpreneurs',
+    upsell: 'Master SARS compliance with the complete Tax Guide for Contentpreneurs (115 pages)',
     upsellUrl: '/checkout/tax-guide',
+    externalTool: 'https://contentprenuership.com',
   },
 };
 
@@ -157,6 +159,35 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
   };
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+  const isExternalTool = !!config.externalTool;
+
+  // Different email content for external tools vs PDF downloads
+  const ctaButton = isExternalTool
+    ? `<a href="${config.externalTool}" style="display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: white; text-decoration: none; padding: 18px 36px; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">
+        🔗 Open Tool Now
+      </a>`
+    : `<a href="${config.downloadUrl}" style="display: inline-block; background: linear-gradient(135deg, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 18px 36px; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);">
+        📥 Download Now
+      </a>`;
+
+  const proTip = isExternalTool
+    ? `<div style="background: #d1fae5; border-radius: 12px; padding: 20px; margin: 25px 0;">
+        <h3 style="margin: 0 0 10px; color: #065f46; font-size: 16px;">💡 Pro Tip</h3>
+        <p style="margin: 0; color: #047857; font-size: 14px;">
+          Bookmark this tool! You can use it anytime. This link will always work: <a href="${config.externalTool}" style="color: #059669; font-weight: bold;">${config.externalTool}</a>
+        </p>
+      </div>`
+    : `<div style="background: #fef3c7; border-radius: 12px; padding: 20px; margin: 25px 0;">
+        <h3 style="margin: 0 0 10px; color: #92400e; font-size: 16px;">💡 Pro Tip</h3>
+        <p style="margin: 0; color: #78350f; font-size: 14px;">
+          Set aside 30-60 minutes to go through this properly. Don't just skim it — the real value comes from doing the exercises!
+        </p>
+      </div>`;
+
+  const heading = isExternalTool ? 'Your Tool Access is Ready!' : 'Your Download is Ready!';
+  const intro = isExternalTool
+    ? `Thank you for requesting access to the <strong>${config.name}</strong>! Click below to start using the tool immediately.`
+    : `Thank you for downloading the <strong>${config.name}</strong>! This resource is going to help you take the next step in your contentpreneur journey.`;
 
   try {
     await resend.emails.send({
@@ -175,25 +206,18 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
 
     <div style="text-align: center; margin-bottom: 30px;">
       <div style="font-size: 56px; margin-bottom: 16px;">${config.icon}</div>
-      <h1 style="color: #111; margin: 0; font-size: 26px;">Your Download is Ready!</h1>
+      <h1 style="color: #111; margin: 0; font-size: 26px;">${heading}</h1>
     </div>
 
     <p style="font-size: 16px;">Hi ${firstName || 'there'},</p>
 
-    <p style="font-size: 16px;">Thank you for downloading the <strong>${config.name}</strong>! This resource is going to help you take the next step in your contentpreneur journey.</p>
+    <p style="font-size: 16px;">${intro}</p>
 
     <div style="text-align: center; margin: 30px 0;">
-      <a href="${config.downloadUrl}" style="display: inline-block; background: linear-gradient(135deg, #f59e0b, #ea580c); color: white; text-decoration: none; padding: 18px 36px; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);">
-        📥 Download Now
-      </a>
+      ${ctaButton}
     </div>
 
-    <div style="background: #fef3c7; border-radius: 12px; padding: 20px; margin: 25px 0;">
-      <h3 style="margin: 0 0 10px; color: #92400e; font-size: 16px;">💡 Pro Tip</h3>
-      <p style="margin: 0; color: #78350f; font-size: 14px;">
-        Set aside 30-60 minutes to go through this properly. Don't just skim it — the real value comes from doing the exercises!
-      </p>
-    </div>
+    ${proTip}
 
     <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
       <p style="margin: 0 0 5px; font-size: 14px; color: #92400e;">Ready to go deeper?</p>
