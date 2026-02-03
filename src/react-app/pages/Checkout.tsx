@@ -82,7 +82,7 @@ const PRODUCTS: Record<string, {
     key: 'coaching-session',
     name: '1-on-1 Strategy Call',
     description: '60-minute personalized strategy session with Mr. NoChill',
-    price: 150000,
+    price: 49700,
     features: ['60-Min Video Call', '90-Day Action Plan', 'Session Recording', '7-Day Email Follow-up'],
     salesPage: '/products/coaching',
   },
