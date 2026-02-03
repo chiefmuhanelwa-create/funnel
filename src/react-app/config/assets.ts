@@ -137,6 +137,32 @@ export const COURSE_VIDEOS = {
       isBonus: true,
     },
   ],
+  contentFoundations: [
+    {
+      id: 1,
+      label: 'MODULE 1',
+      title: 'Self Reflection',
+      description: 'Discover your authentic voice and unique strengths through guided self-reflection exercises. Understand who you truly are as a creator.',
+      duration: '15:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-1---self-reflection-U2iJQ229HpT5FUwrV7XM6Xgtivu68N.mp4`,
+    },
+    {
+      id: 2,
+      label: 'MODULE 2',
+      title: 'SWOT Analysis for Content Creation',
+      description: 'Identify your Strengths, Weaknesses, Opportunities & Threats as a creator. Position yourself strategically in your niche.',
+      duration: '12:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-2---swot-analysis-for-content-creation-VpLMPP3GoZdI0gHw5tu9MJU9sC6ZpL.mp4`,
+    },
+    {
+      id: 3,
+      label: 'MODULE 3',
+      title: 'Value Alignment',
+      description: 'Build content that reflects your true values and resonates deeply with your ideal audience. Create with purpose and authenticity.',
+      duration: '10:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-3--value-alignment-8ttvnPAxtUK7G9xBIQpyTNuVb7aZxH.mp4`,
+    },
+  ],
 } as const;
 
 // ============================================
@@ -174,6 +200,11 @@ export const PRODUCT_DOWNLOADS = {
       { name: 'Niche Finder Workbook.pdf', url: DOCUMENTS.nicheFinderWorkbook },
     ],
     course: COURSE_VIDEOS.starterKit,
+  },
+  'content-foundations': {
+    name: 'Content Foundations',
+    files: [],
+    course: COURSE_VIDEOS.contentFoundations,
   },
 } as const;
 

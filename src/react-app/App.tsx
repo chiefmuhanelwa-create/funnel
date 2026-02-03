@@ -35,6 +35,7 @@ import Checkout from './pages/Checkout';
 import MembersHub from './pages/MembersHub';
 import Members from './pages/Members';
 import StarterKitCourse from './pages/StarterKitCourse';
+import ContentFoundationsCourse from './pages/ContentFoundationsCourse';
 import MemberDownload from './pages/MemberDownload';
 import Dashboard from './pages/Dashboard';
 
@@ -97,6 +98,7 @@ function App() {
           <Route path="/members/hub" element={<MembersHub />} />
           <Route path="/members/legacy" element={<Members />} />
           <Route path="/members/starter-kit" element={<StarterKitCourse />} />
+          <Route path="/members/content-foundations" element={<ContentFoundationsCourse />} />
           <Route path="/members/:productKey" element={<MemberDownload />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
