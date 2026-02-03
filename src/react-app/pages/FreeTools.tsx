@@ -9,13 +9,12 @@ import {
   Palette,
   Calculator,
   ArrowRight,
-  Star,
   Users,
-  Zap
+  Lightbulb
 } from 'lucide-react';
 import { analytics } from '../utils/analytics';
 
-// Lead magnet configurations with upsell paths
+// FREE Lead Magnets Only (no duplicates with paid products)
 const LEAD_MAGNETS: Record<string, {
   title: string;
   subtitle: string;
@@ -32,18 +31,19 @@ const LEAD_MAGNETS: Record<string, {
   };
   color: string;
   stats: { label: string; value: string }[];
+  externalUrl?: string;
 }> = {
   'ratecard-pro': {
-    title: 'RateCard Pro Template',
+    title: 'RateCard Pro Calculator',
     subtitle: 'Calculate Your Worth',
-    description: 'Professional rate card template that helps you price your services correctly and negotiate better brand deals.',
+    description: 'Professional rate calculator that helps you price your services correctly and negotiate better brand deals.',
     icon: FileSpreadsheet,
     benefits: [
       'Pre-built pricing formulas for all content types',
-      'Brand deal negotiation scripts',
+      'Brand deal negotiation calculator',
       'Industry benchmark rates included',
       'Customizable for your niche',
-      'PDF + Editable spreadsheet formats',
+      'Instant results - no download needed',
     ],
     upsell: {
       title: "The Influencer's Code",
@@ -58,9 +58,63 @@ const LEAD_MAGNETS: Record<string, {
       { label: 'Creators Using It', value: '2,500+' },
       { label: 'Avg. Rate Increase', value: '47%' },
     ],
+    externalUrl: '/tools/ratecard',
+  },
+  'tax-calculator': {
+    title: 'Tax Calculator + Invoice Generator',
+    subtitle: 'Stay Compliant',
+    description: 'Calculate your tax obligations and generate professional invoices. Built specifically for South African content creators.',
+    icon: Calculator,
+    benefits: [
+      'SARS-compliant tax calculator',
+      'Professional invoice templates',
+      'Expense tracking tools',
+      'VAT calculation helper',
+      'Tax deduction checklist',
+    ],
+    upsell: {
+      title: 'Tax Guide for Contentpreneurs',
+      description: 'Complete 115-page SARS compliance guide with VDP process and deduction strategies',
+      price: '$47',
+      originalPrice: '$97',
+      url: '/checkout/tax-guide',
+      badge: '52% OFF Today',
+    },
+    color: 'emerald',
+    stats: [
+      { label: 'Tax Saved (Avg)', value: 'R12,000+' },
+      { label: 'Creators Protected', value: '500+' },
+    ],
+    externalUrl: '/tools/tax',
+  },
+  'content-ideas': {
+    title: 'Content Ideas Cheat Sheet',
+    subtitle: 'Never Run Out of Ideas',
+    description: 'The exact formula for creating viral content that builds your audience and grows your income.',
+    icon: Lightbulb,
+    benefits: [
+      'The 3Es viral content formula',
+      '50+ proven content templates',
+      'Engagement-boosting hooks',
+      'Platform-specific strategies',
+      'Instant PDF download',
+    ],
+    upsell: {
+      title: 'Contentpreneur Starter Kit',
+      description: 'Full 9-module video course to build your personal brand and income streams',
+      price: '$67',
+      originalPrice: '$197',
+      url: '/checkout/starter-kit',
+      badge: '66% OFF Today',
+    },
+    color: 'purple',
+    stats: [
+      { label: 'Ideas Included', value: '50+' },
+      { label: 'Success Rate', value: '89%' },
+    ],
   },
   'media-kit': {
-    title: 'Media Kit Generator',
+    title: 'Media Kit Generator Templates',
     subtitle: 'Look Professional',
     description: 'Create a stunning media kit in minutes that gets you noticed by brands and secures better partnerships.',
     icon: Palette,
@@ -83,84 +137,6 @@ const LEAD_MAGNETS: Record<string, {
     stats: [
       { label: 'Templates Included', value: '5' },
       { label: 'Brands Impressed', value: '1,000+' },
-    ],
-  },
-  'tax-calculator': {
-    title: 'Tax Calculator + Invoice Generator',
-    subtitle: 'Stay Compliant',
-    description: 'Calculate your tax obligations and generate professional invoices. Built specifically for South African content creators.',
-    icon: Calculator,
-    benefits: [
-      'SARS-compliant tax calculator',
-      'Professional invoice templates',
-      'Expense tracking spreadsheet',
-      'VAT calculation helper',
-      'Tax deduction checklist',
-    ],
-    upsell: {
-      title: 'Tax Guide for Contentpreneurs',
-      description: 'Complete SARS compliance guide with VDP process and deduction strategies',
-      price: '$47',
-      originalPrice: '$97',
-      url: '/checkout/tax-guide',
-      badge: '52% OFF Today',
-    },
-    color: 'emerald',
-    stats: [
-      { label: 'Tax Saved (Avg)', value: 'R12,000+' },
-      { label: 'Creators Protected', value: '500+' },
-    ],
-  },
-  'niche-finder': {
-    title: 'Niche Finder Workbook',
-    subtitle: 'Find Your Niche',
-    description: 'Discover your perfect content niche with this step-by-step workbook. Stop guessing and start growing.',
-    icon: Zap,
-    benefits: [
-      '6 guided self-discovery exercises',
-      'Market research framework',
-      'Competition analysis template',
-      'Niche validation checklist',
-      'Profitable niche examples',
-    ],
-    upsell: {
-      title: 'Content Foundations Course',
-      description: '3-module video course to build your authentic personal brand foundation',
-      price: '$37',
-      originalPrice: '$67',
-      url: '/checkout/content-foundations',
-      badge: '45% OFF Today',
-    },
-    color: 'blue',
-    stats: [
-      { label: 'Niches Found', value: '3,000+' },
-      { label: 'Success Rate', value: '89%' },
-    ],
-  },
-  'paids-workbook': {
-    title: 'PAIDS Framework Workbook',
-    subtitle: 'Monetize Everything',
-    description: 'The proven 5-pillar system for building multiple income streams as a content creator.',
-    icon: Star,
-    benefits: [
-      'Complete PAIDS breakdown',
-      'Income stream worksheets',
-      'Brand deal calculator',
-      'Product pricing guide',
-      'Services rate card template',
-    ],
-    upsell: {
-      title: 'Contentpreneur Starter Kit',
-      description: 'Full 9-module video course to build your personal brand and income streams',
-      price: '$67',
-      originalPrice: '$197',
-      url: '/checkout/starter-kit',
-      badge: '66% OFF Today',
-    },
-    color: 'purple',
-    stats: [
-      { label: 'Revenue Generated', value: '$2M+' },
-      { label: 'Income Streams Avg', value: '3.2' },
     ],
   },
 };
@@ -211,7 +187,7 @@ export default function FreeTools() {
                     ))}
                   </div>
                   <Link
-                    to={`/free/${key}`}
+                    to={item.externalUrl || `/free/${key}`}
                     className="btn-primary w-full text-center group-hover:shadow-lg transition-shadow"
                   >
                     Get Free Access

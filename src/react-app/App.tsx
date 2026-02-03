@@ -14,7 +14,6 @@ import Home from './pages/Home';
 import StarterKitProduct from './pages/StarterKitProduct';
 import CheckoutStarterKit from './pages/CheckoutStarterKit';
 import CheckoutSuccess from './pages/CheckoutSuccess';
-import FreeWorkbook from './pages/FreeWorkbook';
 import AuthCallback from './pages/AuthCallback';
 
 // Product pages - eagerly loaded for sales conversion
@@ -84,8 +83,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contentpreneur-starter-kit" element={<StarterKitProduct />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
-          <Route path="/free/paids-workbook" element={<FreeWorkbook leadMagnet="paids-workbook" />} />
-          <Route path="/free/niche-finder" element={<FreeWorkbook leadMagnet="niche-finder" />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Product Sales Pages */}

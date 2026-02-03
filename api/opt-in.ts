@@ -12,35 +12,9 @@ const CONVERTKIT_TAG_LEAD_MAGNET = process.env.CONVERTKIT_TAG_LEAD_MAGNET || '';
 // Vercel Blob URLs for lead magnets
 const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 
+// FREE Lead Magnets Only (no duplicates with paid products)
 const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: string; upsell: string; upsellUrl: string; externalTool?: string }> = {
-  'paids-workbook': {
-    name: 'PAIDS Framework Workbook',
-    downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
-    icon: '💰',
-    upsell: 'Learn to implement all 5 income streams with the 9-Module Contentpreneur Starter Kit',
-    upsellUrl: '/checkout/starter-kit',
-  },
-  'niche-finder': {
-    name: 'Niche Finder Workbook',
-    downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
-    icon: '🎯',
-    upsell: 'Build your authentic brand with the 3-Module Content Foundations course',
-    upsellUrl: '/checkout/content-foundations',
-  },
-  'tax-guide': {
-    name: 'Tax Guide for Contentpreneurs',
-    downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
-    icon: '📋',
-    upsell: 'Get the complete business blueprint with the Contentpreneur Starter Kit',
-    upsellUrl: '/checkout/starter-kit',
-  },
-  'content-ideas': {
-    name: 'Content Ideas Cheat Sheet',
-    downloadUrl: `${BLOB_BASE}/books/content-ideas-cheatsheet.pdf`,
-    icon: '💡',
-    upsell: 'Master content creation with the Contentpreneur Starter Kit',
-    upsellUrl: '/checkout/starter-kit',
-  },
+  // External Tools (unique free offerings)
   'ratecard-pro': {
     name: 'RateCard Pro Calculator',
     downloadUrl: 'https://influencerpricing.online',
@@ -49,13 +23,6 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
     upsellUrl: '/checkout/influencers-code',
     externalTool: 'https://influencerpricing.online',
   },
-  'media-kit': {
-    name: 'Media Kit Generator',
-    downloadUrl: `${BLOB_BASE}/books/media-kit-templates.pdf`,
-    icon: '🎨',
-    upsell: 'Get 100+ templates to 10x your content with the Content Arsenal Pack',
-    upsellUrl: '/checkout/content-arsenal',
-  },
   'tax-calculator': {
     name: 'Tax Calculator + Invoice Generator',
     downloadUrl: 'https://contentprenuership.com',
@@ -63,6 +30,21 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
     upsell: 'Master SARS compliance with the complete Tax Guide for Contentpreneurs (115 pages)',
     upsellUrl: '/checkout/tax-guide',
     externalTool: 'https://contentprenuership.com',
+  },
+  // PDF Downloads (unique free offerings)
+  'content-ideas': {
+    name: 'Content Ideas Cheat Sheet',
+    downloadUrl: `${BLOB_BASE}/books/content-ideas-cheatsheet.pdf`,
+    icon: '💡',
+    upsell: 'Master content creation with the Contentpreneur Starter Kit',
+    upsellUrl: '/checkout/starter-kit',
+  },
+  'media-kit': {
+    name: 'Media Kit Generator Templates',
+    downloadUrl: `${BLOB_BASE}/books/media-kit-templates.pdf`,
+    icon: '🎨',
+    upsell: 'Get 100+ templates to 10x your content with the Content Arsenal Pack',
+    upsellUrl: '/checkout/content-arsenal',
   },
 };
 
