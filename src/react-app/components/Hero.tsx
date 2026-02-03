@@ -84,20 +84,18 @@ export default function Hero() {
             </div>
 
             {/* Trust Stats Row */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-black text-white">3M+</div>
-                <div className="text-xs sm:text-sm text-white/70">Followers</div>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+              <div className="text-center px-4 py-3 bg-black/40 rounded-xl backdrop-blur-sm border border-amber-500/30">
+                <div className="text-2xl sm:text-3xl font-black text-amber-400">3M+</div>
+                <div className="text-xs sm:text-sm text-amber-200 font-medium">Followers</div>
               </div>
-              <div className="w-px h-12 bg-white/30 hidden sm:block" />
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-black text-white">5</div>
-                <div className="text-xs sm:text-sm text-white/70">Income Streams</div>
+              <div className="text-center px-4 py-3 bg-black/40 rounded-xl backdrop-blur-sm border border-amber-500/30">
+                <div className="text-2xl sm:text-3xl font-black text-amber-400">5</div>
+                <div className="text-xs sm:text-sm text-amber-200 font-medium">Income Streams</div>
               </div>
-              <div className="w-px h-12 bg-white/30 hidden sm:block" />
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-black text-white">50+</div>
-                <div className="text-xs sm:text-sm text-white/70">Brand Deals</div>
+              <div className="text-center px-4 py-3 bg-black/40 rounded-xl backdrop-blur-sm border border-amber-500/30">
+                <div className="text-2xl sm:text-3xl font-black text-amber-400">50+</div>
+                <div className="text-xs sm:text-sm text-amber-200 font-medium">Brand Deals</div>
               </div>
             </div>
           </motion.div>

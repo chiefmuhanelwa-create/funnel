@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, ArrowRight, Users, Award, Zap } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { VIDEOS } from '../config/assets';
+import { VIDEOS, IMAGES } from '../config/assets';
 
 export default function VideoShowcase() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -70,7 +70,7 @@ export default function VideoShowcase() {
                   ref={videoRef}
                   src={VIDEOS.metaEvent}
                   className="w-full h-full object-cover"
-                  poster=""
+                  poster={IMAGES.heroImage}
                   playsInline
                   preload="metadata"
                   onPlay={() => setIsPlaying(true)}
