@@ -77,13 +77,13 @@ export default function MembersHub() {
   // Get owned and locked products
   const ownedProducts = Object.entries(PRODUCTS).filter(([key]) => hasAccessToProduct(key));
   const lockedProducts = Object.entries(PRODUCTS).filter(
-    ([key]) => !hasAccessToProduct(key) && key !== 'contentpreneur-pro' && key !== 'strategy-call'
+    ([key]) => !hasAccessToProduct(key) && key !== 'contentpreneur-pro' && key !== 'coaching-session'
   );
 
   // Show coaching upsell after 10 seconds for starter kit owners who don't have coaching
   // Only show if not previously dismissed
   useEffect(() => {
-    if (hasStarterKit && !hasAccessToProduct('strategy-call') && !coachingPopupDismissed) {
+    if (hasStarterKit && !hasAccessToProduct('coaching-session') && !coachingPopupDismissed) {
       const timer = setTimeout(() => {
         setShowCoachingUpsell(true);
       }, 10000);
@@ -445,7 +445,7 @@ export default function MembersHub() {
         </section>
 
         {/* 1:1 Coaching Upsell Banner - Only for those who don't have it */}
-        {!hasAccessToProduct('strategy-call') && (
+        {!hasAccessToProduct('coaching-session') && (
           <section className="mb-12">
             <div className="bg-gradient-to-r from-rose-500 to-rose-600 rounded-2xl p-6 md:p-8 text-white">
               <div className="flex flex-col md:flex-row items-center gap-6">

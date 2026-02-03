@@ -116,7 +116,7 @@ const PAIDS_CATEGORIES = [
         title: '1:1 Coaching with Mr NoChill',
         promise: 'Direct strategy sessions with 3M+ experience',
         link: '/products/coaching',
-        productKey: 'strategy-call',
+        productKey: 'coaching-session',
         type: 'paid' as const,
       },
     ],
