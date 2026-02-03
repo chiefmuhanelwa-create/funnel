@@ -77,11 +77,16 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
         body: JSON.stringify({ email: normalizedEmail }),
       });
 
-      if (!response.ok) {
-        return { success: false, error: 'Failed to check access. Please try again.' };
-      }
-
       const data = await response.json();
+
+      // Handle service errors
+      if (!response.ok) {
+        console.error('Check access error:', data);
+        if (response.status === 503) {
+          return { success: false, error: 'Service temporarily unavailable. Please try again in a few moments.' };
+        }
+        return { success: false, error: data.message || 'Failed to check access. Please try again.' };
+      }
 
       if (data.products && data.products.length > 0) {
         const accessData: EmailAccess = {
@@ -111,6 +116,10 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
       };
     } catch (error) {
       console.error('Login error:', error);
+      // Check if it's a network error
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        return { success: false, error: 'Network error. Please check your connection and try again.' };
+      }
       return { success: false, error: 'Something went wrong. Please try again.' };
     }
   };
