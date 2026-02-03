@@ -17,7 +17,7 @@ export default function Hero() {
           fetchPriority="high"
         />
         {/* Dark gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-gray-900/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/60" />
       </div>
 
       {/* DESKTOP: Background Effects */}
@@ -49,16 +49,16 @@ export default function Hero() {
             </motion.div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.1] tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.1] tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
               <span className="text-white">Turn Your Content Into</span>
               <br />
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                 Real Income
               </span>
             </h1>
 
             {/* Subheadline */}
-            <p className="mt-6 text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
+            <p className="mt-6 text-base sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
               Learn the proven system I used to build 5 income streams and grow from 0 to 3M+ followers—without the fluff or fake promises.
             </p>
 
@@ -74,7 +74,7 @@ export default function Hero() {
             </div>
 
             {/* Trust Indicators */}
-            <p className="mt-4 text-xs sm:text-sm text-gray-300 text-center">
+            <p className="mt-4 text-xs sm:text-sm text-white/80 text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
               ✓ Instant Access  ✓ Lifetime Updates  ✓ 30-Day Guarantee
             </p>
 
@@ -84,20 +84,20 @@ export default function Hero() {
             </div>
 
             {/* Trust Stats Row */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-black text-white">3M+</div>
-                <div className="text-xs sm:text-sm text-gray-300">Followers</div>
+                <div className="text-xs sm:text-sm text-white/70">Followers</div>
               </div>
-              <div className="w-px h-12 bg-gray-500 hidden sm:block" />
+              <div className="w-px h-12 bg-white/30 hidden sm:block" />
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-black text-white">5</div>
-                <div className="text-xs sm:text-sm text-gray-300">Income Streams</div>
+                <div className="text-xs sm:text-sm text-white/70">Income Streams</div>
               </div>
-              <div className="w-px h-12 bg-gray-500 hidden sm:block" />
+              <div className="w-px h-12 bg-white/30 hidden sm:block" />
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-black text-white">50+</div>
-                <div className="text-xs sm:text-sm text-gray-300">Brand Deals</div>
+                <div className="text-xs sm:text-sm text-white/70">Brand Deals</div>
               </div>
             </div>
           </motion.div>
