@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 // Calendly URL - update this with your actual Calendly link
-const CALENDLY_URL = 'https://calendly.com/mrnochill/strategy-session';
+const CALENDLY_URL = 'https://calendly.com/chiefmuhanelwa/contentpreneurship';
 
 export default function Consultation() {
   const [formData, setFormData] = useState({
