@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Package, Megaphone, BookOpen, Handshake, Wrench, ArrowRight } from 'lucide-react';
+import { Package, Megaphone, BookOpen, Users, Wrench, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PAIDS_ITEMS = [
@@ -28,7 +28,7 @@ const PAIDS_ITEMS = [
     letter: 'D',
     title: 'Deals',
     description: 'Brand partnerships & collaborations',
-    icon: Handshake,
+    icon: Users,
     color: 'from-orange-500 to-amber-500',
   },
   {
