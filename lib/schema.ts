@@ -178,3 +178,19 @@ export const ADMIN_EMAILS = [
   'ndivhuwo@nochill.co.za',
   'chiefmuhanelwa@gmail.com',
 ];
+
+// Analytics events table
+export const analyticsEvents = pgTable('analytics_events', {
+  id: serial('id').primaryKey(),
+  eventType: text('event_type').notNull(), // 'page_view', 'video_play', 'form_submit', 'purchase', 'checkout_start'
+  sessionId: text('session_id'),
+  pageUrl: text('page_url'),
+  eventData: text('event_data'), // JSON string
+  ipAddress: text('ip_address'),
+  userAgent: text('user_agent'),
+  referrer: text('referrer'),
+  utmSource: text('utm_source'),
+  utmMedium: text('utm_medium'),
+  utmCampaign: text('utm_campaign'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
