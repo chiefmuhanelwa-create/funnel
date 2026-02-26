@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Lock,
   CheckCircle,
-  LogOut,
   Mail,
   ExternalLink,
   ChevronRight,
@@ -32,7 +31,7 @@ const COLOR_CLASSES: Record<string, { bg: string; border: string; text: string }
 };
 
 export default function MembersHub() {
-  const { isAuthenticated, isLoading, user, hasAccessToProduct, loginWithEmail, logout, emailAccess } = useMemberAccess();
+  const { isAuthenticated, isLoading, user, hasAccessToProduct, loginWithEmail, emailAccess } = useMemberAccess();
   const [emailInput, setEmailInput] = useState('');
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -146,24 +145,15 @@ export default function MembersHub() {
             </h1>
             <p className="text-gray-500 text-sm mt-1">{user?.email}</p>
           </div>
-          <div className="flex items-center gap-3">
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
-              >
-                <Settings size={16} />
-                Admin
-              </Link>
-            )}
-            <button
-              onClick={logout}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
             >
-              <LogOut size={16} />
-              Logout
-            </button>
-          </div>
+              <Settings size={16} />
+              Admin
+            </Link>
+          )}
         </div>
 
         {/* My Content Section */}

@@ -57,10 +57,10 @@ export default function Hero() {
             </motion.div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[1.15] tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
-              <span className="text-white">Turn Followers Into Income</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[1.15] tracking-tight">
+              <span style={{ color: '#ffffff' }} className="drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)] drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">Turn Followers Into Income</span>
               <br />
-              <span className="text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              <span className="text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">
                 Without Chasing Algorithms
               </span>
             </h1>

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, CheckCircle, ChevronLeft, Clock, FileText, Download, ArrowRight, ArrowLeft, Loader2, Pause } from 'lucide-react';
+import { Play, CheckCircle, ChevronLeft, Clock, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
-import { COURSE_VIDEOS, DOCUMENTS } from '../config/assets';
+import { COURSE_VIDEOS } from '../config/assets';
 
 // Use the modules from the central assets config
 const modules = COURSE_VIDEOS.starterKit;
@@ -273,37 +273,6 @@ export default function StarterKitCourse() {
                       Completed
                     </span>
                   )}
-                </div>
-
-                {/* Resources */}
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="font-semibold text-gray-900 mb-4">Course Resources</h3>
-                  <div className="space-y-2">
-                    <a
-                      href={DOCUMENTS.paidsFrameworkWorkbook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
-                    >
-                      <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
-                        PAIDS Framework Workbook
-                      </span>
-                      <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
-                    </a>
-                    <a
-                      href={DOCUMENTS.nicheFinderWorkbook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group"
-                    >
-                      <FileText className="text-gold-500 mr-3" size={18} />
-                      <span className="font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
-                        Niche Finder Workbook
-                      </span>
-                      <Download className="ml-auto text-gray-400 group-hover:text-gold-500 transition-colors" size={16} />
-                    </a>
-                  </div>
                 </div>
 
                 {/* Navigation */}

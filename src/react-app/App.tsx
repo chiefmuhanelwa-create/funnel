@@ -1,12 +1,11 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import { loadAnalytics } from './utils/loadAnalytics';
 
 // Components
 import StickyNav from './components/StickyNav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import LeadMagnetPopup from './components/conversion/LeadMagnetPopup';
 
 // Public pages - eagerly loaded
 import Home from './pages/Home';
@@ -57,22 +56,9 @@ function PageLoader() {
 }
 
 function App() {
-  const location = useLocation();
-
   useEffect(() => {
     loadAnalytics();
   }, []);
-
-  // Hide lead magnet popup on checkout, success, members, tool, and landing pages
-  const hideLeadMagnetPopup = [
-    '/checkout',
-    '/members',
-    '/dashboard',
-    '/admin',
-    '/tools',
-    '/auth',
-    '/lp',
-  ].some(path => location.pathname.startsWith(path));
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -130,19 +116,6 @@ function App() {
         </Routes>
       </main>
       <Footer />
-
-      {/* Global conversion components */}
-      {!hideLeadMagnetPopup && (
-        <LeadMagnetPopup
-          delaySeconds={30}
-          showOnExit={true}
-          showOnScroll={false}
-          title="Get the FREE Content Ideas Cheat Sheet"
-          description="Discover the exact formula for creating viral content that builds your audience and grows your income."
-          leadMagnetName="Content Ideas Cheat Sheet"
-          buttonText="Send Me the Free Guide"
-        />
-      )}
     </div>
   );
 }
