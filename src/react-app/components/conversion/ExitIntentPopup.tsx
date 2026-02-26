@@ -115,26 +115,26 @@ export default function ExitIntentPopup({
 
           {/* Content */}
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Wait! Don't Leave Empty-Handed
             </h2>
-            <p className="text-gray-500 mb-6">
-              Get <span className="text-yellow-400 font-bold">{discountPercent}% OFF</span> your
+            <p className="text-gray-600 mb-6">
+              Get <span className="text-amber-600 font-bold">{discountPercent}% OFF</span> your
               first purchase
             </p>
 
             {/* Discount Code Box */}
             <div
               onClick={handleCopyCode}
-              className="bg-gray-50 border-2 border-dashed border-yellow-500/50 rounded-xl p-4 mb-6 cursor-pointer hover:bg-gray-100 transition-colors"
+              className="bg-amber-50 border-2 border-dashed border-amber-500 rounded-xl p-4 mb-6 cursor-pointer hover:bg-amber-100 transition-colors"
             >
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Percent size={20} className="text-yellow-500" />
-                <span className="text-2xl font-mono font-bold text-yellow-400 tracking-wider">
+                <Percent size={20} className="text-amber-600" />
+                <span className="text-2xl font-mono font-bold text-amber-700 tracking-wider">
                   {discountCode}
                 </span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600">
                 {copied ? 'Copied!' : 'Click to copy'}
               </p>
             </div>

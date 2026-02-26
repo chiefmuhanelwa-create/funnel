@@ -6,7 +6,6 @@ import { loadAnalytics } from './utils/loadAnalytics';
 import StickyNav from './components/StickyNav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import WhatsAppButton from './components/WhatsAppButton';
 import LeadMagnetPopup from './components/conversion/LeadMagnetPopup';
 
 // Public pages - eagerly loaded
@@ -133,7 +132,6 @@ function App() {
       <Footer />
 
       {/* Global conversion components */}
-      <WhatsAppButton phoneNumber="+27XXXXXXXXX" />
       {!hideLeadMagnetPopup && (
         <LeadMagnetPopup
           delaySeconds={30}

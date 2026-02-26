@@ -35,8 +35,12 @@ const TOTAL_VALUE = VALUE_ITEMS.reduce((sum, item) => sum + item.value, 0);
 
 export default function ValueStackSection() {
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto max-w-4xl px-4">
+    <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+      {/* Subtle neon background glow */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-400/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-orange-400/5 rounded-full blur-[80px] pointer-events-none" />
+
+      <div className="container mx-auto max-w-4xl px-4 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -44,12 +48,12 @@ export default function ValueStackSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <span className="inline-block px-4 py-2 bg-amber-100 text-amber-700 text-sm font-bold rounded-full mb-4">
+          <span className="inline-block px-4 py-2 bg-amber-100 text-amber-700 text-sm font-bold rounded-full mb-4 shadow-[0_0_15px_rgba(251,191,36,0.2)]">
             WHAT'S INSIDE
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight">
             Everything You Need To
-            <span className="block text-amber-600">Start Monetizing</span>
+            <span className="block text-amber-600 drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]">Start Monetizing</span>
           </h2>
         </motion.div>
 
@@ -58,7 +62,7 @@ export default function ValueStackSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 md:p-10 border-2 border-amber-200 shadow-xl"
+          className="bg-gradient-to-br from-gray-50 to-amber-50 rounded-3xl p-6 md:p-10 border-2 border-amber-300 shadow-[0_0_40px_rgba(251,191,36,0.15)]"
         >
           <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Inside the Contentpreneur System:
@@ -104,8 +108,8 @@ export default function ValueStackSection() {
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold text-gray-900">Your Price Today:</span>
               <div className="flex items-center gap-3">
-                <span className="text-4xl md:text-5xl font-black text-amber-600">$67</span>
-                <span className="bg-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                <span className="text-4xl md:text-5xl font-black text-amber-600 drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]">$67</span>
+                <span className="bg-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-[0_0_15px_rgba(251,191,36,0.4)]">
                   SAVE {Math.round((1 - 67/TOTAL_VALUE) * 100)}%
                 </span>
               </div>
@@ -116,7 +120,7 @@ export default function ValueStackSection() {
           <div className="text-center">
             <Link
               to="/contentpreneur-starter-kit"
-              className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-xl rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 w-full md:w-auto"
+              className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-xl rounded-2xl shadow-[0_0_25px_rgba(251,191,36,0.4)] hover:shadow-[0_0_40px_rgba(251,191,36,0.6)] hover:scale-[1.02] transition-all duration-300 w-full md:w-auto"
             >
               <Sparkles size={24} />
               Get Instant Access Now

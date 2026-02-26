@@ -90,12 +90,12 @@ export default function Hero() {
             <div className="mt-6 flex flex-col gap-3 justify-center">
               <Link
                 to="/contentpreneur-starter-kit"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-base sm:text-lg rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto sm:mx-auto"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-base sm:text-lg rounded-2xl shadow-[0_0_20px_rgba(251,191,36,0.4),0_0_40px_rgba(251,191,36,0.2)] hover:shadow-[0_0_30px_rgba(251,191,36,0.6),0_0_60px_rgba(251,191,36,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto sm:mx-auto neon-pulse"
               >
                 Start Building Your 5 Income Streams
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <span className="text-amber-400 font-bold text-lg">Just $67</span>
+              <span className="text-amber-400 font-bold text-lg drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">Just $67</span>
             </div>
 
             {/* Trust Indicators */}
@@ -190,7 +190,7 @@ export default function Hero() {
             <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
               <Link
                 to="/contentpreneur-starter-kit"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-lg rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-lg rounded-2xl shadow-[0_0_20px_rgba(251,191,36,0.3),0_0_40px_rgba(251,191,36,0.15)] hover:shadow-[0_0_30px_rgba(251,191,36,0.5),0_0_60px_rgba(251,191,36,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
               >
                 Start Building Your 5 Income Streams
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

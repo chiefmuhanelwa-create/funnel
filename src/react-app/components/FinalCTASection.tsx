@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom';
 
 export default function FinalCTASection() {
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-gray-900 to-black text-white">
-      <div className="container mx-auto max-w-4xl px-4">
+    <section className="py-20 md:py-28 bg-gradient-to-b from-gray-900 to-black text-white relative overflow-hidden">
+      {/* Neon glow background effects */}
+      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="container mx-auto max-w-4xl px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -13,9 +18,9 @@ export default function FinalCTASection() {
           className="text-center"
         >
           {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-6 text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
             Stop Posting.
-            <span className="block text-amber-400">Start Monetizing.</span>
+            <span className="block text-amber-400 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)]">Start Monetizing.</span>
           </h2>
 
           {/* Subheadline */}
@@ -45,7 +50,7 @@ export default function FinalCTASection() {
           {/* CTA Button */}
           <Link
             to="/contentpreneur-starter-kit"
-            className="group inline-flex items-center justify-center gap-3 px-10 py-6 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-xl md:text-2xl rounded-2xl shadow-2xl hover:shadow-amber-500/25 hover:scale-[1.02] transition-all duration-300"
+            className="group inline-flex items-center justify-center gap-3 px-10 py-6 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black text-xl md:text-2xl rounded-2xl shadow-[0_0_30px_rgba(251,191,36,0.5),0_0_60px_rgba(251,191,36,0.3)] hover:shadow-[0_0_50px_rgba(251,191,36,0.7),0_0_100px_rgba(251,191,36,0.4)] hover:scale-[1.02] transition-all duration-300 neon-pulse"
           >
             <Sparkles size={24} />
             Start Building Your 5 Income Streams
@@ -55,9 +60,9 @@ export default function FinalCTASection() {
           {/* Price & Guarantee */}
           <div className="mt-6 space-y-2">
             <p className="text-2xl font-bold text-white">
-              Just <span className="text-amber-400">$67</span> — One-Time Payment
+              Just <span className="text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]">$67</span> — One-Time Payment
             </p>
-            <p className="text-gray-400">
+            <p className="text-gray-300">
               Instant Access • Lifetime Updates • 30-Day Money-Back Guarantee
             </p>
           </div>
