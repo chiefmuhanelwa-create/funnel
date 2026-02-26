@@ -6,7 +6,6 @@ import {
   CountdownTimer,
   LimitedSpotsIndicator,
   LivePurchaseNotification,
-  ExitIntentPopup,
   MobileCTA,
 } from '../components/conversion';
 
@@ -157,11 +156,6 @@ export default function CheckoutStarterKit() {
   const handleRemoveDiscount = () => {
     setAppliedDiscount(null);
     setDiscountCode('');
-  };
-
-  const handleExitIntentDiscount = (code: string) => {
-    setDiscountCode(code);
-    handleApplyDiscount();
   };
 
   const subtotalUSD = calculateSubtotal();
@@ -492,11 +486,6 @@ export default function CheckoutStarterKit() {
 
       {/* Conversion Elements */}
       <LivePurchaseNotification />
-      <ExitIntentPopup
-        discountCode="SPECIAL10"
-        discountPercent={10}
-        onApplyDiscount={handleExitIntentDiscount}
-      />
       <MobileCTA
         ctaText="Get Started Now"
         ctaLink="/checkout/starter-kit"

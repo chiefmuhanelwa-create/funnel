@@ -3,7 +3,6 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
 import { analytics } from '../utils/analytics';
-import { OTOPopup } from '../components/conversion';
 
 interface OrderItem {
   item_id: string;
@@ -26,11 +25,6 @@ export default function CheckoutSuccess() {
     items?: OrderItem[];
   } | null>(null);
   const [error, setError] = useState('');
-
-  // OTO state
-  const [showOTO, setShowOTO] = useState(false);
-  const [otoProcessing, setOtoProcessing] = useState(false);
-  const [purchasedProductKeys, setPurchasedProductKeys] = useState<string[]>([]);
 
   useEffect(() => {
     if (!reference) {
@@ -62,21 +56,6 @@ export default function CheckoutSuccess() {
             value: data.order.total_amount_cents,
             currency: data.order.currency,
           });
-
-          // Check if eligible for OTO
-          const productKeys = data.items?.map((item: OrderItem) => item.item_id) || [];
-          setPurchasedProductKeys(productKeys);
-
-          // Show OTO if customer bought starter-kit but not influencers-code
-          const boughtStarterKit = productKeys.includes('starter-kit');
-          const alreadyHasInfluencersCode = productKeys.includes('influencers-code');
-
-          if (boughtStarterKit && !alreadyHasInfluencersCode) {
-            // Small delay before showing OTO
-            setTimeout(() => {
-              setShowOTO(true);
-            }, 1500);
-          }
         } else if (attempts < maxAttempts) {
           // Payment still pending, retry
           attempts++;
@@ -92,65 +71,6 @@ export default function CheckoutSuccess() {
 
     verifyPayment();
   }, [reference]);
-
-  const handleAcceptOTO = async () => {
-    setOtoProcessing(true);
-
-    try {
-      // Create new checkout session for the OTO product
-      const response = await fetch('/api/checkout/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productKeys: ['influencers-code'],
-          includeOrderBumps: [],
-          customerEmail,
-          customerName,
-          isOTO: true,
-          otoPrice: 1700, // $17 in cents
-        }),
-      });
-
-      if (!response.ok) throw new Error('Failed to create OTO session');
-
-      const data = await response.json();
-
-      // Track OTO acceptance
-      analytics.addToCart({
-        currency: 'USD',
-        value: 17,
-        items: [
-          {
-            item_id: 'influencers-code',
-            item_name: "The Influencer's Code",
-            price: 17,
-            item_category: 'OTO',
-          },
-        ],
-      });
-
-      // Redirect to payment
-      window.location.href = data.checkoutUrl;
-    } catch (error) {
-      console.error('OTO error:', error);
-      setOtoProcessing(false);
-      alert('Something went wrong. Please contact support.');
-    }
-  };
-
-  const handleDeclineOTO = () => {
-    // Track decline event (wrapped in try-catch to ensure popup closes)
-    try {
-      analytics.customEvent('oto_declined', {
-        product: 'influencers-code',
-        original_order: reference,
-      });
-    } catch (e) {
-      console.log('Analytics error:', e);
-    }
-
-    setShowOTO(false);
-  };
 
   if (status === 'loading') {
     return (
@@ -301,24 +221,6 @@ export default function CheckoutSuccess() {
           </ol>
         </div>
       </motion.div>
-
-      {/* OTO Popup */}
-      <OTOPopup
-        isVisible={showOTO}
-        onAccept={handleAcceptOTO}
-        onDecline={handleDeclineOTO}
-        isProcessing={otoProcessing}
-        productName="The Influencer's Code"
-        originalPrice={47}
-        otoPrice={17}
-        features={[
-          'Self-Awareness & Confidence Building',
-          'The 3Es Formula & Algorithm Mastery',
-          'PAIDS Monetization Deep Dive',
-          'DARES Scale System',
-        ]}
-        timerDuration={15 * 60}
-      />
     </div>
   );
 }

@@ -1,17 +1,14 @@
-import { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, Play, ArrowRight, Star, Clock, Users, Award, Shield, Zap, Gift, Lock, CreditCard, MessageCircle } from 'lucide-react';
 import { IMAGES } from '../config/assets';
 import CountdownTimer from '../components/conversion/CountdownTimer';
-import ExitIntentPopup from '../components/conversion/ExitIntentPopup';
 import MobileCTA from '../components/conversion/MobileCTA';
 import SocialProof, { RecentPurchasePopup } from '../components/conversion/SocialProof';
 import BackButton from '../components/BackButton';
 
 export default function StarterKitProduct() {
-  const navigate = useNavigate();
-
   // Create countdown target date (midnight tonight + 2 days for urgency)
   const countdownTarget = useMemo(() => {
     const target = new Date();
@@ -20,10 +17,6 @@ export default function StarterKitProduct() {
     return target;
   }, []);
 
-  const handleExitDiscount = (code: string) => {
-    // Navigate to checkout with discount pre-applied
-    navigate(`/checkout/starter-kit?discount=${code}`);
-  };
   const modules = [
     { title: 'Introduction', desc: 'Welcome & how to get the most from this course' },
     { title: 'Module 1: What is a Personal Brand', desc: 'Understand the foundation of building your brand identity' },
@@ -40,11 +33,6 @@ export default function StarterKitProduct() {
   return (
     <div className="bg-white pt-20">
       {/* Conversion Components */}
-      <ExitIntentPopup
-        discountCode="SAVE10"
-        discountPercent={10}
-        onApplyDiscount={handleExitDiscount}
-      />
       <MobileCTA
         productName="Starter Kit"
         price="$67"

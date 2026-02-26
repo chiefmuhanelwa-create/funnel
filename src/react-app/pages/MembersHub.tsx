@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Crown,
   Loader2,
@@ -12,11 +12,6 @@ import {
   ExternalLink,
   ChevronRight,
   Settings,
-  X,
-  Phone,
-  Calendar,
-  Star,
-  Sparkles,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { PRODUCTS, TOOL_STACK } from '../config/products';
@@ -41,22 +36,6 @@ export default function MembersHub() {
   const [emailInput, setEmailInput] = useState('');
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
-  const [showCoachingUpsell, setShowCoachingUpsell] = useState(false);
-  const [showProBundleUpsell, setShowProBundleUpsell] = useState(false);
-
-  // Check if popups were already dismissed (persist across sessions)
-  const coachingPopupDismissed = localStorage.getItem('coaching_popup_dismissed');
-  const proBundlePopupDismissed = localStorage.getItem('pro_bundle_popup_dismissed');
-
-  const handleDismissCoachingPopup = () => {
-    setShowCoachingUpsell(false);
-    localStorage.setItem('coaching_popup_dismissed', 'true');
-  };
-
-  const handleDismissProBundlePopup = () => {
-    setShowProBundleUpsell(false);
-    localStorage.setItem('pro_bundle_popup_dismissed', 'true');
-  };
 
   const handleEmailCheck = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,35 +51,9 @@ export default function MembersHub() {
 
   const isAdmin = user && ADMIN_EMAILS.includes(user.email.toLowerCase());
   const hasStarterKit = hasAccessToProduct('starter-kit');
-  const hasProBundle = hasAccessToProduct('contentpreneur-pro');
 
-  // Get owned and locked products
+  // Get owned products only
   const ownedProducts = Object.entries(PRODUCTS).filter(([key]) => hasAccessToProduct(key));
-  const lockedProducts = Object.entries(PRODUCTS).filter(
-    ([key]) => !hasAccessToProduct(key) && key !== 'contentpreneur-pro' && key !== 'coaching-session'
-  );
-
-  // Show coaching upsell after 10 seconds for starter kit owners who don't have coaching
-  // Only show if not previously dismissed
-  useEffect(() => {
-    if (hasStarterKit && !hasAccessToProduct('coaching-session') && !coachingPopupDismissed) {
-      const timer = setTimeout(() => {
-        setShowCoachingUpsell(true);
-      }, 10000);
-      return () => clearTimeout(timer);
-    }
-  }, [hasStarterKit, coachingPopupDismissed]);
-
-  // Show Pro Bundle upsell for users with individual products but not Pro Bundle
-  // Only show if not previously dismissed
-  useEffect(() => {
-    if (ownedProducts.length > 0 && !hasProBundle && lockedProducts.length > 2 && !proBundlePopupDismissed) {
-      const timer = setTimeout(() => {
-        setShowProBundleUpsell(true);
-      }, 30000);
-      return () => clearTimeout(timer);
-    }
-  }, [ownedProducts.length, hasProBundle, lockedProducts.length, proBundlePopupDismissed]);
 
   if (isLoading) {
     return (
@@ -121,7 +74,7 @@ export default function MembersHub() {
             className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8"
           >
             <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4 shadow-lg">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(251,191,36,0.3)]">
                 <Crown size={28} className="text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900">Members Area</h1>
@@ -151,7 +104,7 @@ export default function MembersHub() {
               <button
                 type="submit"
                 disabled={isCheckingEmail}
-                className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25"
+                className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(251,191,36,0.3)]"
               >
                 {isCheckingEmail ? (
                   <>
@@ -184,174 +137,6 @@ export default function MembersHub() {
   // Authenticated Dashboard
   return (
     <div className="min-h-screen bg-white pt-20">
-      {/* Coaching Upsell Popup */}
-      <AnimatePresence>
-        {showCoachingUpsell && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={handleDismissCoachingPopup}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={handleDismissCoachingPopup}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="text-center mb-6">
-                <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center mb-4">
-                  <Phone size={36} className="text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Ready to Accelerate?</h2>
-                <p className="text-gray-500 mt-2">Get personalized guidance from Mr. NoChill himself</p>
-              </div>
-
-              <div className="bg-rose-50 rounded-xl p-6 mb-6">
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Sparkles className="text-rose-500" size={20} />
-                  1:1 Strategy Session Includes:
-                </h3>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-rose-500 shrink-0" size={16} />
-                    60-minute personalized video call
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-rose-500 shrink-0" size={16} />
-                    Custom content strategy for YOUR niche
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-rose-500 shrink-0" size={16} />
-                    90-day actionable roadmap
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-rose-500 shrink-0" size={16} />
-                    Follow-up email support
-                  </li>
-                </ul>
-              </div>
-
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <span className="text-3xl font-bold text-gray-900">$1,500</span>
-                  <span className="text-gray-500 ml-2">/ session</span>
-                </div>
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={16} fill="currentColor" />)}
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={handleDismissCoachingPopup}
-                  className="flex-1 py-3 px-4 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  Maybe Later
-                </button>
-                <Link
-                  to="/consultation"
-                  onClick={handleDismissCoachingPopup}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold rounded-xl hover:from-rose-600 hover:to-rose-700 transition-all text-center flex items-center justify-center gap-2"
-                >
-                  <Calendar size={18} />
-                  Book Now
-                </Link>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Pro Bundle Upsell Popup */}
-      <AnimatePresence>
-        {showProBundleUpsell && !hasProBundle && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={handleDismissProBundlePopup}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={handleDismissProBundlePopup}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="text-center mb-6">
-                <div className="w-24 h-24 mx-auto rounded-xl overflow-hidden border border-amber-200 shadow-lg mb-4">
-                  <img
-                    src={PRODUCTS['starter-kit'].imageUrl}
-                    alt="Pro Bundle"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Unlock Everything</h2>
-                <p className="text-gray-500 mt-2">Get the complete Contentpreneur system</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 mb-6 border border-amber-200">
-                <p className="font-bold text-gray-900 mb-3">Pro Bundle Includes:</p>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  {PRODUCTS['contentpreneur-pro'].features
-                    .filter(f => !ownedProducts.some(([, p]) => p.name === f || p.shortName === f))
-                    .map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2 text-gray-700">
-                      <CheckCircle className="text-amber-500 shrink-0" size={14} />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <span className="text-3xl font-bold text-gray-900">$147</span>
-                  <span className="text-gray-400 line-through ml-2">$170</span>
-                </div>
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                  Save $23
-                </span>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={handleDismissProBundlePopup}
-                  className="flex-1 py-3 px-4 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  Not Now
-                </button>
-                <Link
-                  to="/checkout/contentpreneur-pro"
-                  onClick={handleDismissProBundlePopup}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all text-center"
-                >
-                  Get Pro Bundle →
-                </Link>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -413,7 +198,7 @@ export default function MembersHub() {
                   >
                     <Link
                       to={product.accessLink}
-                      className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:border-amber-300 transition-all group"
+                      className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-[0_0_30px_rgba(251,191,36,0.15)] hover:border-amber-300 transition-all group"
                     >
                       <div className="flex items-start gap-4">
                         {product.imageUrl ? (
@@ -444,39 +229,13 @@ export default function MembersHub() {
           )}
         </section>
 
-        {/* 1:1 Coaching Upsell Banner - Only for those who don't have it */}
-        {!hasAccessToProduct('coaching-session') && (
-          <section className="mb-12">
-            <div className="bg-gradient-to-r from-rose-500 to-rose-600 rounded-2xl p-6 md:p-8 text-white">
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                  <Phone size={36} className="text-white" />
-                </div>
-                <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-xl md:text-2xl font-bold mb-2">Need Personalized Guidance?</h3>
-                  <p className="text-rose-100">
-                    Book a 1:1 strategy session with Mr. NoChill. Get a custom roadmap tailored to YOUR goals.
-                  </p>
-                </div>
-                <Link
-                  to="/consultation"
-                  className="px-6 py-3 bg-white text-rose-600 font-semibold rounded-xl hover:bg-rose-50 transition-colors flex items-center gap-2 shrink-0"
-                >
-                  <Calendar size={18} />
-                  Book Your Call
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* Tool Stack Section - Only for Starter Kit owners */}
         {hasStarterKit && (
           <section className="mb-12">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 p-6 md:p-8">
                 <div className="flex items-center gap-4 mb-2">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-3xl shadow-lg">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(251,191,36,0.3)]">
                     🛠️
                   </div>
                   <div>
@@ -531,77 +290,6 @@ export default function MembersHub() {
                 <p className="mt-6 text-center text-gray-500 text-sm">
                   These are the exact tools used to build a content business generating multiple income streams.
                 </p>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Upgrade Section */}
-        {lockedProducts.length > 0 && !hasProBundle && (
-          <section className="mb-12">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Lock className="text-gray-400" size={24} />
-              Expand Your Library
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              {lockedProducts.slice(0, 4).map(([key, product]) => (
-                <div
-                  key={key}
-                  className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4 hover:border-amber-200 transition-colors"
-                >
-                  {product.imageUrl ? (
-                    <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-gray-200 opacity-60">
-                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover grayscale" />
-                    </div>
-                  ) : (
-                    <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 bg-gray-100 text-2xl opacity-60">
-                      {product.icon}
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-gray-900">{product.name}</h3>
-                      <Lock size={14} className="text-gray-400" />
-                    </div>
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{product.description}</p>
-                    <div className="flex items-center gap-4 mt-3">
-                      <span className="text-lg font-bold text-amber-600">
-                        ${(product.priceCents / 100).toFixed(0)}
-                      </span>
-                      <Link
-                        to={product.purchaseLink}
-                        className="text-sm font-medium text-amber-600 hover:text-amber-700 flex items-center gap-1"
-                      >
-                        Get Access
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pro Bundle Upsell */}
-            <div className="mt-6 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border-2 border-amber-200 p-6">
-              <div className="flex flex-col md:flex-row items-start gap-4">
-                <div className="text-4xl">👑</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900">Get Everything with Pro Bundle</h3>
-                  <p className="text-gray-600 mt-1">
-                    All courses, workbooks, and guides in one complete package. Save $23!
-                  </p>
-                  <div className="flex flex-wrap items-center gap-4 mt-4">
-                    <span className="text-2xl font-bold text-amber-600">$147</span>
-                    <span className="text-gray-400 line-through">$170</span>
-                    <Link
-                      to="/checkout/contentpreneur-pro"
-                      className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg shadow-amber-500/25"
-                    >
-                      Get Pro Bundle →
-                    </Link>
-                  </div>
-                </div>
               </div>
             </div>
           </section>

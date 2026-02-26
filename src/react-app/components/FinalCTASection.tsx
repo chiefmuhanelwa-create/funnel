@@ -18,15 +18,15 @@ export default function FinalCTASection() {
           className="text-center"
         >
           {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-6 text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-            Stop Posting.
-            <span className="block text-amber-400 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)]">Start Monetizing.</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-6">
+            <span className="text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.3)]">Stop Posting.</span>
+            <span className="block text-amber-400 drop-shadow-[0_0_30px_rgba(251,191,36,0.7)]">Start Monetizing.</span>
           </h2>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
             You didn't start creating content to stay broke. You started because you have something valuable to share.
-            <span className="block mt-2 text-white font-semibold">
+            <span className="block mt-2 text-amber-400 font-bold drop-shadow-[0_0_20px_rgba(251,191,36,0.6)]">
               It's time to get paid for it.
             </span>
           </p>
@@ -59,10 +59,10 @@ export default function FinalCTASection() {
 
           {/* Price & Guarantee */}
           <div className="mt-6 space-y-2">
-            <p className="text-2xl font-bold text-white">
-              Just <span className="text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]">$67</span> — One-Time Payment
+            <p className="text-2xl md:text-3xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              Just <span className="text-amber-400 drop-shadow-[0_0_25px_rgba(251,191,36,0.8)]">$67</span> — One-Time Payment
             </p>
-            <p className="text-gray-300">
+            <p className="text-gray-200">
               Instant Access • Lifetime Updates • 30-Day Money-Back Guarantee
             </p>
           </div>
