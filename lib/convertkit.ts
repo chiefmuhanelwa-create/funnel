@@ -242,8 +242,10 @@ export async function handlePurchaseConvertKit(
   productsGranted: string[],
   amountPaidCents: number
 ): Promise<void> {
-  // Get environment tags
-  const tagPurchased = process.env.CONVERTKIT_TAG_PURCHASED;
+  // Get environment tags - use existing variable names from user's Vercel
+  // CONVERTKIT_TAG_STARTER_KIT = purchased tag
+  // CONVERTKIT_TAG_ACTIVE = active member tag (needs to be added)
+  const tagPurchased = process.env.CONVERTKIT_TAG_STARTER_KIT || process.env.CONVERTKIT_TAG_PURCHASED;
   const tagActive = process.env.CONVERTKIT_TAG_ACTIVE;
   const welcomeSequenceId = process.env.CONVERTKIT_SEQUENCE_WELCOME;
 
