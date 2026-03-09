@@ -194,3 +194,20 @@ export const analyticsEvents = pgTable('analytics_events', {
   utmCampaign: text('utm_campaign'),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+// User progress tracking table (server-side)
+export const userProgress = pgTable('user_progress', {
+  id: serial('id').primaryKey(),
+  customerEmail: text('customer_email').notNull(),
+  productKey: text('product_key').notNull(),
+  lessonId: integer('lesson_id').notNull(),
+  completed: boolean('completed').default(false),
+  completedAt: timestamp('completed_at'),
+  createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+  emailProductLessonIdx: uniqueIndex('user_progress_email_product_lesson_idx').on(
+    table.customerEmail,
+    table.productKey,
+    table.lessonId
+  ),
+}));

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, CheckCircle, ChevronLeft, Clock, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
@@ -7,27 +7,82 @@ import { COURSE_VIDEOS } from '../config/assets';
 
 // Use the modules from the central assets config
 const modules = COURSE_VIDEOS.starterKit;
+const PRODUCT_KEY = 'starter-kit';
 
 export default function StarterKitCourse() {
-  const { hasAccessToProduct, isLoading } = useMemberAccess();
+  const { hasAccessToProduct, isLoading, emailAccess } = useMemberAccess();
   const [activeModule, setActiveModule] = useState<number | null>(null);
   const [completedModules, setCompletedModules] = useState<number[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Get user email from session
+  const userEmail = emailAccess?.email || sessionStorage.getItem('member-email');
+
+  // Fetch progress from server
+  const fetchProgress = useCallback(async () => {
+    if (!userEmail) return;
+
+    try {
+      const response = await fetch(`/api/progress?email=${encodeURIComponent(userEmail)}&product_key=${PRODUCT_KEY}`);
+      if (response.ok) {
+        const data = await response.json();
+        const completedIds = data.progress
+          .filter((p: { completed: boolean }) => p.completed)
+          .map((p: { lesson_id: number }) => p.lesson_id);
+        setCompletedModules(completedIds);
+        // Sync to localStorage for offline access
+        localStorage.setItem('starterkit-progress', JSON.stringify(completedIds));
+      }
+    } catch (error) {
+      console.error('Failed to fetch progress:', error);
+      // Fall back to localStorage
+      const saved = localStorage.getItem('starterkit-progress');
+      if (saved) {
+        setCompletedModules(JSON.parse(saved));
+      }
+    }
+  }, [userEmail]);
+
   useEffect(() => {
-    // Load completed modules from localStorage
+    // Load from localStorage first (instant)
     const saved = localStorage.getItem('starterkit-progress');
     if (saved) {
       setCompletedModules(JSON.parse(saved));
     }
-  }, []);
+    // Then sync from server
+    fetchProgress();
+  }, [fetchProgress]);
 
-  const markComplete = (moduleId: number) => {
-    if (!completedModules.includes(moduleId)) {
-      const updated = [...completedModules, moduleId];
-      setCompletedModules(updated);
-      localStorage.setItem('starterkit-progress', JSON.stringify(updated));
+  // Save progress to server and localStorage
+  const markComplete = async (moduleId: number) => {
+    if (completedModules.includes(moduleId)) return;
+
+    // Optimistic update
+    const updated = [...completedModules, moduleId];
+    setCompletedModules(updated);
+    localStorage.setItem('starterkit-progress', JSON.stringify(updated));
+
+    // Sync to server
+    if (userEmail) {
+      setIsSyncing(true);
+      try {
+        await fetch('/api/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: userEmail,
+            product_key: PRODUCT_KEY,
+            lesson_id: moduleId,
+            completed: true,
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+      } finally {
+        setIsSyncing(false);
+      }
     }
   };
 
@@ -263,9 +318,17 @@ export default function StarterKitCourse() {
                   {currentModule && !completedModules.includes(currentModule.id) ? (
                     <button
                       onClick={() => markComplete(currentModule.id)}
-                      className="btn-primary btn-sm shrink-0"
+                      disabled={isSyncing}
+                      className="btn-primary btn-sm shrink-0 disabled:opacity-50"
                     >
-                      Mark Complete
+                      {isSyncing ? (
+                        <>
+                          <Loader2 size={14} className="mr-2 animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        'Mark Complete'
+                      )}
                     </button>
                   ) : (
                     <span className="flex items-center text-success-400 font-medium shrink-0">

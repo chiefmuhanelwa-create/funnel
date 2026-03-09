@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
+import { handlePurchaseConvertKit } from '../../lib/convertkit';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -193,6 +194,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         allGrantedProducts: Array.from(productsToGrant),
         amountPaidCents: amountPaid,
       });
+
+      // Add to ConvertKit with tags and welcome sequence
+      try {
+        await handlePurchaseConvertKit(
+          customerEmail,
+          order.customer_name,
+          Array.from(productsToGrant),
+          amountPaid
+        );
+        console.log('[WEBHOOK] ConvertKit integration complete');
+      } catch (ckError) {
+        // Don't fail the webhook if ConvertKit fails
+        console.error('[WEBHOOK] ConvertKit error (non-fatal):', ckError);
+      }
 
       console.log('[WEBHOOK] Order processed successfully:', orderId);
     }
