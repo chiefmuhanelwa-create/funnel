@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
-import { handlePurchaseConvertKit } from '../../lib/convertkit';
+import { handlePurchaseResend } from '../../lib/resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -195,18 +195,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         amountPaidCents: amountPaid,
       });
 
-      // Add to ConvertKit with tags and welcome sequence
+      // Add to Resend audiences
       try {
-        await handlePurchaseConvertKit(
+        await handlePurchaseResend(
           customerEmail,
           order.customer_name,
-          Array.from(productsToGrant),
-          amountPaid
+          Array.from(productsToGrant)
         );
-        console.log('[WEBHOOK] ConvertKit integration complete');
-      } catch (ckError) {
-        // Don't fail the webhook if ConvertKit fails
-        console.error('[WEBHOOK] ConvertKit error (non-fatal):', ckError);
+        console.log('[WEBHOOK] Resend audience integration complete');
+      } catch (resendError) {
+        // Don't fail the webhook if Resend fails
+        console.error('[WEBHOOK] Resend error (non-fatal):', resendError);
+      }
+
+      // Schedule welcome sequence emails
+      try {
+        await scheduleWelcomeSequence(sql, customerEmail);
+        console.log('[WEBHOOK] Welcome sequence scheduled');
+      } catch (seqError) {
+        console.error('[WEBHOOK] Sequence scheduling error (non-fatal):', seqError);
       }
 
       console.log('[WEBHOOK] Order processed successfully:', orderId);
@@ -349,4 +356,44 @@ async function sendOrderEmail(params: {
   } catch (err) {
     console.error('[EMAIL] Failed:', err);
   }
+}
+
+/**
+ * Schedule welcome sequence emails for a new customer
+ */
+async function scheduleWelcomeSequence(sql: any, email: string) {
+  const schedules = [
+    { days: 1, emailNumber: 1 },
+    { days: 2, emailNumber: 2 },
+    { days: 3, emailNumber: 3 },
+    { days: 7, emailNumber: 7 },
+    { days: 14, emailNumber: 14 },
+    { days: 21, emailNumber: 21 },
+    { days: 30, emailNumber: 30 },
+  ];
+
+  for (const schedule of schedules) {
+    const scheduledFor = new Date();
+    scheduledFor.setDate(scheduledFor.getDate() + schedule.days);
+
+    await sql`
+      INSERT INTO email_sequences (
+        customer_email,
+        sequence_type,
+        email_number,
+        scheduled_for,
+        is_sent
+      )
+      VALUES (
+        ${email},
+        'welcome',
+        ${schedule.emailNumber},
+        ${scheduledFor.toISOString()},
+        false
+      )
+      ON CONFLICT DO NOTHING
+    `;
+  }
+
+  console.log(`[WEBHOOK] Scheduled ${schedules.length} welcome emails for ${email}`);
 }

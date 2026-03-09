@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { neon } from '@neondatabase/serverless';
-import { handleProgressMilestone } from '../lib/convertkit';
+import { handleProgressMilestone } from '../lib/resend';
 
 // Course lesson counts for milestone detection
 const COURSE_LESSON_COUNTS: Record<string, number> = {
@@ -103,7 +103,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       console.log(`[PROGRESS] Updated: ${normalizedEmail} - ${product_key} - lesson ${lesson_id} = ${isCompleted}`);
 
-      // Check for milestones and tag in ConvertKit
+      // Check for milestones and send Resend emails/add to audiences
       if (isCompleted) {
         const allProgress = await sql`
           SELECT COUNT(*) as total,
@@ -115,13 +115,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const { completed_count } = allProgress[0];
         const totalLessons = COURSE_LESSON_COUNTS[product_key] || 0;
 
-        // Trigger milestone tagging
-        if (completed_count === 1) {
-          await handleProgressMilestone(normalizedEmail, 'first_lesson');
-        } else if (completed_count === 3) {
-          await handleProgressMilestone(normalizedEmail, 'third_lesson');
-        } else if (completed_count >= totalLessons && totalLessons > 0) {
-          await handleProgressMilestone(normalizedEmail, 'all_complete');
+        // Trigger milestone emails and audience updates
+        try {
+          if (completed_count === 1) {
+            await handleProgressMilestone(normalizedEmail, 'first_lesson');
+          } else if (completed_count >= totalLessons && totalLessons > 0) {
+            await handleProgressMilestone(normalizedEmail, 'all_complete');
+          }
+        } catch (milestoneError) {
+          console.error('[PROGRESS] Milestone error (non-fatal):', milestoneError);
         }
       }
 
