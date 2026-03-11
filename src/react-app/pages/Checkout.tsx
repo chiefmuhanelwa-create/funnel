@@ -23,6 +23,7 @@ const PRODUCTS: Record<string, {
   image?: string;
   features: string[];
   salesPage: string;
+  isPreOrder?: boolean;
 }> = {
   'starter-kit': {
     key: 'starter-kit',
@@ -121,16 +122,43 @@ const PRODUCTS: Record<string, {
     ],
     salesPage: '/contentpreneur-starter-kit',
   },
+  'social-media-intro': {
+    key: 'social-media-intro',
+    name: 'Introduction to Social Media',
+    description: 'Master social media marketing with 4 comprehensive video modules',
+    price: 2700,
+    features: ['4 Video Modules', 'Platform Selection Guide', 'Content Creation Basics', 'Growth Tactics', 'Lifetime Access'],
+    salesPage: '/products/social-media-intro',
+  },
+  'contentpreneur-book-ebook': {
+    key: 'contentpreneur-book-ebook',
+    name: 'Contentpreneur Guide (eBook)',
+    description: 'The definitive digital guide to building a profitable content business',
+    price: 1900,
+    features: ['10 Comprehensive Chapters', 'Instant PDF Download', 'Lifetime Updates', 'Mobile-Friendly Format'],
+    salesPage: '/products/contentpreneur-book',
+    isPreOrder: true,
+  },
+  'contentpreneur-book-hardcopy': {
+    key: 'contentpreneur-book-hardcopy',
+    name: 'Contentpreneur Guide (Hardcopy + eBook)',
+    description: 'Physical book + digital copy. Free shipping within South Africa',
+    price: 3700,
+    features: ['Physical Hardcover Book', 'eBook Included', 'Free SA Shipping', 'Author-Signed Copy'],
+    salesPage: '/products/contentpreneur-book',
+    isPreOrder: true,
+  },
 };
 
 // Order bumps configuration - discounted prices when purchased together
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
   'starter-kit': [
     { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 1200, description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.' },
-    { key: 'tax-guide', name: 'Creator Tax Guide SA', price: 2700, description: 'Essential 115-page tax guide for creators. Normally $47, yours for just $27.' },
+    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '4-module course on social media mastery. Normally $27, yours for just $17 today.' },
   ],
   'influencers-code': [
     { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },
+    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '4-module course on social media mastery. Normally $27.' },
   ],
   'niche-finder': [
     { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },
@@ -144,8 +172,15 @@ const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; de
   'content-foundations': [
     { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 3. Save $30!' },
   ],
+  'social-media-intro': [
+    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 4700, description: 'Get the complete 9-module course. Save $20!' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
+  ],
   'coaching-session': [],
-  'contentpreneur-book': [
+  'contentpreneur-book-ebook': [
+    { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2700, description: '100+ templates to jumpstart your content business. Normally $37.' },
+  ],
+  'contentpreneur-book-hardcopy': [
     { key: 'content-arsenal', name: 'Content Arsenal Pack', price: 2700, description: '100+ templates to jumpstart your content business. Normally $37.' },
   ],
   'content-arsenal': [
@@ -681,6 +716,19 @@ export default function Checkout() {
                   </div>
                 </div>
               </div>
+
+              {/* Pre-order notice */}
+              {product.isPreOrder && (
+                <div className="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                  <div className="flex items-center gap-3">
+                    <Info size={20} className="text-amber-500" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Pre-Order</p>
+                      <p className="text-xs text-gray-500">This product is coming April 2026. You'll be notified when it's ready!</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* What's included */}
               <div className="mt-6 pt-6 border-t border-gray-200">

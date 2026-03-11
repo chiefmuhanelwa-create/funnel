@@ -3,7 +3,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 // In-memory cache for exchange rate (1 hour TTL)
 let cachedRate: { rate: number; timestamp: number } | null = null;
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-const FALLBACK_RATE = 18.5; // Updated fallback rate
+const FALLBACK_RATE = 16.5; // Updated March 2026 fallback rate
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');

@@ -7,10 +7,11 @@ import { handlePurchaseResend } from '../../lib/resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // COMPLETE Product Configuration with Icons
-const PRODUCTS: Record<string, { name: string; icon: string; features?: string[] }> = {
+const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]; accessLink?: string }> = {
   'starter-kit': {
     name: 'Contentpreneur Starter Kit',
     icon: '🚀',
+    accessLink: '/members/starter-kit',
     features: [
       'Introduction Video',
       'Module 1: What is a Personal Brand',
@@ -27,25 +28,37 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
       'NoChill Tool Stack Access',
     ],
   },
-  'niche-finder': { name: 'Niche Finder Workbook', icon: '🎯' },
-  'paids-workbook': { name: 'PAIDS Framework Workbook', icon: '💰' },
+  'niche-finder': { name: 'Niche Finder Workbook', icon: '🎯', accessLink: '/members' },
+  'paids-workbook': { name: 'PAIDS Framework Workbook', icon: '💰', accessLink: '/members' },
   'content-foundations': {
     name: 'Content Foundations Course',
     icon: '📚',
+    accessLink: '/members/content-foundations',
     features: ['Module 1: Self Reflection', 'Module 2: SWOT Analysis', 'Module 3: Value Alignment'],
   },
   'influencers-code': {
     name: "The Influencer's Code",
     icon: '📖',
+    accessLink: '/members',
     features: ['14 Chapters on Monetization', 'The 3Es Formula', 'PAIDS Method', 'DARES Scale System'],
   },
   'tax-guide': {
     name: 'Tax Guide for Contentpreneurs',
     icon: '📋',
+    accessLink: '/members',
     features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
   },
-  'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑' },
-  'strategy-call': { name: '1:1 Coaching Session', icon: '📞' },
+  'social-media-intro': {
+    name: 'Introduction to Social Media',
+    icon: '📱',
+    accessLink: '/members/social-media-intro',
+    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation', 'Module 4: Growth Tactics'],
+  },
+  'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑', accessLink: '/members' },
+  'contentpreneur-book-ebook': { name: 'Contentpreneur Guide (eBook)', icon: '📱', accessLink: '/members' },
+  'contentpreneur-book-hardcopy': { name: 'Contentpreneur Guide (Hardcopy + eBook)', icon: '📚', accessLink: '/members' },
+  'content-arsenal': { name: 'Content Arsenal Expansion Pack', icon: '🛠️', accessLink: '/members' },
+  'coaching-session': { name: '1:1 Strategy Call', icon: '📞', accessLink: '/consultation' },
 };
 
 // Bundle configurations - STRICT: only these products get unlocked
@@ -246,6 +259,8 @@ async function sendOrderEmail(params: {
     const product = PRODUCTS[key];
     if (!product) continue;
 
+    const accessUrl = product.accessLink ? `${appUrl}${product.accessLink}` : `${appUrl}/members`;
+
     productListHtml += `
       <div style="background: #f9fafb; border-radius: 12px; padding: 20px; margin-bottom: 16px; border-left: 4px solid #f59e0b;">
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
@@ -261,6 +276,15 @@ async function sendOrderEmail(params: {
       }
       productListHtml += `</ul>`;
     }
+
+    // Add direct access link for each product
+    productListHtml += `
+        <div style="margin-top: 12px;">
+          <a href="${accessUrl}" style="display: inline-block; background: #f59e0b; color: #000; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px;">
+            Access ${product.name} →
+          </a>
+        </div>
+    `;
 
     productListHtml += `</div>`;
   }

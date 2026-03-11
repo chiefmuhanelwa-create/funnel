@@ -15,6 +15,8 @@ export interface Product {
   accessLink: string;
   purchaseLink: string;
   category: 'course' | 'ebook' | 'workbook' | 'guide' | 'bundle' | 'service';
+  isPreOrder?: boolean; // Product available for pre-order only
+  preOrderDate?: string; // Expected availability date
 }
 
 // Image URLs from Vercel Blob Storage
@@ -234,6 +236,69 @@ export const PRODUCTS: Record<string, Product> = {
     accessLink: '/members/content-arsenal',
     purchaseLink: '/checkout/content-arsenal',
   },
+  'social-media-intro': {
+    key: 'social-media-intro',
+    name: 'Introduction to Social Media',
+    shortName: 'Social Media Intro',
+    description: 'Master the fundamentals of social media marketing with 4 comprehensive video modules.',
+    priceCents: 2700,
+    icon: '📱',
+    color: 'blue',
+    category: 'course',
+    features: [
+      'Module 1: Social Media Landscape',
+      'Module 2: Platform Selection Strategy',
+      'Module 3: Content Creation Basics',
+      'Module 4: Engagement & Growth Tactics',
+      'Platform Comparison Guide (PDF)',
+      'Lifetime Access',
+    ],
+    accessLink: '/members/social-media-intro',
+    purchaseLink: '/checkout/social-media-intro',
+  },
+  'contentpreneur-book-ebook': {
+    key: 'contentpreneur-book-ebook',
+    name: 'Contentpreneur Guide (eBook)',
+    shortName: 'Contentpreneur eBook',
+    description: 'The definitive digital guide to building a profitable content business. Instant download.',
+    priceCents: 1900,
+    originalPriceCents: 2700,
+    icon: '📱',
+    color: 'indigo',
+    category: 'ebook',
+    features: [
+      '10 Comprehensive Chapters',
+      'Instant PDF Download',
+      'Lifetime Updates',
+      'Mobile-Friendly Format',
+    ],
+    accessLink: '/members/contentpreneur-book',
+    purchaseLink: '/checkout/contentpreneur-book-ebook',
+    isPreOrder: true,
+    preOrderDate: 'Coming April 2026',
+  },
+  'contentpreneur-book-hardcopy': {
+    key: 'contentpreneur-book-hardcopy',
+    name: 'Contentpreneur Guide (Hardcopy + eBook)',
+    shortName: 'Contentpreneur Hardcopy',
+    description: 'Physical book delivered to your door + digital copy. Free shipping within South Africa.',
+    priceCents: 3700,
+    originalPriceCents: 4700,
+    icon: '📚',
+    color: 'indigo',
+    category: 'ebook',
+    features: [
+      '10 Comprehensive Chapters',
+      'Physical Hardcover Book',
+      'eBook Included',
+      'Free SA Shipping',
+      'Author-Signed Copy',
+    ],
+    accessLink: '/members/contentpreneur-book',
+    purchaseLink: '/checkout/contentpreneur-book-hardcopy',
+    isPreOrder: true,
+    preOrderDate: 'Coming April 2026',
+  },
 };
 
 // Bundle configurations - what products get unlocked when purchasing
@@ -253,10 +318,11 @@ export const PRODUCT_BUNDLES: Record<string, string[]> = {
 export const ORDER_BUMPS: Record<string, Array<{ key: string; discountedPrice: number; savings: string }>> = {
   'starter-kit': [
     { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
-    { key: 'tax-guide', discountedPrice: 2700, savings: '43% OFF' },
+    { key: 'social-media-intro', discountedPrice: 1700, savings: '37% OFF' },
   ],
   'influencers-code': [
     { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
+    { key: 'social-media-intro', discountedPrice: 1700, savings: '37% OFF' },
   ],
   'niche-finder': [
     { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
@@ -270,7 +336,14 @@ export const ORDER_BUMPS: Record<string, Array<{ key: string; discountedPrice: n
   'content-foundations': [
     { key: 'starter-kit', discountedPrice: 3000, savings: 'Upgrade' },
   ],
-  'contentpreneur-book': [
+  'social-media-intro': [
+    { key: 'starter-kit', discountedPrice: 4700, savings: 'Save $20' },
+    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
+  ],
+  'contentpreneur-book-ebook': [
+    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+  ],
+  'contentpreneur-book-hardcopy': [
     { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
   ],
   'content-arsenal': [

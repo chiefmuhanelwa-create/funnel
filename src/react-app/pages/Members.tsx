@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { DOCUMENTS } from '../config/assets';
+import MembershipUpsells from '../components/MembershipUpsells';
 
 export default function Members() {
   const {
@@ -24,9 +25,25 @@ export default function Members() {
     {
       key: 'starter-kit',
       name: 'Contentpreneur Starter Kit',
-      description: '9-module course to build your content business',
+      description: '10-module course to build your content business',
       icon: Play,
       link: '/members/starter-kit',
+      type: 'Course',
+    },
+    {
+      key: 'social-media-intro',
+      name: 'Introduction to Social Media',
+      description: '4-module course on social media mastery',
+      icon: Play,
+      link: '/members/social-media-intro',
+      type: 'Course',
+    },
+    {
+      key: 'content-foundations',
+      name: 'Content Foundations Course',
+      description: '3-module course on content strategy',
+      icon: Play,
+      link: '/members/content-foundations',
       type: 'Course',
     },
     {
@@ -64,6 +81,14 @@ export default function Members() {
       link: DOCUMENTS.taxGuide,
       type: 'Guide',
       isDownload: true,
+    },
+    {
+      key: 'content-arsenal',
+      name: 'Content Arsenal Pack',
+      description: '100+ templates and swipe files',
+      icon: FileText,
+      link: '/members/content-arsenal',
+      type: 'Templates',
     },
   ];
 
@@ -257,6 +282,9 @@ export default function Members() {
               ))}
             </div>
           )}
+
+          {/* Upsells - show products user doesn't own */}
+          <MembershipUpsells ownedProducts={ownedProducts.map(p => p.key)} />
 
           {/* Quick links */}
           <div className="mt-12 pt-8 border-t border-gray-200">

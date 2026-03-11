@@ -25,17 +25,18 @@ function getClientIP(req: VercelRequest): string {
 }
 
 async function getExchangeRate(): Promise<number> {
+  const FALLBACK_RATE = 16.5; // March 2026 fallback
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
     if (!response.ok) {
       console.log('Exchange rate API returned non-OK status, using fallback');
-      return 18.5;
+      return FALLBACK_RATE;
     }
     const data = await response.json() as { rates: { ZAR: number } };
-    return data.rates.ZAR || 18.5;
+    return data.rates.ZAR || FALLBACK_RATE;
   } catch (error) {
     console.log('Exchange rate API error, using fallback:', error);
-    return 18.5;
+    return FALLBACK_RATE;
   }
 }
 
@@ -130,10 +131,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ...(Array.isArray(includeOrderBumps) ? includeOrderBumps : [])
   ];
 
-  // Step 4: Fetch products from database
+  // Step 4: Check for already-owned products
+  let ownedProducts: string[] = [];
+  try {
+    const ownedResult = await sql`
+      SELECT p.product_key
+      FROM customer_access ca
+      INNER JOIN products p ON ca.product_id = p.id
+      WHERE ca.customer_email = ${email}
+    `;
+    ownedProducts = ownedResult.map((r: any) => r.product_key);
+  } catch (error) {
+    console.log('Could not check owned products:', error);
+    // Continue - this is not a critical error
+  }
+
+  // Filter out already-owned products
+  const newProductKeys = allProductKeys.filter((key: string) => !ownedProducts.includes(key));
+
+  if (newProductKeys.length === 0) {
+    return res.status(400).json({
+      error: 'You already own all selected products',
+      step: 'ownership_check',
+      ownedProducts,
+    });
+  }
+
+  // Step 5: Fetch products from database
   let productsList: any[] = [];
   try {
-    for (const key of allProductKeys) {
+    for (const key of newProductKeys) {
       const result = await sql`
         SELECT id, product_key, name, price_cents, is_active
         FROM products
@@ -149,7 +176,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       error: 'Failed to fetch products',
       step: 'fetch_products',
       message: error?.message,
-      requestedKeys: allProductKeys
+      requestedKeys: newProductKeys
     });
   }
 
@@ -169,7 +196,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 5: Calculate totals
+  // Step 6: Calculate totals
   const totalUSD = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
 
   if (totalUSD <= 0) {
@@ -188,7 +215,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const orderNumber = generateOrderNumber();
   const email = customerEmail.toLowerCase().trim();
 
-  // Step 6: Create order in database
+  // Step 7: Create order in database
   let orderId: number;
   try {
     const orderResult = await sql`
@@ -211,7 +238,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 7: Create order items
+  // Step 8: Create order items
   try {
     for (const product of productsList) {
       const priceZAR = Math.round((product.price_cents || 0) * exchangeRate);
@@ -229,7 +256,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 8: Initialize Paystack transaction
+  // Step 9: Initialize Paystack transaction
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online';
 
   let paystackData: any;
@@ -284,7 +311,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 9: Update order with Paystack reference
+  // Step 10: Update order with Paystack reference
   try {
     await sql`
       UPDATE orders

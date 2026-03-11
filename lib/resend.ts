@@ -296,10 +296,10 @@ function getWelcomeEmail1HTML(name: string): string {
       </div>
       <p><strong>What's Inside Your Member Area:</strong></p>
       <ul>
-        <li>✅ 9 Video Training Modules (Starter Kit)</li>
-        <li>✅ Niche Clarity Workbook</li>
+        <li>✅ 10 Video Training Modules (Including Bonus)</li>
+        <li>✅ Niche Finder Workbook</li>
         <li>✅ PAIDS Framework Workbook</li>
-        <li>✅ Tool Stack & Resources</li>
+        <li>✅ NoChill Tool Stack Access</li>
       </ul>
       <p>Questions? Just hit reply - I read every email personally.</p>
       <p><strong>Let's build generational wealth together.</strong></p>
