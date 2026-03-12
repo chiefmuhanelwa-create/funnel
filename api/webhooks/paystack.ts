@@ -6,8 +6,17 @@ import { handlePurchaseResend } from '../../lib/resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// PDF Download URLs from Vercel Blob Storage
+const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
+const PDF_DOWNLOADS: Record<string, string> = {
+  'niche-finder': `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+  'paids-workbook': `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
+  'tax-guide': `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
+  'influencers-code': `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf`,
+};
+
 // COMPLETE Product Configuration with Icons
-const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]; accessLink?: string }> = {
+const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]; accessLink?: string; downloadUrl?: string; isDownload?: boolean }> = {
   'starter-kit': {
     name: 'Contentpreneur Starter Kit',
     icon: '🚀',
@@ -28,8 +37,20 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
       'NoChill Tool Stack Access',
     ],
   },
-  'niche-finder': { name: 'Niche Finder Workbook', icon: '🎯', accessLink: '/members' },
-  'paids-workbook': { name: 'PAIDS Framework Workbook', icon: '💰', accessLink: '/members' },
+  'niche-finder': {
+    name: 'Niche Finder Workbook',
+    icon: '🎯',
+    accessLink: '/members',
+    downloadUrl: PDF_DOWNLOADS['niche-finder'],
+    isDownload: true,
+  },
+  'paids-workbook': {
+    name: 'PAIDS Framework Workbook',
+    icon: '💰',
+    accessLink: '/members',
+    downloadUrl: PDF_DOWNLOADS['paids-workbook'],
+    isDownload: true,
+  },
   'content-foundations': {
     name: 'Content Foundations Course',
     icon: '📚',
@@ -40,12 +61,16 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     name: "The Influencer's Code",
     icon: '📖',
     accessLink: '/members',
+    downloadUrl: PDF_DOWNLOADS['influencers-code'],
+    isDownload: true,
     features: ['14 Chapters on Monetization', 'The 3Es Formula', 'PAIDS Method', 'DARES Scale System'],
   },
   'tax-guide': {
     name: 'Tax Guide for Contentpreneurs',
     icon: '📋',
     accessLink: '/members',
+    downloadUrl: PDF_DOWNLOADS['tax-guide'],
+    isDownload: true,
     features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
   },
   'social-media-intro': {
@@ -277,9 +302,20 @@ async function sendOrderEmail(params: {
       productListHtml += `</ul>`;
     }
 
-    // Add direct access link for each product
+    // Add direct access/download link for each product
+    productListHtml += `<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">`;
+
+    // If it's a downloadable PDF, add download button
+    if (product.isDownload && product.downloadUrl) {
+      productListHtml += `
+          <a href="${product.downloadUrl}" style="display: inline-block; background: #10b981; color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px;">
+            📥 Download PDF
+          </a>
+      `;
+    }
+
+    // Always add access link
     productListHtml += `
-        <div style="margin-top: 12px;">
           <a href="${accessUrl}" style="display: inline-block; background: #f59e0b; color: #000; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px;">
             Access ${product.name} →
           </a>
@@ -289,21 +325,32 @@ async function sendOrderEmail(params: {
     productListHtml += `</div>`;
   }
 
-  // Show bundled products separately
+  // Show bundled products separately with download links
   const bundledProducts = allGrantedProducts.filter(k => !purchasedProducts.includes(k));
   if (bundledProducts.length > 0) {
     productListHtml += `
       <div style="background: #ecfdf5; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
         <p style="margin: 0 0 10px; font-weight: 600; color: #065f46;">🎁 Bonus - Included with your purchase:</p>
-        <ul style="margin: 0; padding-left: 20px; color: #047857; font-size: 14px;">
     `;
     for (const key of bundledProducts) {
       const product = PRODUCTS[key];
       if (product) {
-        productListHtml += `<li style="margin: 6px 0;">${product.icon} ${product.name}</li>`;
+        productListHtml += `
+          <div style="margin: 8px 0; display: flex; align-items: center; gap: 10px;">
+            <span>${product.icon} ${product.name}</span>
+        `;
+        // Add download link for PDFs
+        if (product.isDownload && product.downloadUrl) {
+          productListHtml += `
+            <a href="${product.downloadUrl}" style="background: #10b981; color: #fff; padding: 4px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: 600;">
+              Download
+            </a>
+          `;
+        }
+        productListHtml += `</div>`;
       }
     }
-    productListHtml += `</ul></div>`;
+    productListHtml += `</div>`;
   }
 
   const emailHtml = `

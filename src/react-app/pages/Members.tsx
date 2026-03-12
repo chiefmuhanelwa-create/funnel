@@ -1,10 +1,115 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User } from 'lucide-react';
+import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User, Lock, ShoppingCart } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { DOCUMENTS } from '../config/assets';
-import MembershipUpsells from '../components/MembershipUpsells';
+
+interface Product {
+  key: string;
+  name: string;
+  description: string;
+  icon: React.ElementType;
+  link: string;
+  checkoutLink: string;
+  type: string;
+  isDownload?: boolean;
+  price?: number;
+  originalPrice?: number;
+}
+
+// All available products with their access links and checkout links
+const ALL_PRODUCTS: Product[] = [
+  {
+    key: 'starter-kit',
+    name: 'Contentpreneur Starter Kit',
+    description: '10-module course to build your content business',
+    icon: Play,
+    link: '/members/starter-kit',
+    checkoutLink: '/checkout/starter-kit',
+    type: 'Course',
+    price: 67,
+  },
+  {
+    key: 'social-media-intro',
+    name: 'Introduction to Social Media',
+    description: '4-module course on social media mastery',
+    icon: Play,
+    link: '/members/social-media-intro',
+    checkoutLink: '/checkout/social-media-intro',
+    type: 'Course',
+    price: 27,
+  },
+  {
+    key: 'influencers-code',
+    name: "The Influencer's Code",
+    description: 'Bestselling eBook with 6,000+ copies sold',
+    icon: BookOpen,
+    link: DOCUMENTS.influencersCode,
+    checkoutLink: '/checkout/influencers-code',
+    type: 'eBook',
+    isDownload: true,
+    price: 19,
+    originalPrice: 197,
+  },
+  {
+    key: 'content-foundations',
+    name: 'Content Foundations Course',
+    description: '3-module course on content strategy',
+    icon: Play,
+    link: '/members/content-foundations',
+    checkoutLink: '/checkout/content-foundations',
+    type: 'Course',
+    price: 37,
+  },
+  {
+    key: 'niche-finder',
+    name: 'Niche Finder Workbook',
+    description: 'Find your profitable content niche',
+    icon: FileText,
+    link: DOCUMENTS.nicheFinderWorkbook,
+    checkoutLink: '/checkout/niche-finder',
+    type: 'Workbook',
+    isDownload: true,
+    price: 17,
+  },
+  {
+    key: 'paids-workbook',
+    name: 'PAIDS Framework Workbook',
+    description: 'Master the 5 pillars of content success',
+    icon: FileText,
+    link: DOCUMENTS.paidsFrameworkWorkbook,
+    checkoutLink: '/checkout/paids-workbook',
+    type: 'Workbook',
+    isDownload: true,
+    price: 17,
+  },
+  {
+    key: 'tax-guide',
+    name: 'Creator Tax Guide SA',
+    description: 'Essential tax tips for content creators',
+    icon: FileText,
+    link: DOCUMENTS.taxGuide,
+    checkoutLink: '/checkout/tax-guide',
+    type: 'Guide',
+    isDownload: true,
+    price: 47,
+  },
+  {
+    key: 'content-arsenal',
+    name: 'Content Arsenal Pack',
+    description: '100+ templates and swipe files',
+    icon: FileText,
+    link: '/members/content-arsenal',
+    checkoutLink: '/checkout/content-arsenal',
+    type: 'Templates',
+    price: 37,
+    originalPrice: 97,
+  },
+];
+
+// Products that are upsells (shown as locked if not owned)
+const UPSELL_KEYS = ['influencers-code', 'social-media-intro', 'content-arsenal', 'tax-guide', 'content-foundations'];
 
 export default function Members() {
   const {
@@ -12,7 +117,6 @@ export default function Members() {
     isLoading,
     user,
     hasAccessToProduct,
-    getAllAccessibleProducts,
     loginWithEmail,
     emailAccess,
   } = useMemberAccess();
@@ -20,77 +124,6 @@ export default function Members() {
   const [emailInput, setEmailInput] = useState('');
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
-
-  const products = [
-    {
-      key: 'starter-kit',
-      name: 'Contentpreneur Starter Kit',
-      description: '10-module course to build your content business',
-      icon: Play,
-      link: '/members/starter-kit',
-      type: 'Course',
-    },
-    {
-      key: 'social-media-intro',
-      name: 'Introduction to Social Media',
-      description: '4-module course on social media mastery',
-      icon: Play,
-      link: '/members/social-media-intro',
-      type: 'Course',
-    },
-    {
-      key: 'content-foundations',
-      name: 'Content Foundations Course',
-      description: '3-module course on content strategy',
-      icon: Play,
-      link: '/members/content-foundations',
-      type: 'Course',
-    },
-    {
-      key: 'influencers-code',
-      name: "The Influencer's Code",
-      description: 'Comprehensive eBook on influencer success',
-      icon: BookOpen,
-      link: DOCUMENTS.influencersCode,
-      type: 'eBook',
-      isDownload: true,
-    },
-    {
-      key: 'niche-finder',
-      name: 'Niche Finder Workbook',
-      description: 'Find your profitable content niche',
-      icon: FileText,
-      link: DOCUMENTS.nicheFinderWorkbook,
-      type: 'Workbook',
-      isDownload: true,
-    },
-    {
-      key: 'paids-workbook',
-      name: 'PAIDS Framework Workbook',
-      description: 'Master the 5 pillars of content success',
-      icon: FileText,
-      link: DOCUMENTS.paidsFrameworkWorkbook,
-      type: 'Workbook',
-      isDownload: true,
-    },
-    {
-      key: 'tax-guide',
-      name: 'Creator Tax Guide SA',
-      description: 'Essential tax tips for content creators',
-      icon: FileText,
-      link: DOCUMENTS.taxGuide,
-      type: 'Guide',
-      isDownload: true,
-    },
-    {
-      key: 'content-arsenal',
-      name: 'Content Arsenal Pack',
-      description: '100+ templates and swipe files',
-      icon: FileText,
-      link: '/members/content-arsenal',
-      type: 'Templates',
-    },
-  ];
 
   const handleEmailCheck = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,7 +172,6 @@ export default function Members() {
             </p>
 
             <div className="mt-10">
-              {/* Email Login */}
               <form onSubmit={handleEmailCheck}>
                 <div className="text-left">
                   <label className="label">Enter Your Purchase Email</label>
@@ -193,8 +225,11 @@ export default function Members() {
     );
   }
 
-  // Show accessible products
-  const ownedProducts = products.filter(p => hasAccessToProduct(p.key));
+  // Separate owned and locked products
+  const ownedProducts = ALL_PRODUCTS.filter(p => hasAccessToProduct(p.key));
+  const lockedUpsells = ALL_PRODUCTS.filter(p =>
+    UPSELL_KEYS.includes(p.key) && !hasAccessToProduct(p.key)
+  );
 
   return (
     <div className="min-h-screen bg-white pt-20">
@@ -213,6 +248,7 @@ export default function Members() {
             </p>
           </div>
 
+          {/* Owned Products Section */}
           {ownedProducts.length === 0 ? (
             <div className="glass-card p-12 text-center">
               <p className="text-gray-500">
@@ -223,68 +259,139 @@ export default function Members() {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ownedProducts.map((product, index) => (
-                <motion.div
-                  key={product.key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  {product.isDownload ? (
-                    <a
-                      href={product.link}
-                      download
-                      className="card card-hover block h-full group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center shrink-0">
-                          <product.icon className="text-gold-500" size={24} />
+            <>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                Your Products
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {ownedProducts.map((product, index) => (
+                  <motion.div
+                    key={product.key}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {product.isDownload ? (
+                      <a
+                        href={product.link}
+                        download
+                        className="card card-hover block h-full group border-2 border-green-500/20"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
+                            <product.icon className="text-green-600" size={24} />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="badge bg-green-500/20 text-green-700 text-xs">{product.type}</span>
+                              <span className="text-xs text-green-600 font-medium">OWNED</span>
+                            </div>
+                            <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
+                              {product.name}
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-500">
+                              {product.description}
+                            </p>
+                            <span className="mt-4 inline-flex items-center text-green-600 font-medium text-sm">
+                              <Download size={16} className="mr-2" />
+                              Download PDF
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <span className="badge badge-gold text-xs">{product.type}</span>
-                          <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
-                            {product.name}
-                          </h3>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.description}
-                          </p>
-                          <span className="mt-4 inline-flex items-center text-gold-500 font-medium text-sm">
-                            <Download size={16} className="mr-2" />
-                            Download PDF
-                          </span>
+                      </a>
+                    ) : (
+                      <Link to={product.link} className="card card-hover block h-full group border-2 border-green-500/20">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
+                            <product.icon className="text-green-600" size={24} />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="badge bg-green-500/20 text-green-700 text-xs">{product.type}</span>
+                              <span className="text-xs text-green-600 font-medium">OWNED</span>
+                            </div>
+                            <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
+                              {product.name}
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-500">
+                              {product.description}
+                            </p>
+                            <span className="mt-4 inline-flex items-center text-green-600 font-medium text-sm group-hover:gap-2 transition-all">
+                              Access Now
+                              <ArrowRight size={16} className="ml-1" />
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                  ) : (
-                    <Link to={product.link} className="card card-hover block h-full group">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center shrink-0">
-                          <product.icon className="text-gold-500" size={24} />
-                        </div>
-                        <div className="flex-1">
-                          <span className="badge badge-gold text-xs">{product.type}</span>
-                          <h3 className="mt-2 font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
-                            {product.name}
-                          </h3>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.description}
-                          </p>
-                          <span className="mt-4 inline-flex items-center text-gold-500 font-medium text-sm group-hover:gap-2 transition-all">
-                            Access Now
-                            <ArrowRight size={16} className="ml-1" />
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  )}
-                </motion.div>
-              ))}
-            </div>
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </>
           )}
 
-          {/* Upsells - show products user doesn't own */}
-          <MembershipUpsells ownedProducts={ownedProducts.map(p => p.key)} />
+          {/* Locked Upsells Section */}
+          {lockedUpsells.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Lock size={18} className="text-gray-400" />
+                Expand Your Learning
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {lockedUpsells.map((product, index) => (
+                  <motion.div
+                    key={product.key}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="card h-full border-2 border-gray-200 bg-gray-50/50 relative overflow-hidden">
+                      {/* Locked overlay */}
+                      <div className="absolute top-3 right-3">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-200 text-gray-600 text-xs font-medium rounded-full">
+                          <Lock size={12} />
+                          LOCKED
+                        </span>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center shrink-0">
+                          <product.icon className="text-gray-400" size={24} />
+                        </div>
+                        <div className="flex-1">
+                          <span className="badge bg-gray-200 text-gray-600 text-xs">{product.type}</span>
+                          <h3 className="mt-2 font-semibold text-gray-700">
+                            {product.name}
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-500">
+                            {product.description}
+                          </p>
+
+                          {/* Price */}
+                          <div className="mt-3 flex items-center gap-2">
+                            <span className="text-lg font-bold text-gold-600">${product.price}</span>
+                            {product.originalPrice && (
+                              <span className="text-sm text-gray-400 line-through">${product.originalPrice}</span>
+                            )}
+                          </div>
+
+                          {/* Get Access Button */}
+                          <Link
+                            to={product.checkoutLink}
+                            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-black font-semibold text-sm rounded-lg transition-colors"
+                          >
+                            <ShoppingCart size={16} />
+                            Get Access
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Quick links */}
           <div className="mt-12 pt-8 border-t border-gray-200">
