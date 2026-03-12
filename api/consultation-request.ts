@@ -95,7 +95,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Send confirmation email to customer
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
     const calendlyUrl = 'https://calendly.com/chiefmuhanelwa/contentpreneurship';
 
     try {

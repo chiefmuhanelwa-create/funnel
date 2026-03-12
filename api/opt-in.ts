@@ -134,13 +134,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet: string) {
   const config = LEAD_MAGNETS[leadMagnet] || {
     name: 'Your Free Resource',
-    downloadUrl: 'https://funnel-nochill.vercel.app/members',
+    downloadUrl: 'https://www.contentpreneurhub.online/members',
     icon: '🎁',
     upsell: 'Take the next step with the Contentpreneur Starter Kit',
     upsellUrl: '/checkout/starter-kit',
   };
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
   const isExternalTool = !!config.externalTool;
 
   // Different email content for external tools vs PDF downloads

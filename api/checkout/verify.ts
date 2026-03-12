@@ -20,8 +20,6 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
       'Module 7: Community Building',
       'Module 8: PAIDS Framework',
       'Bonus Module 9: Formula to Create Online Asset',
-      'Niche Finder Workbook (PDF)',
-      'PAIDS Framework Workbook (PDF)',
       'NoChill Tool Stack Access',
     ],
   },
@@ -42,8 +40,16 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     icon: '📋',
     features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
   },
+  'social-media-intro': {
+    name: 'Introduction to Social Media',
+    icon: '📱',
+    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation'],
+  },
   'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑' },
-  'strategy-call': { name: '1:1 Coaching Session', icon: '📞' },
+  'contentpreneur-book-ebook': { name: 'Contentpreneur Guide (eBook)', icon: '📱' },
+  'contentpreneur-book-hardcopy': { name: 'Contentpreneur Guide (Hardcopy + eBook)', icon: '📚' },
+  'content-arsenal': { name: 'Content Arsenal Expansion Pack', icon: '🛠️' },
+  'coaching-session': { name: '1:1 Strategy Call', icon: '📞' },
 };
 
 // Product bundles - what products get unlocked when purchasing
@@ -244,7 +250,7 @@ async function sendOrderEmail(params: {
   const { orderNumber, customerEmail, customerName, purchasedProducts, allGrantedProducts, amountPaidCents } = params;
 
   const formattedAmount = `R${(amountPaidCents / 100).toFixed(2)}`;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
 
   // Build product list HTML with icons
   let productListHtml = '';

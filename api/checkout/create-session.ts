@@ -280,7 +280,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Step 9: Initialize Paystack transaction
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://contentpreneurhub.online';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
 
   let paystackData: any;
   try {

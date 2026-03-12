@@ -32,8 +32,6 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
       'Module 7: Community Building',
       'Module 8: PAIDS Framework',
       'Bonus Module 9: Formula to Create Online Asset',
-      'Niche Finder Workbook (PDF)',
-      'PAIDS Framework Workbook (PDF)',
       'NoChill Tool Stack Access',
     ],
   },
@@ -275,7 +273,7 @@ async function sendOrderEmail(params: {
   const { orderNumber, customerEmail, customerName, purchasedProducts, allGrantedProducts, amountPaidCents } = params;
 
   const formattedAmount = `R${(amountPaidCents / 100).toFixed(2)}`;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
 
   // Build product list HTML with icons
   let productListHtml = '';

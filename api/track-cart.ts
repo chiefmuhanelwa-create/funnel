@@ -120,7 +120,7 @@ async function sendAbandonmentEmail(
   email: string,
   product: { name: string; price: string; discount: string; url: string }
 ) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://funnel-nochill.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
 
   try {
     await resend.emails.send({
