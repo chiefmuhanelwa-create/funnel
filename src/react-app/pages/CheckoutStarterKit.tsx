@@ -20,8 +20,7 @@ interface OrderBump {
 // Product mockup images from Vercel Blob Storage
 const PRODUCT_IMAGES = {
   influencersCode: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/the-influencer-s-code-mockup--book-cover-.jpeg',
-  taxGuide: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/tax-guide-mockup.jpeg',
-  contentFoundations: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/3-module-course-mockup.jpeg',
+  socialMediaIntro: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/social-media-intro-mockup.jpeg',
 };
 
 interface AppliedDiscount {
@@ -64,15 +63,15 @@ export default function CheckoutStarterKit() {
       key: 'influencers-code',
       name: "The Influencer's Code (eBook)",
       price: 1200,
-      description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.',
+      description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers. Normally $19, yours for just $12 today.',
       imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {
-      key: 'tax-guide',
-      name: 'Creator Tax Guide SA',
-      price: 2700,
-      description: 'Essential 115-page tax guide for creators. Normally $47, yours for just $27.',
-      imageUrl: PRODUCT_IMAGES.taxGuide,
+      key: 'social-media-intro',
+      name: 'Introduction to Social Media Course',
+      price: 1700,
+      description: '4-module course on social media mastery. Learn platform selection, content creation, and growth tactics. Normally $27, yours for just $17 today.',
+      imageUrl: PRODUCT_IMAGES.socialMediaIntro,
     },
   ];
 
@@ -455,7 +454,7 @@ export default function CheckoutStarterKit() {
                 <h3 className="font-medium text-gray-900 mb-3">What's Included:</h3>
                 <ul className="space-y-2">
                   {[
-                    '9 Video Modules',
+                    '10 Video Modules (Including Bonus)',
                     'Niche Finder Workbook',
                     'PAIDS Framework Workbook',
                     'NoChill Tool Stack',
