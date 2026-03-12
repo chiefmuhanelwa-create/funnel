@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User, Lock, ShoppingCart } from 'lucide-react';
+import { BookOpen, Play, FileText, Loader2, Download, ArrowRight, User, Lock, ShoppingCart, Clock } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
-import { DOCUMENTS } from '../config/assets';
+import { DOCUMENTS, IMAGES } from '../config/assets';
 
 interface Product {
   key: string;
@@ -16,6 +16,8 @@ interface Product {
   isDownload?: boolean;
   price?: number;
   originalPrice?: number;
+  isPreOrder?: boolean;
+  imageUrl?: string;
 }
 
 // All available products with their access links and checkout links
@@ -29,6 +31,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/starter-kit',
     type: 'Course',
     price: 67,
+    imageUrl: IMAGES.starterKitCourseMockup,
   },
   {
     key: 'social-media-intro',
@@ -39,6 +42,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/social-media-intro',
     type: 'Course',
     price: 27,
+    imageUrl: IMAGES.contentFoundationsMockup,
   },
   {
     key: 'influencers-code',
@@ -51,6 +55,7 @@ const ALL_PRODUCTS: Product[] = [
     isDownload: true,
     price: 19,
     originalPrice: 197,
+    imageUrl: IMAGES.influencersCodeMockup,
   },
   {
     key: 'content-foundations',
@@ -61,6 +66,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/content-foundations',
     type: 'Course',
     price: 37,
+    imageUrl: IMAGES.contentFoundationsMockup,
   },
   {
     key: 'niche-finder',
@@ -72,6 +78,7 @@ const ALL_PRODUCTS: Product[] = [
     type: 'Workbook',
     isDownload: true,
     price: 17,
+    imageUrl: IMAGES.nicheWorkbookMockup,
   },
   {
     key: 'paids-workbook',
@@ -83,6 +90,7 @@ const ALL_PRODUCTS: Product[] = [
     type: 'Workbook',
     isDownload: true,
     price: 17,
+    imageUrl: IMAGES.paidsWorkbookMockup,
   },
   {
     key: 'tax-guide',
@@ -94,6 +102,7 @@ const ALL_PRODUCTS: Product[] = [
     type: 'Guide',
     isDownload: true,
     price: 47,
+    imageUrl: IMAGES.taxGuideMockup,
   },
   {
     key: 'content-arsenal',
@@ -106,10 +115,45 @@ const ALL_PRODUCTS: Product[] = [
     price: 37,
     originalPrice: 97,
   },
+  {
+    key: 'contentpreneur-book-ebook',
+    name: 'Contentpreneur Guide (eBook)',
+    description: 'The definitive guide to building a content business',
+    icon: BookOpen,
+    link: '/members/contentpreneur-book',
+    checkoutLink: '/checkout/contentpreneur-book-ebook',
+    type: 'eBook',
+    price: 19,
+    isPreOrder: true,
+    imageUrl: IMAGES.influencersCodeMockup,
+  },
+  {
+    key: 'contentpreneur-book-hardcopy',
+    name: 'Contentpreneur Guide (Hardcopy + eBook)',
+    description: 'Physical book + digital copy. Free SA shipping.',
+    icon: BookOpen,
+    link: '/members/contentpreneur-book',
+    checkoutLink: '/checkout/contentpreneur-book-hardcopy',
+    type: 'Book',
+    price: 37,
+    isPreOrder: true,
+    imageUrl: IMAGES.influencersCodeMockup,
+  },
 ];
 
-// Products that are upsells (shown as locked if not owned)
-const UPSELL_KEYS = ['influencers-code', 'social-media-intro', 'content-arsenal', 'tax-guide', 'content-foundations'];
+// Products shown as locked upsells if not owned
+const UPSELL_KEYS = [
+  'influencers-code',
+  'social-media-intro',
+  'content-arsenal',
+  'tax-guide',
+  'content-foundations',
+  'contentpreneur-book-ebook',
+  'contentpreneur-book-hardcopy',
+];
+
+// Products that are bundled with starter-kit (don't show separately as owned)
+const STARTER_KIT_BUNDLED = ['niche-finder', 'paids-workbook'];
 
 export default function Members() {
   const {
@@ -225,8 +269,18 @@ export default function Members() {
     );
   }
 
+  // Check if user owns starter-kit (for bundling logic)
+  const ownsStarterKit = hasAccessToProduct('starter-kit');
+
   // Separate owned and locked products
-  const ownedProducts = ALL_PRODUCTS.filter(p => hasAccessToProduct(p.key));
+  // Don't show niche-finder/paids-workbook separately if user owns starter-kit (avoid duplicates)
+  const ownedProducts = ALL_PRODUCTS.filter(p => {
+    if (!hasAccessToProduct(p.key)) return false;
+    // Hide bundled products if user owns starter-kit (they're included with it)
+    if (ownsStarterKit && STARTER_KIT_BUNDLED.includes(p.key)) return false;
+    return true;
+  });
+
   const lockedUpsells = ALL_PRODUCTS.filter(p =>
     UPSELL_KEYS.includes(p.key) && !hasAccessToProduct(p.key)
   );
@@ -279,9 +333,15 @@ export default function Members() {
                         className="card card-hover block h-full group border-2 border-green-500/20"
                       >
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
-                            <product.icon className="text-green-600" size={24} />
-                          </div>
+                          {product.imageUrl ? (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-green-500/20">
+                              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
+                              <product.icon className="text-green-600" size={24} />
+                            </div>
+                          )}
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
                               <span className="badge bg-green-500/20 text-green-700 text-xs">{product.type}</span>
@@ -303,9 +363,15 @@ export default function Members() {
                     ) : (
                       <Link to={product.link} className="card card-hover block h-full group border-2 border-green-500/20">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
-                            <product.icon className="text-green-600" size={24} />
-                          </div>
+                          {product.imageUrl ? (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-green-500/20">
+                              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
+                              <product.icon className="text-green-600" size={24} />
+                            </div>
+                          )}
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
                               <span className="badge bg-green-500/20 text-green-700 text-xs">{product.type}</span>
@@ -347,8 +413,14 @@ export default function Members() {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="card h-full border-2 border-gray-200 bg-gray-50/50 relative overflow-hidden">
-                      {/* Locked overlay */}
-                      <div className="absolute top-3 right-3">
+                      {/* Badges */}
+                      <div className="absolute top-3 right-3 flex gap-2">
+                        {product.isPreOrder && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
+                            <Clock size={12} />
+                            COMING SOON
+                          </span>
+                        )}
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-200 text-gray-600 text-xs font-medium rounded-full">
                           <Lock size={12} />
                           LOCKED
@@ -356,9 +428,15 @@ export default function Members() {
                       </div>
 
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center shrink-0">
-                          <product.icon className="text-gray-400" size={24} />
-                        </div>
+                        {product.imageUrl ? (
+                          <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-gray-200">
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center shrink-0">
+                            <product.icon className="text-gray-400" size={24} />
+                          </div>
+                        )}
                         <div className="flex-1">
                           <span className="badge bg-gray-200 text-gray-600 text-xs">{product.type}</span>
                           <h3 className="mt-2 font-semibold text-gray-700">
@@ -376,13 +454,13 @@ export default function Members() {
                             )}
                           </div>
 
-                          {/* Get Access Button */}
+                          {/* Get Access / Pre-Order Button */}
                           <Link
                             to={product.checkoutLink}
                             className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gold-500 hover:bg-gold-600 text-black font-semibold text-sm rounded-lg transition-colors"
                           >
                             <ShoppingCart size={16} />
-                            Get Access
+                            {product.isPreOrder ? 'Pre-Order Now' : 'Get Access'}
                           </Link>
                         </div>
                       </div>
