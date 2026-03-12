@@ -25,7 +25,7 @@ function getClientIP(req: VercelRequest): string {
 }
 
 async function getExchangeRate(): Promise<number> {
-  const FALLBACK_RATE = 16.5; // March 2026 fallback
+  const FALLBACK_RATE = 18.5; // Updated March 2026 fallback - always check live rate first
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
     if (!response.ok) {
@@ -48,6 +48,18 @@ function generateOrderNumber(): string {
   }
   return `ORD-${Date.now()}-${suffix}`;
 }
+
+// Order bump prices - discounted prices when purchased as add-ons (in USD cents)
+// These must match the frontend order bump prices
+const ORDER_BUMP_PRICES: Record<string, number> = {
+  'influencers-code': 1200,      // $12 (normally $19)
+  'social-media-intro': 1700,   // $17 (normally $27)
+  'paids-workbook': 1200,       // $12 (normally $17)
+  'niche-finder': 1200,         // $12 (normally $17)
+  'content-arsenal': 2700,      // $27 (normally $37)
+  'starter-kit': 3000,          // $30 (as upgrade from content-foundations)
+  'tax-guide': 2700,            // $27 (as add-on)
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
@@ -125,6 +137,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Product keys are required', step: 'validation' });
   }
 
+  // Normalize email early
+  const email = customerEmail.toLowerCase().trim();
+
   // Combine product keys
   const allProductKeys: string[] = [
     ...productKeys,
@@ -157,6 +172,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  // Determine which products are order bumps (for pricing)
+  const orderBumpKeys = new Set(Array.isArray(includeOrderBumps) ? includeOrderBumps : []);
+
   // Step 5: Fetch products from database
   let productsList: any[] = [];
   try {
@@ -167,7 +185,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         WHERE product_key = ${key} AND is_active = true
       `;
       if (result.length > 0) {
-        productsList.push(result[0]);
+        const product = result[0];
+        // Apply order bump discount if this product was added as an order bump
+        if (orderBumpKeys.has(key) && ORDER_BUMP_PRICES[key]) {
+          product.price_cents = ORDER_BUMP_PRICES[key];
+          product.is_order_bump = true;
+        }
+        productsList.push(product);
       }
     }
   } catch (error: any) {
@@ -213,7 +237,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // e.g., 6700 USD cents ($67) * 18.5 = 123,950 ZAR cents (R1,239.50)
   const totalZAR = Math.round(totalUSD * exchangeRate);
   const orderNumber = generateOrderNumber();
-  const email = customerEmail.toLowerCase().trim();
 
   // Step 7: Create order in database
   let orderId: number;
