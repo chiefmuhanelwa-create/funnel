@@ -125,9 +125,9 @@ const PRODUCTS: Record<string, {
   'social-media-intro': {
     key: 'social-media-intro',
     name: 'Introduction to Social Media',
-    description: 'Master social media marketing with 4 comprehensive video modules',
+    description: 'Master social media marketing with 3 comprehensive video modules',
     price: 2700,
-    features: ['4 Video Modules', 'Platform Selection Guide', 'Content Creation Basics', 'Growth Tactics', 'Lifetime Access'],
+    features: ['3 Video Modules', 'Platform Selection Guide', 'Content Creation Basics', 'Lifetime Access'],
     salesPage: '/products/social-media-intro',
   },
   'contentpreneur-book-ebook': {
@@ -154,11 +154,11 @@ const PRODUCTS: Record<string, {
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
   'starter-kit': [
     { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 1200, description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.' },
-    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '4-module course on social media mastery. Normally $27, yours for just $17 today.' },
+    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '3-module course on social media mastery. Normally $27, yours for just $17 today.' },
   ],
   'influencers-code': [
     { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },
-    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '4-module course on social media mastery. Normally $27.' },
+    { key: 'social-media-intro', name: 'Introduction to Social Media Course', price: 1700, description: '3-module course on social media mastery. Normally $27.' },
   ],
   'niche-finder': [
     { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 1200, description: 'Build 5 income streams with this implementation guide. Normally $17.' },

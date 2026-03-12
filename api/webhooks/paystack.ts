@@ -77,7 +77,7 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     name: 'Introduction to Social Media',
     icon: '📱',
     accessLink: '/members/social-media-intro',
-    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation', 'Module 4: Growth Tactics'],
+    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation'],
   },
   'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑', accessLink: '/members' },
   'contentpreneur-book-ebook': { name: 'Contentpreneur Guide (eBook)', icon: '📱', accessLink: '/members' },

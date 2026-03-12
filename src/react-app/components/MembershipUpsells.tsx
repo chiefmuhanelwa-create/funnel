@@ -27,7 +27,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
   {
     key: 'social-media-intro',
     name: 'Introduction to Social Media',
-    description: 'Master social media marketing with 4 comprehensive video modules.',
+    description: 'Master social media marketing with 3 comprehensive video modules.',
     price: 27,
     icon: Monitor,
     link: '/checkout/social-media-intro',

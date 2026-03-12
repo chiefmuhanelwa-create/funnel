@@ -33,7 +33,7 @@ const ALL_PRODUCTS: Product[] = [
   {
     key: 'social-media-intro',
     name: 'Introduction to Social Media',
-    description: '4-module course on social media mastery',
+    description: '3-module course on social media mastery',
     icon: Play,
     link: '/members/social-media-intro',
     checkoutLink: '/checkout/social-media-intro',

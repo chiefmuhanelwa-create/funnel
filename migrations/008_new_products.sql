@@ -4,7 +4,7 @@
 
 -- Insert new products (ON CONFLICT DO NOTHING prevents duplicates)
 INSERT INTO products (product_key, name, description, price_cents, is_active, level) VALUES
-  ('social-media-intro', 'Introduction to Social Media', 'Master social media marketing with 4 comprehensive video modules covering platform selection, content creation, and growth tactics.', 2700, true, 'beginner'),
+  ('social-media-intro', 'Introduction to Social Media', 'Master social media marketing with 3 comprehensive video modules covering platform selection and content creation.', 2700, true, 'beginner'),
   ('contentpreneur-book-ebook', 'Contentpreneur Guide (eBook)', 'The definitive digital guide to building a profitable content business. 10 comprehensive chapters. PRE-ORDER: Coming April 2026.', 1900, true, 'all'),
   ('contentpreneur-book-hardcopy', 'Contentpreneur Guide (Hardcopy + eBook)', 'Physical hardcover book plus digital copy. Free shipping within South Africa. Author-signed copy included. PRE-ORDER: Coming April 2026.', 3700, true, 'all'),
   ('content-arsenal', 'Content Arsenal Expansion Pack', '100+ templates, swipe files, and tools to streamline your content creation workflow. Includes content calendars, caption templates, and analytics dashboards.', 3700, true, 'all')
