@@ -24,7 +24,9 @@ export const DOCUMENTS = {
 export const IMAGES = {
   // Course Mockups
   contentFoundationsMockup: `${BLOB_BASE}/images/3-module-course-mockup.jpeg`,
+  socialMediaIntroMockup: `${BLOB_BASE}/images/3-module-course-mockup.jpeg`, // Same as content-foundations (3-module course)
   starterKitCourseMockup: `${BLOB_BASE}/images/9-modules-course-mockup--starter-kit-.jpeg`,
+  brandingStarterKit: `${BLOB_BASE}/images/branding-starter-kit-copy.jpeg`,
 
   // Workbook Mockups
   nicheWorkbookMockup: `${BLOB_BASE}/images/niche-workbook-mockup.jpeg`,
@@ -33,6 +35,7 @@ export const IMAGES = {
 
   // Book Mockups
   influencersCodeMockup: `${BLOB_BASE}/images/the-influencer-s-code-mockup--book-cover-.jpeg`,
+  contentpreneurBookMockup: `${BLOB_BASE}/images/the-influencer-s-code-mockup--book-cover-.jpeg`, // Placeholder until book cover uploaded
 
   // Hero/Profile Images
   heroImage: 'https://019bb654-d68c-7f4b-bdd4-908a2a75512e.mochausercontent.com/unnamed.jpg',
