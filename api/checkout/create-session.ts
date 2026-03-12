@@ -25,7 +25,7 @@ function getClientIP(req: VercelRequest): string {
 }
 
 async function getExchangeRate(): Promise<number> {
-  const FALLBACK_RATE = 18.5; // Updated March 2026 fallback - always check live rate first
+  const FALLBACK_RATE = 16.70; // March 2026 fallback - update if live rate fails
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
     if (!response.ok) {

@@ -207,7 +207,7 @@ export default function Checkout() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [exchangeRate, setExchangeRate] = useState(18.5);
+  const [exchangeRate, setExchangeRate] = useState(16.70);
   const [ownedProducts, setOwnedProducts] = useState<string[]>([]);
   const [checkingOwnership, setCheckingOwnership] = useState(false);
 

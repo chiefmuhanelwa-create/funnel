@@ -1,17 +1,17 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// In-memory cache for exchange rate (1 hour TTL)
+// In-memory cache for exchange rate (15 minutes TTL for more accurate rates)
 let cachedRate: { rate: number; timestamp: number } | null = null;
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-const FALLBACK_RATE = 18.5; // March 2026 fallback - USD/ZAR rate typically 18-19
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes - shorter for more accurate pricing
+const FALLBACK_RATE = 16.70; // March 2026 fallback - update periodically to match market
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  // Allow caching by CDN for 30 minutes
-  res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate=3600');
+  // Allow caching by CDN for 15 minutes (match our TTL)
+  res.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1800');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -32,26 +32,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  // Try primary API (Frankfurter)
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR', {
-      signal: AbortSignal.timeout(5000), // 5 second timeout
+      signal: AbortSignal.timeout(5000),
     });
-    const data = await response.json() as { rates: { ZAR: number } };
 
-    // Update cache
-    cachedRate = {
-      rate: data.rates.ZAR,
-      timestamp: now,
-    };
+    if (response.ok) {
+      const data = await response.json() as { rates: { ZAR: number } };
+      const rate = data.rates?.ZAR;
 
-    return res.status(200).json({
-      rate: data.rates.ZAR,
-      source: 'frankfurter',
-      cachedAt: new Date().toISOString(),
-      expiresIn: CACHE_TTL_MS / 1000,
-    });
-  } catch (error) {
-    console.error('[EXCHANGE-RATE] Failed to fetch:', error);
+      if (rate && rate > 0) {
+        cachedRate = { rate, timestamp: now };
+        console.log('[EXCHANGE-RATE] Fetched from Frankfurter:', rate);
+
+        return res.status(200).json({
+          rate,
+          source: 'frankfurter',
+          cachedAt: new Date().toISOString(),
+          expiresIn: CACHE_TTL_MS / 1000,
+        });
+      }
+    }
+    throw new Error('Primary API failed or returned invalid data');
+  } catch (primaryError) {
+    console.log('[EXCHANGE-RATE] Primary API failed, trying backup...');
+
+    // Try backup API (open.er-api.com - free, no key required)
+    try {
+      const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD', {
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (backupResponse.ok) {
+        const backupData = await backupResponse.json() as { rates: { ZAR: number } };
+        const rate = backupData.rates?.ZAR;
+
+        if (rate && rate > 0) {
+          cachedRate = { rate, timestamp: now };
+          console.log('[EXCHANGE-RATE] Fetched from backup API:', rate);
+
+          return res.status(200).json({
+            rate,
+            source: 'er-api-backup',
+            cachedAt: new Date().toISOString(),
+            expiresIn: CACHE_TTL_MS / 1000,
+          });
+        }
+      }
+    } catch (backupError) {
+      console.error('[EXCHANGE-RATE] Backup API also failed:', backupError);
+    }
+
+    console.error('[EXCHANGE-RATE] All APIs failed');
 
     // If we have a stale cache, use it
     if (cachedRate) {
