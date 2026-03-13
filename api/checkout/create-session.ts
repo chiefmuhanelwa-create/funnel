@@ -24,20 +24,45 @@ function getClientIP(req: VercelRequest): string {
   return req.socket?.remoteAddress || 'unknown';
 }
 
+// Current rate as of March 13, 2026: ~16.93 ZAR/USD
+// Set fallback slightly higher to account for volatility
+const FALLBACK_RATE = 18.00;
+
 async function getExchangeRate(): Promise<number> {
-  const FALLBACK_RATE = 16.70; // March 2026 fallback - update if live rate fails
+  // Try primary API (Frankfurter - free, no API key)
   try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
-    if (!response.ok) {
-      console.log('Exchange rate API returned non-OK status, using fallback');
-      return FALLBACK_RATE;
+    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR', {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (response.ok) {
+      const data = await response.json() as { rates: { ZAR: number } };
+      if (data.rates?.ZAR && data.rates.ZAR > 0) {
+        console.log('[CHECKOUT] Live exchange rate:', data.rates.ZAR);
+        return data.rates.ZAR;
+      }
     }
-    const data = await response.json() as { rates: { ZAR: number } };
-    return data.rates.ZAR || FALLBACK_RATE;
   } catch (error) {
-    console.log('Exchange rate API error, using fallback:', error);
-    return FALLBACK_RATE;
+    console.log('[CHECKOUT] Primary exchange rate API failed:', error);
   }
+
+  // Try backup API (open.er-api.com - free, no key required)
+  try {
+    const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD', {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (backupResponse.ok) {
+      const backupData = await backupResponse.json() as { rates: { ZAR: number } };
+      if (backupData.rates?.ZAR && backupData.rates.ZAR > 0) {
+        console.log('[CHECKOUT] Backup exchange rate:', backupData.rates.ZAR);
+        return backupData.rates.ZAR;
+      }
+    }
+  } catch (backupError) {
+    console.log('[CHECKOUT] Backup exchange rate API also failed:', backupError);
+  }
+
+  console.log('[CHECKOUT] Using fallback exchange rate:', FALLBACK_RATE);
+  return FALLBACK_RATE;
 }
 
 function generateOrderNumber(): string {

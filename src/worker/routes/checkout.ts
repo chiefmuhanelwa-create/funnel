@@ -198,14 +198,37 @@ app.get('/verify', async (c) => {
   }
 });
 
+// Current rate ~16.93 ZAR/USD (March 2026), fallback slightly higher for volatility
+const FALLBACK_RATE = 18.00;
+
 async function getExchangeRate(): Promise<number> {
+  // Try primary API (Frankfurter)
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
-    const data = await response.json() as { rates: { ZAR: number } };
-    return data.rates.ZAR;
+    if (response.ok) {
+      const data = await response.json() as { rates: { ZAR: number } };
+      if (data.rates?.ZAR && data.rates.ZAR > 0) {
+        return data.rates.ZAR;
+      }
+    }
   } catch {
-    return 18.5; // Fallback rate
+    // Try backup
   }
+
+  // Try backup API
+  try {
+    const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (backupResponse.ok) {
+      const backupData = await backupResponse.json() as { rates: { ZAR: number } };
+      if (backupData.rates?.ZAR && backupData.rates.ZAR > 0) {
+        return backupData.rates.ZAR;
+      }
+    }
+  } catch {
+    // Use fallback
+  }
+
+  return FALLBACK_RATE;
 }
 
 function generateRandomString(length: number): string {

@@ -209,7 +209,8 @@ export default function Checkout() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [exchangeRate, setExchangeRate] = useState(16.70);
+  // Current rate ~16.93 ZAR/USD (March 2026), fallback slightly higher for volatility
+  const [exchangeRate, setExchangeRate] = useState(18.00);
   const [ownedProducts, setOwnedProducts] = useState<string[]>([]);
   const [checkingOwnership, setCheckingOwnership] = useState(false);
 

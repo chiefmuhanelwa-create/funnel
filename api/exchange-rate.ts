@@ -3,7 +3,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 // In-memory cache for exchange rate (15 minutes TTL for more accurate rates)
 let cachedRate: { rate: number; timestamp: number } | null = null;
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes - shorter for more accurate pricing
-const FALLBACK_RATE = 18.50; // March 2026 fallback - update periodically to match market
+// Current rate as of March 13, 2026: ~16.93 ZAR/USD
+// Set fallback slightly higher to account for volatility
+const FALLBACK_RATE = 18.00;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');

@@ -2,7 +2,8 @@
 // Single source of truth for all product data
 //
 // IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
-// ZAR conversion happens at checkout using live exchange rates (~18.50 ZAR/USD)
+// ZAR conversion happens at checkout using live exchange rates (~17-18 ZAR/USD)
+// Live rates fetched from Frankfurter API with backup from open.er-api.com
 
 export interface Product {
   key: string;
