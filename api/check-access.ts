@@ -119,6 +119,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       name: r.name,
     }));
 
+    // Get the list of product keys for filtering duplicates on checkout
+    const ownedProductKeys = productsList.map(p => p.product_key);
+
     // If admin and no products, still allow access
     if (isAdmin && productsList.length === 0) {
       console.log(`[AUTH] Admin login: ${normalizedEmail}`);
@@ -140,6 +143,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       productIds: productsList.map(p => p.id),
       products: productsList,
+      ownedProductKeys, // Used by checkout to prevent duplicate purchases
       isAdmin,
     });
   } catch (error: any) {

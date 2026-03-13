@@ -61,6 +61,11 @@ export async function sendOrderConfirmationEmail(
 
   const productList = productKeys.map(key => `<li>${formatProductName(key)}</li>`).join('');
 
+  // Generate download links for purchased products
+  const downloadLinks = generateDownloadLinks(productKeys);
+  const hasDownloads = downloadLinks.length > 0;
+  const hasCourse = productKeys.some(key => ['starter-kit', 'content-foundations', 'contentpreneur-pro'].includes(key));
+
   const html = `
 <!DOCTYPE html>
 <html>
@@ -68,10 +73,14 @@ export async function sendOrderConfirmationEmail(
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #d946ef, #a21caf); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
     .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
-    .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .button { display: inline-block; background: #d946ef; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-top: 20px; }
+    .order-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb; }
+    .downloads { background: #fffbeb; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #fde68a; }
+    .download-link { display: block; background: #f59e0b; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin: 8px 0; text-align: center; font-weight: 600; }
+    .download-link:hover { background: #d97706; }
+    .button { display: inline-block; background: #f59e0b; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; margin-top: 20px; font-weight: 600; }
+    .course-access { background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #a7f3d0; }
     .footer { text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px; }
   </style>
 </head>
@@ -82,26 +91,46 @@ export async function sendOrderConfirmationEmail(
     </div>
     <div class="content">
       <p>Hi ${order.customer_name || 'there'},</p>
-      <p>Your payment has been confirmed. Here are your order details:</p>
+      <p>Your payment has been confirmed and your content is ready! Here are your order details:</p>
 
       <div class="order-details">
         <p><strong>Order Number:</strong> ${order.order_number}</p>
-        <p><strong>Products:</strong></p>
+        <p><strong>Products Purchased:</strong></p>
         <ul>${productList}</ul>
         <p><strong>Total:</strong> ${formattedTotal}</p>
       </div>
 
-      <p>You can access your purchases by logging in to your account:</p>
+      ${hasDownloads ? `
+      <div class="downloads">
+        <h3 style="margin-top: 0; color: #92400e;">Your Downloads</h3>
+        <p style="color: #78350f; font-size: 14px;">Click below to download your files directly:</p>
+        ${downloadLinks.map(link => `
+          <a href="${link.url}" class="download-link">${link.name}</a>
+        `).join('')}
+      </div>
+      ` : ''}
 
-      <a href="https://contentpreneurhub.online/members" class="button">Access Your Content</a>
+      ${hasCourse ? `
+      <div class="course-access">
+        <h3 style="margin-top: 0; color: #065f46;">Video Course Access</h3>
+        <p style="color: #047857; font-size: 14px;">Your video modules are ready to watch in your members area:</p>
+        <a href="https://contentpreneurhub.online/members" class="button" style="background: #10b981;">Start Watching Now</a>
+      </div>
+      ` : ''}
 
-      <p style="margin-top: 30px;"><strong>How to access:</strong></p>
-      <ol>
-        <li>Click the button above or go to contentpreneurhub.online/members</li>
-        <li>Click "Member Login" in the footer</li>
-        <li>Sign in with Google using the email address: ${order.customer_email}</li>
-        <li>Your purchased content will be waiting for you!</li>
-      </ol>
+      <div style="margin-top: 30px;">
+        <h3>Access Your Members Area</h3>
+        <p>All your content is also available in your personal members hub:</p>
+
+        <a href="https://contentpreneurhub.online/members" class="button">Go to Members Hub</a>
+
+        <p style="margin-top: 20px;"><strong>How to access:</strong></p>
+        <ol>
+          <li>Click the button above or go to contentpreneurhub.online/members</li>
+          <li>Enter your email: <strong>${order.customer_email}</strong></li>
+          <li>All your purchased content will be waiting for you!</li>
+        </ol>
+      </div>
 
       <div class="footer">
         <p>Questions? Reply to this email or contact us at hello@contentpreneurhub.online</p>
@@ -116,7 +145,7 @@ export async function sendOrderConfirmationEmail(
   const sent = await sendEmail(env, {
     from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
     to: order.customer_email,
-    subject: `Order Confirmation - ${order.order_number}`,
+    subject: `Order Confirmation - ${order.order_number} | Your Content is Ready!`,
     html,
   });
 
@@ -129,6 +158,52 @@ export async function sendOrderConfirmationEmail(
   }
 
   return sent;
+}
+
+// Generate download links for products
+function generateDownloadLinks(productKeys: string[]): Array<{ name: string; url: string }> {
+  const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
+
+  const productDownloads: Record<string, Array<{ name: string; url: string }>> = {
+    'niche-finder': [
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+    ],
+    'paids-workbook': [
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
+    ],
+    'tax-guide': [
+      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf` },
+    ],
+    'influencers-code': [
+      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf` },
+    ],
+    'starter-kit': [
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+    ],
+    'contentpreneur-pro': [
+      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf` },
+      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf` },
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+    ],
+  };
+
+  // Collect all downloads, avoiding duplicates
+  const downloads: Array<{ name: string; url: string }> = [];
+  const seenUrls = new Set<string>();
+
+  for (const key of productKeys) {
+    const productDownloadList = productDownloads[key] || [];
+    for (const download of productDownloadList) {
+      if (!seenUrls.has(download.url)) {
+        downloads.push(download);
+        seenUrls.add(download.url);
+      }
+    }
+  }
+
+  return downloads;
 }
 
 export async function sendWelcomeEmail(
@@ -390,15 +465,15 @@ export async function sendLeadMagnetEmail(
   const leadMagnetConfig: Record<string, { name: string; downloadUrl: string }> = {
     'paids-workbook': {
       name: 'PAIDS Framework Workbook',
-      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
     },
     'niche-finder': {
       name: 'Niche Finder Workbook',
-      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
     },
     'tax-guide': {
       name: 'Tax Guide for Contentpreneurs',
-      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
     },
   };
 
@@ -532,14 +607,19 @@ export async function sendAbandonedCartEmail(
 
 function formatProductName(productKey: string): string {
   const names: Record<string, string> = {
-    'starter-kit': 'Contentpreneur Starter Kit',
-    'influencers-code': "The Influencer's Code",
-    'tax-guide': 'Creator Tax Guide SA',
+    'starter-kit': '9-Module Personal Branding Course',
+    'influencers-code': "The Influencer's Code (eBook)",
+    'tax-guide': 'Tax Guide for Contentpreneurs',
     'niche-finder': 'Niche Finder Workbook',
     'paids-workbook': 'PAIDS Framework Workbook',
-    'content-foundations': 'Content Foundations Masterclass',
+    'content-foundations': 'Content Foundations Course',
     'contentpreneur-pro': 'Contentpreneur Pro Bundle',
-    'coaching-session': '1-on-1 Coaching Session',
+    'coaching-session': '1:1 Strategy Call',
+    'content-arsenal': 'Content Arsenal Expansion Pack',
+    'social-media-intro': 'Introduction to Social Media Course',
+    'contentpreneur-book': 'Contentpreneur Guide (eBook + Print)',
+    'contentpreneur-book-ebook': 'Contentpreneur Guide (eBook)',
+    'contentpreneur-book-hardcopy': 'Contentpreneur Guide (Hardcopy + eBook)',
   };
   return names[productKey] || productKey;
 }

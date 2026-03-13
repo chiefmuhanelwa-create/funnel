@@ -1,106 +1,75 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Download, FileText, ArrowLeft, CheckCircle, Lock, ExternalLink, BookOpen } from 'lucide-react';
+import { Download, FileText, ArrowLeft, CheckCircle, Lock, ExternalLink, BookOpen, Video, Play } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
-import { DOCUMENTS, IMAGES } from '../config/assets';
+import { PRODUCT_ASSETS, IMAGES } from '../config/assets';
 
-// Product download configuration
-const DOWNLOAD_PRODUCTS: Record<string, {
-  key: string;
-  name: string;
-  description: string;
-  type: 'ebook' | 'workbook' | 'guide';
-  image?: string;
-  files: { name: string; url: string; description?: string }[];
-  tips?: string[];
-}> = {
-  'influencers-code': {
-    key: 'influencers-code',
-    name: "The Influencer's Code",
-    description: 'The complete blueprint from creator to influential personal brand',
-    type: 'ebook',
-    image: IMAGES.influencersCodeMockup,
-    files: [
-      {
-        name: "The Influencer's Code - Complete eBook.pdf",
-        url: DOCUMENTS.influencersCode,
-        description: 'Full 13-chapter guide to personal branding and influence'
-      },
-    ],
-    tips: [
-      'Read Chapter 1-3 to establish your mindset foundation',
-      'Complete the exercises at the end of each chapter',
-      'Reference the 3Es and DARES frameworks as you create content',
-      'Review monthly to track your progress',
-    ],
-  },
-  'niche-finder': {
-    key: 'niche-finder',
-    name: 'Niche Finder Workbook',
-    description: 'Discover your perfect content niche and stand out from the crowd',
-    type: 'workbook',
-    image: IMAGES.nicheWorkbookMockup,
-    files: [
-      {
-        name: 'Niche Finder Workbook.pdf',
-        url: DOCUMENTS.nicheFinderWorkbook,
-        description: '6 guided exercises to find your profitable niche'
-      },
-    ],
-    tips: [
-      'Set aside 60-90 minutes to complete all exercises',
-      'Be honest in your self-assessment',
-      'Research your competition before finalizing your niche',
-      'Validate your niche with the checklist before committing',
-    ],
-  },
-  'paids-workbook': {
-    key: 'paids-workbook',
-    name: 'PAIDS Framework Workbook',
-    description: 'The proven 5-pillar system for building multiple income streams',
-    type: 'workbook',
-    image: IMAGES.paidsWorkbookMockup,
-    files: [
-      {
-        name: 'PAIDS Framework Workbook.pdf',
-        url: DOCUMENTS.paidsFrameworkWorkbook,
-        description: 'Complete implementation guide for 5 income streams'
-      },
-    ],
-    tips: [
-      'Start with one pillar at a time - don\'t try to do all 5 at once',
-      'Products (P) and Information (I) are the easiest to start with',
-      'Use the Brand Deal Calculator before accepting any sponsorships',
-      'Track your income from each pillar monthly',
-    ],
-  },
-  'tax-guide': {
-    key: 'tax-guide',
-    name: 'Tax Guide for Contentpreneurs',
-    description: 'SARS compliance guide for South African content creators',
-    type: 'guide',
-    image: IMAGES.taxGuideMockup,
-    files: [
-      {
-        name: 'Tax Guide for Contentpreneurs.pdf',
-        url: DOCUMENTS.taxGuide,
-        description: 'Complete SARS compliance guide with VDP process'
-      },
-    ],
-    tips: [
-      'Keep all receipts for business expenses',
-      'Understand the 35% rule for tax-deductible expenses',
-      'Consider registering as a provisional taxpayer',
-      'Consult with a tax professional for your specific situation',
-    ],
-  },
+// Product tips for getting the most out of each product
+const PRODUCT_TIPS: Record<string, string[]> = {
+  'influencers-code': [
+    'Read Chapter 1-3 to establish your mindset foundation',
+    'Complete the exercises at the end of each chapter',
+    'Reference the 3Es and DARES frameworks as you create content',
+    'Review monthly to track your progress',
+  ],
+  'niche-finder': [
+    "Set aside 60-90 minutes to complete all exercises",
+    'Be honest in your self-assessment',
+    'Research your competition before finalizing your niche',
+    'Validate your niche with the checklist before committing',
+  ],
+  'paids-workbook': [
+    "Start with one pillar at a time - don't try to do all 5 at once",
+    'Products (P) and Information (I) are the easiest to start with',
+    'Use the Brand Deal Calculator before accepting any sponsorships',
+    'Track your income from each pillar monthly',
+  ],
+  'tax-guide': [
+    'Keep all receipts for business expenses',
+    'Understand the 35% rule for tax-deductible expenses',
+    'Consider registering as a provisional taxpayer',
+    'Consult with a tax professional for your specific situation',
+  ],
+  'starter-kit': [
+    'Watch the videos in order - each builds on the previous',
+    'Complete the workbooks as you go through the course',
+    'Take notes and apply concepts immediately',
+    'Join the community to connect with other contentpreneurs',
+  ],
+  'content-foundations': [
+    'Complete the self-reflection exercises honestly',
+    'Use your SWOT analysis to guide your content strategy',
+    'Revisit your value alignment quarterly',
+  ],
+};
+
+// Product descriptions
+const PRODUCT_DESCRIPTIONS: Record<string, string> = {
+  'influencers-code': 'The complete blueprint from creator to influential personal brand',
+  'niche-finder': 'Discover your perfect content niche and stand out from the crowd',
+  'paids-workbook': 'The proven 5-pillar system for building multiple income streams',
+  'tax-guide': 'SARS compliance guide for South African content creators',
+  'starter-kit': 'Complete system to build and monetize your personal brand',
+  'content-foundations': 'Master content creation fundamentals with guided video modules',
+  'contentpreneur-pro': 'Everything you need from mindset to monetization',
+};
+
+// Product types
+const PRODUCT_TYPES: Record<string, 'ebook' | 'workbook' | 'guide' | 'course' | 'bundle'> = {
+  'influencers-code': 'ebook',
+  'niche-finder': 'workbook',
+  'paids-workbook': 'workbook',
+  'tax-guide': 'guide',
+  'starter-kit': 'course',
+  'content-foundations': 'course',
+  'contentpreneur-pro': 'bundle',
 };
 
 export default function MemberDownload() {
   const { productKey } = useParams<{ productKey: string }>();
   const { isAuthenticated, hasAccessToProduct, isLoading } = useMemberAccess();
 
-  const product = productKey ? DOWNLOAD_PRODUCTS[productKey] : null;
+  const productAssets = productKey ? PRODUCT_ASSETS[productKey] : null;
 
   // Loading state
   if (isLoading) {
@@ -114,8 +83,14 @@ export default function MemberDownload() {
     );
   }
 
-  // Product not found
-  if (!product) {
+  // Product not found - redirect to starter-kit course page if that's what was requested
+  if (!productAssets) {
+    if (productKey === 'starter-kit') {
+      return <Navigate to="/members/starter-kit/course" replace />;
+    }
+    if (productKey === 'content-foundations') {
+      return <Navigate to="/members/content-foundations/course" replace />;
+    }
     return <Navigate to="/members" replace />;
   }
 
@@ -146,7 +121,7 @@ export default function MemberDownload() {
   }
 
   // No access to this product
-  if (!hasAccessToProduct(product.key)) {
+  if (!hasAccessToProduct(productKey!)) {
     return (
       <div className="min-h-screen bg-white pt-20">
         <div className="container-tight py-16">
@@ -160,14 +135,14 @@ export default function MemberDownload() {
             </div>
             <h1 className="text-section text-gray-900">Access Not Found</h1>
             <p className="mt-4 text-gray-500">
-              You don't have access to {product.name}. Would you like to purchase it?
+              You don't have access to {productAssets.name}. Would you like to purchase it?
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/members" className="btn-secondary">
                 Back to Hub
               </Link>
-              <Link to={`/checkout/${product.key}`} className="btn-primary">
-                Get {product.name}
+              <Link to={`/checkout/${productKey}`} className="btn-primary">
+                Get {productAssets.name}
               </Link>
             </div>
           </motion.div>
@@ -175,6 +150,12 @@ export default function MemberDownload() {
       </div>
     );
   }
+
+  const productType = PRODUCT_TYPES[productKey!] || 'ebook';
+  const tips = PRODUCT_TIPS[productKey!] || [];
+  const description = PRODUCT_DESCRIPTIONS[productKey!] || productAssets.name;
+  const hasCourse = productAssets.course && productAssets.course.length > 0;
+  const hasFiles = productAssets.files.length > 0;
 
   // Has access - show download page
   return (
@@ -199,66 +180,101 @@ export default function MemberDownload() {
             <div className="glass-card p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
-                  {product.type === 'ebook' ? (
+                  {productType === 'course' || productType === 'bundle' ? (
+                    <Video size={24} className="text-gray-900" />
+                  ) : productType === 'ebook' ? (
                     <BookOpen size={24} className="text-gray-900" />
                   ) : (
                     <FileText size={24} className="text-gray-900" />
                   )}
                 </div>
                 <div>
-                  <span className="badge badge-gold text-xs capitalize">{product.type}</span>
-                  <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
+                  <span className="badge badge-gold text-xs capitalize">{productType}</span>
+                  <h1 className="text-2xl font-bold text-gray-900">{productAssets.name}</h1>
                 </div>
               </div>
 
-              <p className="text-gray-500 mb-8">{product.description}</p>
+              <p className="text-gray-500 mb-8">{description}</p>
 
-              {/* Download Files */}
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Download size={18} className="text-gold-500" />
-                  Your Downloads
-                </h2>
-                {product.files.map((file, index) => (
-                  <a
-                    key={index}
-                    href={file.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block p-6 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gold-500/30 transition-all group"
+              {/* Video Course Access */}
+              {hasCourse && (
+                <div className="mb-8">
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                    <Video size={18} className="text-amber-500" />
+                    Video Modules
+                  </h2>
+                  <Link
+                    to={`/members/${productKey}/course`}
+                    className="block p-6 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 hover:border-amber-400 transition-all group"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center group-hover:bg-gold-500/30 transition-colors">
-                          <FileText size={24} className="text-gold-500" />
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Play size={24} className="text-white ml-1" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
-                            {file.name}
+                          <h3 className="font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
+                            Start Watching
                           </h3>
-                          {file.description && (
-                            <p className="text-sm text-gray-500 mt-1">{file.description}</p>
-                          )}
+                          <p className="text-sm text-gray-500 mt-1">
+                            {productAssets.course!.length} video modules ready to watch
+                          </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 text-gold-500">
-                        <span className="text-sm font-medium hidden sm:block">Download</span>
-                        <ExternalLink size={18} />
-                      </div>
+                      <ExternalLink size={18} className="text-amber-500" />
                     </div>
-                  </a>
-                ))}
-              </div>
+                  </Link>
+                </div>
+              )}
+
+              {/* Download Files */}
+              {hasFiles && (
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <Download size={18} className="text-gold-500" />
+                    Your Downloads
+                  </h2>
+                  {productAssets.files.map((file, index) => (
+                    <a
+                      key={index}
+                      href={file.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-6 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gold-500/30 transition-all group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center group-hover:bg-gold-500/30 transition-colors">
+                            <FileText size={24} className="text-gold-500" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900 group-hover:text-gold-500 transition-colors">
+                              {file.name}
+                            </h3>
+                            {file.description && (
+                              <p className="text-sm text-gray-500 mt-1">{file.description}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-gold-500">
+                          <span className="text-sm font-medium hidden sm:block">Download</span>
+                          <ExternalLink size={18} />
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
 
               {/* Tips for getting the most out of it */}
-              {product.tips && product.tips.length > 0 && (
+              {tips.length > 0 && (
                 <div className="mt-8 pt-8 border-t border-gray-200">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <CheckCircle size={18} className="text-success-400" />
                     Tips for Getting the Most Out of This
                   </h2>
                   <ul className="space-y-3">
-                    {product.tips.map((tip, index) => (
+                    {tips.map((tip, index) => (
                       <li key={index} className="flex items-start gap-3 text-gray-500">
                         <span className="w-6 h-6 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 text-sm font-bold shrink-0">
                           {index + 1}
@@ -275,11 +291,11 @@ export default function MemberDownload() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Product Image */}
-            {product.image && (
+            {productAssets.mockupImage && (
               <div className="glass-card p-4 mb-6">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={productAssets.mockupImage}
+                  alt={productAssets.name}
                   className="w-full h-auto rounded-xl"
                 />
               </div>
@@ -297,7 +313,7 @@ export default function MemberDownload() {
                 </div>
               </div>
               <p className="text-sm text-gray-500">
-                You have full access to this product. Download it as many times as you need.
+                You have full access to this product. Download and watch as many times as you need.
               </p>
             </div>
 
@@ -305,7 +321,7 @@ export default function MemberDownload() {
             <div className="glass-card p-6 mt-6">
               <h3 className="font-semibold text-gray-900 mb-3">Need Help?</h3>
               <p className="text-sm text-gray-500 mb-4">
-                Having trouble with your download? Contact support and we'll help you out.
+                Having trouble accessing your content? Contact support and we'll help you out.
               </p>
               <a
                 href="mailto:support@contentpreneurhub.online"

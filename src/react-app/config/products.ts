@@ -314,39 +314,216 @@ export const PRODUCT_BUNDLES: Record<string, string[]> = {
 };
 
 // Order bump configurations for checkout pages (discounted prices when purchased together)
-export const ORDER_BUMPS: Record<string, Array<{ key: string; discountedPrice: number; savings: string }>> = {
+// These appear as checkboxes on the checkout page
+export const ORDER_BUMPS: Record<string, Array<{
+  key: string;
+  discountedPrice: number;
+  savings: string;
+  headline?: string;
+  description?: string;
+}>> = {
   'starter-kit': [
-    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
-    { key: 'social-media-intro', discountedPrice: 1700, savings: '37% OFF' },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: 'The bestselling eBook with 14 chapters on content monetization',
+    },
+    {
+      key: 'tax-guide',
+      discountedPrice: 2900,
+      savings: '38% OFF',
+      headline: 'Add Tax Guide for Contentpreneurs',
+      description: 'Essential tax strategies for South African creators',
+    },
   ],
   'influencers-code': [
-    { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
-    { key: 'social-media-intro', discountedPrice: 1700, savings: '37% OFF' },
+    {
+      key: 'paids-workbook',
+      discountedPrice: 1200,
+      savings: '29% OFF',
+      headline: 'Add PAIDS Framework Workbook',
+      description: 'Turn the concepts into action with this implementation guide',
+    },
+    {
+      key: 'niche-finder',
+      discountedPrice: 1200,
+      savings: '29% OFF',
+      headline: 'Add Niche Finder Workbook',
+      description: 'Discover your profitable niche in 90 minutes',
+    },
   ],
   'niche-finder': [
-    { key: 'paids-workbook', discountedPrice: 1200, savings: '29% OFF' },
+    {
+      key: 'paids-workbook',
+      discountedPrice: 1200,
+      savings: '29% OFF',
+      headline: 'Add PAIDS Framework',
+      description: 'Found your niche? Now monetize it with 5 income streams',
+    },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: 'The complete guide to content monetization',
+    },
   ],
   'paids-workbook': [
-    { key: 'niche-finder', discountedPrice: 1200, savings: '29% OFF' },
+    {
+      key: 'niche-finder',
+      discountedPrice: 1200,
+      savings: '29% OFF',
+      headline: 'Add Niche Finder',
+      description: 'Perfect pair - find your niche then monetize it',
+    },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: '14 chapters on building influence and income',
+    },
   ],
   'tax-guide': [
-    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: 'Learn how to maximize your creator income',
+    },
+    {
+      key: 'content-arsenal',
+      discountedPrice: 2700,
+      savings: '27% OFF',
+      headline: 'Add Content Arsenal',
+      description: '100+ templates to streamline your workflow',
+    },
   ],
   'content-foundations': [
-    { key: 'starter-kit', discountedPrice: 3000, savings: 'Upgrade' },
+    {
+      key: 'starter-kit',
+      discountedPrice: 3000,
+      savings: 'Save $37',
+      headline: 'Upgrade to Full Starter Kit',
+      description: 'Get all 9 modules + bonus workbooks + tool stack',
+    },
   ],
   'social-media-intro': [
-    { key: 'starter-kit', discountedPrice: 4700, savings: 'Save $20' },
-    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
+    {
+      key: 'starter-kit',
+      discountedPrice: 4700,
+      savings: 'Save $20',
+      headline: 'Upgrade to Starter Kit',
+      description: 'Complete 9-module course with all workbooks',
+    },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: 'Take your social media to the next level',
+    },
   ],
   'contentpreneur-book-ebook': [
-    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+    {
+      key: 'content-arsenal',
+      discountedPrice: 2700,
+      savings: '27% OFF',
+      headline: 'Add Content Arsenal',
+      description: '100+ templates to implement what you learn',
+    },
   ],
   'contentpreneur-book-hardcopy': [
-    { key: 'content-arsenal', discountedPrice: 2700, savings: '27% OFF' },
+    {
+      key: 'content-arsenal',
+      discountedPrice: 2700,
+      savings: '27% OFF',
+      headline: 'Add Content Arsenal',
+      description: '100+ templates to implement what you learn',
+    },
   ],
   'content-arsenal': [
-    { key: 'influencers-code', discountedPrice: 1200, savings: '37% OFF' },
+    {
+      key: 'influencers-code',
+      discountedPrice: 1200,
+      savings: '37% OFF',
+      headline: "Add The Influencer's Code",
+      description: 'The strategy behind the templates',
+    },
+    {
+      key: 'starter-kit',
+      discountedPrice: 4700,
+      savings: '30% OFF',
+      headline: 'Add Starter Kit Course',
+      description: 'Complete video training to use these tools',
+    },
+  ],
+};
+
+// Post-purchase upsells (shown on success page)
+export const POST_PURCHASE_UPSELLS: Record<string, Array<{
+  key: string;
+  headline: string;
+  subheadline: string;
+  discountedPrice: number;
+  originalPrice: number;
+  savings: string;
+  urgency?: string;
+}>> = {
+  'starter-kit': [
+    {
+      key: 'influencers-code',
+      headline: "Special Offer: The Influencer's Code",
+      subheadline: 'The perfect companion to your course - 14 chapters on monetization',
+      discountedPrice: 1200,
+      originalPrice: 1900,
+      savings: '37% OFF',
+      urgency: 'One-time offer for new students',
+    },
+  ],
+  'influencers-code': [
+    {
+      key: 'starter-kit',
+      headline: 'Upgrade: Get the Full Video Course',
+      subheadline: 'Put what you learned into action with 9 video modules',
+      discountedPrice: 4700,
+      originalPrice: 6700,
+      savings: '30% OFF',
+      urgency: 'Reader-only discount',
+    },
+  ],
+  'niche-finder': [
+    {
+      key: 'starter-kit',
+      headline: 'Ready for the Full System?',
+      subheadline: 'Get the complete course to build your personal brand',
+      discountedPrice: 4700,
+      originalPrice: 6700,
+      savings: '30% OFF',
+    },
+  ],
+  'paids-workbook': [
+    {
+      key: 'starter-kit',
+      headline: 'Ready for the Full System?',
+      subheadline: 'Get the complete course to build your personal brand',
+      discountedPrice: 4700,
+      originalPrice: 6700,
+      savings: '30% OFF',
+    },
+  ],
+  'tax-guide': [
+    {
+      key: 'starter-kit',
+      headline: 'Now Build Your Income',
+      subheadline: 'The complete system to generate income worth taxing',
+      discountedPrice: 4700,
+      originalPrice: 6700,
+      savings: '30% OFF',
+    },
   ],
 };
 
