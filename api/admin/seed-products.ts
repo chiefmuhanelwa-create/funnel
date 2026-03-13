@@ -71,6 +71,30 @@ const PRODUCTS_TO_SEED = [
     description: 'The definitive guide to building a profitable content business.',
     price_cents: 2700, // $27.00 USD
   },
+  {
+    product_key: 'social-media-intro',
+    name: 'Introduction to Social Media',
+    description: 'Master social media marketing with 3 comprehensive video modules.',
+    price_cents: 2700, // $27.00 USD
+  },
+  {
+    product_key: 'contentpreneur-book-ebook',
+    name: 'Contentpreneur Guide (eBook)',
+    description: 'The definitive digital guide to building a profitable content business.',
+    price_cents: 1900, // $19.00 USD
+  },
+  {
+    product_key: 'contentpreneur-book-hardcopy',
+    name: 'Contentpreneur Guide (Hardcopy + eBook)',
+    description: 'Physical book + eBook. Free shipping in South Africa.',
+    price_cents: 3700, // $37.00 USD
+  },
+  {
+    product_key: 'coaching-session',
+    name: '1:1 Strategy Call',
+    description: '60-minute personalized strategy session with Mr. NoChill.',
+    price_cents: 49700, // $497.00 USD
+  },
 ];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
