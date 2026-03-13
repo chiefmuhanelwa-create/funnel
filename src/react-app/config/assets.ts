@@ -11,15 +11,15 @@ const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 // PDF DOCUMENTS (All books from admin uploads)
 // ============================================
 export const DOCUMENTS = {
-  // Workbooks (with correct Vercel Blob hash suffixes)
-  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
-  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
+  // Workbooks
+  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
+  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
 
   // Guides
-  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
+  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
 
   // eBooks
-  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf`,
+  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf`,
 } as const;
 
 // ============================================
@@ -51,9 +51,6 @@ export const IMAGES = {
 // FEATURED VIDEOS (Testimonials & Events)
 // ============================================
 export const VIDEOS = {
-  // META Event Speaking Video (June 2025)
-  metaEvent: `${BLOB_BASE}/videos/nochill-x-meta---28-june-2025-v2.mp4`,
-
   // Testimonials
   testimonials: `${BLOB_BASE}/videos/nochill---testimonials.mp4`,
 

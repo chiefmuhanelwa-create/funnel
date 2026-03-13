@@ -68,7 +68,7 @@ export default function VideoShowcase() {
               <div className="relative aspect-[9/16] bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
                 <video
                   ref={videoRef}
-                  src={VIDEOS.metaEvent}
+                  src={VIDEOS.testimonials}
                   className="w-full h-full object-cover"
                   poster={IMAGES.heroImage}
                   playsInline
