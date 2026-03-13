@@ -40,11 +40,6 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     icon: '📋',
     features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
   },
-  'social-media-intro': {
-    name: 'Introduction to Social Media',
-    icon: '📱',
-    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation'],
-  },
   'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑' },
   'contentpreneur-book-ebook': { name: 'Contentpreneur Guide (eBook)', icon: '📱' },
   'contentpreneur-book-hardcopy': { name: 'Contentpreneur Guide (Hardcopy + eBook)', icon: '📚' },

@@ -78,7 +78,7 @@ function generateOrderNumber(): string {
 // These must match the frontend order bump prices
 const ORDER_BUMP_PRICES: Record<string, number> = {
   'influencers-code': 1200,      // $12 (normally $19)
-  'social-media-intro': 1700,   // $17 (normally $27)
+  'content-foundations': 1700,   // $17 (normally $37)
   'paids-workbook': 1200,       // $12 (normally $17)
   'niche-finder': 1200,         // $12 (normally $17)
   'content-arsenal': 2700,      // $27 (normally $37)

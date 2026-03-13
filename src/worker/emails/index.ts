@@ -616,7 +616,6 @@ function formatProductName(productKey: string): string {
     'contentpreneur-pro': 'Contentpreneur Pro Bundle',
     'coaching-session': '1:1 Strategy Call',
     'content-arsenal': 'Content Arsenal Expansion Pack',
-    'social-media-intro': 'Introduction to Social Media Course',
     'contentpreneur-book': 'Contentpreneur Guide (eBook + Print)',
     'contentpreneur-book-ebook': 'Contentpreneur Guide (eBook)',
     'contentpreneur-book-hardcopy': 'Contentpreneur Guide (Hardcopy + eBook)',

@@ -240,25 +240,6 @@ export const PRODUCTS: Record<string, Product> = {
     accessLink: '/members/content-arsenal',
     purchaseLink: '/checkout/content-arsenal',
   },
-  'social-media-intro': {
-    key: 'social-media-intro',
-    name: 'Introduction to Social Media',
-    shortName: 'Social Media Intro',
-    description: 'Master the fundamentals of social media marketing with 3 comprehensive video modules.',
-    priceCents: 2700,
-    icon: '📱',
-    color: 'blue',
-    category: 'course',
-    features: [
-      'Module 1: Social Media Landscape',
-      'Module 2: Platform Selection Strategy',
-      'Module 3: Content Creation Basics',
-      'Platform Comparison Guide (PDF)',
-      'Lifetime Access',
-    ],
-    accessLink: '/members/social-media-intro',
-    purchaseLink: '/checkout/social-media-intro',
-  },
   'contentpreneur-book-ebook': {
     key: 'contentpreneur-book-ebook',
     name: 'Contentpreneur Guide (eBook)',
@@ -413,22 +394,6 @@ export const ORDER_BUMPS: Record<string, Array<{
       savings: 'Save $37',
       headline: 'Upgrade to Full Starter Kit',
       description: 'Get all 9 modules + bonus workbooks + tool stack',
-    },
-  ],
-  'social-media-intro': [
-    {
-      key: 'starter-kit',
-      discountedPrice: 4700,
-      savings: 'Save $20',
-      headline: 'Upgrade to Starter Kit',
-      description: 'Complete 9-module course with all workbooks',
-    },
-    {
-      key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
-      headline: "Add The Influencer's Code",
-      description: 'Take your social media to the next level',
     },
   ],
   'contentpreneur-book-ebook': [

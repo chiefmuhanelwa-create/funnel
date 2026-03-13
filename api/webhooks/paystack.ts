@@ -71,12 +71,6 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     isDownload: true,
     features: ['Tax Deductions', 'Business Structures', 'SA Tax Laws', 'Legal Protection'],
   },
-  'social-media-intro': {
-    name: 'Introduction to Social Media',
-    icon: '📱',
-    accessLink: '/members/social-media-intro',
-    features: ['Module 1: Social Media Landscape', 'Module 2: Platform Selection', 'Module 3: Content Creation'],
-  },
   'contentpreneur-pro': { name: 'Contentpreneur Pro Bundle', icon: '👑', accessLink: '/members' },
   'contentpreneur-book-ebook': { name: 'Contentpreneur Guide (eBook)', icon: '📱', accessLink: '/members' },
   'contentpreneur-book-hardcopy': { name: 'Contentpreneur Guide (Hardcopy + eBook)', icon: '📚', accessLink: '/members' },

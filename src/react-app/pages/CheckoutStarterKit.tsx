@@ -20,7 +20,7 @@ interface OrderBump {
 // Product mockup images from Vercel Blob Storage
 const PRODUCT_IMAGES = {
   influencersCode: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/the-influencer-s-code-mockup--book-cover-.jpeg',
-  socialMediaIntro: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/3-module-course-mockup.jpeg',
+  contentFoundations: 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com/images/3-module-course-mockup.jpeg',
 };
 
 interface AppliedDiscount {
@@ -68,11 +68,11 @@ export default function CheckoutStarterKit() {
       imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {
-      key: 'social-media-intro',
-      name: 'Introduction to Social Media Course',
+      key: 'content-foundations',
+      name: 'Content Foundations Course',
       price: 1700,
-      description: '3-module course on social media mastery. Learn platform selection, content creation, and growth tactics. Normally $27, yours for just $17 today.',
-      imageUrl: PRODUCT_IMAGES.socialMediaIntro,
+      description: '3-module video course: Self Reflection, SWOT Analysis, and Value Alignment. Build your content strategy foundation. Normally $37, yours for just $17 today.',
+      imageUrl: PRODUCT_IMAGES.contentFoundations,
     },
   ];
 

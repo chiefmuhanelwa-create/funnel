@@ -72,12 +72,6 @@ const PRODUCTS_TO_SEED = [
     price_cents: 2700, // $27.00 USD
   },
   {
-    product_key: 'social-media-intro',
-    name: 'Introduction to Social Media',
-    description: 'Master social media marketing with 3 comprehensive video modules.',
-    price_cents: 2700, // $27.00 USD
-  },
-  {
     product_key: 'contentpreneur-book-ebook',
     name: 'Contentpreneur Guide (eBook)',
     description: 'The definitive digital guide to building a profitable content business.',

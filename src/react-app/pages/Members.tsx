@@ -34,17 +34,6 @@ const ALL_PRODUCTS: Product[] = [
     imageUrl: IMAGES.starterKitCourseMockup,
   },
   {
-    key: 'social-media-intro',
-    name: 'Introduction to Social Media',
-    description: '3-module course on social media mastery',
-    icon: Play,
-    link: '/members/social-media-intro',
-    checkoutLink: '/checkout/social-media-intro',
-    type: 'Course',
-    price: 27,
-    imageUrl: IMAGES.contentFoundationsMockup,
-  },
-  {
     key: 'influencers-code',
     name: "The Influencer's Code",
     description: 'Bestselling eBook with 6,000+ copies sold',
@@ -144,7 +133,6 @@ const ALL_PRODUCTS: Product[] = [
 // Products shown as locked upsells if not owned
 const UPSELL_KEYS = [
   'influencers-code',
-  'social-media-intro',
   'content-arsenal',
   'tax-guide',
   'content-foundations',

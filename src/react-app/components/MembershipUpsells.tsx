@@ -34,12 +34,12 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     badge: 'ESSENTIAL',
   },
   {
-    key: 'social-media-intro',
-    name: 'Introduction to Social Media',
-    description: 'Master social media marketing with 3 comprehensive video modules.',
-    price: 27,
+    key: 'content-foundations',
+    name: 'Content Foundations Course',
+    description: 'Master content creation fundamentals with 3 video modules: Self Reflection, SWOT Analysis, Value Alignment.',
+    price: 37,
     icon: Monitor,
-    link: '/checkout/social-media-intro',
+    link: '/checkout/content-foundations',
     badge: '3 MODULES',
   },
   {
