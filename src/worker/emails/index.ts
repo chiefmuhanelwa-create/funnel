@@ -166,26 +166,26 @@ function generateDownloadLinks(productKeys: string[]): Array<{ name: string; url
 
   const productDownloads: Record<string, Array<{ name: string; url: string }>> = {
     'niche-finder': [
-      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf` },
     ],
     'paids-workbook': [
-      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf` },
     ],
     'tax-guide': [
-      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf` },
+      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf` },
     ],
     'influencers-code': [
-      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf` },
+      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf` },
     ],
     'starter-kit': [
-      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
-      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf` },
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf` },
     ],
     'contentpreneur-pro': [
-      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf` },
-      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf` },
-      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook.pdf` },
-      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook.pdf` },
+      { name: "The Influencer's Code eBook (PDF)", url: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf` },
+      { name: 'Tax Guide for Contentpreneurs (PDF)', url: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf` },
+      { name: 'PAIDS Framework Workbook (PDF)', url: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf` },
+      { name: 'Niche Finder Workbook (PDF)', url: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf` },
     ],
   };
 
@@ -465,15 +465,15 @@ export async function sendLeadMagnetEmail(
   const leadMagnetConfig: Record<string, { name: string; downloadUrl: string }> = {
     'paids-workbook': {
       name: 'PAIDS Framework Workbook',
-      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
     },
     'niche-finder': {
       name: 'Niche Finder Workbook',
-      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
     },
     'tax-guide': {
       name: 'Tax Guide for Contentpreneurs',
-      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
+      downloadUrl: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
     },
   };
 

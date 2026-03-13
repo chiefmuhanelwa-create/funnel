@@ -12,14 +12,14 @@ const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 // ============================================
 export const DOCUMENTS = {
   // Workbooks
-  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
-  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
+  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
 
   // Guides
-  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
+  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
 
   // eBooks
-  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf`,
+  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf`,
 } as const;
 
 // ============================================
@@ -51,11 +51,14 @@ export const IMAGES = {
 // FEATURED VIDEOS (Testimonials & Events)
 // ============================================
 export const VIDEOS = {
+  // META Event Speaking Video (June 2025)
+  metaEvent: `${BLOB_BASE}/videos/nochill-x-meta---28-june-2025-v2.mp4`,
+
   // Testimonials
-  testimonials: `${BLOB_BASE}/videos/nochill---testimonials.mp4`,
+  testimonials: `${BLOB_BASE}/videos/nochill---testimonials-1CG5gB8Tc5df4hyRKg4FFvbVvjpG1B.mp4`,
 
   // 3Es Content Formula (Standalone video)
-  threesFormula: `${BLOB_BASE}/videos/nochill---3-e-s.mp4`,
+  threesFormula: `${BLOB_BASE}/videos/nochill---3-e-s-x6R3hNsQSn4A0xxctzbcdzdVSQYXUT.mp4`,
 } as const;
 
 // ============================================
@@ -69,7 +72,7 @@ export const COURSE_VIDEOS = {
       title: 'Welcome to Your Personal Branding Journey',
       description: 'Welcome to your personal branding journey. Set the foundation for your transformation from content creator to contentpreneur.',
       duration: '1:19',
-      videoUrl: `${BLOB_BASE}/videos/introduction.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/introduction-vwD67IgXgiDQTgl3M61OxROSK5eN9Z.mp4`,
     },
     {
       id: 1,
@@ -77,7 +80,7 @@ export const COURSE_VIDEOS = {
       title: 'What is a Personal Brand',
       description: "Understand what personal branding really means and why it's the most powerful asset you can build in the digital age.",
       duration: '1:42',
-      videoUrl: `${BLOB_BASE}/videos/1.-what-is-a-personal-brand.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/1.-what-is-a-personal-brand-JzfK1BwI9SNuAKFmztW0ivJOkZZzHv.mp4`,
     },
     {
       id: 2,
@@ -85,7 +88,7 @@ export const COURSE_VIDEOS = {
       title: 'A Blueprint to Build a Personal Brand',
       description: 'Get the step-by-step framework to build your personal brand from scratch. This is the exact blueprint used to build a 3M+ following.',
       duration: '2:26',
-      videoUrl: `${BLOB_BASE}/videos/2.-a-blueprint-to-build-a-personal-brand.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/2.-a-blueprint-to-build-a-personal-brand-NlDzGRu7DMjntxzEf58tPSmj6pW2ye.mp4`,
     },
     {
       id: 3,
@@ -93,7 +96,7 @@ export const COURSE_VIDEOS = {
       title: 'The 3Cs - Mindset',
       description: 'Master the psychological foundations required for success: Confidence, Consistency, and Courage.',
       duration: '4:16',
-      videoUrl: `${BLOB_BASE}/videos/3.-the-3cs-framework.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/3.-the-3cs-framework-YLQXELu1jbdELfqZRG02sqULJIklC8.mp4`,
     },
     {
       id: 4,
@@ -101,7 +104,7 @@ export const COURSE_VIDEOS = {
       title: 'SWOT Analysis',
       description: 'Identify your Strengths, Weaknesses, Opportunities, and Threats to position yourself strategically in your niche.',
       duration: '9:31',
-      videoUrl: `${BLOB_BASE}/videos/4.-swot-analysis.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/4.-swot-analysis-ejnI1OENvE41I84WrRRbkPV4q2OWjA.mp4`,
     },
     {
       id: 5,
@@ -109,7 +112,7 @@ export const COURSE_VIDEOS = {
       title: '3Es Content Idea Formula',
       description: 'Learn the proven formula for creating content that Educates, Entertains, and Engages your audience consistently.',
       duration: '7:10',
-      videoUrl: `${BLOB_BASE}/videos/3es-content-idea-formula.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/3es-content-idea-formula-SPasaQiEa3MHy81NSyOsSdg9RriA3l.mp4`,
     },
     {
       id: 6,
@@ -117,7 +120,7 @@ export const COURSE_VIDEOS = {
       title: 'Understand Social Media Platforms',
       description: "Master each platform's unique algorithm, audience, and content strategy for maximum growth and monetization.",
       duration: '4:09',
-      videoUrl: `${BLOB_BASE}/videos/5.-understand-social-media-platforms.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/5.-understand-social-media-platforms-0KJncVlmNj90xWRG3ctg5J0MJmfQsd.mp4`,
     },
     {
       id: 7,
@@ -125,7 +128,7 @@ export const COURSE_VIDEOS = {
       title: 'Community Building',
       description: 'Build a loyal community around your personal brand that supports, engages, and buys from you.',
       duration: '6:32',
-      videoUrl: `${BLOB_BASE}/videos/6.-community-building.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/6.-community-building-u9d7U9nYMB0S9H9HkzSe5xeXgOO7N2.mp4`,
     },
     {
       id: 8,
@@ -133,7 +136,7 @@ export const COURSE_VIDEOS = {
       title: 'PAIDS Framework',
       description: 'The exact 5-stream income system: Products, Ads/Affiliates, Information, Deals, and Services.',
       duration: '4:51',
-      videoUrl: `${BLOB_BASE}/videos/7.-paids-framework.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/7.-paids-framework-Ummp8NUrd0GHkqHrS1AEWTPu2bPaPK.mp4`,
     },
     {
       id: 9,
@@ -141,7 +144,7 @@ export const COURSE_VIDEOS = {
       title: 'Formula to Create Online Asset',
       description: 'Build assets that generate income 24/7 — email lists, digital products, automated systems, and owned platforms.',
       duration: '3:20',
-      videoUrl: `${BLOB_BASE}/videos/9.-formula-to-create-online-asset.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/9.-formula-to-create-online-asset-KJZqSed1vBCC01ADDdM9vwpw6hQZiJ.mp4`,
       isBonus: true,
     },
   ],
@@ -152,7 +155,7 @@ export const COURSE_VIDEOS = {
       title: 'Self Reflection',
       description: 'Discover your authentic voice and unique strengths through guided self-reflection exercises. Understand who you truly are as a creator.',
       duration: '15:00',
-      videoUrl: `${BLOB_BASE}/videos/lesson-1---self-reflection.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/lesson-1---self-reflection-U2iJQ229HpT5FUwrV7XM6Xgtivu68N.mp4`,
     },
     {
       id: 2,
@@ -160,7 +163,7 @@ export const COURSE_VIDEOS = {
       title: 'SWOT Analysis for Content Creation',
       description: 'Identify your Strengths, Weaknesses, Opportunities & Threats as a creator. Position yourself strategically in your niche.',
       duration: '12:00',
-      videoUrl: `${BLOB_BASE}/videos/lesson-2---swot-analysis-for-content-creation.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/lesson-2---swot-analysis-for-content-creation-VpLMPP3GoZdI0gHw5tu9MJU9sC6ZpL.mp4`,
     },
     {
       id: 3,
@@ -168,7 +171,7 @@ export const COURSE_VIDEOS = {
       title: 'Value Alignment',
       description: 'Build content that reflects your true values and resonates deeply with your ideal audience. Create with purpose and authenticity.',
       duration: '10:00',
-      videoUrl: `${BLOB_BASE}/videos/lesson-3--value-alignment.mp4`,
+      videoUrl: `${BLOB_BASE}/videos/lesson-3--value-alignment-8ttvnPAxtUK7G9xBIQpyTNuVb7aZxH.mp4`,
     },
   ],
 } as const;

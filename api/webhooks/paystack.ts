@@ -9,10 +9,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // PDF Download URLs from Vercel Blob Storage
 const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 const PDF_DOWNLOADS: Record<string, string> = {
-  'niche-finder': `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
-  'paids-workbook': `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
-  'tax-guide': `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
-  'influencers-code': `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf`,
+  'niche-finder': `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+  'paids-workbook': `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
+  'tax-guide': `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
+  'influencers-code': `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf`,
 };
 
 // COMPLETE Product Configuration with Icons
