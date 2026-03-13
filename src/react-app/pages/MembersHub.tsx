@@ -11,6 +11,12 @@ import {
   ExternalLink,
   ChevronRight,
   Settings,
+  Youtube,
+  Instagram,
+  LogOut,
+  Twitter,
+  Facebook,
+  Linkedin,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { PRODUCTS, TOOL_STACK } from '../config/products';
@@ -31,7 +37,7 @@ const COLOR_CLASSES: Record<string, { bg: string; border: string; text: string }
 };
 
 export default function MembersHub() {
-  const { isAuthenticated, isLoading, user, hasAccessToProduct, loginWithEmail, emailAccess } = useMemberAccess();
+  const { isAuthenticated, isLoading, user, hasAccessToProduct, loginWithEmail, emailAccess, logout } = useMemberAccess();
   const [emailInput, setEmailInput] = useState('');
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -285,18 +291,95 @@ export default function MembersHub() {
           </section>
         )}
 
-        {/* Quick Links */}
+        {/* Social Media & Quick Links */}
         <section className="border-t border-gray-200 pt-8">
-          <div className="flex flex-wrap gap-6 text-sm">
+          {/* Social Media Links */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">Connect With Us</h3>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://www.youtube.com/@NOCHILLGOD"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+              >
+                <Youtube size={18} />
+                YouTube
+              </a>
+              <a
+                href="https://www.youtube.com/@NOCHILLVODCAST"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+              >
+                <Youtube size={18} />
+                Vodcast
+              </a>
+              <a
+                href="https://www.instagram.com/nochill_god/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-600 rounded-lg hover:bg-pink-100 transition-colors text-sm font-medium"
+              >
+                <Instagram size={18} />
+                Instagram
+              </a>
+              <a
+                href="https://x.com/NOCHILL_GOD"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+              >
+                <Twitter size={18} />
+                X / Twitter
+              </a>
+              <a
+                href="https://www.tiktok.com/@nochillgod"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
+              >
+                <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+                TikTok
+              </a>
+              <a
+                href="https://www.facebook.com/NdivhuwoMuhanelwaQuotes/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+              >
+                <Facebook size={18} />
+                Facebook
+              </a>
+              <a
+                href="https://www.linkedin.com/in/ndivhuwo-muhanelwa/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+              >
+                <Linkedin size={18} />
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="flex flex-wrap items-center gap-6 text-sm">
             <a href="mailto:info@nochill.co.za" className="text-gray-500 hover:text-gray-900 transition-colors">
               Contact Support
             </a>
-            <Link to="/contentpreneur-starter-kit" className="text-gray-500 hover:text-gray-900 transition-colors">
-              Browse Products
-            </Link>
             <Link to="/members" className="text-gray-500 hover:text-gray-900 transition-colors">
               Members Home
             </Link>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 text-gray-500 hover:text-red-600 transition-colors"
+            >
+              <LogOut size={16} />
+              Log Out
+            </button>
           </div>
 
           <p className="mt-6 text-gray-400 text-xs">

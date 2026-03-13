@@ -211,11 +211,11 @@ export default function PAIDSWorkbookProduct() {
           >
             <h2 className="text-section text-gray-900 mb-6">
               Creators Using PAIDS Have Generated{' '}
-              <span className="text-gradient-gold">Over $2M</span>
+              <span className="text-gradient-gold">Over $50k</span>
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                { stat: '$2M+', label: 'Total Creator Revenue' },
+                { stat: '$50k+', label: 'Total Creator Revenue' },
                 { stat: '10K+', label: 'Framework Users' },
                 { stat: '5', label: 'Income Streams' },
               ].map((item, index) => (

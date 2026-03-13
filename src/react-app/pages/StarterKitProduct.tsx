@@ -75,7 +75,7 @@ export default function StarterKitProduct() {
 
               <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The complete 9-module course to launch and grow your content creator business.
-                Learn the exact PAIDS Framework that has generated over $2M in creator revenue.
+                Learn the exact PAIDS Framework that has generated over $50k in creator revenue.
               </p>
 
               <div className="mt-6">
