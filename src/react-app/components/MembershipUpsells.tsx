@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, BookOpen, Monitor, Gift } from 'lucide-react';
+import { Sparkles, BookOpen, Monitor, Gift, FileText } from 'lucide-react';
 
 interface UpsellProduct {
   key: string;
@@ -25,13 +25,22 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     badge: 'BESTSELLER',
   },
   {
+    key: 'tax-guide',
+    name: 'Tax Guide for Contentpreneurs',
+    description: 'Essential tax strategies and legal protection for South African content creators.',
+    price: 47,
+    icon: FileText,
+    link: '/checkout/tax-guide',
+    badge: 'ESSENTIAL',
+  },
+  {
     key: 'social-media-intro',
     name: 'Introduction to Social Media',
     description: 'Master social media marketing with 3 comprehensive video modules.',
     price: 27,
     icon: Monitor,
     link: '/checkout/social-media-intro',
-    badge: 'NEW',
+    badge: '3 MODULES',
   },
   {
     key: 'contentpreneur-book-ebook',
@@ -41,7 +50,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     originalPrice: 27,
     icon: BookOpen,
     link: '/checkout/contentpreneur-book-ebook',
-    badge: 'PRE-ORDER',
+    badge: 'COMING SOON',
     isPreOrder: true,
   },
   {
@@ -52,7 +61,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     originalPrice: 47,
     icon: Gift,
     link: '/checkout/contentpreneur-book-hardcopy',
-    badge: 'PRE-ORDER',
+    badge: 'COMING SOON',
     isPreOrder: true,
   },
 ];

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Twitter, Linkedin, Music, LogIn } from 'lucide-react';
+import { Instagram, Youtube, Twitter, Linkedin, Music, LogIn, Facebook } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 
 export default function Footer() {
@@ -8,28 +8,33 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: Instagram,
-      url: 'https://instagram.com/mrnochill',
+      url: 'https://www.instagram.com/nochill_god/',
       hoverColor: 'hover:text-pink-500',
     },
     {
       icon: Twitter,
-      url: 'https://twitter.com/mrnochill',
+      url: 'https://x.com/NOCHILL_GOD',
       hoverColor: 'hover:text-blue-500',
     },
     {
       icon: Linkedin,
-      url: 'https://linkedin.com/in/mrnochill',
+      url: 'https://www.linkedin.com/in/ndivhuwo-muhanelwa/',
       hoverColor: 'hover:text-blue-600',
     },
     {
       icon: Youtube,
-      url: 'https://youtube.com/@mrnochill',
+      url: 'https://www.youtube.com/@NOCHILLGOD',
       hoverColor: 'hover:text-red-500',
     },
     {
       icon: Music, // TikTok
-      url: 'https://tiktok.com/@mrnochill',
+      url: 'https://www.tiktok.com/@nochillgod',
       hoverColor: 'hover:text-gray-900',
+    },
+    {
+      icon: Facebook,
+      url: 'https://www.facebook.com/NdivhuwoMuhanelwaQuotes/',
+      hoverColor: 'hover:text-blue-500',
     },
   ];
 

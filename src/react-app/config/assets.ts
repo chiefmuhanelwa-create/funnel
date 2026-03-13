@@ -174,6 +174,33 @@ export const COURSE_VIDEOS = {
       videoUrl: `${BLOB_BASE}/videos/lesson-3--value-alignment-8ttvnPAxtUK7G9xBIQpyTNuVb7aZxH.mp4`,
     },
   ],
+  // Introduction to Social Media - 3 Module Course (uses Content Foundations videos temporarily)
+  socialMediaIntro: [
+    {
+      id: 1,
+      label: 'MODULE 1',
+      title: 'Social Media Landscape',
+      description: 'Understand the current social media ecosystem and how each platform serves different purposes. Learn where your audience is and how to reach them.',
+      duration: '15:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-1---self-reflection-U2iJQ229HpT5FUwrV7XM6Xgtivu68N.mp4`,
+    },
+    {
+      id: 2,
+      label: 'MODULE 2',
+      title: 'Platform Selection Strategy',
+      description: 'Choose the right platforms for your niche and goals. Learn the unique algorithms and content strategies for each major platform.',
+      duration: '12:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-2---swot-analysis-for-content-creation-VpLMPP3GoZdI0gHw5tu9MJU9sC6ZpL.mp4`,
+    },
+    {
+      id: 3,
+      label: 'MODULE 3',
+      title: 'Content Creation Basics',
+      description: 'Master the fundamentals of creating engaging content that resonates with your audience and drives growth.',
+      duration: '10:00',
+      videoUrl: `${BLOB_BASE}/videos/lesson-3--value-alignment-8ttvnPAxtUK7G9xBIQpyTNuVb7aZxH.mp4`,
+    },
+  ],
 } as const;
 
 // ============================================
@@ -185,6 +212,7 @@ export const PRODUCT_ASSETS: Record<string, {
   mockupImage?: string;
   files: Array<{ name: string; url: string; description?: string; type: 'pdf' | 'video' }>;
   course?: typeof COURSE_VIDEOS.starterKit;
+  isPreOrder?: boolean;
 }> = {
   'niche-finder': {
     name: 'Niche Finder Workbook',
@@ -294,6 +322,24 @@ export const PRODUCT_ASSETS: Record<string, {
     name: 'Introduction to Social Media',
     mockupImage: IMAGES.socialMediaIntroMockup,
     files: [],
+    course: COURSE_VIDEOS.socialMediaIntro,
+  },
+  'contentpreneur-book-ebook': {
+    name: 'Contentpreneur Guide (eBook)',
+    mockupImage: IMAGES.contentpreneurBookMockup,
+    files: [],
+    isPreOrder: true,
+  },
+  'contentpreneur-book-hardcopy': {
+    name: 'Contentpreneur Guide (Hardcopy + eBook)',
+    mockupImage: IMAGES.contentpreneurBookMockup,
+    files: [],
+    isPreOrder: true,
+  },
+  'content-arsenal': {
+    name: 'Content Arsenal Expansion Pack',
+    mockupImage: IMAGES.brandingStarterKit,
+    files: [],
   },
 };
 
@@ -394,6 +440,7 @@ export const EMAIL_DELIVERY_ASSETS: Record<string, {
   downloadLinks: Array<{ name: string; url: string }>;
   accessLink: string;
   hasCourse: boolean;
+  isPreOrder?: boolean;
 }> = {
   'niche-finder': {
     productName: 'Niche Finder Workbook',
@@ -452,6 +499,32 @@ export const EMAIL_DELIVERY_ASSETS: Record<string, {
     ],
     accessLink: '/members',
     hasCourse: true,
+  },
+  'social-media-intro': {
+    productName: 'Introduction to Social Media',
+    downloadLinks: [],
+    accessLink: '/members/social-media-intro',
+    hasCourse: true,
+  },
+  'contentpreneur-book-ebook': {
+    productName: 'Contentpreneur Guide (eBook)',
+    downloadLinks: [],
+    accessLink: '/members/contentpreneur-book-ebook',
+    hasCourse: false,
+    isPreOrder: true,
+  },
+  'contentpreneur-book-hardcopy': {
+    productName: 'Contentpreneur Guide (Hardcopy + eBook)',
+    downloadLinks: [],
+    accessLink: '/members/contentpreneur-book-hardcopy',
+    hasCourse: false,
+    isPreOrder: true,
+  },
+  'content-arsenal': {
+    productName: 'Content Arsenal Expansion Pack',
+    downloadLinks: [],
+    accessLink: '/members/content-arsenal',
+    hasCourse: false,
   },
 };
 

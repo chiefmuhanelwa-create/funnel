@@ -41,6 +41,21 @@ const PRODUCT_TIPS: Record<string, string[]> = {
     'Use your SWOT analysis to guide your content strategy',
     'Revisit your value alignment quarterly',
   ],
+  'social-media-intro': [
+    'Start with Module 1 to understand the social media landscape',
+    'Choose 1-2 platforms to focus on initially',
+    'Create your first piece of content within 24 hours of completing the course',
+    'Consistency beats perfection - post regularly',
+  ],
+  'contentpreneur-book-ebook': [
+    'Coming April 2026 - check your email for updates',
+    'Pre-order customers get exclusive bonus content',
+  ],
+  'contentpreneur-book-hardcopy': [
+    'Coming April 2026 - check your email for updates',
+    'Pre-order customers get exclusive bonus content',
+    'Free shipping within South Africa',
+  ],
 };
 
 // Product descriptions
@@ -52,10 +67,14 @@ const PRODUCT_DESCRIPTIONS: Record<string, string> = {
   'starter-kit': 'Complete system to build and monetize your personal brand',
   'content-foundations': 'Master content creation fundamentals with guided video modules',
   'contentpreneur-pro': 'Everything you need from mindset to monetization',
+  'social-media-intro': 'Master social media marketing with 3 comprehensive video modules',
+  'contentpreneur-book-ebook': 'The definitive digital guide to building a profitable content business',
+  'contentpreneur-book-hardcopy': 'Physical book + eBook delivered to your door. Free SA shipping.',
+  'content-arsenal': '100+ templates, swipe files, and tools to streamline your content workflow',
 };
 
 // Product types
-const PRODUCT_TYPES: Record<string, 'ebook' | 'workbook' | 'guide' | 'course' | 'bundle'> = {
+const PRODUCT_TYPES: Record<string, 'ebook' | 'workbook' | 'guide' | 'course' | 'bundle' | 'preorder'> = {
   'influencers-code': 'ebook',
   'niche-finder': 'workbook',
   'paids-workbook': 'workbook',
@@ -63,6 +82,10 @@ const PRODUCT_TYPES: Record<string, 'ebook' | 'workbook' | 'guide' | 'course' | 
   'starter-kit': 'course',
   'content-foundations': 'course',
   'contentpreneur-pro': 'bundle',
+  'social-media-intro': 'course',
+  'contentpreneur-book-ebook': 'preorder',
+  'contentpreneur-book-hardcopy': 'preorder',
+  'content-arsenal': 'bundle',
 };
 
 export default function MemberDownload() {
