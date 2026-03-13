@@ -11,15 +11,15 @@ const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
 // PDF DOCUMENTS (All books from admin uploads)
 // ============================================
 export const DOCUMENTS = {
-  // Workbooks
-  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook.pdf`,
-  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook.pdf`,
+  // Workbooks (with correct Vercel Blob hash suffixes)
+  nicheFinderWorkbook: `${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf`,
+  paidsFrameworkWorkbook: `${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf`,
 
   // Guides
-  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3-.pdf`,
+  taxGuide: `${BLOB_BASE}/books/tax-for-contentpreneur-guide--3--u5txr7rnqYaoei36UoUIpiLNMB2pP8.pdf`,
 
   // eBooks
-  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age.pdf`,
+  influencersCode: `${BLOB_BASE}/books/the-influencer-s-code---cracking-the-secrets-of-personal-branding-and-influence-in-the-digital-age-2WYoudRZpZ5DzSn9rSIncT2QJ7RGZp.pdf`,
 } as const;
 
 // ============================================
