@@ -1,5 +1,8 @@
 // Centralized Product Configuration
 // Single source of truth for all product data
+//
+// IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
+// ZAR conversion happens at checkout using live exchange rates (~18.50 ZAR/USD)
 
 export interface Product {
   key: string;
@@ -36,7 +39,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: '9-Module Personal Branding Course',
     shortName: 'Starter Kit',
     description: 'Complete system to build and monetize your personal brand with 9 video modules, workbooks, and the NoChill Tool Stack.',
-    priceCents: 6700,
+    priceCents: 6700, // $67.00 USD
     icon: '🚀',
     imageUrl: PRODUCT_IMAGES.starterKit,
     color: 'amber',

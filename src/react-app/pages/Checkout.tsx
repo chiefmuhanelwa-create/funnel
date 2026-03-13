@@ -15,11 +15,13 @@ const PRODUCT_BUNDLES: Record<string, string[]> = {
 };
 
 // Product configuration
+// IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
+// ZAR conversion happens at checkout using live exchange rates (~18.50 ZAR/USD)
 const PRODUCTS: Record<string, {
   key: string;
   name: string;
   description: string;
-  price: number; // in cents USD
+  price: number; // USD cents (6700 = $67.00)
   image?: string;
   features: string[];
   salesPage: string;
@@ -29,7 +31,7 @@ const PRODUCTS: Record<string, {
     key: 'starter-kit',
     name: 'Contentpreneur Starter Kit',
     description: 'Complete 9-module course to build your personal brand and monetize your content',
-    price: 6700,
+    price: 6700, // $67.00 USD
     image: IMAGES.starterKitCourseMockup,
     features: ['9 Video Modules', 'Niche Finder Workbook', 'PAIDS Framework Workbook', 'NoChill Tool Stack', 'Lifetime Access'],
     salesPage: '/contentpreneur-starter-kit',

@@ -8,66 +8,68 @@ const ADMIN_EMAILS = [
 ];
 
 // All products that need to be in the database
+// IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
+// ZAR conversion happens at checkout using live exchange rates
 const PRODUCTS_TO_SEED = [
   {
     product_key: 'starter-kit',
     name: '9-Module Personal Branding Course',
     description: 'Complete system to build and monetize your personal brand with 9 video modules, workbooks, and the NoChill Tool Stack.',
-    price_cents: 6700,
+    price_cents: 6700, // $67.00 USD
   },
   {
     product_key: 'content-foundations',
     name: 'Content Foundations Course',
     description: 'Master content creation fundamentals with 3 comprehensive video modules.',
-    price_cents: 3700,
+    price_cents: 3700, // $37.00 USD
   },
   {
     product_key: 'influencers-code',
     name: "The Influencer's Code",
     description: 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization.',
-    price_cents: 1900,
+    price_cents: 1900, // $19.00 USD
   },
   {
     product_key: 'tax-guide',
     name: 'Tax Guide for Contentpreneurs',
     description: 'Essential tax strategies and legal protection for South African content creators.',
-    price_cents: 4700,
+    price_cents: 4700, // $47.00 USD
   },
   {
     product_key: 'niche-finder',
     name: 'Niche Finder Workbook',
     description: 'Step-by-step PDF workbook to discover your profitable content niche in 90 minutes.',
-    price_cents: 1500,
+    price_cents: 1500, // $15.00 USD
   },
   {
     product_key: 'paids-workbook',
     name: 'PAIDS Framework Workbook',
     description: 'Master the PAIDS monetization framework to build 5 income streams.',
-    price_cents: 1500,
+    price_cents: 1500, // $15.00 USD
   },
   {
     product_key: 'contentpreneur-pro',
     name: 'Contentpreneur Pro Bundle',
     description: 'The complete system: Everything you need from mindset to monetization.',
-    price_cents: 14700,
+    price_cents: 14700, // $147.00 USD
   },
   {
     product_key: 'strategy-call',
     name: '1:1 Coaching Session',
     description: '60-minute personalized strategy call with Mr. NoChill.',
-    price_cents: 150000,
+    price_cents: 150000, // $1,500.00 USD
   },
   {
     product_key: 'content-arsenal',
     name: 'Content Arsenal Expansion Pack',
     description: '100+ templates, swipe files, and tools to streamline your content creation.',
-    price_cents: 3700,
+    price_cents: 3700, // $37.00 USD
   },
   {
     product_key: 'contentpreneur-book',
     name: 'Contentpreneur Guide (eBook)',
     description: 'The definitive guide to building a profitable content business.',
-    price_cents: 2700,
+    price_cents: 2700, // $27.00 USD
   },
 ];
 
