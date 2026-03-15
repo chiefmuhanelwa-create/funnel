@@ -239,34 +239,40 @@ export default function Apply() {
   // Disqualify Screen (fallback - normally redirects to external URL)
   if (screen === 'disqualify') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
-        <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 py-16 text-center">
-          <motion.div {...stepVariants} transition={{ duration: 0.35 }}>
-            <div className="text-6xl md:text-7xl mb-6">🙏</div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4">
+      <div className="relative min-h-screen flex items-center">
+        {/* Background - matches homepage */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.08),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(234,179,8,0.05),transparent_50%)]" />
+        </div>
+
+        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28 relative z-10">
+          <motion.div {...stepVariants} transition={{ duration: 0.35 }} className="text-center max-w-2xl mx-auto">
+            <div className="text-6xl sm:text-7xl lg:text-8xl mb-6">🙏</div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6">
               No stress — we've got you.
             </h2>
-            <p className="text-gray-600 md:text-lg mb-8 max-w-lg mx-auto">
+            <p className="text-gray-600 text-base sm:text-lg lg:text-xl mb-10 max-w-xl mx-auto">
               A 1-on-1 coaching call may not be the right move right now — and that's completely okay.
               Drop your email below and we'll send you the Contentpreneur Starter Kit so you can build at your own pace.
             </p>
 
-            <div className="max-w-xs md:max-w-sm mx-auto">
+            <div className="max-w-md mx-auto">
               <input
                 type="email"
                 value={disqualifyEmail}
                 onChange={(e) => setDisqualifyEmail(e.target.value)}
                 placeholder="Your email address"
-                className="w-full px-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors mb-4 md:text-lg shadow-sm"
+                className="w-full px-5 py-4 lg:py-5 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors mb-4 text-base lg:text-lg shadow-sm"
               />
               <button
                 onClick={handleDisqualifySubmit}
                 disabled={isSubmitting}
-                className="w-full py-4 md:py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-2xl hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all md:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-4 lg:py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-2xl hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all text-base lg:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Sending...' : 'Send Me the Starter Kit →'}
               </button>
-              <p className="text-gray-500 text-sm md:text-base mt-6">
+              <p className="text-gray-500 text-sm sm:text-base mt-6">
                 When you're ready to invest in your growth, come back. The door is always open.
               </p>
             </div>
@@ -279,14 +285,20 @@ export default function Apply() {
   // Disqualify Confirmation (fallback)
   if (screen === 'disqualify-confirm') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
-        <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 py-16 text-center">
-          <motion.div {...stepVariants} transition={{ duration: 0.35 }}>
-            <div className="text-6xl md:text-7xl mb-6">✅</div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4">
+      <div className="relative min-h-screen flex items-center">
+        {/* Background - matches homepage */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.08),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(234,179,8,0.05),transparent_50%)]" />
+        </div>
+
+        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28 relative z-10">
+          <motion.div {...stepVariants} transition={{ duration: 0.35 }} className="text-center max-w-2xl mx-auto">
+            <div className="text-6xl sm:text-7xl lg:text-8xl mb-6">✅</div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6">
               Check your inbox!
             </h2>
-            <p className="text-gray-600 md:text-lg max-w-lg mx-auto">
+            <p className="text-gray-600 text-base sm:text-lg lg:text-xl max-w-xl mx-auto">
               We've sent the Contentpreneur Starter Kit to your email. Start building at your own pace, and come back when you're ready to level up.
             </p>
           </motion.div>
@@ -298,47 +310,55 @@ export default function Apply() {
   // Booking Screen - Choose time
   if (screen === 'booking') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
-        <div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto px-5 md:px-8 py-8">
+      <div className="relative min-h-screen">
+        {/* Background - matches homepage */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.08),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(234,179,8,0.05),transparent_50%)]" />
+        </div>
+
+        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28 relative z-10">
           <motion.div {...stepVariants} transition={{ duration: 0.35 }} className="text-center">
-            <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+            <p className="text-amber-600 text-xs sm:text-sm font-semibold uppercase tracking-widest mb-3">
               You're approved ✓
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-900 mb-4 leading-tight">
               Book Your <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">Call</span>
             </h1>
-            <p className="text-gray-600 text-sm md:text-base mb-8 max-w-sm md:max-w-md mx-auto">
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg mb-8 md:mb-12 max-w-xl mx-auto">
               Select a date and time that works for you below. After booking, you'll receive an email with a 5-minute video to prepare.
             </p>
 
-            {/* Desktop/Tablet: Two-column layout */}
-            <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-start">
+            {/* Two-column layout on desktop */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-start max-w-5xl mx-auto">
               {/* Calendly Embed */}
-              <div className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden mb-8 lg:mb-0 shadow-lg">
+              <div className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden shadow-xl">
                 <div
                   className="calendly-inline-widget"
                   data-url="https://calendly.com/chiefmuhanelwa/contentpreneurship?hide_gdpr_banner=1&background_color=ffffff&text_color=1f2937&primary_color=f59e0b"
-                  style={{ minWidth: '320px', height: '550px' }}
+                  style={{ minWidth: '100%', height: '650px' }}
                 />
               </div>
 
               {/* Required Section */}
-              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8 text-left lg:sticky lg:top-24">
-                <div className="flex items-center gap-3 mb-5">
-                  <Calendar className="text-amber-600" size={24} />
-                  <h3 className="text-gray-900 font-black md:text-lg">After you book:</h3>
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8 text-left lg:sticky lg:top-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center">
+                    <Calendar className="text-white" size={20} />
+                  </div>
+                  <h3 className="text-gray-900 font-black text-lg lg:text-xl">After you book:</h3>
                 </div>
-                <div className="space-y-4 md:space-y-5">
+                <div className="space-y-5 md:space-y-6">
                   {[
                     "You'll receive a confirmation email with a 5-minute pre-call video. Watch it before your session.",
                     "Save our WhatsApp number so you receive your reminder 1 hour before the session.",
                     "Come with clarity on your goals — the more specific, the more valuable your session.",
                   ].map((text, i) => (
-                    <div key={i} className="flex gap-3 md:gap-4">
-                      <span className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full flex items-center justify-center text-xs md:text-sm font-bold shrink-0">
+                    <div key={i} className="flex gap-4">
+                      <span className="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">
                         {i + 1}
                       </span>
-                      <p className="text-gray-700 text-sm md:text-base">{text}</p>
+                      <p className="text-gray-700 text-sm sm:text-base">{text}</p>
                     </div>
                   ))}
                 </div>
@@ -353,50 +373,59 @@ export default function Apply() {
   // Booking Confirmed Screen - After Calendly booking completes
   if (screen === 'booking-confirmed') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
-        <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 py-16 text-center">
-          <motion.div {...stepVariants} transition={{ duration: 0.35 }}>
-            <div className="text-6xl md:text-7xl mb-6">🎉</div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">
+      <div className="relative min-h-screen flex items-center">
+        {/* Background - matches homepage */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.08),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(234,179,8,0.05),transparent_50%)]" />
+        </div>
+
+        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28 relative z-10">
+          <motion.div {...stepVariants} transition={{ duration: 0.35 }} className="text-center max-w-2xl mx-auto">
+            <div className="text-6xl sm:text-7xl lg:text-8xl mb-6">🎉</div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-900 mb-6 leading-tight">
               You're <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">Booked!</span>
             </h1>
 
             {bookedEvent && (
-              <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 md:p-8 mb-8 inline-block shadow-lg">
-                <p className="text-white/80 text-sm mb-2">Your Strategy Session</p>
-                <p className="text-white text-xl md:text-2xl font-black">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 md:p-8 lg:p-10 mb-10 inline-block shadow-xl">
+                <p className="text-white/80 text-sm sm:text-base mb-2">Your Strategy Session</p>
+                <p className="text-white text-xl sm:text-2xl lg:text-3xl font-black">
                   {bookedEvent.date}
                 </p>
-                <p className="text-white text-lg md:text-xl font-semibold">
+                <p className="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
                   {bookedEvent.time}
                 </p>
               </div>
             )}
 
-            <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 md:p-8 text-left max-w-lg mx-auto shadow-lg">
-              <h3 className="text-amber-600 font-black mb-4 md:text-lg flex items-center gap-2">
-                <Mail size={20} /> Check Your Email
+            <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 md:p-8 lg:p-10 text-left max-w-xl mx-auto shadow-xl">
+              <h3 className="text-amber-600 font-black mb-4 text-lg lg:text-xl flex items-center gap-3">
+                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                  <Mail size={20} className="text-amber-600" />
+                </div>
+                Check Your Email
               </h3>
-              <p className="text-gray-600 text-sm md:text-base mb-4">
+              <p className="text-gray-600 text-sm sm:text-base mb-5">
                 We've sent a confirmation to <strong className="text-gray-900">{formData.email}</strong> with:
               </p>
-              <ul className="space-y-3 text-gray-600 text-sm md:text-base">
+              <ul className="space-y-4 text-gray-600 text-sm sm:text-base">
                 <li className="flex items-start gap-3">
-                  <Check className="text-amber-500 shrink-0 mt-0.5" size={18} />
+                  <Check className="text-amber-500 shrink-0 mt-0.5" size={20} />
                   <span>Your booking details and calendar invite</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="text-amber-500 shrink-0 mt-0.5" size={18} />
+                  <Check className="text-amber-500 shrink-0 mt-0.5" size={20} />
                   <span><strong className="text-gray-900">5-minute pre-call video</strong> — watch this before your session (required)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="text-amber-500 shrink-0 mt-0.5" size={18} />
+                  <Check className="text-amber-500 shrink-0 mt-0.5" size={20} />
                   <span>WhatsApp number for your 1-hour reminder</span>
                 </li>
               </ul>
             </div>
 
-            <p className="text-gray-500 text-sm mt-8">
+            <p className="text-gray-500 text-sm sm:text-base mt-10">
               Questions? WhatsApp us at <span className="text-amber-600 font-semibold">+27 XX XXX XXXX</span>
             </p>
           </motion.div>
@@ -407,19 +436,19 @@ export default function Apply() {
 
   // Form Screen
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+    <div className="relative min-h-screen flex flex-col">
+      {/* Background - matches homepage */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.08),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(234,179,8,0.05),transparent_50%)]" />
       </div>
 
-      {/* Progress Bar */}
+      {/* Progress Bar - full width like homepage nav */}
       <div className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 shadow-sm">
-        <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 py-3 md:py-4">
+        <div className="container mx-auto max-w-7xl px-4 py-3 md:py-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs md:text-sm text-gray-500 font-medium">Step {currentStep} of 7</span>
-            <div className="flex items-center gap-2 text-amber-600 text-xs md:text-sm font-semibold">
+            <span className="text-xs sm:text-sm text-gray-500 font-medium">Step {currentStep} of 7</span>
+            <div className="flex items-center gap-2 text-amber-600 text-xs sm:text-sm font-semibold">
               <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
               3 spots left
             </div>
@@ -435,8 +464,10 @@ export default function Apply() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 pt-24 md:pt-28 pb-12 relative z-10">
+      {/* Main Content - centered vertically like homepage hero */}
+      <div className="flex-1 flex items-center justify-center pt-20 md:pt-24 pb-12 relative z-10">
+        <div className="container mx-auto max-w-7xl px-4">
+          <div className="max-w-xl lg:max-w-2xl mx-auto">
         <AnimatePresence mode="wait">
           {/* Step 0: Intro */}
           {currentStep === 0 && (
@@ -798,6 +829,8 @@ export default function Apply() {
             </motion.div>
           )}
         </AnimatePresence>
+          </div>
+        </div>
       </div>
     </div>
   );
