@@ -83,7 +83,15 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
         body: JSON.stringify({ email: normalizedEmail }),
       });
 
-      const data = await response.json();
+      // Safely parse JSON - handle case where server returns HTML error page
+      let data;
+      try {
+        const text = await response.text();
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        return { success: false, error: 'Server error. Please try again in a few moments.' };
+      }
 
       if (!response.ok) {
         console.error('Check access error:', data);
@@ -139,7 +147,15 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
         body: JSON.stringify({ email: normalizedEmail }),
       });
 
-      const data = await response.json();
+      // Safely parse JSON
+      let data;
+      try {
+        const text = await response.text();
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        return { success: false, error: 'Server error. Please try again in a few moments.' };
+      }
 
       if (!response.ok) {
         return { success: false, error: data.error || 'Failed to send verification code.' };
@@ -163,7 +179,15 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
         body: JSON.stringify({ email: normalizedEmail, code }),
       });
 
-      const data = await response.json();
+      // Safely parse JSON
+      let data;
+      try {
+        const text = await response.text();
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        return { success: false, error: 'Server error. Please try again in a few moments.' };
+      }
 
       if (!response.ok) {
         return { success: false, error: data.error || 'Verification failed.' };
