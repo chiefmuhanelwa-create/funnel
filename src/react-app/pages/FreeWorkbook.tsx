@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, Download, Loader2 } from 'lucide-react';
+import { CheckCircle, Download, Loader2, ArrowRight } from 'lucide-react';
 import { analytics } from '../utils/analytics';
 
 interface FreeWorkbookProps {
@@ -14,7 +15,7 @@ export default function FreeWorkbook({ leadMagnet }: FreeWorkbookProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const workbookConfig: Record<string, { title: string; description: string; benefits: string[] }> = {
+  const workbookConfig: Record<string, { title: string; description: string; benefits: string[]; upsell: { name: string; description: string; price: number; originalPrice: number; link: string } }> = {
     'paids-workbook': {
       title: 'PAIDS Framework Workbook',
       description: 'Master the 5 pillars of content success with this actionable workbook.',
@@ -24,6 +25,13 @@ export default function FreeWorkbook({ leadMagnet }: FreeWorkbookProps) {
         'Templates you can use immediately',
         'Worksheet to plan your content strategy',
       ],
+      upsell: {
+        name: 'Contentpreneur Starter Kit',
+        description: '9-module system to monetize your content',
+        price: 67,
+        originalPrice: 197,
+        link: '/checkout/starter-kit',
+      },
     },
     'niche-finder': {
       title: 'Niche Finder Workbook',
@@ -34,6 +42,13 @@ export default function FreeWorkbook({ leadMagnet }: FreeWorkbookProps) {
         'Find gaps in the market',
         'Position yourself as an authority',
       ],
+      upsell: {
+        name: 'Contentpreneur Starter Kit',
+        description: '9-module system to monetize your content',
+        price: 67,
+        originalPrice: 197,
+        link: '/checkout/starter-kit',
+      },
     },
   };
 
@@ -76,39 +91,86 @@ export default function FreeWorkbook({ leadMagnet }: FreeWorkbookProps) {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-purple-50 pt-20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="card max-w-md text-center"
-        >
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-purple-50 pt-20">
+        <div className="max-w-2xl mx-auto px-4 py-16">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center"
           >
-            <CheckCircle className="w-20 h-20 text-green-500 mx-auto" />
-          </motion.div>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6"
+            >
+              <CheckCircle className="text-green-500" size={40} />
+            </motion.div>
 
-          <h2 className="mt-6 text-2xl font-bold text-gray-900">
-            Check Your Inbox!
-          </h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              You're In, {firstName}!
+            </h2>
 
-          <p className="mt-4 text-gray-600">
-            We've sent the {config.title} to <strong>{email}</strong>.
-            Check your inbox (and spam folder, just in case!).
-          </p>
-
-          <div className="mt-8 p-4 bg-primary-50 rounded-lg">
-            <p className="text-sm text-primary-800">
-              <strong>Pro tip:</strong> While you wait, check out the{' '}
-              <a href="/contentpreneur-starter-kit" className="underline font-semibold">
-                Contentpreneur Starter Kit
-              </a>{' '}
-              for the complete system to build your content business.
+            <p className="mt-4 text-gray-500 max-w-md mx-auto">
+              Check your email at <strong>{email}</strong> — we've sent your access link.
             </p>
-          </div>
-        </motion.div>
+
+            {/* Download Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-8"
+            >
+              <a
+                href={`/books/${leadMagnet}.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+              >
+                <Download size={20} />
+                Download {config.title}
+              </a>
+            </motion.div>
+
+            {/* Upsell Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-12 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200"
+            >
+              <span className="inline-block px-3 py-1 text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4">
+                RECOMMENDED NEXT STEP
+              </span>
+
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                {config.upsell.name}
+              </h3>
+
+              <p className="text-gray-600 mb-4">
+                {config.upsell.description}
+              </p>
+
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <span className="text-3xl font-bold text-purple-600">${config.upsell.price}</span>
+                <span className="text-lg text-gray-400 line-through">${config.upsell.originalPrice}</span>
+              </div>
+
+              <Link
+                to={config.upsell.link}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
+              >
+                Get {config.upsell.name}
+                <ArrowRight size={18} />
+              </Link>
+            </motion.div>
+
+            <Link to="/" className="mt-8 inline-block text-gray-500 hover:text-gray-700">
+              ← Back to Home
+            </Link>
+          </motion.div>
+        </div>
       </div>
     );
   }

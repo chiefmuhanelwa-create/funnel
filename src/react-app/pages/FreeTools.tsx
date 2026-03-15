@@ -257,13 +257,40 @@ export default function FreeTools() {
             </motion.div>
 
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Check Your Inbox!
+              You're In, {firstName}!
             </h2>
 
             <p className="mt-4 text-gray-500 max-w-md mx-auto">
-              We've sent <strong>{tool.title}</strong> to <strong>{email}</strong>.
-              Check your inbox (and spam folder, just in case!).
+              Check your email at <strong>{email}</strong> — we've sent your access link.
             </p>
+
+            {/* Access Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-8"
+            >
+              {tool.externalUrl ? (
+                <Link
+                  to={tool.externalUrl}
+                  className="btn-primary btn-lg inline-flex items-center gap-2"
+                >
+                  Open {tool.title.replace('Calculator', '').replace('Generator', '').replace('Templates', '').trim()}
+                  <ArrowRight size={18} />
+                </Link>
+              ) : (
+                <a
+                  href={`/books/${toolKey}.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary btn-lg inline-flex items-center gap-2"
+                >
+                  <Download size={18} />
+                  Download Now
+                </a>
+              )}
+            </motion.div>
 
             {/* Upsell Section */}
             <motion.div
@@ -273,15 +300,15 @@ export default function FreeTools() {
               className="mt-10 p-6 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200"
             >
               <span className="inline-block px-3 py-1 text-xs font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 rounded-full mb-4">
-                {tool.upsell.badge}
+                RECOMMENDED NEXT STEP
               </span>
 
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Ready to Go Deeper?
+                {tool.upsell.title}
               </h3>
 
               <p className="text-gray-600 mb-4">
-                <strong>{tool.upsell.title}</strong> — {tool.upsell.description}
+                {tool.upsell.description}
               </p>
 
               <div className="flex items-center justify-center gap-3 mb-6">
@@ -293,7 +320,7 @@ export default function FreeTools() {
                 to={tool.upsell.url}
                 className="btn-primary btn-lg inline-flex items-center gap-2"
               >
-                Yes, I Want This!
+                Get {tool.upsell.title}
                 <ArrowRight size={18} />
               </Link>
 

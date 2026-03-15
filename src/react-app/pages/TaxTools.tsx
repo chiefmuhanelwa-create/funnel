@@ -82,11 +82,11 @@ export default function TaxTools() {
             </motion.div>
 
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Your Tax Tools Are Ready!
+              You're In, {firstName}!
             </h2>
 
             <p className="mt-4 text-gray-500 max-w-md mx-auto">
-              Access granted! We've also sent all the links to <strong>{email}</strong> for future reference.
+              Check your email at <strong>{email}</strong> — we've sent your access link.
             </p>
 
             {/* Tools Grid */}

@@ -80,11 +80,11 @@ export default function RateCardPro() {
             </motion.div>
 
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Access Unlocked!
+              You're In, {firstName}!
             </h2>
 
             <p className="mt-4 text-gray-500 max-w-md mx-auto">
-              Your RateCard Pro access is ready. We've also sent the link to <strong>{email}</strong> for future reference.
+              Check your email at <strong>{email}</strong> — we've sent your access link.
             </p>
 
             {/* Tool Access Button */}
