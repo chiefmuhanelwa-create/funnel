@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply for Strategy Session | CONTENTPRENEUR</title>
+  <meta name="description" content="Apply for a free 1-on-1 Contentpreneur Strategy Session. We'll map your content business using the PAIDS Framework." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --black: #0A0A0A;
+      --dark-card: #181818;
+      --border: #2A2A2A;
+      --text: #F0EEE8;
+      --muted: #888880;
+      --danger: #D93025;
+      --danger-dark: #1a0a09;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--dark-card);
+      padding: 12px 20px;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .seats-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding-top: 80px;
+    }
+
+    /* Step Styles */
+    .step {
+      display: none;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .body-text {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Dark Card */
+    .dark-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .dark-card p {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Buttons */
+    .btn-gold {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--black);
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .btn-gold:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-danger {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--danger-dark);
+      color: var(--danger);
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      border: 1px solid var(--danger);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .btn-danger:hover {
+      background: rgba(217, 48, 37, 0.2);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 16px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button-row .btn-gold {
+      flex: 1;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    /* Form Inputs */
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 14px 14px 14px 44px;
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 14px 14px 14px 44px;
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.2s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .textarea-wrapper {
+      position: relative;
+    }
+
+    .textarea-wrapper .input-icon {
+      top: 16px;
+    }
+
+    /* Choice Cards */
+    .choice-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .choice-card {
+      display: block;
+      padding: 16px;
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .choice-card:hover {
+      border-color: var(--muted);
+    }
+
+    .choice-card.selected {
+      border-color: var(--gold);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .choice-card input {
+      display: none;
+    }
+
+    .choice-card-title {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .choice-card-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Decision Buttons (Step 6) */
+    .decision-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Trust Text */
+    .trust-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    /* Disqualify Screen */
+    .disqualify-screen {
+      display: none;
+      text-align: center;
+      padding-top: 60px;
+    }
+
+    .disqualify-screen.active {
+      display: block;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    .disqualify-emoji {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    .disqualify-screen .heading {
+      margin-bottom: 16px;
+    }
+
+    .disqualify-screen .body-text {
+      margin-bottom: 32px;
+    }
+
+    .disqualify-form {
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .disqualify-form input {
+      padding-left: 14px;
+      margin-bottom: 16px;
+    }
+
+    .disqualify-confirmation {
+      display: none;
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    .disqualify-confirmation.active {
+      display: block;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    /* Booking Screen */
+    .booking-screen {
+      display: none;
+      text-align: center;
+    }
+
+    .booking-screen.active {
+      display: block;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    .booking-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .booking-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .booking-title span {
+      color: var(--gold);
+    }
+
+    .booking-subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .calendly-container {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .required-section {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+    }
+
+    .required-section h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .required-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .required-step {
+      display: flex;
+      gap: 12px;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Error styles */
+    .input-error {
+      border-color: var(--danger) !important;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    /* Hidden class */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-container" id="progressContainer">
+    <div class="progress-header">
+      <span class="progress-label" id="progressLabel">Step 0 of 7</span>
+      <div class="seats-badge">
+        <span class="pulse-dot"></span>
+        <span>3 seats left</span>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-content">
+      <!-- Step 0: Intro -->
+      <div class="step active" id="step0">
+        <p class="eyebrow">Strategy Session Application</p>
+        <h1 class="heading">Before we book your call — let's make sure you qualify.</h1>
+        <p class="body-text">This takes 90 seconds. We only work with serious creators who are ready to build. These answers determine whether we're a fit.</p>
+
+        <div class="dark-card">
+          <p>A 1-on-1 Contentpreneur Strategy Session — we map your content business using the PAIDS Framework and show you exactly where you're leaving money on the table.</p>
+        </div>
+
+        <button class="btn-gold" onclick="nextStep()">I'm ready to apply &rarr;</button>
+
+        <p class="footer-text">We only take a handful of creators per month. If this intake is full, you'll roll to the next available slot.</p>
+      </div>
+
+      <!-- Step 1: IG Handle -->
+      <div class="step" id="step1">
+        <p class="eyebrow">Step 1 of 7 — Your Profile</p>
+        <h2 class="heading">What's your Instagram handle?</h2>
+        <p class="hint">We'll review your profile before the call to make our session as useful as possible.</p>
+
+        <div class="input-group">
+          <div class="input-wrapper">
+            <span class="input-icon">@</span>
+            <input type="text" id="igHandle" placeholder="yourhandle" />
+          </div>
+          <p class="error-message hidden" id="igHandleError">Please enter your Instagram handle</p>
+        </div>
+
+        <div class="button-row">
+          <button class="btn-ghost" onclick="prevStep()">&larr; Back</button>
+          <button class="btn-gold" onclick="validateStep1()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Creator Stage -->
+      <div class="step" id="step2">
+        <p class="eyebrow">Step 2 of 7 — Creator Stage</p>
+        <h2 class="heading">Are you currently creating content?</h2>
+        <p class="hint">Be honest — this helps us understand where to meet you.</p>
+
+        <div class="choice-cards" id="creatorStageCards">
+          <label class="choice-card">
+            <input type="radio" name="creatorStage" value="Yes — I post consistently" />
+            <span class="choice-card-title">Yes — I post consistently</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="creatorStage" value="Yes — but not regularly" />
+            <span class="choice-card-title">Yes — but not regularly</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="creatorStage" value="No — I'm just getting started" />
+            <span class="choice-card-title">No — I'm just getting started</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="creatorStage" value="I've never posted before" />
+            <span class="choice-card-title">I've never posted before</span>
+          </label>
+        </div>
+        <p class="error-message hidden" id="creatorStageError">Please select an option</p>
+
+        <div class="button-row">
+          <button class="btn-ghost" onclick="prevStep()">&larr; Back</button>
+          <button class="btn-gold" onclick="validateStep2()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Niche -->
+      <div class="step" id="step3">
+        <p class="eyebrow">Step 3 of 7 — Your Niche</p>
+        <h2 class="heading">What space are you building in?</h2>
+        <p class="hint">Tell us your niche or the niche you want to be known for. Be specific.</p>
+
+        <div class="input-group">
+          <div class="textarea-wrapper">
+            <span class="input-icon">🎯</span>
+            <textarea id="niche" placeholder="e.g. fitness coaching for African women, personal finance for young professionals, real estate investing..." style="padding-left: 44px;"></textarea>
+          </div>
+          <p class="error-message hidden" id="nicheError">Please describe your niche (at least 5 characters)</p>
+        </div>
+
+        <div class="button-row">
+          <button class="btn-ghost" onclick="prevStep()">&larr; Back</button>
+          <button class="btn-gold" onclick="validateStep3()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Biggest Challenge -->
+      <div class="step" id="step4">
+        <p class="eyebrow">Step 4 of 7 — Your Challenge</p>
+        <h2 class="heading">What's your biggest obstacle right now?</h2>
+        <p class="hint">These responses determine whether we're a fit. Be honest.</p>
+
+        <div class="choice-cards" id="challengeCards">
+          <label class="choice-card">
+            <input type="radio" name="challenge" value="audience" />
+            <span class="choice-card-title">I can't build an audience that sticks</span>
+            <span class="choice-card-subtitle">Posts get views but no followers</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="challenge" value="monetise" />
+            <span class="choice-card-title">I have an audience but I can't monetise</span>
+            <span class="choice-card-subtitle">Followers aren't turning into income</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="challenge" value="strategy" />
+            <span class="choice-card-title">I have no system or strategy</span>
+            <span class="choice-card-subtitle">I post randomly and hope for the best</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="challenge" value="conversion" />
+            <span class="choice-card-title">My content doesn't convert to sales</span>
+            <span class="choice-card-subtitle">Content gets attention but not clients</span>
+          </label>
+        </div>
+        <p class="error-message hidden" id="challengeError">Please select an option</p>
+
+        <div class="button-row">
+          <button class="btn-ghost" onclick="prevStep()">&larr; Back</button>
+          <button class="btn-gold" onclick="validateStep4()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Current Revenue -->
+      <div class="step" id="step5">
+        <p class="eyebrow">Step 5 of 7 — Your Revenue</p>
+        <h2 class="heading">How much do you currently earn from your content or business?</h2>
+        <p class="hint">Monthly average. We use this to understand where you are.</p>
+
+        <div class="choice-cards" id="revenueCards">
+          <label class="choice-card">
+            <input type="radio" name="revenue" value="R0" />
+            <span class="choice-card-title">R0 — I haven't made money yet</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="revenue" value="R1-R5000" />
+            <span class="choice-card-title">R1 – R5,000 / month</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="revenue" value="R5000-R15000" />
+            <span class="choice-card-title">R5,000 – R15,000 / month</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="revenue" value="R15000+" />
+            <span class="choice-card-title">R15,000+ / month</span>
+          </label>
+        </div>
+        <p class="error-message hidden" id="revenueError">Please select an option</p>
+
+        <div class="button-row">
+          <button class="btn-ghost" onclick="prevStep()">&larr; Back</button>
+          <button class="btn-gold" onclick="validateStep5()">Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 6: Investment Qualifier -->
+      <div class="step" id="step6">
+        <p class="eyebrow">Step 6 of 7 — Final Qualifier</p>
+        <h2 class="heading">Are you in a position to invest in your growth right now?</h2>
+        <p class="hint">Our strategy session is free. If we're a fit, we'll discuss working together. Our coaching starts from R9,500. This question helps us respect everyone's time.</p>
+
+        <div class="dark-card">
+          <p>We only book calls with people who are serious about building a content business. If now isn't the right time financially, we have self-study resources that may serve you better.</p>
+        </div>
+
+        <div class="decision-buttons">
+          <button class="btn-gold" onclick="qualifyUser()">✓ Yes — I'm ready to invest in my growth</button>
+          <button class="btn-danger" onclick="disqualifyUser()">Not right now — I'm not in a position to invest</button>
+        </div>
+      </div>
+
+      <!-- Step 7: Contact Info -->
+      <div class="step" id="step7">
+        <p class="eyebrow">Step 7 of 7 — Almost Done</p>
+        <h2 class="heading">Last step. Where can we reach you?</h2>
+        <p class="hint">We'll send your booking confirmation and a short video to watch before your call.</p>
+
+        <div class="input-group">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="fullName" placeholder="Full name" />
+          </div>
+          <p class="error-message hidden" id="fullNameError">Please enter your full name</p>
+        </div>
+
+        <div class="input-group">
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="email" placeholder="Email address" />
+          </div>
+          <p class="error-message hidden" id="emailError">Please enter a valid email address</p>
+        </div>
+
+        <div class="input-group">
+          <div class="input-wrapper">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="whatsapp" placeholder="e.g. 0812345678" />
+          </div>
+          <p class="error-message hidden" id="whatsappError">Please enter your WhatsApp number</p>
+        </div>
+
+        <button class="btn-gold" onclick="submitForm()" style="margin-top: 8px;">Book My Strategy Session &rarr;</button>
+
+        <p class="trust-text">
+          🔒 Your details are private and secure. No spam, ever.
+        </p>
+      </div>
+
+      <!-- Disqualify Screen -->
+      <div class="disqualify-screen" id="disqualifyScreen">
+        <div class="disqualify-emoji">🙏</div>
+        <h2 class="heading">No stress — we've got you.</h2>
+        <p class="body-text">A 1-on-1 coaching call may not be the right move right now — and that's completely okay. Drop your email below and we'll send you our free Contentpreneur Starter Kit so you can build at your own pace.</p>
+
+        <div class="disqualify-form">
+          <input type="email" id="disqualifyEmail" placeholder="Your email address" style="padding-left: 14px;" />
+          <button class="btn-gold" onclick="submitDisqualify()">Send Me the Free Starter Kit &rarr;</button>
+          <p class="footer-text" style="margin-top: 20px;">When you're ready to invest in your growth, come back. The door is always open.</p>
+        </div>
+      </div>
+
+      <!-- Disqualify Confirmation -->
+      <div class="disqualify-confirmation" id="disqualifyConfirmation">
+        <div class="disqualify-emoji">✅</div>
+        <h2 class="heading">Check your inbox!</h2>
+        <p class="body-text">We've sent the Contentpreneur Starter Kit to your email. Start building at your own pace, and come back when you're ready to level up.</p>
+      </div>
+
+      <!-- Booking Screen -->
+      <div class="booking-screen" id="bookingScreen">
+        <p class="booking-eyebrow">You're approved ✓</p>
+        <h1 class="booking-title">YOU ARE <span>BOOKED</span></h1>
+        <p class="booking-subtitle">Pick a time below. Watch the short video we send you before the call — sessions where this isn't done get rescheduled.</p>
+
+        <div class="calendly-container">
+          <div class="calendly-inline-widget" data-url="https://calendly.com/chiefmuhanelwa/contentpreneurship" style="min-width:320px;height:550px;"></div>
+          <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        </div>
+
+        <div class="required-section">
+          <h3>Required before your call:</h3>
+          <div class="required-steps">
+            <div class="required-step">
+              <span class="step-number">1</span>
+              <p class="step-text">Watch the 5-min pre-call video we send to your email. Calls with unprepped applicants get cancelled.</p>
+            </div>
+            <div class="required-step">
+              <span class="step-number">2</span>
+              <p class="step-text">Save our WhatsApp number so you receive your reminder 1 hour before the session.</p>
+            </div>
+            <div class="required-step">
+              <span class="step-number">3</span>
+              <p class="step-text">Come with clarity on your goals — the more specific, the more valuable your session.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Form data storage
+    const data = {
+      igHandle: '',
+      creatorStage: '',
+      niche: '',
+      challenge: '',
+      revenue: '',
+      readyToInvest: false,
+      fullName: '',
+      email: '',
+      whatsapp: ''
+    };
+
+    let currentStep = 0;
+
+    // Update progress bar
+    function updateProgress() {
+      const progressFill = document.getElementById('progressFill');
+      const progressLabel = document.getElementById('progressLabel');
+      const percentage = (currentStep / 7) * 100;
+
+      progressFill.style.width = percentage + '%';
+      progressLabel.textContent = `Step ${currentStep} of 7`;
+    }
+
+    // Navigate to next step
+    function nextStep() {
+      const currentStepEl = document.getElementById('step' + currentStep);
+      currentStepEl.classList.remove('active');
+
+      currentStep++;
+
+      const nextStepEl = document.getElementById('step' + currentStep);
+      nextStepEl.classList.add('active');
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Navigate to previous step
+    function prevStep() {
+      const currentStepEl = document.getElementById('step' + currentStep);
+      currentStepEl.classList.remove('active');
+
+      currentStep--;
+
+      const prevStepEl = document.getElementById('step' + currentStep);
+      prevStepEl.classList.add('active');
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Validation functions
+    function validateStep1() {
+      const input = document.getElementById('igHandle');
+      const error = document.getElementById('igHandleError');
+
+      if (input.value.trim() === '') {
+        input.classList.add('input-error');
+        error.classList.remove('hidden');
+        return;
+      }
+
+      input.classList.remove('input-error');
+      error.classList.add('hidden');
+      data.igHandle = input.value.trim();
+      nextStep();
+    }
+
+    function validateStep2() {
+      const selected = document.querySelector('input[name="creatorStage"]:checked');
+      const error = document.getElementById('creatorStageError');
+
+      if (!selected) {
+        error.classList.remove('hidden');
+        return;
+      }
+
+      error.classList.add('hidden');
+      data.creatorStage = selected.value;
+      nextStep();
+    }
+
+    function validateStep3() {
+      const input = document.getElementById('niche');
+      const error = document.getElementById('nicheError');
+
+      if (input.value.trim().length < 5) {
+        input.classList.add('input-error');
+        error.classList.remove('hidden');
+        return;
+      }
+
+      input.classList.remove('input-error');
+      error.classList.add('hidden');
+      data.niche = input.value.trim();
+      nextStep();
+    }
+
+    function validateStep4() {
+      const selected = document.querySelector('input[name="challenge"]:checked');
+      const error = document.getElementById('challengeError');
+
+      if (!selected) {
+        error.classList.remove('hidden');
+        return;
+      }
+
+      error.classList.add('hidden');
+      data.challenge = selected.value;
+      nextStep();
+    }
+
+    function validateStep5() {
+      const selected = document.querySelector('input[name="revenue"]:checked');
+      const error = document.getElementById('revenueError');
+
+      if (!selected) {
+        error.classList.remove('hidden');
+        return;
+      }
+
+      error.classList.add('hidden');
+      data.revenue = selected.value;
+      nextStep();
+    }
+
+    // Qualify or disqualify user
+    function qualifyUser() {
+      data.readyToInvest = true;
+      nextStep();
+    }
+
+    function disqualifyUser() {
+      data.readyToInvest = false;
+
+      // Hide all steps
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+
+      // Hide progress bar
+      document.getElementById('progressContainer').classList.add('hidden');
+
+      // Show disqualify screen
+      document.getElementById('disqualifyScreen').classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Submit main form
+    function submitForm() {
+      const fullName = document.getElementById('fullName');
+      const email = document.getElementById('email');
+      const whatsapp = document.getElementById('whatsapp');
+
+      let hasError = false;
+
+      // Validate full name
+      if (fullName.value.trim() === '') {
+        fullName.classList.add('input-error');
+        document.getElementById('fullNameError').classList.remove('hidden');
+        hasError = true;
+      } else {
+        fullName.classList.remove('input-error');
+        document.getElementById('fullNameError').classList.add('hidden');
+      }
+
+      // Validate email
+      if (!email.value.includes('@')) {
+        email.classList.add('input-error');
+        document.getElementById('emailError').classList.remove('hidden');
+        hasError = true;
+      } else {
+        email.classList.remove('input-error');
+        document.getElementById('emailError').classList.add('hidden');
+      }
+
+      // Validate WhatsApp
+      if (whatsapp.value.trim() === '') {
+        whatsapp.classList.add('input-error');
+        document.getElementById('whatsappError').classList.remove('hidden');
+        hasError = true;
+      } else {
+        whatsapp.classList.remove('input-error');
+        document.getElementById('whatsappError').classList.add('hidden');
+      }
+
+      if (hasError) return;
+
+      // Store data
+      data.fullName = fullName.value.trim();
+      data.email = email.value.trim();
+      data.whatsapp = whatsapp.value.trim();
+
+      // Log data for debugging
+      console.log('Application submitted:', data);
+      // TODO: POST data to webhook or CRM
+
+      // Hide form and progress
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById('progressContainer').classList.add('hidden');
+
+      // Show booking screen
+      document.getElementById('bookingScreen').classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Submit disqualify form
+    function submitDisqualify() {
+      const email = document.getElementById('disqualifyEmail');
+
+      if (!email.value.includes('@')) {
+        email.classList.add('input-error');
+        return;
+      }
+
+      email.classList.remove('input-error');
+
+      console.log('Starter kit requested for:', email.value);
+      // TODO: POST email to webhook or email service
+
+      // Hide disqualify screen
+      document.getElementById('disqualifyScreen').classList.remove('active');
+
+      // Show confirmation
+      document.getElementById('disqualifyConfirmation').classList.add('active');
+    }
+
+    // Choice card selection styling
+    document.querySelectorAll('.choice-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const name = this.querySelector('input').name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+          input.closest('.choice-card').classList.remove('selected');
+        });
+        this.classList.add('selected');
+      });
+    });
+
+    // Initialize
+    updateProgress();
+  </script>
+</body>
+</html>

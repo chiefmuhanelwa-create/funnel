@@ -25,6 +25,7 @@ import FreeTools from './pages/FreeTools';
 import RateCardPro from './pages/RateCardPro';
 import TaxTools from './pages/TaxTools';
 import LeadMagnetLanding from './pages/LeadMagnetLanding';
+import Apply from './pages/Apply';
 
 // Checkout pages
 import Checkout from './pages/Checkout';
@@ -76,6 +77,7 @@ function App() {
           <Route path="/products/coaching" element={<CoachingProduct />} />
           <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
           <Route path="/consultation" element={<Consultation />} />
+          <Route path="/apply" element={<Apply />} />
           <Route path="/free" element={<FreeTools />} />
           <Route path="/free/:toolKey" element={<FreeTools />} />
           <Route path="/tools/ratecard" element={<RateCardPro />} />
@@ -97,6 +99,7 @@ function App() {
           <Route path="/members/legacy" element={<Members />} />
           <Route path="/members/starter-kit" element={<StarterKitCourse />} />
           <Route path="/members/content-foundations" element={<ContentFoundationsCourse />} />
+          <Route path="/members/apply" element={<Apply />} />
           <Route path="/members/:productKey" element={<MemberDownload />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
