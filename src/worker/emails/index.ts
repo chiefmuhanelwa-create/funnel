@@ -637,6 +637,117 @@ export async function sendStarterKitEmail(
   });
 }
 
+// Send booking confirmation email to qualified leads who booked via Calendly
+export async function sendBookingConfirmationEmail(
+  env: Env,
+  email: string,
+  fullName: string,
+  bookedDate: string,
+  bookedTime: string
+): Promise<boolean> {
+  // 5-minute pre-call video URL - replace with actual URL when available
+  const PRE_CALL_VIDEO_URL = 'https://contentpreneurhub.online/pre-call-video';
+  const WHATSAPP_NUMBER = '+27 XX XXX XXXX'; // Replace with actual number
+
+  const firstName = fullName.split(' ')[0];
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #C9A84C, #E8C96A); color: #0A0A0A; padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; font-weight: bold; }
+    .header p { margin: 10px 0 0; opacity: 0.8; }
+    .content { background: #ffffff; padding: 40px 30px; border-radius: 0 0 12px 12px; }
+    .booking-card { background: #0A0A0A; color: #F0EEE8; border-radius: 12px; padding: 30px; margin: 24px 0; text-align: center; }
+    .booking-card h2 { color: #C9A84C; margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+    .booking-card .date { font-size: 24px; font-weight: bold; margin: 0 0 4px; }
+    .booking-card .time { font-size: 20px; color: #C9A84C; margin: 0; }
+    .video-card { background: linear-gradient(135deg, #C9A84C, #E8C96A); border-radius: 12px; padding: 30px; margin: 24px 0; text-align: center; }
+    .video-card h3 { color: #0A0A0A; margin: 0 0 12px; font-size: 20px; }
+    .video-card p { color: #0A0A0A; opacity: 0.8; margin: 0 0 20px; }
+    .video-button { display: inline-block; background: #0A0A0A; color: #F0EEE8; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; }
+    .video-button:hover { opacity: 0.9; }
+    .checklist { background: #f9fafb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .checklist h3 { margin: 0 0 16px; color: #111; }
+    .checklist-item { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item .number { width: 28px; height: 28px; background: #C9A84C; color: #0A0A0A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; margin-right: 12px; flex-shrink: 0; }
+    .checklist-item p { margin: 0; color: #374151; }
+    .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0; border-radius: 0 8px 8px 0; }
+    .warning p { margin: 0; color: #92400e; }
+    .footer { text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>You're Booked! 🎉</h1>
+      <p>Your Strategy Session is confirmed</p>
+    </div>
+    <div class="content">
+      <p>Hey ${firstName},</p>
+
+      <p>Amazing — you're officially booked for your 1-on-1 Contentpreneur Strategy Session!</p>
+
+      <div class="booking-card">
+        <h2>Your Session</h2>
+        <p class="date">${bookedDate}</p>
+        <p class="time">${bookedTime}</p>
+      </div>
+
+      <div class="video-card">
+        <h3>⚠️ IMPORTANT: Watch This First</h3>
+        <p>This 5-minute video will prepare you for our session. <strong>Sessions with unprepped applicants get rescheduled.</strong></p>
+        <a href="${PRE_CALL_VIDEO_URL}" class="video-button">▶️ Watch Pre-Call Video</a>
+      </div>
+
+      <div class="checklist">
+        <h3>Before Your Call:</h3>
+        <div class="checklist-item">
+          <span class="number">1</span>
+          <p><strong>Watch the 5-min video above</strong> — this is required. It will help us make the most of your session.</p>
+        </div>
+        <div class="checklist-item">
+          <span class="number">2</span>
+          <p><strong>Save our WhatsApp number:</strong> ${WHATSAPP_NUMBER} — we'll send you a reminder 1 hour before your call.</p>
+        </div>
+        <div class="checklist-item">
+          <span class="number">3</span>
+          <p><strong>Come with clarity on your goals</strong> — the more specific you are, the more valuable your session will be.</p>
+        </div>
+      </div>
+
+      <div class="warning">
+        <p><strong>Note:</strong> If you need to reschedule, please do so at least 24 hours in advance using the link in your calendar invite. No-shows or last-minute cancellations may lose their spot.</p>
+      </div>
+
+      <p>Looking forward to mapping out your content business with you!</p>
+
+      <p>To your success,<br>
+      <strong>MN</strong><br>
+      Contentpreneur Hub</p>
+
+      <div class="footer">
+        <p>&copy; ${new Date().getFullYear()} Contentpreneur Hub. All rights reserved.</p>
+        <p style="font-size: 12px; color: #9ca3af;">You're receiving this because you booked a Strategy Session.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+
+  return sendEmail(env, {
+    to: email,
+    subject: `🎉 You're Booked! Strategy Session on ${bookedDate}`,
+    html,
+  });
+}
+
 export async function sendAbandonedCartEmail(
   env: Env,
   email: string,

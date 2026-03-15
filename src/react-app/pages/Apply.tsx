@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Lock, Instagram, Target, Zap, DollarSign, User, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Lock, Instagram, Target, Zap, DollarSign, User, Mail, Phone, Calendar } from 'lucide-react';
 
 type FormData = {
   igHandle: string;
@@ -14,7 +14,7 @@ type FormData = {
   whatsapp: string;
 };
 
-type Screen = 'form' | 'disqualify' | 'disqualify-confirm' | 'booking';
+type Screen = 'form' | 'disqualify' | 'disqualify-confirm' | 'booking' | 'booking-confirmed';
 
 const CREATOR_STAGES = [
   'Yes — I post consistently',
@@ -125,8 +125,8 @@ export default function Apply() {
   };
 
   const handleDisqualify = () => {
-    setFormData(prev => ({ ...prev, readyToInvest: false }));
-    setScreen('disqualify');
+    // Redirect disqualified leads directly to the starter kit lessons page
+    window.location.href = 'https://www.contentpreneurhub.online/contentpreneur-starter-kit';
   };
 
   const handleSubmit = () => {
@@ -138,6 +138,68 @@ export default function Apply() {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookedEvent, setBookedEvent] = useState<{ date: string; time: string } | null>(null);
+
+  // Load Calendly widget script and listen for booking events
+  useEffect(() => {
+    if (screen !== 'booking') return;
+
+    // Load Calendly widget script
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Listen for Calendly events
+    const handleCalendlyEvent = (e: MessageEvent) => {
+      if (e.data.event === 'calendly.event_scheduled') {
+        const eventDetails = e.data.payload;
+        const eventDate = new Date(eventDetails.event?.start_time || eventDetails.invitee?.scheduled_event?.start_time);
+
+        const formattedDate = eventDate.toLocaleDateString('en-ZA', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        const formattedTime = eventDate.toLocaleTimeString('en-ZA', {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        setBookedEvent({ date: formattedDate, time: formattedTime });
+
+        // Submit qualified lead data and send confirmation email
+        fetch('/api/qualified-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email,
+            fullName: formData.fullName,
+            whatsapp: formData.whatsapp,
+            igHandle: formData.igHandle,
+            creatorStage: formData.creatorStage,
+            niche: formData.niche,
+            challenge: formData.challenge,
+            revenue: formData.revenue,
+            bookedDate: formattedDate,
+            bookedTime: formattedTime,
+          }),
+        }).catch(console.error);
+
+        setScreen('booking-confirmed');
+      }
+    };
+
+    window.addEventListener('message', handleCalendlyEvent);
+
+    return () => {
+      window.removeEventListener('message', handleCalendlyEvent);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [screen, formData]);
 
   const handleDisqualifySubmit = async () => {
     if (!disqualifyEmail.includes('@')) return;
@@ -233,7 +295,7 @@ export default function Apply() {
     );
   }
 
-  // Booking Screen
+  // Booking Screen - Choose time
   if (screen === 'booking') {
     return (
       <div className="min-h-screen bg-[#0A0A0A] pt-20">
@@ -243,10 +305,10 @@ export default function Apply() {
               You're approved ✓
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#F0EEE8] mb-4 font-['Bebas_Neue'] tracking-wider">
-              YOU ARE <span className="text-[#C9A84C]">BOOKED</span>
+              BOOK YOUR <span className="text-[#C9A84C]">CALL</span>
             </h1>
             <p className="text-[#888880] text-sm md:text-base mb-8 max-w-sm md:max-w-md mx-auto">
-              Pick a time below. Watch the short video we send you before the call — sessions where this isn't done get rescheduled.
+              Select a date and time that works for you below. After booking, you'll receive an email with a 5-minute video to prepare.
             </p>
 
             {/* Desktop/Tablet: Two-column layout */}
@@ -255,18 +317,20 @@ export default function Apply() {
               <div className="bg-[#181818] border border-[#2A2A2A] rounded-xl overflow-hidden mb-8 lg:mb-0">
                 <div
                   className="calendly-inline-widget"
-                  data-url="https://calendly.com/chiefmuhanelwa/contentpreneurship"
+                  data-url="https://calendly.com/chiefmuhanelwa/contentpreneurship?hide_gdpr_banner=1"
                   style={{ minWidth: '320px', height: '550px' }}
                 />
-                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async />
               </div>
 
               {/* Required Section */}
               <div className="bg-[#181818] border border-[#2A2A2A] rounded-xl p-6 md:p-8 text-left lg:sticky lg:top-24">
-                <h3 className="text-[#F0EEE8] font-bold mb-5 font-['Syne'] md:text-lg">Required before your call:</h3>
+                <div className="flex items-center gap-3 mb-5">
+                  <Calendar className="text-[#C9A84C]" size={24} />
+                  <h3 className="text-[#F0EEE8] font-bold font-['Syne'] md:text-lg">After you book:</h3>
+                </div>
                 <div className="space-y-4 md:space-y-5">
                   {[
-                    "Watch the 5-min pre-call video we send to your email. Calls with unprepped applicants get cancelled.",
+                    "You'll receive a confirmation email with a 5-minute pre-call video. Watch it before your session.",
                     "Save our WhatsApp number so you receive your reminder 1 hour before the session.",
                     "Come with clarity on your goals — the more specific, the more valuable your session.",
                   ].map((text, i) => (
@@ -280,6 +344,61 @@ export default function Apply() {
                 </div>
               </div>
             </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Booking Confirmed Screen - After Calendly booking completes
+  if (screen === 'booking-confirmed') {
+    return (
+      <div className="min-h-screen bg-[#0A0A0A] pt-20">
+        <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto px-5 md:px-8 py-16 text-center">
+          <motion.div {...stepVariants} transition={{ duration: 0.35 }}>
+            <div className="text-6xl md:text-7xl mb-6">🎉</div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#F0EEE8] mb-4 font-['Bebas_Neue'] tracking-wider">
+              YOU'RE <span className="text-[#C9A84C]">BOOKED!</span>
+            </h1>
+
+            {bookedEvent && (
+              <div className="bg-[#181818] border border-[#C9A84C] rounded-xl p-6 md:p-8 mb-8 inline-block">
+                <p className="text-[#888880] text-sm mb-2">Your Strategy Session</p>
+                <p className="text-[#F0EEE8] text-xl md:text-2xl font-bold font-['Syne']">
+                  {bookedEvent.date}
+                </p>
+                <p className="text-[#C9A84C] text-lg md:text-xl font-semibold">
+                  {bookedEvent.time}
+                </p>
+              </div>
+            )}
+
+            <div className="bg-[#181818] border border-[#2A2A2A] rounded-xl p-6 md:p-8 text-left max-w-lg mx-auto">
+              <h3 className="text-[#C9A84C] font-bold mb-4 font-['Syne'] md:text-lg flex items-center gap-2">
+                <Mail size={20} /> Check Your Email
+              </h3>
+              <p className="text-[#888880] text-sm md:text-base mb-4">
+                We've sent a confirmation to <strong className="text-[#F0EEE8]">{formData.email}</strong> with:
+              </p>
+              <ul className="space-y-3 text-[#888880] text-sm md:text-base">
+                <li className="flex items-start gap-3">
+                  <Check className="text-[#C9A84C] shrink-0 mt-0.5" size={18} />
+                  <span>Your booking details and calendar invite</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="text-[#C9A84C] shrink-0 mt-0.5" size={18} />
+                  <span><strong className="text-[#F0EEE8]">5-minute pre-call video</strong> — watch this before your session (required)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="text-[#C9A84C] shrink-0 mt-0.5" size={18} />
+                  <span>WhatsApp number for your 1-hour reminder</span>
+                </li>
+              </ul>
+            </div>
+
+            <p className="text-[#888880] text-sm mt-8">
+              Questions? WhatsApp us at <span className="text-[#C9A84C]">+27 XX XXX XXXX</span>
+            </p>
           </motion.div>
         </div>
       </div>

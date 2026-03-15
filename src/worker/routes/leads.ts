@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
-import { sendLeadMagnetEmail, sendStarterKitEmail } from '../emails/index';
+import { sendLeadMagnetEmail, sendStarterKitEmail, sendBookingConfirmationEmail } from '../emails/index';
 import { syncToConvertKit } from '../utils/convertkit';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -158,6 +158,104 @@ app.post('/unqualified-lead', async (c) => {
     return c.json({ success: true, message: 'Starter kit sent successfully' });
   } catch (error) {
     console.error('Unqualified lead error:', error);
+    return c.json({ error: 'Failed to process request' }, 500);
+  }
+});
+
+// POST /api/qualified-lead - Handle qualified applicants who booked via Calendly
+app.post('/qualified-lead', async (c) => {
+  const db = c.env.DB;
+  const body = await c.req.json<{
+    email: string;
+    fullName: string;
+    whatsapp?: string;
+    igHandle?: string;
+    creatorStage?: string;
+    niche?: string;
+    challenge?: string;
+    revenue?: string;
+    bookedDate?: string;
+    bookedTime?: string;
+  }>();
+
+  if (!body.email || !body.fullName) {
+    return c.json({ error: 'Email and name are required' }, 400);
+  }
+
+  const normalizedEmail = body.email.toLowerCase().trim();
+
+  try {
+    // Check if consultation request exists for this email
+    const existing = await db.prepare(`
+      SELECT id FROM consultation_requests WHERE email = ?
+    `).bind(normalizedEmail).first();
+
+    const goalsData = JSON.stringify({
+      creatorStage: body.creatorStage,
+      niche: body.niche,
+      challenge: body.challenge,
+      bookedDate: body.bookedDate,
+      bookedTime: body.bookedTime,
+    });
+
+    if (existing) {
+      // Update existing record
+      await db.prepare(`
+        UPDATE consultation_requests
+        SET name = ?, whatsapp = COALESCE(?, whatsapp), follower_count = ?, current_income = ?, goals = ?, status = 'booked', updated_at = CURRENT_TIMESTAMP
+        WHERE email = ?
+      `).bind(
+        body.fullName,
+        body.whatsapp || null,
+        body.igHandle || null,
+        body.revenue || null,
+        goalsData,
+        normalizedEmail
+      ).run();
+    } else {
+      // Insert new consultation request
+      await db.prepare(`
+        INSERT INTO consultation_requests (email, name, whatsapp, follower_count, current_income, goals, status)
+        VALUES (?, ?, ?, ?, ?, ?, 'booked')
+      `).bind(
+        normalizedEmail,
+        body.fullName,
+        body.whatsapp || null,
+        body.igHandle || null,
+        body.revenue || null,
+        goalsData
+      ).run();
+    }
+
+    // Send booking confirmation email with pre-call video
+    const emailSent = await sendBookingConfirmationEmail(
+      c.env,
+      normalizedEmail,
+      body.fullName,
+      body.bookedDate || '',
+      body.bookedTime || ''
+    );
+
+    if (!emailSent) {
+      console.error('Failed to send booking confirmation email to:', normalizedEmail);
+    }
+
+    // Sync to ConvertKit with qualified tag
+    await syncToConvertKit(c.env, {
+      email: normalizedEmail,
+      firstName: body.fullName.split(' ')[0],
+      tags: ['qualified-lead', 'strategy-session-booked'],
+      customFields: {
+        instagram_handle: body.igHandle || '',
+        current_income: body.revenue || '',
+        booked_date: body.bookedDate || '',
+        source: 'booking-funnel-qualified',
+      },
+    });
+
+    return c.json({ success: true, message: 'Booking confirmation sent successfully' });
+  } catch (error) {
+    console.error('Qualified lead error:', error);
     return c.json({ error: 'Failed to process request' }, 500);
   }
 });
