@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,39 +10,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).end();
   }
 
-  // Check environment variables
-  const checks = {
-    DATABASE_URL: !!process.env.DATABASE_URL,
-    RESEND_API_KEY: !!process.env.RESEND_API_KEY,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'not set',
-    nodeVersion: process.version,
-    timestamp: new Date().toISOString(),
-  };
+  try {
+    // Check environment variables
+    const checks: Record<string, any> = {
+      DATABASE_URL: !!process.env.DATABASE_URL,
+      RESEND_API_KEY: !!process.env.RESEND_API_KEY,
+      nodeVersion: process.version,
+      timestamp: new Date().toISOString(),
+    };
 
-  // Try database connection
-  let dbStatus = 'not tested';
-  if (process.env.DATABASE_URL) {
-    try {
-      const { neon } = await import('@neondatabase/serverless');
-      const sql = neon(process.env.DATABASE_URL);
-      const result = await sql`SELECT 1 as connected`;
-      dbStatus = result[0]?.connected === 1 ? 'connected' : 'failed';
+    // Try database connection
+    if (process.env.DATABASE_URL) {
+      try {
+        const sql = neon(process.env.DATABASE_URL);
+        const result = await sql`SELECT 1 as connected`;
+        checks.database = result[0]?.connected === 1 ? 'connected' : 'failed';
 
-      // Check tables exist
-      const tables = await sql`
-        SELECT table_name FROM information_schema.tables
-        WHERE table_schema = 'public'
-        AND table_name IN ('customer_access', 'email_verifications', 'products')
-      `;
-      (checks as any).tables = tables.map((t: any) => t.table_name);
-    } catch (err: any) {
-      dbStatus = `error: ${err.message}`;
+        // Check tables exist
+        const tables = await sql`
+          SELECT table_name FROM information_schema.tables
+          WHERE table_schema = 'public'
+          AND table_name IN ('customer_access', 'email_verifications', 'products')
+        `;
+        checks.tables = tables.map((t: any) => t.table_name);
+      } catch (err: any) {
+        checks.database = `error: ${err.message}`;
+      }
+    } else {
+      checks.database = 'DATABASE_URL not set';
     }
-  }
 
-  return res.status(200).json({
-    status: 'ok',
-    ...checks,
-    database: dbStatus,
-  });
+    return res.status(200).json({ status: 'ok', ...checks });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
 }
