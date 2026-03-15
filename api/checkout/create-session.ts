@@ -153,7 +153,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Step 3: Parse request body
   const body = req.body || {};
-  const { productKeys, includeOrderBumps, customerEmail, customerName } = body;
+  const { productKeys, includeOrderBumps, customerEmail, customerName, discountCode, discountAmount } = body;
 
   if (!customerEmail || typeof customerEmail !== 'string') {
     return res.status(400).json({ error: 'Customer email is required', step: 'validation' });
@@ -246,7 +246,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Step 6: Calculate totals
-  const totalUSD = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
+  const subtotalUSD = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
+
+  // Apply discount if provided (discountAmount is in USD cents)
+  const discountAmountCents = typeof discountAmount === 'number' && discountAmount > 0 ? discountAmount : 0;
+  const totalUSD = Math.max(0, subtotalUSD - discountAmountCents);
 
   if (totalUSD <= 0) {
     return res.status(400).json({
@@ -261,6 +265,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Convert: USD cents * exchange rate = ZAR cents
   // e.g., 6700 USD cents ($67) * 18.5 = 123,950 ZAR cents (R1,239.50)
   const totalZAR = Math.round(totalUSD * exchangeRate);
+
+  console.log('[CHECKOUT] Pricing:', { subtotalUSD, discountCode, discountAmountCents, totalUSD, totalZAR });
   const orderNumber = generateOrderNumber();
 
   // Step 7: Create order in database

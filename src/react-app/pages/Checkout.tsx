@@ -429,6 +429,7 @@ export default function Checkout() {
           customerEmail: email,
           customerName: name,
           discountCode: appliedDiscount?.code || null,
+          discountAmount: appliedDiscount?.discount_amount || 0,
         }),
       });
 
