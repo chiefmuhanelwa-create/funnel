@@ -9,56 +9,77 @@ interface Notification {
   time: string;
 }
 
-const mockNotifications: Notification[] = [
-  { name: 'Sarah M.', location: 'Cape Town', product: 'Starter Kit', time: '2 min ago' },
-  { name: 'John D.', location: 'Johannesburg', product: 'Starter Kit', time: '5 min ago' },
-  { name: 'Lisa K.', location: 'Durban', product: 'Starter Kit', time: '8 min ago' },
-  { name: 'Michael T.', location: 'Pretoria', product: 'Starter Kit', time: '12 min ago' },
-  { name: 'Amanda N.', location: 'Port Elizabeth', product: 'Starter Kit', time: '15 min ago' },
-  { name: 'David S.', location: 'Bloemfontein', product: 'Starter Kit', time: '18 min ago' },
-  { name: 'Rachel P.', location: 'East London', product: 'Starter Kit', time: '22 min ago' },
-  { name: 'James B.', location: 'Polokwane', product: 'Starter Kit', time: '25 min ago' },
+// Fallback data when no real purchases available
+const fallbackNotifications: Notification[] = [
+  { name: 'S***a', location: 'Cape Town', product: 'Starter Kit', time: '2 min ago' },
+  { name: 'J***n', location: 'Johannesburg', product: 'Starter Kit', time: '5 min ago' },
+  { name: 'L***a', location: 'Durban', product: 'Starter Kit', time: '8 min ago' },
+  { name: 'M***l', location: 'Pretoria', product: 'Starter Kit', time: '12 min ago' },
 ];
 
 interface LivePurchaseNotificationProps {
-  showDelay?: number; // Initial delay before first notification (ms)
-  interval?: number; // Time between notifications (ms)
-  duration?: number; // How long each notification shows (ms)
+  showDelay?: number;
+  interval?: number;
+  duration?: number;
+  useRealData?: boolean;
 }
 
 export default function LivePurchaseNotification({
   showDelay = 8000,
   interval = 25000,
   duration = 5000,
+  useRealData = true,
 }: LivePurchaseNotificationProps) {
   const [notification, setNotification] = useState<Notification | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>(fallbackNotifications);
+  const [isRealData, setIsRealData] = useState(false);
+
+  // Fetch real purchase data
+  useEffect(() => {
+    if (!useRealData) return;
+
+    const fetchRecentPurchases = async () => {
+      try {
+        const response = await fetch('/api/stats/recent-purchases');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.purchases && data.purchases.length > 0) {
+            setNotifications(data.purchases);
+            setIsRealData(data.isRealData);
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback notification data');
+      }
+    };
+
+    fetchRecentPurchases();
+    // Refresh real data every 5 minutes
+    const refreshInterval = setInterval(fetchRecentPurchases, 5 * 60 * 1000);
+    return () => clearInterval(refreshInterval);
+  }, [useRealData]);
 
   useEffect(() => {
-    // Don't show if user dismissed
-    if (dismissed) return;
+    if (dismissed || notifications.length === 0) return;
 
     let notificationIndex = 0;
 
-    const showRandomNotification = () => {
-      const randomNotification = mockNotifications[notificationIndex % mockNotifications.length];
+    const showNextNotification = () => {
+      const nextNotification = notifications[notificationIndex % notifications.length];
       notificationIndex++;
-      setNotification(randomNotification);
+      setNotification(nextNotification);
 
-      // Hide after duration
       setTimeout(() => {
         setNotification(null);
       }, duration);
     };
 
-    // Show first notification after delay
-    const initialTimer = setTimeout(showRandomNotification, showDelay);
+    const initialTimer = setTimeout(showNextNotification, showDelay);
 
-    // Then show at regular intervals
     const intervalTimer = setInterval(() => {
       if (Math.random() > 0.3) {
-        // 70% chance to show
-        showRandomNotification();
+        showNextNotification();
       }
     }, interval);
 
@@ -66,7 +87,7 @@ export default function LivePurchaseNotification({
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
-  }, [dismissed, showDelay, interval, duration]);
+  }, [dismissed, showDelay, interval, duration, notifications]);
 
   const handleDismiss = () => {
     setNotification(null);
@@ -102,7 +123,10 @@ export default function LivePurchaseNotification({
                 <p className="text-xs text-gray-600">
                   Just purchased "{notification.product}"
                 </p>
-                <p className="text-xs text-green-400 mt-1">{notification.time}</p>
+                <p className="text-xs text-green-400 mt-1">
+                  {notification.time}
+                  {isRealData && <span className="ml-1 opacity-60">• verified</span>}
+                </p>
               </div>
             </div>
           </div>

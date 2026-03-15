@@ -86,6 +86,20 @@ const ORDER_BUMP_PRICES: Record<string, number> = {
   'tax-guide': 2700,            // $27 (as add-on)
 };
 
+// Rollback helper - deletes order and order items if payment initialization fails
+async function rollbackOrder(sql: any, orderId: number): Promise<void> {
+  try {
+    // Delete order items first (foreign key constraint)
+    await sql`DELETE FROM order_items WHERE order_id = ${orderId}`;
+    // Delete the order
+    await sql`DELETE FROM orders WHERE id = ${orderId}`;
+    console.log(`[CHECKOUT] Rolled back order ${orderId} due to payment failure`);
+  } catch (rollbackError) {
+    console.error(`[CHECKOUT] Failed to rollback order ${orderId}:`, rollbackError);
+    // Don't throw - the original error is more important
+  }
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -340,6 +354,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!paystackResponse.ok) {
       console.error('Paystack API error:', paystackData);
+      // Rollback: Delete the order since payment failed
+      await rollbackOrder(sql, orderId);
       return res.status(500).json({
         error: 'Payment initialization failed',
         step: 'paystack_init',
@@ -350,6 +366,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!paystackData.status || !paystackData.data?.authorization_url) {
       console.error('Invalid Paystack response:', paystackData);
+      // Rollback: Delete the order since payment failed
+      await rollbackOrder(sql, orderId);
       return res.status(500).json({
         error: 'Invalid payment response',
         step: 'paystack_init',
@@ -358,6 +376,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   } catch (error: any) {
     console.error('Paystack API call failed:', error);
+    // Rollback: Delete the order since payment failed
+    await rollbackOrder(sql, orderId);
     return res.status(500).json({
       error: 'Payment service unavailable',
       step: 'paystack_init',

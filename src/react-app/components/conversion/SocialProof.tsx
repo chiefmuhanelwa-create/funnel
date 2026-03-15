@@ -8,6 +8,7 @@ interface SocialProofProps {
   minViewers?: number;
   maxViewers?: number;
   className?: string;
+  useRealData?: boolean;
 }
 
 export default function SocialProof({
@@ -16,32 +17,55 @@ export default function SocialProof({
   minViewers = 3,
   maxViewers = 12,
   className = '',
+  useRealData = true,
 }: SocialProofProps) {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isRealData, setIsRealData] = useState(false);
 
   useEffect(() => {
-    // Generate initial count
-    const initial = Math.floor(Math.random() * (maxViewers - minViewers + 1)) + minViewers;
-    setCount(initial);
+    // For 'purchases' variant, try to fetch real data
+    if (useRealData && (variant === 'purchases' || variant === 'trending')) {
+      fetch('/api/stats/recent-purchases')
+        .then(res => res.json())
+        .then(data => {
+          if (data.count24h > 0) {
+            setCount(data.count24h);
+            setIsRealData(data.isRealData);
+          } else {
+            // Fallback to random if no real data
+            setCount(Math.floor(Math.random() * (maxViewers - minViewers + 1)) + minViewers);
+          }
+        })
+        .catch(() => {
+          setCount(Math.floor(Math.random() * (maxViewers - minViewers + 1)) + minViewers);
+        });
+    } else {
+      // For viewers, use simulated count
+      const initial = Math.floor(Math.random() * (maxViewers - minViewers + 1)) + minViewers;
+      setCount(initial);
+    }
 
     // Show after delay for more natural feel
     const showTimeout = setTimeout(() => setIsVisible(true), 2000);
 
-    // Randomly update count every 30-60 seconds
-    const interval = setInterval(() => {
-      setCount(prev => {
-        const change = Math.random() > 0.5 ? 1 : -1;
-        const newCount = prev + change;
-        return Math.max(minViewers, Math.min(maxViewers, newCount));
-      });
-    }, Math.random() * 30000 + 30000);
+    // For viewers variant, randomly update count (simulated)
+    let interval: NodeJS.Timeout | undefined;
+    if (variant === 'viewers') {
+      interval = setInterval(() => {
+        setCount(prev => {
+          const change = Math.random() > 0.5 ? 1 : -1;
+          const newCount = prev + change;
+          return Math.max(minViewers, Math.min(maxViewers, newCount));
+        });
+      }, Math.random() * 30000 + 30000);
+    }
 
     return () => {
       clearTimeout(showTimeout);
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
-  }, [minViewers, maxViewers]);
+  }, [minViewers, maxViewers, variant, useRealData]);
 
   const getContent = () => {
     switch (variant) {

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { hasAccessThroughBundle, getProductsToGrant } from '../../../lib/bundles';
 
 interface UserData {
   email: string;
@@ -9,6 +10,8 @@ interface EmailAccess {
   email: string;
   productKeys: string[];
   products: Array<{ id: number; product_key: string; name: string }>;
+  sessionToken?: string;
+  verified?: boolean;
 }
 
 interface MemberAccessContextType {
@@ -16,6 +19,7 @@ interface MemberAccessContextType {
   user: UserData | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isVerified: boolean;
 
   // Email-based access
   emailAccess: EmailAccess | null;
@@ -26,6 +30,8 @@ interface MemberAccessContextType {
 
   // Actions
   loginWithEmail: (email: string) => Promise<{ success: boolean; error?: string }>;
+  sendMagicLink: (email: string) => Promise<{ success: boolean; error?: string; sent?: boolean }>;
+  verifyCode: (email: string, code: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   checkEmailAccess: (email: string) => Promise<boolean>;
   clearAccess: () => void;
@@ -47,18 +53,18 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
 
   const loadAccessFromStorage = () => {
     try {
-      const stored = sessionStorage.getItem('memberAccess');
+      const stored = localStorage.getItem('memberAccess');
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Check if still valid (24 hours)
-        if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+        // Check if still valid (7 days - persistent login)
+        if (parsed.timestamp && Date.now() - parsed.timestamp < 7 * 24 * 60 * 60 * 1000) {
           setEmailAccess(parsed.data);
           setUser({
             email: parsed.data.email,
-            name: parsed.data.email.split('@')[0], // Use email prefix as name
+            name: parsed.data.email.split('@')[0],
           });
         } else {
-          sessionStorage.removeItem('memberAccess');
+          localStorage.removeItem('memberAccess');
         }
       }
     } catch (error) {
@@ -66,11 +72,11 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
     }
   };
 
+  // Legacy login (direct email check - for backwards compatibility)
   const loginWithEmail = async (email: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const normalizedEmail = email.toLowerCase().trim();
 
-      // Check if email has any purchases
       const response = await fetch('/api/check-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,7 +85,6 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
 
       const data = await response.json();
 
-      // Handle service errors
       if (!response.ok) {
         console.error('Check access error:', data);
         if (response.status === 503) {
@@ -93,6 +98,7 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
           email: normalizedEmail,
           productKeys: data.products.map((p: any) => p.product_key),
           products: data.products,
+          verified: false, // Not verified through magic link
         };
 
         setEmailAccess(accessData);
@@ -101,8 +107,7 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
           name: normalizedEmail.split('@')[0],
         });
 
-        // Store in sessionStorage with timestamp
-        sessionStorage.setItem('memberAccess', JSON.stringify({
+        localStorage.setItem('memberAccess', JSON.stringify({
           data: accessData,
           timestamp: Date.now(),
         }));
@@ -116,7 +121,6 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
       };
     } catch (error) {
       console.error('Login error:', error);
-      // Check if it's a network error
       if (error instanceof TypeError && error.message.includes('fetch')) {
         return { success: false, error: 'Network error. Please check your connection and try again.' };
       }
@@ -124,10 +128,81 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
     }
   };
 
+  // Send magic link verification code
+  const sendMagicLink = async (email: string): Promise<{ success: boolean; error?: string; sent?: boolean }> => {
+    try {
+      const normalizedEmail = email.toLowerCase().trim();
+
+      const response = await fetch('/api/auth/send-magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalizedEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: data.error || 'Failed to send verification code.' };
+      }
+
+      return { success: true, sent: data.sent };
+    } catch (error) {
+      console.error('Send magic link error:', error);
+      return { success: false, error: 'Network error. Please try again.' };
+    }
+  };
+
+  // Verify code from magic link
+  const verifyCode = async (email: string, code: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const normalizedEmail = email.toLowerCase().trim();
+
+      const response = await fetch('/api/auth/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalizedEmail, code }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: data.error || 'Verification failed.' };
+      }
+
+      if (data.success && data.products) {
+        const accessData: EmailAccess = {
+          email: data.email,
+          productKeys: data.products.map((p: any) => p.product_key),
+          products: data.products,
+          sessionToken: data.sessionToken,
+          verified: true,
+        };
+
+        setEmailAccess(accessData);
+        setUser({
+          email: data.email,
+          name: data.email.split('@')[0],
+        });
+
+        localStorage.setItem('memberAccess', JSON.stringify({
+          data: accessData,
+          timestamp: Date.now(),
+        }));
+
+        return { success: true };
+      }
+
+      return { success: false, error: 'Verification failed.' };
+    } catch (error) {
+      console.error('Verify code error:', error);
+      return { success: false, error: 'Network error. Please try again.' };
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setEmailAccess(null);
-    sessionStorage.removeItem('memberAccess');
+    localStorage.removeItem('memberAccess');
   };
 
   const checkEmailAccess = async (email: string): Promise<boolean> => {
@@ -138,38 +213,17 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
   const clearAccess = () => {
     setEmailAccess(null);
     setUser(null);
-    sessionStorage.removeItem('memberAccess');
+    localStorage.removeItem('memberAccess');
   };
 
   const hasAccessToProduct = useCallback((productKey: string): boolean => {
-    if (emailAccess?.productKeys.includes(productKey)) {
-      return true;
-    }
-
-    // Check for bundle access (starter-kit includes niche-finder and paids-workbook)
-    if (productKey === 'niche-finder' || productKey === 'paids-workbook') {
-      if (emailAccess?.productKeys.includes('starter-kit')) {
-        return true;
-      }
-    }
-
-    return false;
+    if (!emailAccess?.productKeys) return false;
+    return hasAccessThroughBundle(productKey, emailAccess.productKeys);
   }, [emailAccess]);
 
   const getAllAccessibleProducts = useCallback((): string[] => {
-    const products = new Set<string>();
-
-    emailAccess?.productKeys.forEach(key => {
-      products.add(key);
-
-      // Add bundled products
-      if (key === 'starter-kit') {
-        products.add('niche-finder');
-        products.add('paids-workbook');
-      }
-    });
-
-    return Array.from(products);
+    if (!emailAccess?.productKeys) return [];
+    return getProductsToGrant(emailAccess.productKeys);
   }, [emailAccess]);
 
   const refreshAccess = async () => {
@@ -186,10 +240,13 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
     user,
     isAuthenticated: !!user && !!emailAccess,
     isLoading,
+    isVerified: emailAccess?.verified ?? false,
     emailAccess,
     hasAccessToProduct,
     getAllAccessibleProducts,
     loginWithEmail,
+    sendMagicLink,
+    verifyCode,
     logout,
     checkEmailAccess,
     clearAccess,

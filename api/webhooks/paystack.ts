@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { handlePurchaseResend } from '../../lib/resend';
+import { getProductsToGrant } from '../../lib/bundles';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -78,11 +79,7 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
   'coaching-session': { name: '1:1 Strategy Call', icon: '📞', accessLink: '/consultation' },
 };
 
-// Bundle configurations - STRICT: only these products get unlocked
-const PRODUCT_BUNDLES: Record<string, string[]> = {
-  'starter-kit': ['niche-finder', 'paids-workbook'],
-  'contentpreneur-pro': ['starter-kit', 'content-foundations', 'influencers-code', 'tax-guide', 'niche-finder', 'paids-workbook'],
-};
+// Bundle configurations imported from lib/bundles.ts (single source of truth)
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -179,13 +176,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const order = orderResult[0];
 
       // Calculate ALL products to grant (purchased + bundles)
-      const productsToGrant = new Set<string>();
-      for (const productKey of purchasedProducts) {
-        productsToGrant.add(productKey);
-        if (PRODUCT_BUNDLES[productKey]) {
-          PRODUCT_BUNDLES[productKey].forEach(k => productsToGrant.add(k));
-        }
-      }
+      const allProductsToGrant = getProductsToGrant(purchasedProducts);
+      const productsToGrant = new Set<string>(allProductsToGrant);
 
       console.log('[WEBHOOK] Products to grant:', Array.from(productsToGrant));
 
