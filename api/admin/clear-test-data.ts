@@ -46,6 +46,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       customer_access: 0,
       orders: 0,
       abandoned_carts: 0,
+      email_verifications: 0,
+      member_sessions: 0,
+      user_progress: 0,
     };
 
     // Delete in order (respecting foreign keys)
@@ -63,6 +66,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const carts = await sql`DELETE FROM abandoned_carts RETURNING id`;
     results.abandoned_carts = carts.length;
+
+    // Clear auth/verification tables
+    try {
+      const verifications = await sql`DELETE FROM email_verifications RETURNING id`;
+      results.email_verifications = verifications.length;
+    } catch (e) { /* table may not exist */ }
+
+    try {
+      const sessions = await sql`DELETE FROM member_sessions RETURNING id`;
+      results.member_sessions = sessions.length;
+    } catch (e) { /* table may not exist */ }
+
+    // Clear user progress
+    try {
+      const progress = await sql`DELETE FROM user_progress RETURNING id`;
+      results.user_progress = progress.length;
+    } catch (e) { /* table may not exist */ }
 
     console.log('[ADMIN] Test data cleared:', results);
 
