@@ -132,6 +132,7 @@ const ALL_PRODUCTS: Product[] = [
 
 // Products shown as locked upsells if not owned
 const UPSELL_KEYS = [
+  'starter-kit',
   'influencers-code',
   'content-arsenal',
   'tax-guide',

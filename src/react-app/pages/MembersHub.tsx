@@ -20,6 +20,60 @@ import {
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { PRODUCTS, TOOL_STACK } from '../config/products';
+import { ShoppingCart, Clock, Sparkles } from 'lucide-react';
+
+// Upsell products with checkout info
+const UPSELL_PRODUCTS = [
+  {
+    key: 'starter-kit',
+    name: 'Contentpreneur Starter Kit',
+    description: '10-module course + Tool Stack access + workbooks',
+    price: 67,
+    checkoutLink: '/checkout/starter-kit',
+    badge: 'BEST VALUE',
+    includesToolStack: true,
+  },
+  {
+    key: 'influencers-code',
+    name: "The Influencer's Code",
+    description: 'Bestselling eBook with 6,000+ copies sold',
+    price: 19,
+    originalPrice: 197,
+    checkoutLink: '/checkout/influencers-code',
+    badge: 'BESTSELLER',
+  },
+  {
+    key: 'tax-guide',
+    name: 'Tax Guide for Contentpreneurs',
+    description: 'Essential tax strategies for SA content creators',
+    price: 47,
+    checkoutLink: '/checkout/tax-guide',
+  },
+  {
+    key: 'content-foundations',
+    name: 'Content Foundations Course',
+    description: '3 video modules on content strategy',
+    price: 37,
+    checkoutLink: '/checkout/content-foundations',
+  },
+  {
+    key: 'content-arsenal',
+    name: 'Content Arsenal Pack',
+    description: '100+ templates and swipe files',
+    price: 37,
+    originalPrice: 97,
+    checkoutLink: '/checkout/content-arsenal',
+  },
+  {
+    key: 'contentpreneur-book-ebook',
+    name: 'Contentpreneur Guide (eBook)',
+    description: 'The definitive guide to building a content business',
+    price: 19,
+    checkoutLink: '/checkout/contentpreneur-book-ebook',
+    badge: 'COMING SOON',
+    isPreOrder: true,
+  },
+];
 
 // Admin emails
 const ADMIN_EMAILS = ['info@nochill.co.za', 'ndivhuwo@nochill.co.za', 'chiefmuhanelwa@gmail.com'];
@@ -224,6 +278,95 @@ export default function MembersHub() {
             </div>
           )}
         </section>
+
+        {/* Upsells Section - Show products user doesn't own */}
+        {(() => {
+          const availableUpsells = UPSELL_PRODUCTS.filter(p => !hasAccessToProduct(p.key));
+          if (availableUpsells.length === 0) return null;
+
+          return (
+            <section className="mb-12">
+              <div className="flex items-center gap-2 mb-6">
+                <Sparkles className="text-amber-500" size={20} />
+                <h2 className="text-xl font-bold text-gray-900">Expand Your Learning</h2>
+              </div>
+
+              {/* Tool Stack Promo - show if user doesn't have starter-kit */}
+              {!hasStarterKit && (
+                <div className="mb-6 p-5 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50/50">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-2xl shrink-0">
+                      🛠️
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-gray-900">Unlock the NoChill Tool Stack</h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Get access to our curated affiliate tools that generate multiple income streams.
+                        Included with the Starter Kit!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {availableUpsells.map((product, index) => (
+                  <motion.div
+                    key={product.key}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <div className="relative bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg hover:border-amber-200 transition-all">
+                      {product.badge && (
+                        <span className={`absolute -top-2 -right-2 px-2 py-0.5 text-xs font-bold rounded-full ${
+                          product.badge === 'BESTSELLER' ? 'bg-purple-500 text-white' :
+                          product.badge === 'BEST VALUE' ? 'bg-green-500 text-white' :
+                          product.badge === 'COMING SOON' ? 'bg-amber-500 text-black' :
+                          'bg-gray-500 text-white'
+                        }`}>
+                          {product.badge}
+                        </span>
+                      )}
+
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                          <Lock size={20} className="text-gray-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-gray-900">{product.name}</h3>
+                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">{product.description}</p>
+
+                          {product.includesToolStack && (
+                            <span className="inline-flex items-center gap-1 mt-2 text-xs text-amber-600 font-medium">
+                              🛠️ Includes Tool Stack Access
+                            </span>
+                          )}
+
+                          <div className="flex items-center justify-between mt-3">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg font-bold text-amber-600">R{product.price}</span>
+                              {product.originalPrice && (
+                                <span className="text-sm text-gray-400 line-through">R{product.originalPrice}</span>
+                              )}
+                            </div>
+                            <Link
+                              to={product.checkoutLink}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-black text-sm font-semibold rounded-lg transition-colors"
+                            >
+                              <ShoppingCart size={14} />
+                              {product.isPreOrder ? 'Pre-Order' : 'Get Access'}
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Tool Stack Section - Only for Starter Kit owners */}
         {hasStarterKit && (
