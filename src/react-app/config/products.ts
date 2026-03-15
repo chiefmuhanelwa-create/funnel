@@ -32,6 +32,8 @@ const PRODUCT_IMAGES = {
   taxGuide: `${BLOB_BASE}/images/tax-guide-mockup.jpeg`,
   nicheFinder: `${BLOB_BASE}/images/niche-workbook-mockup.jpeg`,
   paidsWorkbook: `${BLOB_BASE}/images/paids-mockup.jpeg`,
+  contentpreneurBook: `${BLOB_BASE}/images/the-influencer-s-code-mockup--book-cover-.jpeg`,
+  proBundle: `${BLOB_BASE}/images/branding-starter-kit-copy.jpeg`,
 };
 
 export const PRODUCTS: Record<string, Product> = {
@@ -168,6 +170,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 14700,
     originalPriceCents: 17000,
     icon: '👑',
+    imageUrl: PRODUCT_IMAGES.proBundle,
     color: 'gold',
     category: 'bundle',
     features: [
@@ -209,6 +212,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 2700,
     originalPriceCents: 4700,
     icon: '📚',
+    imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
     category: 'ebook',
     features: [
@@ -228,6 +232,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 3700,
     originalPriceCents: 9700,
     icon: '🛠️',
+    imageUrl: PRODUCT_IMAGES.starterKit,
     color: 'cyan',
     category: 'bundle',
     features: [
@@ -248,6 +253,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 1900,
     originalPriceCents: 2700,
     icon: '📱',
+    imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
     category: 'ebook',
     features: [
@@ -269,6 +275,7 @@ export const PRODUCTS: Record<string, Product> = {
     priceCents: 3700,
     originalPriceCents: 4700,
     icon: '📚',
+    imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
     category: 'ebook',
     features: [
