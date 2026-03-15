@@ -3,7 +3,18 @@ import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy load Resend to avoid crashes if API key is missing
+let resendClient: Resend | null = null;
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    console.error('[AUTH] RESEND_API_KEY not configured');
+    return null;
+  }
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
 
 // Rate limiting
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -82,49 +93,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
 
     // Send email with code
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
+    const resend = getResend();
+    if (!resend) {
+      return res.status(500).json({ error: 'Email service not configured. Please contact support.' });
+    }
 
-    await resend.emails.send({
-      from: 'Contentpreneur Hub <noreply@contentpreneurhub.online>',
-      to: normalizedEmail,
-      subject: 'Your Login Code',
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #f59e0b; margin: 0;">Contentpreneur Hub</h1>
-          </div>
-
-          <div style="background: #f9fafb; border-radius: 12px; padding: 30px; text-align: center;">
-            <h2 style="margin: 0 0 20px;">Your Verification Code</h2>
-            <p style="margin: 0 0 20px; color: #666;">
-              Enter this code to access your member area:
-            </p>
-            <div style="background: #fff; border: 2px dashed #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #111;">
-                ${verificationCode}
-              </span>
+    try {
+      await resend.emails.send({
+        from: 'Contentpreneur Hub <noreply@contentpreneurhub.online>',
+        to: normalizedEmail,
+        subject: 'Your Login Code',
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #f59e0b; margin: 0;">Contentpreneur Hub</h1>
             </div>
-            <p style="margin: 0; color: #999; font-size: 14px;">
-              This code expires in 15 minutes.
-            </p>
-          </div>
 
-          <div style="margin-top: 30px; text-align: center; color: #999; font-size: 12px;">
-            <p>If you didn't request this code, you can safely ignore this email.</p>
-            <p>© ${new Date().getFullYear()} Contentpreneur Hub</p>
-          </div>
-        </body>
-        </html>
-      `,
-    });
+            <div style="background: #f9fafb; border-radius: 12px; padding: 30px; text-align: center;">
+              <h2 style="margin: 0 0 20px;">Your Verification Code</h2>
+              <p style="margin: 0 0 20px; color: #666;">
+                Enter this code to access your member area:
+              </p>
+              <div style="background: #fff; border: 2px dashed #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #111;">
+                  ${verificationCode}
+                </span>
+              </div>
+              <p style="margin: 0; color: #999; font-size: 14px;">
+                This code expires in 15 minutes.
+              </p>
+            </div>
 
-    console.log(`[AUTH] Magic link sent to ${normalizedEmail}`);
+            <div style="margin-top: 30px; text-align: center; color: #999; font-size: 12px;">
+              <p>If you didn't request this code, you can safely ignore this email.</p>
+              <p>© ${new Date().getFullYear()} Contentpreneur Hub</p>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+      console.log(`[AUTH] Verification code sent to ${normalizedEmail}`);
+    } catch (emailError: any) {
+      console.error('[AUTH] Resend email error:', emailError?.message || emailError);
+      return res.status(500).json({
+        error: 'Failed to send email. Please try again or contact support.',
+        details: emailError?.message
+      });
+    }
 
     return res.status(200).json({
       message: 'Verification code sent to your email.',
@@ -132,7 +153,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
   } catch (error: any) {
-    console.error('[AUTH] Error sending magic link:', error);
-    return res.status(500).json({ error: 'Failed to send verification code' });
+    console.error('[AUTH] Error:', error?.message || error);
+
+    // Check for specific errors
+    if (error?.message?.includes('email_verifications')) {
+      return res.status(500).json({
+        error: 'Database table missing. Please run migrations.',
+        details: 'email_verifications table not found'
+      });
+    }
+
+    return res.status(500).json({
+      error: 'Failed to send verification code',
+      details: error?.message
+    });
   }
 }
