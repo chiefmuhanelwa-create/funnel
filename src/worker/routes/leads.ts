@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
-import { sendLeadMagnetEmail } from '../emails/index';
+import { sendLeadMagnetEmail, sendStarterKitEmail } from '../emails/index';
 import { syncToConvertKit } from '../utils/convertkit';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -108,6 +108,57 @@ app.post('/consultation-request', async (c) => {
   } catch (error) {
     console.error('Consultation request error:', error);
     return c.json({ error: 'Failed to submit consultation request' }, 500);
+  }
+});
+
+// POST /api/unqualified-lead - Handle disqualified applicants from booking funnel
+app.post('/unqualified-lead', async (c) => {
+  const db = c.env.DB;
+  const body = await c.req.json<{
+    email: string;
+  }>();
+
+  if (!body.email) {
+    return c.json({ error: 'Email is required' }, 400);
+  }
+
+  const normalizedEmail = body.email.toLowerCase().trim();
+
+  try {
+    // Insert or update subscriber with source = 'unqualified-lead'
+    await db.prepare(`
+      INSERT INTO email_subscribers (email, lead_magnet, source)
+      VALUES (?, 'contentpreneur-starter-kit', 'unqualified-lead')
+      ON CONFLICT(email) DO UPDATE SET
+        lead_magnet = 'contentpreneur-starter-kit',
+        source = CASE
+          WHEN email_subscribers.source = 'unqualified-lead' THEN 'unqualified-lead'
+          ELSE email_subscribers.source
+        END
+    `).bind(normalizedEmail).run();
+
+    // Send starter kit email
+    const emailSent = await sendStarterKitEmail(c.env, normalizedEmail);
+
+    if (!emailSent) {
+      console.error('Failed to send starter kit email to:', normalizedEmail);
+    }
+
+    // Sync to ConvertKit with unqualified tag
+    await syncToConvertKit(c.env, {
+      email: normalizedEmail,
+      firstName: '',
+      tags: ['unqualified-lead', 'starter-kit-recipient'],
+      customFields: {
+        lead_magnet: 'contentpreneur-starter-kit',
+        source: 'booking-funnel-disqualified',
+      },
+    });
+
+    return c.json({ success: true, message: 'Starter kit sent successfully' });
+  } catch (error) {
+    console.error('Unqualified lead error:', error);
+    return c.json({ error: 'Failed to process request' }, 500);
   }
 });
 

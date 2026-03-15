@@ -478,7 +478,7 @@ export async function sendLeadMagnetEmail(
   };
 
   const config = leadMagnetConfig[leadMagnet] || {
-    name: 'Your Free Resource',
+    name: 'Your Resource',
     downloadUrl: 'https://contentpreneurhub.online/members',
   };
 
@@ -498,12 +498,12 @@ export async function sendLeadMagnetEmail(
 <body>
   <div class="container">
     <div class="header">
-      <h1>Your Free Resource is Ready!</h1>
+      <h1>Your Resource is Ready!</h1>
     </div>
     <div class="content">
       <p>Hi ${firstName || 'there'},</p>
 
-      <p>Thanks for signing up! Here's your free <strong>${config.name}</strong>.</p>
+      <p>Thanks for signing up! Here's your <strong>${config.name}</strong>.</p>
 
       <a href="${config.downloadUrl}" class="button">Download Now</a>
 
@@ -533,6 +533,106 @@ export async function sendLeadMagnetEmail(
   return sendEmail(env, {
     to: email,
     subject: `Here's your ${config.name}!`,
+    html,
+  });
+}
+
+// Send Contentpreneur Starter Kit email for unqualified leads
+export async function sendStarterKitEmail(
+  env: Env,
+  email: string
+): Promise<boolean> {
+  const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #C9A84C, #E8C96A); color: #0A0A0A; padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; font-weight: bold; }
+    .header p { margin: 10px 0 0; opacity: 0.8; }
+    .content { background: #ffffff; padding: 40px 30px; border-radius: 0 0 12px 12px; }
+    .download-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+    .download-card h3 { margin: 0 0 12px; color: #111; }
+    .download-card p { margin: 0 0 16px; color: #666; font-size: 14px; }
+    .button { display: inline-block; background: linear-gradient(135deg, #C9A84C, #E8C96A); color: #0A0A0A; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; }
+    .button:hover { opacity: 0.9; }
+    .resources { margin: 30px 0; }
+    .resource-item { display: flex; align-items: center; padding: 16px; background: #fefce8; border-radius: 8px; margin: 10px 0; }
+    .resource-item span { margin-left: 12px; }
+    .footer { text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px; padding: 20px; }
+    .cta-box { background: #0A0A0A; color: #F0EEE8; padding: 30px; border-radius: 12px; margin: 30px 0; text-align: center; }
+    .cta-box h3 { color: #C9A84C; margin: 0 0 12px; }
+    .cta-box p { margin: 0 0 20px; opacity: 0.8; }
+    .cta-button { display: inline-block; background: #C9A84C; color: #0A0A0A; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Your Contentpreneur Starter Kit</h1>
+      <p>Everything you need to start building your content business</p>
+    </div>
+    <div class="content">
+      <p>Hey there,</p>
+
+      <p>I appreciate your honesty about where you are right now. Building a content business is a journey, and everyone starts somewhere different.</p>
+
+      <p>I've put together a Starter Kit to help you build at your own pace. These are the same foundations our coaching clients use — now they're yours.</p>
+
+      <div class="download-card">
+        <h3>📘 PAIDS Framework Workbook</h3>
+        <p>The 5-pillar system for building a sustainable content business. Master Positioning, Audience, Income, Distribution, and Systems.</p>
+        <a href="${BLOB_BASE}/books/paids-framework-workbook-BJp7ZDOwewto1JEHOVczIRkJgsidyQ.pdf" class="button">Download PAIDS Workbook</a>
+      </div>
+
+      <div class="download-card">
+        <h3>🎯 Niche Finder Workbook</h3>
+        <p>Stop guessing and find your profitable niche. This workbook helps you identify the intersection of passion, expertise, and market demand.</p>
+        <a href="${BLOB_BASE}/books/niche-finder-workbook-zDf2eK4ewDWfKF4zKYePqOknzp2Bsz.pdf" class="button">Download Niche Finder</a>
+      </div>
+
+      <div class="resources">
+        <h3>What to do next:</h3>
+        <div class="resource-item">
+          <span>1️⃣ Start with the Niche Finder — clarity on your niche unlocks everything else</span>
+        </div>
+        <div class="resource-item">
+          <span>2️⃣ Work through the PAIDS Framework — this is the roadmap for your business</span>
+        </div>
+        <div class="resource-item">
+          <span>3️⃣ Take action — implement one thing from each workbook this week</span>
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <h3>Ready to Accelerate Your Growth?</h3>
+        <p>When you're ready to invest in personalized guidance, our 1-on-1 strategy sessions are available. We'll map your content business and show you exactly where you're leaving money on the table.</p>
+        <a href="https://contentpreneurhub.online/booking" class="cta-button">Apply for a Strategy Session</a>
+      </div>
+
+      <p>Remember: Consistency beats perfection. Start where you are, use what you have, do what you can.</p>
+
+      <p>To your success,<br>
+      <strong>MN</strong><br>
+      Contentpreneur Hub</p>
+
+      <div class="footer">
+        <p>&copy; ${new Date().getFullYear()} Contentpreneur Hub. All rights reserved.</p>
+        <p style="font-size: 12px; color: #9ca3af;">You're receiving this because you requested the Contentpreneur Starter Kit.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+
+  return sendEmail(env, {
+    to: email,
+    subject: 'Your Contentpreneur Starter Kit is Ready',
     html,
   });
 }
