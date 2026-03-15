@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Strategy Session | CONTENTPRENEUR</title>
+  <meta name="description" content="Book your free 1-on-1 Contentpreneur Strategy Session. We'll map your content business using the PAIDS Framework." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96A;
+      --black: #0A0A0A;
+      --dark-card: #181818;
+      --border: #2A2A2A;
+      --text: #F0EEE8;
+      --muted: #888880;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .title span {
+      color: var(--gold);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .calendly-container {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .required-section {
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .required-section h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .required-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .required-step {
+      display: flex;
+      gap: 12px;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <p class="eyebrow">Free Strategy Session</p>
+      <h1 class="title">BOOK YOUR <span>CALL</span></h1>
+      <p class="subtitle">Pick a time that works for you. This is a free 1-on-1 session where we'll map out your content business using the PAIDS Framework.</p>
+    </div>
+
+    <!-- Calendly Embed -->
+    <div class="calendly-container">
+      <div class="calendly-inline-widget" data-url="https://calendly.com/chiefmuhanelwa/contentpreneurship" style="min-width:320px;height:630px;"></div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    </div>
+
+    <!-- Required Section -->
+    <div class="required-section">
+      <h3>Before your call:</h3>
+      <div class="required-steps">
+        <div class="required-step">
+          <span class="step-number">1</span>
+          <p class="step-text">Watch the 5-min pre-call video we send to your email. Calls with unprepped applicants get cancelled.</p>
+        </div>
+        <div class="required-step">
+          <span class="step-number">2</span>
+          <p class="step-text">Save our WhatsApp number so you receive your reminder 1 hour before the session.</p>
+        </div>
+        <div class="required-step">
+          <span class="step-number">3</span>
+          <p class="step-text">Come with clarity on your goals — the more specific, the more valuable your session.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Questions? Email <a href="mailto:info@nochill.co.za">info@nochill.co.za</a></p>
+      <p style="margin-top: 16px;">© 2026 NOCHILL PTY LTD. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
