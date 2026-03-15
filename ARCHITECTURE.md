@@ -326,20 +326,51 @@ NEXT_PUBLIC_APP_URL=https://www.contentpreneurhub.online
 
 ---
 
+## Sales Funnel Structure
+
+### Primary Funnel Flow
+
+```
+Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Area
+```
+
+### Main Product: Contentpreneur Starter Kit ($67)
+
+**URL:** `https://www.contentpreneurhub.online/contentpreneur-starter-kit`
+
+**Bundle Contents:**
+- 9 Video Modules (Introduction + Modules 1-8 + Bonus Module 9)
+- PAIDS Framework Workbook (PDF) - included in bundle
+- Niche Finder Workbook (PDF) - included in bundle
+- NoChill Tool Stack Access
+
+**Checkout Upsells (Order Bumps):**
+- The Influencer's Code - $12 (normally $19)
+- Tax Guide for Contentpreneurs - $29 (normally $47)
+
+**Post-Purchase Upsells:**
+- Content Foundations Course - $37
+- 1:1 Strategy Call - $497
+
+> For detailed funnel architecture, see [docs/SALES_FUNNEL_ARCHITECTURE.md](./docs/SALES_FUNNEL_ARCHITECTURE.md)
+
+---
+
 ## Product Catalog
 
-| Product | Price | Key | Category |
-|---------|-------|-----|----------|
-| Contentpreneur Starter Kit | $67 | `starter-kit` | Course |
-| The Influencer's Code | $19 | `influencers-code` | eBook |
-| Content Foundations | $37 | `content-foundations` | Course |
-| Tax Guide for Contentpreneurs | $47 | `tax-guide` | Guide |
-| Niche Finder Workbook | $17 | `niche-finder` | Workbook |
-| PAIDS Framework Workbook | $17 | `paids-workbook` | Workbook |
-| Pro Bundle | $147 | `pro-bundle` | Bundle |
-| 1:1 Coaching | $497 | `coaching` | Service |
-| Contentpreneur Book | $27 | `contentpreneur-book` | Book |
-| Content Arsenal | $37 | `content-arsenal` | Expansion |
+| Product | Price | Key | Category | Bundle Status |
+|---------|-------|-----|----------|---------------|
+| Contentpreneur Starter Kit | $67 | `starter-kit` | Course | Main product (includes niche-finder, paids-workbook) |
+| The Influencer's Code | $19 | `influencers-code` | eBook | Standalone / Upsell |
+| Content Foundations | $37 | `content-foundations` | Course | Standalone / Upsell |
+| Tax Guide for Contentpreneurs | $47 | `tax-guide` | Guide | Standalone / Upsell |
+| Niche Finder Workbook | $17 | `niche-finder` | Workbook | Included in Starter Kit |
+| PAIDS Framework Workbook | $17 | `paids-workbook` | Workbook | Included in Starter Kit |
+| Pro Bundle | $147 | `contentpreneur-pro` | Bundle | All products |
+| 1:1 Strategy Call | $497 | `coaching-session` | Service | Standalone |
+| Contentpreneur Book (eBook) | $19 | `contentpreneur-book-ebook` | Book | Standalone |
+| Contentpreneur Book (Hardcopy) | $37 | `contentpreneur-book-hardcopy` | Book | Standalone |
+| Content Arsenal | $37 | `content-arsenal` | Templates | Standalone |
 
 ---
 
