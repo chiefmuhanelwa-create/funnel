@@ -46,7 +46,7 @@ const LEAD_MAGNETS = {
       name: 'Naledi M.',
       title: 'Lifestyle Creator, 45K followers',
     },
-    externalUrl: 'https://influencerpricing.online',
+    externalUrl: 'https://collab-value.lovable.app/',
     upsell: {
       name: "The Influencer's Code",
       description: 'Learn how to pitch brands and close deals',

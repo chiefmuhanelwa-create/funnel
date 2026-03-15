@@ -17,11 +17,11 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
   // External Tools (unique free offerings)
   'ratecard-pro': {
     name: 'RateCard Pro Calculator',
-    downloadUrl: 'https://influencerpricing.online',
+    downloadUrl: 'https://collab-value.lovable.app/',
     icon: '📊',
     upsell: 'Learn to land $5K+ brand deals with The Influencer\'s Code',
     upsellUrl: '/checkout/influencers-code',
-    externalTool: 'https://influencerpricing.online',
+    externalTool: 'https://collab-value.lovable.app/',
   },
   'tax-calculator': {
     name: 'Tax Calculator + Invoice Generator',
@@ -219,7 +219,13 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
       <p style="color: #9ca3af; font-size: 12px; margin: 0 0 10px;">
         Follow me for daily content tips
       </p>
-      <a href="https://instagram.com/mrnochill" style="color: #f59e0b; font-weight: 600; text-decoration: none;">@mrnochill</a>
+      <div style="margin: 10px 0;">
+        <a href="https://www.instagram.com/nochill_god/" style="color: #f59e0b; font-weight: 600; text-decoration: none; margin: 0 8px;">Instagram</a>
+        <a href="https://x.com/NOCHILL_GOD" style="color: #f59e0b; font-weight: 600; text-decoration: none; margin: 0 8px;">X/Twitter</a>
+        <a href="https://www.youtube.com/@NOCHILLGOD" style="color: #f59e0b; font-weight: 600; text-decoration: none; margin: 0 8px;">YouTube</a>
+        <a href="https://www.tiktok.com/@nochillgod" style="color: #f59e0b; font-weight: 600; text-decoration: none; margin: 0 8px;">TikTok</a>
+        <a href="https://www.linkedin.com/in/ndivhuwo-muhanelwa/" style="color: #f59e0b; font-weight: 600; text-decoration: none; margin: 0 8px;">LinkedIn</a>
+      </div>
     </div>
 
     <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 20px;">

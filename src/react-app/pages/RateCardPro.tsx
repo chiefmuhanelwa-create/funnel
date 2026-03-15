@@ -17,7 +17,7 @@ import {
 import { analytics } from '../utils/analytics';
 import SocialProof from '../components/conversion/SocialProof';
 
-const EXTERNAL_TOOL_URL = 'https://influencerpricing.online';
+const EXTERNAL_TOOL_URL = 'https://collab-value.lovable.app/';
 
 export default function RateCardPro() {
   const [email, setEmail] = useState('');
@@ -119,7 +119,7 @@ export default function RateCardPro() {
                     <div className="w-3 h-3 rounded-full bg-amber-400" />
                     <div className="w-3 h-3 rounded-full bg-green-400" />
                   </div>
-                  <span className="text-xs text-gray-500 ml-2">influencerpricing.online</span>
+                  <span className="text-xs text-gray-500 ml-2">collab-value.lovable.app</span>
                 </div>
                 <iframe
                   src={EXTERNAL_TOOL_URL}
