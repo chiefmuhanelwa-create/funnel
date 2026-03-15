@@ -19,6 +19,8 @@ import {
   Plus,
   X,
   Search,
+  Mail,
+  Eye,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { upload } from '@vercel/blob/client';
@@ -67,13 +69,29 @@ interface AccessRecord {
   product_count: number;
 }
 
+interface SentEmail {
+  id: number;
+  order_id: number | null;
+  customer_email: string;
+  customer_name: string | null;
+  email_type: string;
+  subject: string;
+  products_purchased: string[];
+  products_granted: string[];
+  amount_paid_cents: number;
+  currency: string;
+  sent_at: string;
+  order_number: string | null;
+  email_html?: string;
+}
+
 const ADMIN_EMAILS = [
   'info@nochill.co.za',
   'ndivhuwo@nochill.co.za',
   'chiefmuhanelwa@gmail.com',
 ];
 
-type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access';
+type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access' | 'emails';
 
 export default function Admin() {
   const { isAuthenticated, user, isLoading: authLoading } = useMemberAccess();
@@ -83,6 +101,8 @@ export default function Admin() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [files, setFiles] = useState<BlobFile[]>([]);
   const [accessRecords, setAccessRecords] = useState<AccessRecord[]>([]);
+  const [emails, setEmails] = useState<SentEmail[]>([]);
+  const [selectedEmail, setSelectedEmail] = useState<SentEmail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -144,6 +164,12 @@ export default function Admin() {
         });
         const data = await res.json();
         setAccessRecords(data.access || []);
+      } else if (activeTab === 'emails') {
+        const res = await fetch('/api/admin/emails', {
+          headers: { 'X-Admin-Email': user?.email || '' },
+        });
+        const data = await res.json();
+        setEmails(data.emails || []);
       }
     } catch (err) {
       setError('Failed to fetch data');
@@ -374,6 +400,20 @@ export default function Admin() {
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
+  const viewEmailDetails = async (emailId: number) => {
+    try {
+      const res = await fetch(`/api/admin/emails?id=${emailId}`, {
+        headers: { 'X-Admin-Email': user?.email || '' },
+      });
+      const data = await res.json();
+      if (data.email) {
+        setSelectedEmail(data.email);
+      }
+    } catch (err) {
+      setError('Failed to load email details');
+    }
+  };
+
   const getFileIcon = (pathname: string) => {
     if (pathname.includes('images/')) return <Image size={20} className="text-blue-400" />;
     if (pathname.includes('books/')) return <FileText size={20} className="text-red-400" />;
@@ -418,6 +458,7 @@ export default function Admin() {
             { key: 'files' as TabKey, label: 'Files', icon: FolderOpen },
             { key: 'access' as TabKey, label: 'Access', icon: Key },
             { key: 'orders' as TabKey, label: 'Orders', icon: ShoppingCart },
+            { key: 'emails' as TabKey, label: 'Emails', icon: Mail },
             { key: 'contacts' as TabKey, label: 'Contacts', icon: Users },
             { key: 'media' as TabKey, label: 'Media', icon: Image },
           ].map((tab) => (
@@ -797,6 +838,134 @@ export default function Admin() {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Emails Tab */}
+        {activeTab === 'emails' && (
+          <div className="space-y-6">
+            {/* Email Preview Modal */}
+            {selectedEmail && (
+              <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                  <div className="flex items-center justify-between p-4 border-b">
+                    <div>
+                      <h3 className="font-bold text-gray-900">{selectedEmail.subject}</h3>
+                      <p className="text-sm text-gray-500">
+                        To: {selectedEmail.customer_email} | Sent: {new Date(selectedEmail.sent_at).toLocaleString()}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedEmail(null)}
+                      className="p-2 hover:bg-gray-100 rounded-lg"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="flex-1 overflow-auto p-4">
+                    {selectedEmail.email_html ? (
+                      <iframe
+                        srcDoc={selectedEmail.email_html}
+                        className="w-full h-full min-h-[500px] border-0"
+                        title="Email Preview"
+                      />
+                    ) : (
+                      <div className="text-center py-8 text-gray-500">
+                        Email content not available
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 border-t bg-gray-50">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-sm text-gray-600">Products purchased:</span>
+                      {selectedEmail.products_purchased?.map((key) => (
+                        <span key={key} className="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-xs">
+                          {PRODUCTS[key]?.shortName || key}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="glass-card p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Sent Emails ({emails.length})
+              </h2>
+              {isLoading ? (
+                <div className="text-center py-8">
+                  <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
+                </div>
+              ) : emails.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">No emails sent yet</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 text-gray-600">Sent</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Customer</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Order #</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Products</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Amount</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {emails.map((email) => (
+                        <tr key={email.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-3 px-4 text-gray-500 text-sm">
+                            {new Date(email.sent_at).toLocaleDateString()}
+                            <br />
+                            <span className="text-xs">{new Date(email.sent_at).toLocaleTimeString()}</span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="font-medium text-gray-900">{email.customer_email}</span>
+                            {email.customer_name && (
+                              <span className="block text-xs text-gray-500">{email.customer_name}</span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 font-mono text-sm text-gray-600">
+                            {email.order_number || '-'}
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex flex-wrap gap-1 max-w-xs">
+                              {email.products_purchased?.slice(0, 3).map((key) => (
+                                <span
+                                  key={key}
+                                  className="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-xs"
+                                >
+                                  {PRODUCTS[key]?.shortName || key}
+                                </span>
+                              ))}
+                              {email.products_purchased?.length > 3 && (
+                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">
+                                  +{email.products_purchased.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-gray-900">
+                            {email.currency === 'ZAR' ? 'R' : '$'}
+                            {(email.amount_paid_cents / 100).toFixed(2)}
+                          </td>
+                          <td className="py-3 px-4">
+                            <button
+                              onClick={() => viewEmailDetails(email.id)}
+                              className="flex items-center gap-1 px-3 py-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 text-sm"
+                            >
+                              <Eye size={14} />
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

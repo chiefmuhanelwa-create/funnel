@@ -180,6 +180,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         // Send order confirmation email (backup - if webhook didn't send it)
         await sendOrderEmail({
+          sql,
+          orderId: order.id,
           orderNumber: order.order_number,
           customerEmail,
           customerName: null, // We don't have name in order
@@ -221,6 +223,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 async function sendOrderEmail(params: {
+  sql: any;
+  orderId: number;
   orderNumber: string;
   customerEmail: string;
   customerName: string | null;
@@ -228,7 +232,7 @@ async function sendOrderEmail(params: {
   allGrantedProducts: string[];
   amountPaidCents: number;
 }) {
-  const { orderNumber, customerEmail, customerName, purchasedProducts, allGrantedProducts, amountPaidCents } = params;
+  const { sql, orderId, orderNumber, customerEmail, customerName, purchasedProducts, allGrantedProducts, amountPaidCents } = params;
 
   const formattedAmount = `R${(amountPaidCents / 100).toFixed(2)}`;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.contentpreneurhub.online';
@@ -339,11 +343,46 @@ async function sendOrderEmail(params: {
 </html>
   `;
 
+  const subject = `🎉 Order Confirmed - ${orderNumber}`;
+
+  // Store email in database for admin viewing
+  try {
+    await sql`
+      INSERT INTO sent_emails (
+        order_id,
+        customer_email,
+        customer_name,
+        email_type,
+        subject,
+        products_purchased,
+        products_granted,
+        amount_paid_cents,
+        currency,
+        email_html
+      ) VALUES (
+        ${orderId},
+        ${customerEmail},
+        ${customerName},
+        'order_confirmation',
+        ${subject},
+        ${purchasedProducts},
+        ${allGrantedProducts},
+        ${amountPaidCents},
+        'ZAR',
+        ${emailHtml}
+      )
+    `;
+    console.log('[VERIFY EMAIL] Stored in database for:', customerEmail);
+  } catch (err) {
+    console.error('[VERIFY EMAIL] Failed to store in database:', err);
+    // Don't fail - continue to send email
+  }
+
   try {
     await resend.emails.send({
       from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
       to: customerEmail,
-      subject: `🎉 Order Confirmed - ${orderNumber}`,
+      subject,
       html: emailHtml,
     });
     console.log('[VERIFY EMAIL] Sent to:', customerEmail);
