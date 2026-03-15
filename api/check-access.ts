@@ -81,16 +81,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Get products for this email
-    // Use LEFT JOIN so access records still work even if product is missing from products table
     let accessRecords;
     try {
       accessRecords = await sql`
         SELECT
           ca.product_id,
-          COALESCE(p.product_key, 'product-' || ca.product_id::text) as product_key,
-          COALESCE(p.name, 'Product #' || ca.product_id::text) as name
+          p.product_key,
+          p.name
         FROM customer_access ca
-        LEFT JOIN products p ON ca.product_id = p.id
+        INNER JOIN products p ON ca.product_id = p.id
         WHERE ca.customer_email = ${normalizedEmail}
       `;
     } catch (queryError: any) {

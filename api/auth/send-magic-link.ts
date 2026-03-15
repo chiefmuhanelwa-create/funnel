@@ -3,31 +3,6 @@ import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
-// Product bundles for auto-repair
-const PRODUCT_BUNDLES: Record<string, string[]> = {
-  'starter-kit': ['niche-finder', 'paids-workbook'],
-  'contentpreneur-pro': [
-    'starter-kit',
-    'content-foundations',
-    'influencers-code',
-    'tax-guide',
-    'niche-finder',
-    'paids-workbook',
-  ],
-};
-
-function getProductsToGrant(purchasedProductKeys: string[]): string[] {
-  const productsToGrant = new Set<string>();
-  for (const productKey of purchasedProductKeys) {
-    productsToGrant.add(productKey);
-    const bundledProducts = PRODUCT_BUNDLES[productKey];
-    if (bundledProducts) {
-      bundledProducts.forEach(key => productsToGrant.add(key));
-    }
-  }
-  return Array.from(productsToGrant);
-}
-
 // Lazy load Resend to avoid crashes if API key is missing
 let resendClient: Resend | null = null;
 function getResend(): Resend | null {
@@ -88,79 +63,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const sql = neon(databaseUrl);
 
-    // Check if user has any purchases in customer_access
-    let purchases = await sql`
+    // Check if user has any purchases
+    const purchases = await sql`
       SELECT COUNT(*) as count
       FROM customer_access
       WHERE customer_email = ${normalizedEmail}
     `;
 
-    // If no access records found, check for completed orders and auto-repair
     if (!purchases[0] || purchases[0].count === 0) {
-      console.log(`[AUTH] No access records for ${normalizedEmail}, checking for completed orders...`);
-
-      // Check if there are completed orders for this email
-      const completedOrders = await sql`
-        SELECT o.id as order_id, o.order_number,
-               array_agg(oi.product_key) as product_keys
-        FROM orders o
-        JOIN order_items oi ON o.id = oi.order_id
-        WHERE o.payment_status = 'completed'
-          AND o.customer_email = ${normalizedEmail}
-        GROUP BY o.id, o.order_number
-      `;
-
-      if (completedOrders.length > 0) {
-        console.log(`[AUTH] Found ${completedOrders.length} completed orders for ${normalizedEmail}, auto-repairing access...`);
-
-        // Auto-repair: grant access for all products from completed orders
-        for (const order of completedOrders) {
-          const purchasedProducts = order.product_keys || [];
-          const allProductsToGrant = getProductsToGrant(purchasedProducts);
-
-          for (const productKey of allProductsToGrant) {
-            try {
-              // First ensure product exists
-              const productResult = await sql`
-                SELECT id FROM products WHERE product_key = ${productKey}
-              `;
-
-              if (productResult.length === 0) {
-                // Create product if it doesn't exist
-                await sql`
-                  INSERT INTO products (product_key, name, price_cents, is_active, level)
-                  VALUES (${productKey}, ${productKey}, 0, true, 'all')
-                  ON CONFLICT (product_key) DO NOTHING
-                `;
-              }
-
-              const productId = (await sql`SELECT id FROM products WHERE product_key = ${productKey}`)[0]?.id;
-              if (!productId) continue;
-
-              // Grant access if not already exists
-              await sql`
-                INSERT INTO customer_access (customer_email, product_id, order_id)
-                VALUES (${normalizedEmail}, ${productId}, ${order.order_id})
-                ON CONFLICT (customer_email, product_id) DO NOTHING
-              `;
-            } catch (grantError) {
-              console.error(`[AUTH] Error granting ${productKey}:`, grantError);
-            }
-          }
-        }
-
-        // Re-check access count after repair
-        purchases = await sql`
-          SELECT COUNT(*) as count
-          FROM customer_access
-          WHERE customer_email = ${normalizedEmail}
-        `;
-        console.log(`[AUTH] After repair, ${normalizedEmail} has ${purchases[0]?.count || 0} access records`);
-      }
-    }
-
-    if (!purchases[0] || purchases[0].count === 0) {
-      // No purchases found even after repair attempt
+      // Don't reveal if email exists - just say we sent it
       return res.status(200).json({
         message: 'If you have purchases with this email, you will receive a verification code.',
         sent: false
