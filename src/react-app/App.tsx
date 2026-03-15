@@ -16,13 +16,10 @@ import AuthCallback from './pages/AuthCallback';
 
 // Product pages - eagerly loaded for sales conversion
 import InfluencersCodeProduct from './pages/InfluencersCodeProduct';
-import NicheFinderProduct from './pages/NicheFinderProduct';
-import PAIDSWorkbookProduct from './pages/PAIDSWorkbookProduct';
 import TaxGuideProduct from './pages/TaxGuideProduct';
 import ContentFoundationsProduct from './pages/ContentFoundationsProduct';
 import CoachingProduct from './pages/CoachingProduct';
 import ContentpreneurBookProduct from './pages/ContentpreneurBookProduct';
-import ContentArsenalProduct from './pages/ContentArsenalProduct';
 import Consultation from './pages/Consultation';
 import FreeTools from './pages/FreeTools';
 import RateCardPro from './pages/RateCardPro';
@@ -74,13 +71,10 @@ function App() {
 
           {/* Product Sales Pages */}
           <Route path="/products/influencers-code" element={<InfluencersCodeProduct />} />
-          <Route path="/products/niche-finder" element={<NicheFinderProduct />} />
-          <Route path="/products/paids-workbook" element={<PAIDSWorkbookProduct />} />
           <Route path="/products/tax-guide" element={<TaxGuideProduct />} />
           <Route path="/products/content-foundations" element={<ContentFoundationsProduct />} />
           <Route path="/products/coaching" element={<CoachingProduct />} />
           <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
-          <Route path="/products/content-arsenal" element={<ContentArsenalProduct />} />
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/free" element={<FreeTools />} />
           <Route path="/free/:toolKey" element={<FreeTools />} />
@@ -96,8 +90,6 @@ function App() {
 
           {/* Legacy product routes (redirect to new paths) */}
           <Route path="/influencers-code" element={<InfluencersCodeProduct />} />
-          <Route path="/niche-finder" element={<NicheFinderProduct />} />
-          <Route path="/paids-workbook" element={<PAIDSWorkbookProduct />} />
 
           {/* Member routes */}
           <Route path="/members" element={<MembersHub />} />

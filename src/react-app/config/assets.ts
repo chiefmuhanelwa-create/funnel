@@ -302,11 +302,6 @@ export const PRODUCT_ASSETS: Record<string, {
     files: [],
     isPreOrder: true,
   },
-  'content-arsenal': {
-    name: 'Content Arsenal Expansion Pack',
-    mockupImage: IMAGES.brandingStarterKit,
-    files: [],
-  },
 };
 
 // Legacy export for backwards compatibility
@@ -363,26 +358,6 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       discountedPrice: 3000,
       originalPrice: 6700,
       savings: '55% OFF (Upgrade Price)',
-    },
-  ],
-  'niche-finder': [
-    {
-      productKey: 'paids-workbook',
-      headline: 'Add PAIDS Framework',
-      subheadline: 'Found your niche? Now monetize it with 5 income streams',
-      discountedPrice: 1200,
-      originalPrice: 1700,
-      savings: '29% OFF',
-    },
-  ],
-  'paids-workbook': [
-    {
-      productKey: 'niche-finder',
-      headline: 'Add Niche Finder',
-      subheadline: 'Perfect pair - find your niche then monetize it',
-      discountedPrice: 1200,
-      originalPrice: 1700,
-      savings: '29% OFF',
     },
   ],
   'tax-guide': [
@@ -479,12 +454,6 @@ export const EMAIL_DELIVERY_ASSETS: Record<string, {
     accessLink: '/members/contentpreneur-book-hardcopy',
     hasCourse: false,
     isPreOrder: true,
-  },
-  'content-arsenal': {
-    productName: 'Content Arsenal Expansion Pack',
-    downloadLinks: [],
-    accessLink: '/members/content-arsenal',
-    hasCourse: false,
   },
 };
 

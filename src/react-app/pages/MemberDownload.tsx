@@ -70,7 +70,6 @@ const PRODUCT_DESCRIPTIONS: Record<string, string> = {
   'social-media-intro': 'Master social media marketing with 3 comprehensive video modules',
   'contentpreneur-book-ebook': 'The definitive digital guide to building a profitable content business',
   'contentpreneur-book-hardcopy': 'Physical book + eBook delivered to your door. Free SA shipping.',
-  'content-arsenal': '100+ templates, swipe files, and tools to streamline your content workflow',
 };
 
 // Product types
@@ -85,7 +84,6 @@ const PRODUCT_TYPES: Record<string, 'ebook' | 'workbook' | 'guide' | 'course' | 
   'social-media-intro': 'course',
   'contentpreneur-book-ebook': 'preorder',
   'contentpreneur-book-hardcopy': 'preorder',
-  'content-arsenal': 'bundle',
 };
 
 export default function MemberDownload() {
