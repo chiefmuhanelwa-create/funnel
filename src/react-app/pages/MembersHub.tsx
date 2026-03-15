@@ -23,16 +23,9 @@ import { PRODUCTS, TOOL_STACK } from '../config/products';
 import { ShoppingCart, Clock, Sparkles } from 'lucide-react';
 
 // Upsell products with checkout info
+// NOTE: starter-kit is excluded (it's the entry product - already purchased)
+// NOTE: content-arsenal is excluded until it's available
 const UPSELL_PRODUCTS = [
-  {
-    key: 'starter-kit',
-    name: 'Contentpreneur Starter Kit',
-    description: '10-module course + Tool Stack access + workbooks',
-    price: 67,
-    checkoutLink: '/checkout/starter-kit',
-    badge: 'BEST VALUE',
-    includesToolStack: true,
-  },
   {
     key: 'influencers-code',
     name: "The Influencer's Code",
@@ -57,19 +50,12 @@ const UPSELL_PRODUCTS = [
     checkoutLink: '/checkout/content-foundations',
   },
   {
-    key: 'content-arsenal',
-    name: 'Content Arsenal Pack',
-    description: '100+ templates and swipe files',
+    key: 'contentpreneur-book-hardcopy',
+    name: 'Contentpreneur (Ebook + Hardcopy)',
+    description: 'Physical book + digital eBook copy. Free SA shipping.',
     price: 37,
-    originalPrice: 97,
-    checkoutLink: '/checkout/content-arsenal',
-  },
-  {
-    key: 'contentpreneur-book-ebook',
-    name: 'Contentpreneur Guide (eBook)',
-    description: 'The definitive guide to building a content business',
-    price: 19,
-    checkoutLink: '/checkout/contentpreneur-book-ebook',
+    originalPrice: 47,
+    checkoutLink: '/checkout/contentpreneur-book-hardcopy',
     badge: 'COMING SOON',
     isPreOrder: true,
   },

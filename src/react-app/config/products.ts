@@ -263,9 +263,9 @@ export const PRODUCTS: Record<string, Product> = {
   },
   'contentpreneur-book-hardcopy': {
     key: 'contentpreneur-book-hardcopy',
-    name: 'Contentpreneur Guide (Hardcopy + eBook)',
-    shortName: 'Contentpreneur Hardcopy',
-    description: 'Physical book delivered to your door + digital copy. Free shipping within South Africa.',
+    name: 'Contentpreneur (Ebook + Hardcopy)',
+    shortName: 'Contentpreneur Book',
+    description: 'Physical book delivered to your door + digital eBook copy. Free shipping within South Africa.',
     priceCents: 3700,
     originalPriceCents: 4700,
     icon: '📚',

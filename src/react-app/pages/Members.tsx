@@ -94,32 +94,9 @@ const ALL_PRODUCTS: Product[] = [
     imageUrl: IMAGES.taxGuideMockup,
   },
   {
-    key: 'content-arsenal',
-    name: 'Content Arsenal Pack',
-    description: '100+ templates and swipe files',
-    icon: FileText,
-    link: '/members/content-arsenal',
-    checkoutLink: '/checkout/content-arsenal',
-    type: 'Templates',
-    price: 37,
-    originalPrice: 97,
-  },
-  {
-    key: 'contentpreneur-book-ebook',
-    name: 'Contentpreneur Guide (eBook)',
-    description: 'The definitive guide to building a content business',
-    icon: BookOpen,
-    link: '/members/contentpreneur-book',
-    checkoutLink: '/checkout/contentpreneur-book-ebook',
-    type: 'eBook',
-    price: 19,
-    isPreOrder: true,
-    imageUrl: IMAGES.influencersCodeMockup,
-  },
-  {
     key: 'contentpreneur-book-hardcopy',
-    name: 'Contentpreneur Guide (Hardcopy + eBook)',
-    description: 'Physical book + digital copy. Free SA shipping.',
+    name: 'Contentpreneur (Ebook + Hardcopy)',
+    description: 'Physical book + digital eBook copy. Free SA shipping.',
     icon: BookOpen,
     link: '/members/contentpreneur-book',
     checkoutLink: '/checkout/contentpreneur-book-hardcopy',
@@ -131,14 +108,13 @@ const ALL_PRODUCTS: Product[] = [
 ];
 
 // Products shown as locked upsells if not owned
+// NOTE: starter-kit is excluded (it's the entry product)
+// NOTE: content-arsenal is excluded until it's available
 const UPSELL_KEYS = [
-  'starter-kit',
   'influencers-code',
-  'content-arsenal',
   'tax-guide',
   'content-foundations',
-  'contentpreneur-book-ebook',
-  'contentpreneur-book-hardcopy',
+  'contentpreneur-book-hardcopy', // Combined eBook + Hardcopy product
 ];
 
 // Products that are bundled with starter-kit (don't show separately as owned)
