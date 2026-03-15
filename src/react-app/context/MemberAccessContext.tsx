@@ -119,12 +119,12 @@ export function MemberAccessProvider({ children }: { children: React.ReactNode }
         success: false,
         error: 'No purchases found for this email. Please use the email you used during checkout.',
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
       if (error instanceof TypeError && error.message.includes('fetch')) {
         return { success: false, error: 'Network error. Please check your connection and try again.' };
       }
-      return { success: false, error: 'Something went wrong. Please try again.' };
+      return { success: false, error: `Something went wrong: ${error?.message || 'Unknown error'}. Please try again.` };
     }
   };
 
