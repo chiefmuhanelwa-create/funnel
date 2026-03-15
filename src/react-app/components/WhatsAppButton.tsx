@@ -9,7 +9,7 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({
-  phoneNumber = '27600000000', // Update with actual number
+  phoneNumber = '27685103161',
   message = "Hi! I have a question about the Contentpreneur products.",
   position = 'right',
 }: WhatsAppButtonProps) {

@@ -142,7 +142,7 @@ export default function StarterKitProduct() {
 
               {/* WhatsApp Support */}
               <a
-                href="https://wa.me/27600000000?text=Hi!%20I%20have%20a%20question%20about%20the%20Starter%20Kit"
+                href="https://wa.me/27685103161?text=Hi!%20I%20have%20a%20question%20about%20the%20Starter%20Kit"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-green-400 transition-colors"

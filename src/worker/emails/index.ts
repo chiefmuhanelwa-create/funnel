@@ -645,9 +645,9 @@ export async function sendBookingConfirmationEmail(
   bookedDate: string,
   bookedTime: string
 ): Promise<boolean> {
-  // 5-minute pre-call video URL - replace with actual URL when available
+  // 5-minute pre-call video URL - TODO: Update this with the actual video URL when available
   const PRE_CALL_VIDEO_URL = 'https://contentpreneurhub.online/pre-call-video';
-  const WHATSAPP_NUMBER = '+27 XX XXX XXXX'; // Replace with actual number
+  const WHATSAPP_NUMBER = '+27 68 510 3161';
 
   const firstName = fullName.split(' ')[0];
 

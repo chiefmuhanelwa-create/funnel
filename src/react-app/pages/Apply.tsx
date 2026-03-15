@@ -154,18 +154,41 @@ export default function Apply() {
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event === 'calendly.event_scheduled') {
         const eventDetails = e.data.payload;
-        const eventDate = new Date(eventDetails.event?.start_time || eventDetails.invitee?.scheduled_event?.start_time);
 
-        const formattedDate = eventDate.toLocaleDateString('en-ZA', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        });
-        const formattedTime = eventDate.toLocaleTimeString('en-ZA', {
-          hour: '2-digit',
-          minute: '2-digit',
-        });
+        // Try multiple paths to find the start time from Calendly's payload
+        const startTimeRaw =
+          eventDetails.event?.start_time ||
+          eventDetails.invitee?.scheduled_event?.start_time ||
+          eventDetails.scheduled_event?.start_time ||
+          eventDetails.start_time ||
+          null;
+
+        let formattedDate = '';
+        let formattedTime = '';
+
+        if (startTimeRaw) {
+          const eventDate = new Date(startTimeRaw);
+          if (!isNaN(eventDate.getTime())) {
+            formattedDate = eventDate.toLocaleDateString('en-ZA', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+            formattedTime = eventDate.toLocaleTimeString('en-ZA', {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
+          } else {
+            // Fallback if date parsing fails
+            formattedDate = 'Date confirmed';
+            formattedTime = 'Check your email for details';
+          }
+        } else {
+          // Fallback if no start time found in payload
+          formattedDate = 'Booking confirmed';
+          formattedTime = 'Check your email for details';
+        }
 
         setBookedEvent({ date: formattedDate, time: formattedTime });
 
@@ -426,7 +449,7 @@ export default function Apply() {
             </div>
 
             <p className="text-gray-500 text-sm sm:text-base mt-10">
-              Questions? WhatsApp us at <span className="text-amber-600 font-semibold">+27 XX XXX XXXX</span>
+              Questions? WhatsApp us at <span className="text-amber-600 font-semibold">+27 68 510 3161</span>
             </p>
           </motion.div>
         </div>
