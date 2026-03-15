@@ -17,6 +17,7 @@ import {
   Twitter,
   Facebook,
   Linkedin,
+  Calendar,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { PRODUCTS, TOOL_STACK } from '../config/products';
@@ -201,6 +202,31 @@ export default function MembersHub() {
             </Link>
           )}
         </div>
+
+        {/* Free Strategy Call Banner */}
+        <section className="mb-8">
+          <Link
+            to="/booking"
+            className="block bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 hover:shadow-[0_0_40px_rgba(251,191,36,0.3)] transition-all group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <Calendar size={28} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-bold text-white/80 uppercase tracking-wider">Free for Members</span>
+                  <span className="px-2 py-0.5 bg-white/20 text-white text-xs font-bold rounded-full">NEW</span>
+                </div>
+                <h3 className="text-xl font-bold text-white">Book a 1-on-1 Strategy Session</h3>
+                <p className="text-white/80 text-sm mt-1">
+                  Get personalized guidance using the PAIDS Framework. Limited spots available.
+                </p>
+              </div>
+              <ArrowRight size={24} className="text-white group-hover:translate-x-1 transition-transform shrink-0" />
+            </div>
+          </Link>
+        </section>
 
         {/* My Content Section */}
         <section className="mb-12">

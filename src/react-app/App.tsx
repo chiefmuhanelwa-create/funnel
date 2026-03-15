@@ -78,6 +78,7 @@ function App() {
           <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/apply" element={<Apply />} />
+          <Route path="/booking" element={<Apply />} />
           <Route path="/free" element={<FreeTools />} />
           <Route path="/free/:toolKey" element={<FreeTools />} />
           <Route path="/tools/ratecard" element={<RateCardPro />} />
