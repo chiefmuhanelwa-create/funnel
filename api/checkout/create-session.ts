@@ -101,7 +101,7 @@ async function rollbackOrder(sql: any, orderId: number): Promise<void> {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS headers
+  // CORS headers - set early to ensure they're always present
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -110,13 +110,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Rate limiting
-  if (!checkRateLimit(getClientIP(req))) {
-    return res.status(429).json({ error: 'Too many requests' });
-  }
+  try {
+    // Rate limiting
+    if (!checkRateLimit(getClientIP(req))) {
+      return res.status(429).json({ error: 'Too many requests' });
+    }
 
-  // Step 1: Check environment variables
-  const databaseUrl = process.env.DATABASE_URL;
+    // Step 1: Check environment variables
+    const databaseUrl = process.env.DATABASE_URL;
   const paystackKey = process.env.PAYSTACK_SECRET_KEY;
 
   if (!databaseUrl) {
@@ -397,13 +398,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Don't fail the checkout for this - the reference is stored in metadata too
   }
 
-  // Success!
-  return res.status(200).json({
-    checkoutUrl: paystackData.data.authorization_url,
-    reference: paystackData.data.reference,
-    orderNumber,
-    totalUSD,
-    totalZAR,
-    exchangeRate,
-  });
+    // Success!
+    return res.status(200).json({
+      checkoutUrl: paystackData.data.authorization_url,
+      reference: paystackData.data.reference,
+      orderNumber,
+      totalUSD,
+      totalZAR,
+      exchangeRate,
+    });
+  } catch (error: any) {
+    console.error('[CHECKOUT] Unhandled error:', error);
+    return res.status(500).json({
+      error: 'Checkout failed',
+      message: error?.message || 'Unknown error',
+      step: 'unknown'
+    });
+  }
 }
