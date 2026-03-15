@@ -180,14 +180,20 @@ CREATE INDEX IF NOT EXISTS idx_email_sequences_scheduled ON email_sequences(sche
 CREATE INDEX IF NOT EXISTS idx_abandoned_carts_email ON abandoned_carts(customer_email);
 CREATE INDEX IF NOT EXISTS idx_discount_codes_code ON discount_codes(code);
 
--- Seed products
+-- Seed products (ALL products including bundles and coaching)
 INSERT INTO products (product_key, name, description, price_cents, is_active, level) VALUES
   ('content-foundations', 'Content Foundations', 'The essential foundation for building your content business - 6 video modules covering strategy, content creation, and audience building.', 3700, true, 'foundation'),
-  ('niche-finder', 'Niche Finder Workbook', 'A step-by-step workbook to help you discover your profitable niche and target audience.', 1500, true, 'starter'),
-  ('paids-workbook', 'PAIDS Framework Workbook', 'The complete workbook for implementing the PAIDS monetization framework in your content business.', 1500, true, 'starter'),
+  ('niche-finder', 'Niche Finder Workbook', 'A step-by-step workbook to help you discover your profitable niche and target audience.', 1700, true, 'starter'),
+  ('paids-workbook', 'PAIDS Framework Workbook', 'The complete workbook for implementing the PAIDS monetization framework in your content business.', 1700, true, 'starter'),
   ('starter-kit', 'Contentpreneur Starter Kit', 'The complete system: 9 video modules + Niche Finder + PAIDS Workbook. Everything you need to start your content business.', 6700, true, 'complete'),
-  ('influencers-code', 'The Influencers Code', 'The secrets of successful influencers - strategies for growth, engagement, and monetization.', 2700, true, 'advanced'),
-  ('tax-guide', 'Creator Tax Guide SA', 'Essential tax tips and strategies for South African content creators.', 1500, true, 'advanced')
+  ('influencers-code', 'The Influencers Code', 'The secrets of successful influencers - strategies for growth, engagement, and monetization.', 1900, true, 'advanced'),
+  ('tax-guide', 'Creator Tax Guide SA', 'Essential tax tips and strategies for South African content creators.', 4700, true, 'advanced'),
+  ('contentpreneur-pro', 'Contentpreneur Pro Bundle', 'Complete bundle with all courses, ebooks, and resources. Best value for serious content creators.', 14700, true, 'all'),
+  ('coaching-session', '1-on-1 Coaching Session', 'Personal 60-minute coaching call to accelerate your content creator journey. Customized strategy and feedback.', 49700, true, 'all'),
+  ('social-media-intro', 'Introduction to Social Media', 'Master social media marketing with 3 comprehensive video modules.', 2700, true, 'beginner'),
+  ('contentpreneur-book-ebook', 'Contentpreneur Guide (eBook)', 'The definitive digital guide to building a profitable content business.', 1900, true, 'all'),
+  ('contentpreneur-book-hardcopy', 'Contentpreneur Guide (Hardcopy + eBook)', 'Physical hardcover book plus digital copy. Free shipping within South Africa.', 3700, true, 'all'),
+  ('content-arsenal', 'Content Arsenal Expansion Pack', '100+ templates, swipe files, and tools to streamline your content creation workflow.', 3700, true, 'all')
 ON CONFLICT (product_key) DO UPDATE SET
   name = EXCLUDED.name,
   description = EXCLUDED.description,
