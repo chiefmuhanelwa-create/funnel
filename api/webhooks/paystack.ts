@@ -2,10 +2,44 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
-import { handlePurchaseResend } from '../../lib/resend';
-import { getProductsToGrant } from '../../lib/bundles';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization of Resend client
+let resendClient: Resend | null = null;
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('[WEBHOOK] RESEND_API_KEY not configured');
+    return null;
+  }
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
+
+// Inline bundle configuration to avoid import issues
+const PRODUCT_BUNDLES: Record<string, string[]> = {
+  'starter-kit': ['niche-finder', 'paids-workbook'],
+  'contentpreneur-pro': [
+    'starter-kit',
+    'content-foundations',
+    'influencers-code',
+    'tax-guide',
+    'niche-finder',
+    'paids-workbook',
+  ],
+};
+
+function getProductsToGrant(purchasedProductKeys: string[]): string[] {
+  const productsToGrant = new Set<string>();
+  for (const productKey of purchasedProductKeys) {
+    productsToGrant.add(productKey);
+    const bundledProducts = PRODUCT_BUNDLES[productKey];
+    if (bundledProducts) {
+      bundledProducts.forEach(key => productsToGrant.add(key));
+    }
+  }
+  return Array.from(productsToGrant);
+}
 
 // PDF Download URLs from Vercel Blob Storage
 const BLOB_BASE = 'https://kgivdudngd1zphnr.public.blob.vercel-storage.com';
@@ -217,18 +251,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         amountPaidCents: amountPaid,
       });
 
-      // Add to Resend audiences
-      try {
-        await handlePurchaseResend(
-          customerEmail,
-          order.customer_name,
-          Array.from(productsToGrant)
-        );
-        console.log('[WEBHOOK] Resend audience integration complete');
-      } catch (resendError) {
-        // Don't fail the webhook if Resend fails
-        console.error('[WEBHOOK] Resend error (non-fatal):', resendError);
-      }
+      // Log products granted (Resend audience integration removed to simplify)
+      console.log('[WEBHOOK] Products granted to', customerEmail, ':', Array.from(productsToGrant));
 
       // Schedule welcome sequence emails
       try {
@@ -401,6 +425,11 @@ async function sendOrderEmail(params: {
   `;
 
   try {
+    const resend = getResend();
+    if (!resend) {
+      console.log('[EMAIL] Skipped - Resend not configured');
+      return;
+    }
     await resend.emails.send({
       from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
       to: customerEmail,
