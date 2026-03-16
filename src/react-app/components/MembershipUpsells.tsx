@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, BookOpen, Monitor, Gift, FileText } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { PRODUCTS, formatPrice } from '../config/products';
+import { IMAGES } from '../config/assets';
 
 interface UpsellProduct {
   key: string;
@@ -8,7 +9,7 @@ interface UpsellProduct {
   description: string;
   priceCents: number;
   originalPriceCents?: number;
-  icon: React.ElementType;
+  imageUrl: string;
   link: string;
   badge?: string;
   isPreOrder?: boolean;
@@ -22,7 +23,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     description: PRODUCTS['influencers-code'].description,
     priceCents: PRODUCTS['influencers-code'].priceCents,
     originalPriceCents: PRODUCTS['influencers-code'].originalPriceCents,
-    icon: BookOpen,
+    imageUrl: IMAGES.influencersCodeMockup,
     link: PRODUCTS['influencers-code'].purchaseLink,
     badge: 'BESTSELLER',
   },
@@ -31,7 +32,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     name: PRODUCTS['tax-guide'].name,
     description: PRODUCTS['tax-guide'].description,
     priceCents: PRODUCTS['tax-guide'].priceCents,
-    icon: FileText,
+    imageUrl: IMAGES.taxGuideMockup,
     link: PRODUCTS['tax-guide'].purchaseLink,
     badge: 'ESSENTIAL',
   },
@@ -40,7 +41,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     name: PRODUCTS['content-foundations'].name,
     description: PRODUCTS['content-foundations'].description,
     priceCents: PRODUCTS['content-foundations'].priceCents,
-    icon: Monitor,
+    imageUrl: IMAGES.contentFoundationsMockup,
     link: PRODUCTS['content-foundations'].purchaseLink,
     badge: '3 MODULES',
   },
@@ -50,7 +51,7 @@ const UPSELL_PRODUCTS: UpsellProduct[] = [
     description: PRODUCTS['contentpreneur-book-hardcopy'].description,
     priceCents: PRODUCTS['contentpreneur-book-hardcopy'].priceCents,
     originalPriceCents: PRODUCTS['contentpreneur-book-hardcopy'].originalPriceCents,
-    icon: Gift,
+    imageUrl: IMAGES.contentpreneurBookMockup,
     link: PRODUCTS['contentpreneur-book-hardcopy'].purchaseLink,
     badge: 'COMING SOON',
     isPreOrder: PRODUCTS['contentpreneur-book-hardcopy'].isPreOrder,
@@ -98,8 +99,12 @@ export default function MembershipUpsells({ ownedProducts }: MembershipUpsellsPr
             )}
 
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center shrink-0 group-hover:bg-gold-500/20 transition-colors">
-                <product.icon className="text-gold-500" size={24} />
+              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
               </div>
 
               <div className="flex-1">
