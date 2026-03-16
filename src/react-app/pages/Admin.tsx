@@ -21,6 +21,10 @@ import {
   Search,
   Mail,
   Eye,
+  BarChart3,
+  TrendingUp,
+  MousePointer,
+  Globe,
 } from 'lucide-react';
 import { useMemberAccess } from '../context/MemberAccessContext';
 import { upload } from '@vercel/blob/client';
@@ -91,7 +95,22 @@ const ADMIN_EMAILS = [
   'chiefmuhanelwa@gmail.com',
 ];
 
-type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access' | 'emails';
+type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access' | 'emails' | 'insights';
+
+interface AnalyticsData {
+  summary: {
+    visitors: number;
+    pageViews: number;
+    videoPlays: number;
+    formSubmissions: number;
+    purchases: number;
+    revenueUsd: string;
+    conversionRate: number;
+  };
+  trafficSources: Array<{ source: string; visitors: number }>;
+  dailyStats: Array<{ date: string; visitors: number; purchases: number }>;
+  topPages: Array<{ page_url: string; views: number }>;
+}
 
 export default function Admin() {
   const { isAuthenticated, user, isLoading: authLoading } = useMemberAccess();
@@ -103,6 +122,8 @@ export default function Admin() {
   const [accessRecords, setAccessRecords] = useState<AccessRecord[]>([]);
   const [emails, setEmails] = useState<SentEmail[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<SentEmail | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [analyticsPeriod, setAnalyticsPeriod] = useState(7);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -170,6 +191,12 @@ export default function Admin() {
         });
         const data = await res.json();
         setEmails(data.emails || []);
+      } else if (activeTab === 'insights') {
+        const res = await fetch(`/api/analytics/dashboard?days=${analyticsPeriod}`, {
+          headers: { 'X-Admin-Email': user?.email || '' },
+        });
+        const data = await res.json();
+        setAnalytics(data);
       }
     } catch (err) {
       setError('Failed to fetch data');
@@ -455,6 +482,7 @@ export default function Admin() {
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-8">
           {[
+            { key: 'insights' as TabKey, label: 'Insights', icon: BarChart3 },
             { key: 'files' as TabKey, label: 'Files', icon: FolderOpen },
             { key: 'access' as TabKey, label: 'Access', icon: Key },
             { key: 'orders' as TabKey, label: 'Orders', icon: ShoppingCart },
@@ -1123,6 +1151,218 @@ export default function Admin() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Insights Tab */}
+        {activeTab === 'insights' && (
+          <div className="space-y-6">
+            {/* Period Selector */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-gray-900">Page Analytics</h2>
+              <select
+                value={analyticsPeriod}
+                onChange={(e) => {
+                  setAnalyticsPeriod(parseInt(e.target.value));
+                  // Refetch with new period
+                  setTimeout(() => fetchData(), 100);
+                }}
+                className="input w-auto"
+              >
+                <option value={7}>Last 7 days</option>
+                <option value={14}>Last 14 days</option>
+                <option value={30}>Last 30 days</option>
+                <option value={90}>Last 90 days</option>
+              </select>
+            </div>
+
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="animate-spin text-gold-500" size={32} />
+              </div>
+            ) : analytics ? (
+              <>
+                {/* Summary Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Users className="text-blue-500" size={24} />
+                      <span className="text-sm text-gray-500">Visitors</span>
+                    </div>
+                    <p className="text-3xl font-bold text-gray-900">{analytics.summary.visitors.toLocaleString()}</p>
+                  </div>
+                  <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <MousePointer className="text-purple-500" size={24} />
+                      <span className="text-sm text-gray-500">Page Views</span>
+                    </div>
+                    <p className="text-3xl font-bold text-gray-900">{analytics.summary.pageViews.toLocaleString()}</p>
+                  </div>
+                  <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <ShoppingCart className="text-green-500" size={24} />
+                      <span className="text-sm text-gray-500">Purchases</span>
+                    </div>
+                    <p className="text-3xl font-bold text-gray-900">{analytics.summary.purchases}</p>
+                  </div>
+                  <div className="glass-card p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <TrendingUp className="text-gold-500" size={24} />
+                      <span className="text-sm text-gray-500">Conversion</span>
+                    </div>
+                    <p className="text-3xl font-bold text-gray-900">{analytics.summary.conversionRate}%</p>
+                  </div>
+                </div>
+
+                {/* Additional Metrics */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="glass-card p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Video className="text-red-500" size={18} />
+                      <span className="text-sm text-gray-500">Video Plays</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">{analytics.summary.videoPlays}</p>
+                  </div>
+                  <div className="glass-card p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <FileText className="text-indigo-500" size={18} />
+                      <span className="text-sm text-gray-500">Form Submissions</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">{analytics.summary.formSubmissions}</p>
+                  </div>
+                  <div className="glass-card p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-green-500 text-lg">$</span>
+                      <span className="text-sm text-gray-500">Revenue (USD)</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">${analytics.summary.revenueUsd}</p>
+                  </div>
+                </div>
+
+                {/* Top Pages */}
+                <div className="glass-card p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Globe size={20} className="text-blue-500" />
+                    Top Pages by Views
+                  </h3>
+                  {analytics.topPages.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-200">
+                            <th className="text-left py-3 px-4 text-gray-600 font-medium">Page</th>
+                            <th className="text-right py-3 px-4 text-gray-600 font-medium">Views</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analytics.topPages.map((page, i) => {
+                            // Clean up the URL for display
+                            let displayUrl = page.page_url || 'Unknown';
+                            try {
+                              const url = new URL(page.page_url);
+                              displayUrl = url.pathname || '/';
+                            } catch {
+                              displayUrl = page.page_url;
+                            }
+                            return (
+                              <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                                <td className="py-3 px-4">
+                                  <span className="font-medium text-gray-900">{displayUrl}</span>
+                                </td>
+                                <td className="py-3 px-4 text-right">
+                                  <span className="font-semibold text-gold-600">{page.views.toLocaleString()}</span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">No page view data available</p>
+                  )}
+                </div>
+
+                {/* Traffic Sources */}
+                <div className="glass-card p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <TrendingUp size={20} className="text-green-500" />
+                    Traffic Sources
+                  </h3>
+                  {analytics.trafficSources.length > 0 ? (
+                    <div className="space-y-3">
+                      {analytics.trafficSources.map((source, i) => {
+                        const maxVisitors = Math.max(...analytics.trafficSources.map(s => s.visitors));
+                        const percentage = (source.visitors / maxVisitors) * 100;
+                        return (
+                          <div key={i} className="space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <span className="font-medium text-gray-900">{source.source}</span>
+                              <span className="text-gray-500">{source.visitors} visitors</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-gold-500 h-2 rounded-full transition-all"
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">No traffic source data available</p>
+                  )}
+                </div>
+
+                {/* Daily Stats */}
+                <div className="glass-card p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <BarChart3 size={20} className="text-purple-500" />
+                    Daily Visitors & Purchases
+                  </h3>
+                  {analytics.dailyStats.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-200">
+                            <th className="text-left py-3 px-4 text-gray-600 font-medium">Date</th>
+                            <th className="text-right py-3 px-4 text-gray-600 font-medium">Visitors</th>
+                            <th className="text-right py-3 px-4 text-gray-600 font-medium">Purchases</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analytics.dailyStats.map((day, i) => (
+                            <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                              <td className="py-3 px-4 text-gray-900">
+                                {new Date(day.date).toLocaleDateString('en-ZA', {
+                                  weekday: 'short',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </td>
+                              <td className="py-3 px-4 text-right font-medium text-blue-600">
+                                {day.visitors}
+                              </td>
+                              <td className="py-3 px-4 text-right font-medium text-green-600">
+                                {day.purchases}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">No daily stats available</p>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="glass-card p-12 text-center">
+                <BarChart3 className="mx-auto text-gray-300 mb-4" size={48} />
+                <p className="text-gray-500">No analytics data available</p>
+              </div>
+            )}
           </div>
         )}
       </div>

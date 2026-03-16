@@ -1,6 +1,43 @@
-import { Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import { loadAnalytics } from './utils/loadAnalytics';
+
+// Track page views to backend analytics
+function usePageViewTracking() {
+  const location = useLocation();
+  const lastPath = useRef<string | null>(null);
+
+  useEffect(() => {
+    // Don't track the same page twice in a row
+    if (lastPath.current === location.pathname) return;
+    lastPath.current = location.pathname;
+
+    // Get or create session ID
+    let sessionId = sessionStorage.getItem('analytics_session_id');
+    if (!sessionId) {
+      sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+      sessionStorage.setItem('analytics_session_id', sessionId);
+    }
+
+    // Track page view to backend
+    fetch('/api/analytics/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        eventType: 'page_view',
+        data: {
+          page_url: window.location.href,
+          page_path: location.pathname,
+          page_title: document.title,
+          session_id: sessionId,
+          referrer: document.referrer,
+        },
+      }),
+    }).catch(() => {
+      // Silently fail - analytics shouldn't break the app
+    });
+  }, [location.pathname]);
+}
 
 // Components
 import StickyNav from './components/StickyNav';
@@ -54,6 +91,9 @@ function PageLoader() {
 }
 
 function App() {
+  // Track page views to backend analytics
+  usePageViewTracking();
+
   useEffect(() => {
     loadAnalytics();
   }, []);
