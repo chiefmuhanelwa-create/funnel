@@ -1,57 +1,59 @@
 import { Link } from 'react-router-dom';
 import { Sparkles, BookOpen, Monitor, Gift, FileText } from 'lucide-react';
+import { PRODUCTS, formatPrice } from '../config/products';
 
 interface UpsellProduct {
   key: string;
   name: string;
   description: string;
-  price: number;
-  originalPrice?: number;
+  priceCents: number;
+  originalPriceCents?: number;
   icon: React.ElementType;
   link: string;
   badge?: string;
   isPreOrder?: boolean;
 }
 
+// Build upsell products from centralized config (prices in USD cents)
 const UPSELL_PRODUCTS: UpsellProduct[] = [
   {
     key: 'influencers-code',
-    name: "The Influencer's Code",
-    description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers.',
-    price: 19,
-    originalPrice: 197,
+    name: PRODUCTS['influencers-code'].name,
+    description: PRODUCTS['influencers-code'].description,
+    priceCents: PRODUCTS['influencers-code'].priceCents,
+    originalPriceCents: PRODUCTS['influencers-code'].originalPriceCents,
     icon: BookOpen,
-    link: '/checkout/influencers-code',
+    link: PRODUCTS['influencers-code'].purchaseLink,
     badge: 'BESTSELLER',
   },
   {
     key: 'tax-guide',
-    name: 'Tax Guide for Contentpreneurs',
-    description: 'Essential tax strategies and legal protection for South African content creators.',
-    price: 47,
+    name: PRODUCTS['tax-guide'].name,
+    description: PRODUCTS['tax-guide'].description,
+    priceCents: PRODUCTS['tax-guide'].priceCents,
     icon: FileText,
-    link: '/checkout/tax-guide',
+    link: PRODUCTS['tax-guide'].purchaseLink,
     badge: 'ESSENTIAL',
   },
   {
     key: 'content-foundations',
-    name: 'Content Foundations Course',
-    description: 'Master content creation fundamentals with 3 video modules: Self Reflection, SWOT Analysis, Value Alignment.',
-    price: 37,
+    name: PRODUCTS['content-foundations'].name,
+    description: PRODUCTS['content-foundations'].description,
+    priceCents: PRODUCTS['content-foundations'].priceCents,
     icon: Monitor,
-    link: '/checkout/content-foundations',
+    link: PRODUCTS['content-foundations'].purchaseLink,
     badge: '3 MODULES',
   },
   {
     key: 'contentpreneur-book-hardcopy',
-    name: 'Contentpreneur (Ebook + Hardcopy)',
-    description: 'Physical book + digital eBook copy. Free shipping in South Africa.',
-    price: 37,
-    originalPrice: 47,
+    name: PRODUCTS['contentpreneur-book-hardcopy'].name,
+    description: PRODUCTS['contentpreneur-book-hardcopy'].description,
+    priceCents: PRODUCTS['contentpreneur-book-hardcopy'].priceCents,
+    originalPriceCents: PRODUCTS['contentpreneur-book-hardcopy'].originalPriceCents,
     icon: Gift,
-    link: '/checkout/contentpreneur-book-hardcopy',
+    link: PRODUCTS['contentpreneur-book-hardcopy'].purchaseLink,
     badge: 'COMING SOON',
-    isPreOrder: true,
+    isPreOrder: PRODUCTS['contentpreneur-book-hardcopy'].isPreOrder,
   },
 ];
 
@@ -109,10 +111,10 @@ export default function MembershipUpsells({ ownedProducts }: MembershipUpsellsPr
                 </p>
 
                 <div className="mt-3 flex items-center gap-2">
-                  <span className="text-lg font-bold text-gold-600">${product.price}</span>
-                  {product.originalPrice && (
+                  <span className="text-lg font-bold text-gold-600">{formatPrice(product.priceCents)} USD</span>
+                  {product.originalPriceCents && (
                     <span className="text-sm text-gray-400 line-through">
-                      ${product.originalPrice}
+                      {formatPrice(product.originalPriceCents)}
                     </span>
                   )}
                   {product.isPreOrder && (
