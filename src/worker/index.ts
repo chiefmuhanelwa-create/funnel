@@ -37,19 +37,12 @@ app.get('/api/analytics/config', (c) => {
   });
 });
 
-// Exchange rate endpoint
-app.get('/api/exchange-rate', async (c) => {
-  try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
-    const data = await response.json() as { rates: { ZAR: number } };
-    return c.json({
-      rate: data.rates.ZAR,
-      source: 'frankfurter',
-      cachedAt: new Date().toISOString(),
-    });
-  } catch (error) {
-    return c.json({ rate: 18.5, source: 'fallback', error: 'Failed to fetch live rate' });
-  }
+// Exchange rate endpoint (deprecated - all prices are now in ZAR)
+app.get('/api/exchange-rate', (c) => {
+  return c.json({
+    message: 'Exchange rate endpoint deprecated - all prices are now in ZAR',
+    currency: 'ZAR',
+  });
 });
 
 // Mount route handlers

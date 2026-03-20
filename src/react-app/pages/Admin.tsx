@@ -1232,10 +1232,10 @@ export default function Admin() {
                   </div>
                   <div className="glass-card p-4">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-green-500 text-lg">$</span>
-                      <span className="text-sm text-gray-500">Revenue (USD)</span>
+                      <span className="text-green-500 text-lg">R</span>
+                      <span className="text-sm text-gray-500">Revenue (ZAR)</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">${analytics.summary.revenueUsd}</p>
+                    <p className="text-2xl font-bold text-gray-900">R{analytics.summary.revenueUsd}</p>
                   </div>
                 </div>
 

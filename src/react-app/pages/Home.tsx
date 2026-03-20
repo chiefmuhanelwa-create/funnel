@@ -70,7 +70,7 @@ export default function Home() {
         <GuaranteeSection />
       </Suspense>
 
-      {/* 11. Why $67? Section */}
+      {/* 11. Why R699? Section */}
       <Suspense fallback={<SectionFallback />}>
         <WhyPriceSection />
       </Suspense>

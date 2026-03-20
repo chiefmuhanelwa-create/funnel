@@ -75,7 +75,7 @@ export default function StarterKitProduct() {
 
               <p className="mt-6 text-body-lg text-gray-600 max-w-xl">
                 The complete 9-module course to launch and grow your content creator business.
-                Learn the exact PAIDS Framework that has generated over $50k in creator revenue.
+                Learn the exact PAIDS Framework that has generated over R900K in creator revenue.
               </p>
 
               <div className="mt-6">
@@ -367,10 +367,10 @@ export default function StarterKitProduct() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
               {
-                quote: "I was skeptical at first, but the PAIDS Framework is the real deal. Within 3 months of implementing it, I signed a $5,000 brand deal.",
+                quote: "I was skeptical at first, but the PAIDS Framework is the real deal. Within 3 months of implementing it, I signed a R90,000 brand deal.",
                 name: "Thabo M.",
                 role: "Tech Creator",
-                result: "$5,000 brand deal",
+                result: "R90,000 brand deal",
               },
               {
                 quote: "The course helped me understand what I was doing wrong. Now I have a clear strategy and my engagement has tripled.",

@@ -66,7 +66,7 @@ class Analytics {
     if (window.gtag) {
       window.gtag('event', 'begin_checkout', {
         currency: data.currency,
-        value: data.value / 100, // Convert cents to dollars
+        value: data.value / 100, // Convert cents to Rands
         items: data.items?.map(item => ({
           item_id: item.item_id,
           item_name: item.item_name,
@@ -139,7 +139,7 @@ class Analytics {
     if (window.gtag) {
       window.gtag('event', 'generate_lead', {
         value: (data.value || 0) / 100,
-        currency: data.currency || 'USD',
+        currency: data.currency || 'ZAR',
       });
     }
 
@@ -147,7 +147,7 @@ class Analytics {
     if (window.fbq) {
       window.fbq('track', 'Lead', {
         value: (data.value || 0) / 100,
-        currency: data.currency || 'USD',
+        currency: data.currency || 'ZAR',
       });
     }
   }

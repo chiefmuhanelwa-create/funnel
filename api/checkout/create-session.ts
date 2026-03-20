@@ -356,9 +356,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       checkoutUrl: paystackData.data.authorization_url,
       reference: paystackData.data.reference,
       orderNumber,
-      totalUSD,
-      totalZAR,
-      exchangeRate,
+      totalAmount: totalZAR,
+      currency: 'ZAR',
     });
   } catch (error: any) {
     console.error('[CHECKOUT] Unhandled error:', error);

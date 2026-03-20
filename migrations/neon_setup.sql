@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS orders (
   customer_name TEXT,
   payment_status TEXT DEFAULT 'pending',
   total_amount_cents INTEGER NOT NULL,
-  currency TEXT NOT NULL DEFAULT 'USD',
+  currency TEXT NOT NULL DEFAULT 'ZAR',
   payment_intent_id TEXT,
   paystack_reference TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS abandoned_carts (
   customer_email TEXT NOT NULL UNIQUE,
   product_keys TEXT NOT NULL,
   total_amount_cents INTEGER NOT NULL,
-  currency TEXT DEFAULT 'USD',
+  currency TEXT DEFAULT 'ZAR',
   recovery_email_sent BOOLEAN DEFAULT false,
   recovered BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT NOW(),
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS discount_codes (
   id SERIAL PRIMARY KEY,
   code TEXT NOT NULL UNIQUE,
   discount_type TEXT NOT NULL, -- 'percentage' or 'fixed'
-  discount_value INTEGER NOT NULL, -- 10 for 10%, or 500 for $5.00
+  discount_value INTEGER NOT NULL, -- 10 for 10%, or 500 for R5.00
   applies_to TEXT DEFAULT 'all', -- 'all' or comma-separated product_keys
   min_purchase INTEGER, -- Minimum purchase amount in cents
   max_uses INTEGER, -- NULL for unlimited
@@ -180,20 +180,20 @@ CREATE INDEX IF NOT EXISTS idx_email_sequences_scheduled ON email_sequences(sche
 CREATE INDEX IF NOT EXISTS idx_abandoned_carts_email ON abandoned_carts(customer_email);
 CREATE INDEX IF NOT EXISTS idx_discount_codes_code ON discount_codes(code);
 
--- Seed products (ALL products including bundles and coaching)
+-- Seed products (ALL products including bundles and coaching) - All prices in ZAR cents
 INSERT INTO products (product_key, name, description, price_cents, is_active, level) VALUES
-  ('content-foundations', 'Content Foundations', 'The essential foundation for building your content business - 6 video modules covering strategy, content creation, and audience building.', 3700, true, 'foundation'),
-  ('niche-finder', 'Niche Finder Workbook', 'A step-by-step workbook to help you discover your profitable niche and target audience.', 1700, true, 'starter'),
-  ('paids-workbook', 'PAIDS Framework Workbook', 'The complete workbook for implementing the PAIDS monetization framework in your content business.', 1700, true, 'starter'),
-  ('starter-kit', 'Contentpreneur Starter Kit', 'The complete system: 9 video modules + Niche Finder + PAIDS Workbook. Everything you need to start your content business.', 6700, true, 'complete'),
-  ('influencers-code', 'The Influencers Code', 'The secrets of successful influencers - strategies for growth, engagement, and monetization.', 1900, true, 'advanced'),
-  ('tax-guide', 'Creator Tax Guide SA', 'Essential tax tips and strategies for South African content creators.', 4700, true, 'advanced'),
-  ('contentpreneur-pro', 'Contentpreneur Pro Bundle', 'Complete bundle with all courses, ebooks, and resources. Best value for serious content creators.', 14700, true, 'all'),
-  ('coaching-session', '1-on-1 Coaching Session', 'Personal 60-minute coaching call to accelerate your content creator journey. Customized strategy and feedback.', 49700, true, 'all'),
-  ('social-media-intro', 'Introduction to Social Media', 'Master social media marketing with 3 comprehensive video modules.', 2700, true, 'beginner'),
-  ('contentpreneur-book-ebook', 'Contentpreneur Guide (eBook)', 'The definitive digital guide to building a profitable content business.', 1900, true, 'all'),
-  ('contentpreneur-book-hardcopy', 'Contentpreneur Guide (Hardcopy + eBook)', 'Physical hardcover book plus digital copy. Free shipping within South Africa.', 3700, true, 'all'),
-  ('content-arsenal', 'Content Arsenal Expansion Pack', '100+ templates, swipe files, and tools to streamline your content creation workflow.', 3700, true, 'all')
+  ('content-foundations', 'Content Foundations', 'The essential foundation for building your content business - 6 video modules covering strategy, content creation, and audience building.', 39900, true, 'foundation'),
+  ('niche-finder', 'Niche Finder Workbook', 'A step-by-step workbook to help you discover your profitable niche and target audience.', 19900, true, 'starter'),
+  ('paids-workbook', 'PAIDS Framework Workbook', 'The complete workbook for implementing the PAIDS monetization framework in your content business.', 19900, true, 'starter'),
+  ('starter-kit', 'Contentpreneur Starter Kit', 'The complete system: 9 video modules + Niche Finder + PAIDS Workbook. Everything you need to start your content business.', 69900, true, 'complete'),
+  ('influencers-code', 'The Influencers Code', 'The secrets of successful influencers - strategies for growth, engagement, and monetization.', 19900, true, 'advanced'),
+  ('tax-guide', 'Creator Tax Guide SA', 'Essential tax tips and strategies for South African content creators.', 44900, true, 'advanced'),
+  ('contentpreneur-pro', 'Contentpreneur Pro Bundle', 'Complete bundle with all courses, ebooks, and resources. Best value for serious content creators.', 129900, true, 'all'),
+  ('coaching-session', '1-on-1 Coaching Session', 'Personal 60-minute coaching call to accelerate your content creator journey. Customized strategy and feedback.', 499900, true, 'all'),
+  ('social-media-intro', 'Introduction to Social Media', 'Master social media marketing with 3 comprehensive video modules.', 24900, true, 'beginner'),
+  ('contentpreneur-book-ebook', 'Contentpreneur Guide (eBook)', 'The definitive digital guide to building a profitable content business.', 24900, true, 'all'),
+  ('contentpreneur-book-hardcopy', 'Contentpreneur Guide (Hardcopy + eBook)', 'Physical hardcover book plus digital copy. Free shipping within South Africa.', 39900, true, 'all'),
+  ('content-arsenal', 'Content Arsenal Expansion Pack', '100+ templates, swipe files, and tools to streamline your content creation workflow.', 39900, true, 'all')
 ON CONFLICT (product_key) DO UPDATE SET
   name = EXCLUDED.name,
   description = EXCLUDED.description,
@@ -206,7 +206,7 @@ INSERT INTO discount_codes (code, discount_type, discount_value, applies_to, min
   ('SAVE10', 'percentage', 10, 'all', NULL, NULL, true),
   ('SPECIAL10', 'percentage', 10, 'all', NULL, 100, true),
   ('FIRSTTIME20', 'percentage', 20, 'all', NULL, NULL, true),
-  ('EARLYBIRD', 'fixed', 1000, 'starter-kit', 5000, 50, true)
+  ('EARLYBIRD', 'fixed', 10000, 'starter-kit', 50000, 50, true)
 ON CONFLICT (code) DO UPDATE SET
   discount_type = EXCLUDED.discount_type,
   discount_value = EXCLUDED.discount_value,

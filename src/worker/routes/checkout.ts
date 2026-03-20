@@ -37,12 +37,8 @@ app.post('/create-session', async (c) => {
       return c.json({ error: 'No valid products found' }, 400);
     }
 
-    // Calculate total in USD cents
-    const totalUSD = products.reduce((sum, p) => sum + p.price_cents, 0);
-
-    // Get exchange rate for ZAR
-    const exchangeRate = await getExchangeRate();
-    const totalZAR = Math.round(totalUSD * exchangeRate);
+    // Calculate total in ZAR cents (prices already in ZAR)
+    const totalZAR = products.reduce((sum, p) => sum + p.price_cents, 0);
 
     // Generate order number
     const orderNumber = `ORD-${Date.now()}-${generateRandomString(6)}`;
@@ -60,13 +56,12 @@ app.post('/create-session', async (c) => {
 
     const orderId = orderResult.meta.last_row_id;
 
-    // Create order items
+    // Create order items (prices already in ZAR)
     for (const product of products) {
-      const priceZAR = Math.round(product.price_cents * exchangeRate);
       await db.prepare(`
         INSERT INTO order_items (order_id, product_id, product_key, price_cents)
         VALUES (?, ?, ?, ?)
-      `).bind(orderId, product.id, product.product_key, priceZAR).run();
+      `).bind(orderId, product.id, product.product_key, product.price_cents).run();
     }
 
     // Track as potential abandoned cart
@@ -125,9 +120,8 @@ app.post('/create-session', async (c) => {
       checkoutUrl: paystackData.data.authorization_url,
       reference: paystackData.data.reference,
       orderNumber,
-      totalUSD,
-      totalZAR,
-      exchangeRate,
+      totalAmount: totalZAR,
+      currency: 'ZAR',
     });
   } catch (error) {
     console.error('Checkout error:', error);
@@ -197,39 +191,6 @@ app.get('/verify', async (c) => {
     return c.json({ error: 'Failed to verify payment' }, 500);
   }
 });
-
-// Current rate ~16.93 ZAR/USD (March 2026), fallback slightly higher for volatility
-const FALLBACK_RATE = 18.00;
-
-async function getExchangeRate(): Promise<number> {
-  // Try primary API (Frankfurter)
-  try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR');
-    if (response.ok) {
-      const data = await response.json() as { rates: { ZAR: number } };
-      if (data.rates?.ZAR && data.rates.ZAR > 0) {
-        return data.rates.ZAR;
-      }
-    }
-  } catch {
-    // Try backup
-  }
-
-  // Try backup API
-  try {
-    const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD');
-    if (backupResponse.ok) {
-      const backupData = await backupResponse.json() as { rates: { ZAR: number } };
-      if (backupData.rates?.ZAR && backupData.rates.ZAR > 0) {
-        return backupData.rates.ZAR;
-      }
-    }
-  } catch {
-    // Use fallback
-  }
-
-  return FALLBACK_RATE;
-}
 
 function generateRandomString(length: number): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';

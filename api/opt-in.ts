@@ -19,7 +19,7 @@ const LEAD_MAGNETS: Record<string, { name: string; downloadUrl: string; icon: st
     name: 'RateCard Pro Calculator',
     downloadUrl: 'https://collab-value.lovable.app/',
     icon: '📊',
-    upsell: 'Learn to land $5K+ brand deals with The Influencer\'s Code',
+    upsell: 'Learn to land R50K+ brand deals with The Influencer\'s Code',
     upsellUrl: '/checkout/influencers-code',
     externalTool: 'https://collab-value.lovable.app/',
   },

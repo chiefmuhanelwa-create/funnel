@@ -15,7 +15,7 @@ interface UpsellProduct {
   isPreOrder?: boolean;
 }
 
-// Build upsell products from centralized config (prices in USD cents)
+// Build upsell products from centralized config (prices in ZAR cents)
 const UPSELL_PRODUCTS: UpsellProduct[] = [
   {
     key: 'influencers-code',
@@ -116,7 +116,7 @@ export default function MembershipUpsells({ ownedProducts }: MembershipUpsellsPr
                 </p>
 
                 <div className="mt-3 flex items-center gap-2">
-                  <span className="text-lg font-bold text-gold-600">{formatPrice(product.priceCents)} USD</span>
+                  <span className="text-lg font-bold text-gold-600">{formatPrice(product.priceCents)}</span>
                   {product.originalPriceCents && (
                     <span className="text-sm text-gray-400 line-through">
                       {formatPrice(product.originalPriceCents)}

@@ -46,7 +46,7 @@ export const orders = pgTable('orders', {
   customerName: text('customer_name'),
   paymentStatus: text('payment_status').default('pending'),
   totalAmountCents: integer('total_amount_cents').notNull(),
-  currency: text('currency').notNull().default('USD'),
+  currency: text('currency').notNull().default('ZAR'),
   paymentIntentId: text('payment_intent_id'),
   paystackReference: text('paystack_reference'),
   discountCode: text('discount_code'), // Applied discount code
@@ -82,7 +82,7 @@ export const abandonedCarts = pgTable('abandoned_carts', {
   customerEmail: text('customer_email').notNull().unique(),
   productKeys: text('product_keys').notNull(),
   totalAmountCents: integer('total_amount_cents').notNull(),
-  currency: text('currency').default('USD'),
+  currency: text('currency').default('ZAR'),
   recoveryEmailSent: boolean('recovery_email_sent').default(false),
   recovered: boolean('recovered').default(false),
   createdAt: timestamp('created_at').defaultNow(),
@@ -162,7 +162,7 @@ export const discountCodes = pgTable('discount_codes', {
   id: serial('id').primaryKey(),
   code: text('code').notNull().unique(),
   discountType: text('discount_type').notNull(), // 'percentage' or 'fixed'
-  discountValue: integer('discount_value').notNull(), // 10 for 10%, or 500 for $5
+  discountValue: integer('discount_value').notNull(), // 10 for 10%, or 500 for R5
   appliesTo: text('applies_to').default('all'), // 'all' or specific product_key
   minPurchase: integer('min_purchase'), // Minimum purchase amount in cents
   maxUses: integer('max_uses'), // NULL for unlimited
