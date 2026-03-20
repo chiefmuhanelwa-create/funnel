@@ -138,7 +138,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         videoPlays: parseInt(videoPlays[0]?.count as string || '0', 10),
         formSubmissions: parseInt(formSubmissions[0]?.count as string || '0', 10),
         purchases: totalPurchases,
-        revenueUsd: (revenueCents / 100).toFixed(2),
+        revenueZar: (revenueCents / 100).toFixed(2),
         conversionRate: parseFloat(conversionRate),
       },
       trafficSources,

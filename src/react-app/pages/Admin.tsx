@@ -104,7 +104,7 @@ interface AnalyticsData {
     videoPlays: number;
     formSubmissions: number;
     purchases: number;
-    revenueUsd: string;
+    revenueZar: string;
     conversionRate: number;
   };
   trafficSources: Array<{ source: string; visitors: number }>;
@@ -1235,7 +1235,7 @@ export default function Admin() {
                       <span className="text-green-500 text-lg">R</span>
                       <span className="text-sm text-gray-500">Revenue (ZAR)</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">R{analytics.summary.revenueUsd}</p>
+                    <p className="text-2xl font-bold text-gray-900">R{analytics.summary.revenueZar}</p>
                   </div>
                 </div>
 

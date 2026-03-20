@@ -145,12 +145,12 @@ interface ProductShowcaseProps {
 3. OutcomesSection.tsx         - "What You'll Build in 30 Days"
 4. PAIDSMechanism.tsx          - PAIDS Framework explanation
 5. VideoShowcase.tsx           - Featured video content
-6. ValueStackSection.tsx       - Price anchoring ($408 → $67)
+6. ValueStackSection.tsx       - Price anchoring (R3,999 → R699)
 7. About.tsx                   - Founder story
 8. AudienceFitSection.tsx      - Who it's for/not for
 9. ObjectionSection.tsx        - 8 objections answered
 10. GuaranteeSection.tsx       - 30-day guarantee
-11. WhyPriceSection.tsx        - Why $67
+11. WhyPriceSection.tsx        - Why R699
 12. FinalCTASection.tsx        - Final emotional close
 ```
 
@@ -216,7 +216,7 @@ CREATE TABLE orders (
   customer_name TEXT,
   product_keys TEXT NOT NULL,
   total_amount_cents INTEGER NOT NULL,
-  currency TEXT DEFAULT 'USD',
+  currency TEXT DEFAULT 'ZAR',
   payment_status TEXT DEFAULT 'pending',
   paystack_reference TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
@@ -334,7 +334,7 @@ NEXT_PUBLIC_APP_URL=https://www.contentpreneurhub.online
 Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Area
 ```
 
-### Main Product: Contentpreneur Starter Kit ($67)
+### Main Product: Contentpreneur Starter Kit (R699)
 
 **URL:** `https://www.contentpreneurhub.online/contentpreneur-starter-kit`
 
@@ -345,12 +345,12 @@ Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Are
 - NoChill Tool Stack Access
 
 **Checkout Upsells (Order Bumps):**
-- The Influencer's Code - $12 (normally $19)
-- Tax Guide for Contentpreneurs - $29 (normally $47)
+- The Influencer's Code - R149 (normally R199)
+- Tax Guide for Contentpreneurs - R299 (normally R449)
 
 **Post-Purchase Upsells:**
-- Content Foundations Course - $37
-- 1:1 Strategy Call - $497
+- Content Foundations Course - R399
+- 1:1 Strategy Call - R4,999
 
 > For detailed funnel architecture, see [docs/SALES_FUNNEL_ARCHITECTURE.md](./docs/SALES_FUNNEL_ARCHITECTURE.md)
 
@@ -358,19 +358,19 @@ Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Are
 
 ## Product Catalog
 
-| Product | Price | Key | Category | Bundle Status |
-|---------|-------|-----|----------|---------------|
-| Contentpreneur Starter Kit | $67 | `starter-kit` | Course | Main product (includes niche-finder, paids-workbook) |
-| The Influencer's Code | $19 | `influencers-code` | eBook | Standalone / Upsell |
-| Content Foundations | $37 | `content-foundations` | Course | Standalone / Upsell |
-| Tax Guide for Contentpreneurs | $47 | `tax-guide` | Guide | Standalone / Upsell |
-| Niche Finder Workbook | $17 | `niche-finder` | Workbook | Included in Starter Kit |
-| PAIDS Framework Workbook | $17 | `paids-workbook` | Workbook | Included in Starter Kit |
-| Pro Bundle | $147 | `contentpreneur-pro` | Bundle | All products |
-| 1:1 Strategy Call | $497 | `coaching-session` | Service | Standalone |
-| Contentpreneur Book (eBook) | $19 | `contentpreneur-book-ebook` | Book | Standalone |
-| Contentpreneur Book (Hardcopy) | $37 | `contentpreneur-book-hardcopy` | Book | Standalone |
-| Content Arsenal | $37 | `content-arsenal` | Templates | Standalone |
+| Product | Price (ZAR) | Key | Category | Bundle Status |
+|---------|-------------|-----|----------|---------------|
+| Contentpreneur Starter Kit | R699 | `starter-kit` | Course | Main product (includes niche-finder, paids-workbook) |
+| The Influencer's Code | R199 | `influencers-code` | eBook | Standalone / Upsell |
+| Content Foundations | R399 | `content-foundations` | Course | Standalone / Upsell |
+| Tax Guide for Contentpreneurs | R449 | `tax-guide` | Guide | Standalone / Upsell |
+| Niche Finder Workbook | R199 | `niche-finder` | Workbook | Included in Starter Kit |
+| PAIDS Framework Workbook | R199 | `paids-workbook` | Workbook | Included in Starter Kit |
+| Pro Bundle | R1,299 | `contentpreneur-pro` | Bundle | All products |
+| 1:1 Strategy Call | R4,999 | `coaching-session` | Service | Standalone |
+| Contentpreneur Book (eBook) | R249 | `contentpreneur-book-ebook` | Book | Standalone (Pre-order) |
+| Contentpreneur Book (Hardcopy + eBook) | R399 | `contentpreneur-book-hardcopy` | Book | Standalone (Pre-order) |
+| Content Arsenal | R399 | `content-arsenal` | Templates | Standalone |
 
 ---
 

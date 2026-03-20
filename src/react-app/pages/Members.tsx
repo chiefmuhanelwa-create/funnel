@@ -21,6 +21,7 @@ interface Product {
 }
 
 // All available products with their access links and checkout links
+// IMPORTANT: All prices are in ZAR (South African Rand)
 const ALL_PRODUCTS: Product[] = [
   {
     key: 'starter-kit',
@@ -30,7 +31,7 @@ const ALL_PRODUCTS: Product[] = [
     link: '/members/starter-kit',
     checkoutLink: '/checkout/starter-kit',
     type: 'Course',
-    price: 67,
+    price: 699,
     imageUrl: IMAGES.starterKitCourseMockup,
   },
   {
@@ -42,8 +43,8 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/influencers-code',
     type: 'eBook',
     isDownload: true,
-    price: 19,
-    originalPrice: 197,
+    price: 199,
+    originalPrice: 499,
     imageUrl: IMAGES.influencersCodeMockup,
   },
   {
@@ -54,7 +55,7 @@ const ALL_PRODUCTS: Product[] = [
     link: '/members/content-foundations',
     checkoutLink: '/checkout/content-foundations',
     type: 'Course',
-    price: 37,
+    price: 399,
     imageUrl: IMAGES.contentFoundationsMockup,
   },
   {
@@ -66,7 +67,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/niche-finder',
     type: 'Workbook',
     isDownload: true,
-    price: 17,
+    price: 199,
     imageUrl: IMAGES.nicheWorkbookMockup,
   },
   {
@@ -78,7 +79,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/paids-workbook',
     type: 'Workbook',
     isDownload: true,
-    price: 17,
+    price: 199,
     imageUrl: IMAGES.paidsWorkbookMockup,
   },
   {
@@ -90,7 +91,7 @@ const ALL_PRODUCTS: Product[] = [
     checkoutLink: '/checkout/tax-guide',
     type: 'Guide',
     isDownload: true,
-    price: 47,
+    price: 449,
     imageUrl: IMAGES.taxGuideMockup,
   },
   {
@@ -101,7 +102,8 @@ const ALL_PRODUCTS: Product[] = [
     link: '/members/contentpreneur-book',
     checkoutLink: '/checkout/contentpreneur-book-hardcopy',
     type: 'Book',
-    price: 37,
+    price: 399,
+    originalPrice: 499,
     isPreOrder: true,
     imageUrl: IMAGES.influencersCodeMockup,
   },
@@ -413,9 +415,9 @@ export default function Members() {
 
                           {/* Price */}
                           <div className="mt-3 flex items-center gap-2">
-                            <span className="text-lg font-bold text-gold-600">${product.price}</span>
+                            <span className="text-lg font-bold text-gold-600">R{product.price}</span>
                             {product.originalPrice && (
-                              <span className="text-sm text-gray-400 line-through">${product.originalPrice}</span>
+                              <span className="text-sm text-gray-400 line-through">R{product.originalPrice}</span>
                             )}
                           </div>
 
