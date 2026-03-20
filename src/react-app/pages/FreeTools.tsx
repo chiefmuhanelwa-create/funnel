@@ -48,7 +48,7 @@ const LEAD_MAGNETS: Record<string, {
     upsell: {
       title: "The Influencer's Code",
       description: 'Learn the complete system for landing and negotiating brand deals worth R50K+',
-      price: 'R249',
+      price: 'R199',
       originalPrice: 'R499',
       url: '/checkout/influencers-code',
       badge: '50% OFF Today',

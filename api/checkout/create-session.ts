@@ -38,7 +38,7 @@ function generateOrderNumber(): string {
 // Order bump prices - discounted prices when purchased as add-ons (in ZAR cents)
 // These must match the frontend order bump prices
 const ORDER_BUMP_PRICES: Record<string, number> = {
-  'influencers-code': 14900,      // R149 (normally R249)
+  'influencers-code': 14900,      // R149 (normally R199)
   'content-foundations': 29900,   // R299 (normally R399)
   'paids-workbook': 14900,       // R149 (normally R199)
   'niche-finder': 14900,         // R149 (normally R199)

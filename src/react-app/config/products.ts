@@ -69,7 +69,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: "The Influencer's Code",
     shortName: "Influencer's Code",
     description: 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization, the 3Es Formula, and PAIDS Method.',
-    priceCents: 24900, // R249.00
+    priceCents: 19900, // R199.00
     originalPriceCents: 49900, // R499.00
     icon: '📖',
     imageUrl: PRODUCT_IMAGES.influencersCode,
@@ -454,7 +454,7 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       headline: "Special Offer: The Influencer's Code",
       subheadline: 'The perfect companion to your course - 14 chapters on monetization',
       discountedPrice: 14900, // R149
-      originalPrice: 24900, // R249
+      originalPrice: 19900, // R199
       savings: '40% OFF',
       urgency: 'One-time offer for new students',
     },

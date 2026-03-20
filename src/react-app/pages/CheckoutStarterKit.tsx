@@ -63,7 +63,7 @@ export default function CheckoutStarterKit() {
       key: 'influencers-code',
       name: "The Influencer's Code (eBook)",
       price: 14900, // R149
-      description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers. Normally R249, yours for just R149 today.',
+      description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers. Normally R199, yours for just R149 today.',
       imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {

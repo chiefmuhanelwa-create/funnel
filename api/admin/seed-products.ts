@@ -26,7 +26,7 @@ const PRODUCTS_TO_SEED = [
     product_key: 'influencers-code',
     name: "The Influencer's Code",
     description: 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization.',
-    price_cents: 24900, // R249.00
+    price_cents: 19900, // R199.00
   },
   {
     product_key: 'tax-guide',
@@ -74,7 +74,7 @@ const PRODUCTS_TO_SEED = [
     product_key: 'contentpreneur-book-ebook',
     name: 'Contentpreneur Guide (eBook)',
     description: 'The definitive digital guide to building a profitable content business.',
-    price_cents: 24900, // R249.00
+    price_cents: 24900, // R249.00 (contentpreneur book stays at R249)
   },
   {
     product_key: 'contentpreneur-book-hardcopy',

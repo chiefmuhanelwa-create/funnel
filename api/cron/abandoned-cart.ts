@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const PRODUCTS: Record<string, { name: string; price: string; url: string }> = {
   'starter-kit': { name: 'Contentpreneur Starter Kit', price: 'R699', url: '/contentpreneur-starter-kit' },
-  'influencers-code': { name: "The Influencer's Code", price: 'R249', url: '/checkout/influencers-code' },
+  'influencers-code': { name: "The Influencer's Code", price: 'R199', url: '/checkout/influencers-code' },
   'niche-finder': { name: 'Niche Finder Workbook', price: 'R199', url: '/checkout/niche-finder' },
   'paids-workbook': { name: 'PAIDS Framework Workbook', price: 'R199', url: '/checkout/paids-workbook' },
   'tax-guide': { name: 'Tax Guide for Contentpreneurs', price: 'R449', url: '/checkout/tax-guide' },

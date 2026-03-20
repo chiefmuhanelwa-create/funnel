@@ -42,7 +42,7 @@ const PRODUCTS: Record<string, {
     key: 'influencers-code',
     name: "The Influencer's Code",
     description: 'The complete blueprint from creator to influential personal brand',
-    price: 24900, // R249.00
+    price: 19900, // R199.00
     image: IMAGES.influencersCodeMockup,
     features: ['14 Comprehensive Chapters', '3Es Content Formula', 'DARES Framework', 'Instant PDF Download', 'Lifetime Access'],
     salesPage: '/products/influencers-code',
@@ -115,7 +115,7 @@ const PRODUCTS: Record<string, {
 // Valid upsells: Influencer's Code, Content Foundations, Tax Guide, Contentpreneur Book, Coaching
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
   'starter-kit': [
-    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'Learn the secrets of successful influencers. Normally R249, yours for just R149 today.' },
+    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'Learn the secrets of successful influencers. Normally R199, yours for just R149 today.' },
     { key: 'content-foundations', name: 'Content Foundations Course', price: 29900, description: '3-module video course on self-reflection, SWOT analysis & value alignment. Normally R399, yours for just R299 today.' },
   ],
   'influencers-code': [
@@ -123,18 +123,18 @@ const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; de
     { key: 'content-foundations', name: 'Content Foundations Course', price: 29900, description: '3-module video course on content creation fundamentals. Normally R399.' },
   ],
   'tax-guide': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R199.' },
   ],
   'content-foundations': [
     { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 34900, description: 'Get all 9 modules instead of just 3. Save R350!' },
-    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R199.' },
   ],
   'coaching-session': [],
   'contentpreneur-book-ebook': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R199.' },
   ],
   'contentpreneur-book-hardcopy': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R199.' },
   ],
   'contentpreneur-pro': [],
 };
