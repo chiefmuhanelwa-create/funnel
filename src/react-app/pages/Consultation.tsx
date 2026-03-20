@@ -71,8 +71,8 @@ export default function Consultation() {
 
               {/* Price Display */}
               <div className="mt-6 flex items-center justify-center gap-4">
-                <span className="text-4xl font-bold text-gradient-gold">$497</span>
-                <span className="text-lg text-gray-400 line-through">$997</span>
+                <span className="text-4xl font-bold text-gradient-gold">R4,999</span>
+                <span className="text-lg text-gray-400 line-through">R9,999</span>
                 <span className="badge badge-success">50% OFF</span>
               </div>
             </motion.div>

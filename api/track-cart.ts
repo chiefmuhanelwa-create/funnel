@@ -11,13 +11,13 @@ const CONVERTKIT_TAG_ABANDONED = process.env.CONVERTKIT_TAG_ABANDONED_CART || ''
 
 // Product configurations for abandonment emails
 const PRODUCTS: Record<string, { name: string; price: string; discount: string; url: string }> = {
-  'starter-kit': { name: 'Contentpreneur Starter Kit', price: '$67', discount: '10% OFF', url: '/checkout/starter-kit' },
-  'influencers-code': { name: "The Influencer's Code", price: '$19', discount: '10% OFF', url: '/checkout/influencers-code' },
-  'niche-finder': { name: 'Niche Finder Workbook', price: '$17', discount: 'Special Offer', url: '/checkout/niche-finder' },
-  'paids-workbook': { name: 'PAIDS Framework Workbook', price: '$17', discount: 'Special Offer', url: '/checkout/paids-workbook' },
-  'tax-guide': { name: 'Tax Guide for Contentpreneurs', price: '$47', discount: '10% OFF', url: '/checkout/tax-guide' },
-  'content-foundations': { name: 'Content Foundations Course', price: '$37', discount: '10% OFF', url: '/checkout/content-foundations' },
-  'content-arsenal': { name: 'Content Arsenal Pack', price: '$37', discount: '10% OFF', url: '/checkout/content-arsenal' },
+  'starter-kit': { name: 'Contentpreneur Starter Kit', price: 'R699', discount: '10% OFF', url: '/checkout/starter-kit' },
+  'influencers-code': { name: "The Influencer's Code", price: 'R249', discount: '10% OFF', url: '/checkout/influencers-code' },
+  'niche-finder': { name: 'Niche Finder Workbook', price: 'R199', discount: 'Special Offer', url: '/checkout/niche-finder' },
+  'paids-workbook': { name: 'PAIDS Framework Workbook', price: 'R199', discount: 'Special Offer', url: '/checkout/paids-workbook' },
+  'tax-guide': { name: 'Tax Guide for Contentpreneurs', price: 'R449', discount: '10% OFF', url: '/checkout/tax-guide' },
+  'content-foundations': { name: 'Content Foundations Course', price: 'R399', discount: '10% OFF', url: '/checkout/content-foundations' },
+  'content-arsenal': { name: 'Content Arsenal Pack', price: 'R399', discount: '10% OFF', url: '/checkout/content-arsenal' },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

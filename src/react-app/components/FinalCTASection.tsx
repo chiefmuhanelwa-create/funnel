@@ -60,7 +60,7 @@ export default function FinalCTASection() {
           {/* Price & Guarantee */}
           <div className="mt-6 space-y-2">
             <p style={{ color: '#ffffff' }} className="text-2xl md:text-3xl font-bold drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-              Just <span className="text-amber-400 drop-shadow-[0_0_25px_rgba(251,191,36,0.8)]">$67</span> — One-Time Payment
+              Just <span className="text-amber-400 drop-shadow-[0_0_25px_rgba(251,191,36,0.8)]">R699</span> — One-Time Payment
             </p>
             <p className="text-gray-200">
               Instant Access • Lifetime Updates • 30-Day Money-Back Guarantee

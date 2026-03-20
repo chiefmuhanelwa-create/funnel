@@ -24,46 +24,7 @@ function getClientIP(req: VercelRequest): string {
   return req.socket?.remoteAddress || 'unknown';
 }
 
-// Current rate as of March 13, 2026: ~16.93 ZAR/USD
-// Set fallback slightly higher to account for volatility
-const FALLBACK_RATE = 18.00;
-
-async function getExchangeRate(): Promise<number> {
-  // Try primary API (Frankfurter - free, no API key)
-  try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=ZAR', {
-      signal: AbortSignal.timeout(5000),
-    });
-    if (response.ok) {
-      const data = await response.json() as { rates: { ZAR: number } };
-      if (data.rates?.ZAR && data.rates.ZAR > 0) {
-        console.log('[CHECKOUT] Live exchange rate:', data.rates.ZAR);
-        return data.rates.ZAR;
-      }
-    }
-  } catch (error) {
-    console.log('[CHECKOUT] Primary exchange rate API failed:', error);
-  }
-
-  // Try backup API (open.er-api.com - free, no key required)
-  try {
-    const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD', {
-      signal: AbortSignal.timeout(5000),
-    });
-    if (backupResponse.ok) {
-      const backupData = await backupResponse.json() as { rates: { ZAR: number } };
-      if (backupData.rates?.ZAR && backupData.rates.ZAR > 0) {
-        console.log('[CHECKOUT] Backup exchange rate:', backupData.rates.ZAR);
-        return backupData.rates.ZAR;
-      }
-    }
-  } catch (backupError) {
-    console.log('[CHECKOUT] Backup exchange rate API also failed:', backupError);
-  }
-
-  console.log('[CHECKOUT] Using fallback exchange rate:', FALLBACK_RATE);
-  return FALLBACK_RATE;
-}
+// All prices are now in ZAR - no currency conversion needed
 
 function generateOrderNumber(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -74,16 +35,16 @@ function generateOrderNumber(): string {
   return `ORD-${Date.now()}-${suffix}`;
 }
 
-// Order bump prices - discounted prices when purchased as add-ons (in USD cents)
+// Order bump prices - discounted prices when purchased as add-ons (in ZAR cents)
 // These must match the frontend order bump prices
 const ORDER_BUMP_PRICES: Record<string, number> = {
-  'influencers-code': 1200,      // $12 (normally $19)
-  'content-foundations': 1700,   // $17 (normally $37)
-  'paids-workbook': 1200,       // $12 (normally $17)
-  'niche-finder': 1200,         // $12 (normally $17)
-  'content-arsenal': 2700,      // $27 (normally $37)
-  'starter-kit': 3000,          // $30 (as upgrade from content-foundations)
-  'tax-guide': 2700,            // $27 (as add-on)
+  'influencers-code': 14900,      // R149 (normally R249)
+  'content-foundations': 29900,   // R299 (normally R399)
+  'paids-workbook': 14900,       // R149 (normally R199)
+  'niche-finder': 14900,         // R149 (normally R199)
+  'content-arsenal': 29900,      // R299 (normally R399)
+  'starter-kit': 34900,          // R349 (as upgrade from content-foundations)
+  'tax-guide': 29900,            // R299 (as add-on)
 };
 
 // Rollback helper - deletes order and order items if payment initialization fails
@@ -260,28 +221,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 6: Calculate totals
-  const subtotalUSD = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
+  // Step 6: Calculate totals (all prices in ZAR cents)
+  const subtotalZAR = productsList.reduce((sum, p) => sum + (p.price_cents || 0), 0);
 
-  // Apply discount if provided (discountAmount is in USD cents)
+  // Apply discount if provided (discountAmount is in ZAR cents)
   const discountAmountCents = typeof discountAmount === 'number' && discountAmount > 0 ? discountAmount : 0;
-  const totalUSD = Math.max(0, subtotalUSD - discountAmountCents);
+  const totalZAR = Math.max(0, subtotalZAR - discountAmountCents);
 
-  if (totalUSD <= 0) {
+  if (totalZAR <= 0) {
     return res.status(400).json({
       error: 'Invalid total amount',
       step: 'calculate_total',
-      totalUSD,
+      totalZAR,
       products: productsList.map(p => ({ key: p.product_key, price: p.price_cents }))
     });
   }
 
-  const exchangeRate = await getExchangeRate();
-  // Convert: USD cents * exchange rate = ZAR cents
-  // e.g., 6700 USD cents ($67) * 18.5 = 123,950 ZAR cents (R1,239.50)
-  const totalZAR = Math.round(totalUSD * exchangeRate);
-
-  console.log('[CHECKOUT] Pricing:', { subtotalUSD, discountCode, discountAmountCents, totalUSD, totalZAR });
+  console.log('[CHECKOUT] Pricing:', { subtotalZAR, discountCode, discountAmountCents, totalZAR });
   const orderNumber = generateOrderNumber();
 
   // Step 7: Create order in database
@@ -307,13 +263,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Step 8: Create order items
+  // Step 8: Create order items (prices already in ZAR cents)
   try {
     for (const product of productsList) {
-      const priceZAR = Math.round((product.price_cents || 0) * exchangeRate);
       await sql`
         INSERT INTO order_items (order_id, product_id, product_key, price_cents)
-        VALUES (${orderId}, ${product.id}, ${product.product_key}, ${priceZAR})
+        VALUES (${orderId}, ${product.id}, ${product.product_key}, ${product.price_cents || 0})
       `;
     }
   } catch (error: any) {
@@ -345,8 +300,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           order_id: orderId.toString(),
           order_number: orderNumber,
           product_keys: allProductKeys.join(','),
-          original_usd_cents: totalUSD.toString(),
-          exchange_rate: exchangeRate.toString(),
         },
       }),
     });

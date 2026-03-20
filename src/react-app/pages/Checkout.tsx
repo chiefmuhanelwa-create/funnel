@@ -18,13 +18,12 @@ const PRODUCT_BUNDLES: Record<string, string[]> = {
 const BUNDLED_ONLY_PRODUCTS = ['niche-finder', 'paids-workbook', 'content-arsenal'];
 
 // Product configuration
-// IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
-// ZAR conversion happens at checkout using live exchange rates (~18.50 ZAR/USD)
+// IMPORTANT: All prices are in ZAR CENTS (e.g., 69900 = R699.00)
 const PRODUCTS: Record<string, {
   key: string;
   name: string;
   description: string;
-  price: number; // USD cents (6700 = $67.00)
+  price: number; // ZAR cents (69900 = R699.00)
   image?: string;
   features: string[];
   salesPage: string;
@@ -34,7 +33,7 @@ const PRODUCTS: Record<string, {
     key: 'starter-kit',
     name: 'Contentpreneur Starter Kit',
     description: 'Complete 9-module course to build your personal brand and monetize your content',
-    price: 6700, // $67.00 USD
+    price: 69900, // R699.00
     image: IMAGES.starterKitCourseMockup,
     features: ['9 Video Modules', 'Niche Finder Workbook', 'PAIDS Framework Workbook', 'NoChill Tool Stack', 'Lifetime Access'],
     salesPage: '/contentpreneur-starter-kit',
@@ -43,7 +42,7 @@ const PRODUCTS: Record<string, {
     key: 'influencers-code',
     name: "The Influencer's Code",
     description: 'The complete blueprint from creator to influential personal brand',
-    price: 1900,
+    price: 24900, // R249.00
     image: IMAGES.influencersCodeMockup,
     features: ['14 Comprehensive Chapters', '3Es Content Formula', 'DARES Framework', 'Instant PDF Download', 'Lifetime Access'],
     salesPage: '/products/influencers-code',
@@ -52,7 +51,7 @@ const PRODUCTS: Record<string, {
     key: 'tax-guide',
     name: 'Tax Guide for Contentpreneurs',
     description: 'SARS compliance guide for South African content creators',
-    price: 4700,
+    price: 44900, // R449.00
     image: IMAGES.taxGuideMockup,
     features: ['VDP Process Guide', '6 Tax Types Explained', '35% Rule Strategy', 'Deduction Checklist', 'Instant PDF Download'],
     salesPage: '/products/tax-guide',
@@ -61,7 +60,7 @@ const PRODUCTS: Record<string, {
     key: 'content-foundations',
     name: 'Content Foundations Course',
     description: 'Essential groundwork for building your authentic brand',
-    price: 3700,
+    price: 39900, // R399.00
     image: IMAGES.contentFoundationsMockup,
     features: ['3 Video Modules', 'Self Reflection Exercises', 'SWOT Analysis Template', 'Value Alignment Workshop'],
     salesPage: '/products/content-foundations',
@@ -70,15 +69,15 @@ const PRODUCTS: Record<string, {
     key: 'coaching-session',
     name: '1-on-1 Strategy Call',
     description: '60-minute personalized strategy session with Mr. NoChill',
-    price: 14700, // $147.00 USD
+    price: 499900, // R4,999.00
     features: ['60-Min Video Call', '90-Day Action Plan', 'Session Recording', '7-Day Email Follow-up'],
     salesPage: '/products/coaching',
   },
   'contentpreneur-pro': {
     key: 'contentpreneur-pro',
     name: 'Contentpreneur Pro Bundle',
-    description: 'The complete system: All courses, workbooks, and guides. Save $23!',
-    price: 14700,
+    description: 'The complete system: All courses, workbooks, and guides. Save R400!',
+    price: 129900, // R1,299.00
     image: IMAGES.starterKitCourseMockup,
     features: [
       '9-Module Personal Branding Course',
@@ -96,7 +95,7 @@ const PRODUCTS: Record<string, {
     key: 'contentpreneur-book-ebook',
     name: 'Contentpreneur Guide (eBook)',
     description: 'The definitive digital guide to building a profitable content business',
-    price: 1900,
+    price: 24900, // R249.00
     features: ['10 Comprehensive Chapters', 'Instant PDF Download', 'Lifetime Updates', 'Mobile-Friendly Format'],
     salesPage: '/products/contentpreneur-book',
     isPreOrder: true,
@@ -105,37 +104,37 @@ const PRODUCTS: Record<string, {
     key: 'contentpreneur-book-hardcopy',
     name: 'Contentpreneur Guide (Hardcopy + eBook)',
     description: 'Physical book + digital copy. Free shipping within South Africa',
-    price: 3700,
+    price: 39900, // R399.00
     features: ['Physical Hardcover Book', 'eBook Included', 'Free SA Shipping', 'Author-Signed Copy'],
     salesPage: '/products/contentpreneur-book',
     isPreOrder: true,
   },
 };
 
-// Order bumps configuration - discounted prices when purchased together
+// Order bumps configuration - discounted prices when purchased together (ZAR cents)
 // Valid upsells: Influencer's Code, Content Foundations, Tax Guide, Contentpreneur Book, Coaching
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
   'starter-kit': [
-    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 1200, description: 'Learn the secrets of successful influencers. Normally $19, yours for just $12 today.' },
-    { key: 'content-foundations', name: 'Content Foundations Course', price: 1700, description: '3-module video course on self-reflection, SWOT analysis & value alignment. Normally $37, yours for just $17 today.' },
+    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'Learn the secrets of successful influencers. Normally R249, yours for just R149 today.' },
+    { key: 'content-foundations', name: 'Content Foundations Course', price: 29900, description: '3-module video course on self-reflection, SWOT analysis & value alignment. Normally R399, yours for just R299 today.' },
   ],
   'influencers-code': [
-    { key: 'tax-guide', name: 'Tax Guide for Contentpreneurs', price: 2700, description: 'SARS compliance guide - save on taxes legally. Normally $47, yours for just $27 today.' },
-    { key: 'content-foundations', name: 'Content Foundations Course', price: 1700, description: '3-module video course on content creation fundamentals. Normally $37.' },
+    { key: 'tax-guide', name: 'Tax Guide for Contentpreneurs', price: 29900, description: 'SARS compliance guide - save on taxes legally. Normally R449, yours for just R299 today.' },
+    { key: 'content-foundations', name: 'Content Foundations Course', price: 29900, description: '3-module video course on content creation fundamentals. Normally R399.' },
   ],
   'tax-guide': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
   ],
   'content-foundations': [
-    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 3000, description: 'Get all 9 modules instead of just 3. Save $30!' },
-    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
+    { key: 'starter-kit', name: 'Upgrade to Full Starter Kit', price: 34900, description: 'Get all 9 modules instead of just 3. Save R350!' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
   ],
   'coaching-session': [],
   'contentpreneur-book-ebook': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
   ],
   'contentpreneur-book-hardcopy': [
-    { key: 'influencers-code', name: "The Influencer's Code", price: 1200, description: 'The complete blueprint for influencer success. Normally $19.' },
+    { key: 'influencers-code', name: "The Influencer's Code", price: 14900, description: 'The complete blueprint for influencer success. Normally R249.' },
   ],
   'contentpreneur-pro': [],
 };
@@ -158,8 +157,7 @@ export default function Checkout() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  // Current rate ~16.93 ZAR/USD (March 2026), fallback slightly higher for volatility
-  const [exchangeRate, setExchangeRate] = useState(18.00);
+  // All prices now in ZAR - no conversion needed
   const [ownedProducts, setOwnedProducts] = useState<string[]>([]);
   const [checkingOwnership, setCheckingOwnership] = useState(false);
 
@@ -275,17 +273,11 @@ export default function Checkout() {
   useEffect(() => {
     if (!product) return;
 
-    // Fetch exchange rate
-    fetch('/api/exchange-rate')
-      .then((res) => res.json())
-      .then((data) => setExchangeRate(data.rate))
-      .catch(() => console.log('Using fallback exchange rate'));
-
     // Track checkout started
     analytics.beginCheckout({
-      value: product.price,
-      currency: 'USD',
-      items: [{ item_id: product.key, item_name: product.name, price: product.price }],
+      value: product.price / 100, // Convert cents to Rands for analytics
+      currency: 'ZAR',
+      items: [{ item_id: product.key, item_name: product.name, price: product.price / 100 }],
     });
   }, [product]);
 
@@ -365,9 +357,8 @@ export default function Checkout() {
     setDiscountCode('');
   };
 
-  const subtotalUSD = calculateSubtotal();
-  const totalUSD = calculateTotal();
-  const totalZAR = Math.round(totalUSD * exchangeRate);
+  const subtotalZAR = calculateSubtotal();
+  const totalZAR = calculateTotal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -375,7 +366,7 @@ export default function Checkout() {
     setIsLoading(true);
 
     try {
-      analytics.addPaymentInfo({ value: totalUSD, currency: 'USD' });
+      analytics.addPaymentInfo({ value: totalZAR / 100, currency: 'ZAR' });
 
       const response = await fetch('/api/checkout/create-session', {
         method: 'POST',
@@ -513,8 +504,8 @@ export default function Checkout() {
                   {appliedDiscount && (
                     <div className="mt-2 flex items-center gap-2 text-sm text-green-400">
                       <CheckCircle size={16} />
-                      Code <strong>{appliedDiscount.code}</strong> applied! Saving $
-                      {(appliedDiscount.discount_amount / 100).toFixed(2)}
+                      Code <strong>{appliedDiscount.code}</strong> applied! Saving R
+                      {(appliedDiscount.discount_amount / 100).toFixed(0)}
                     </div>
                   )}
                 </div>
@@ -559,7 +550,7 @@ export default function Checkout() {
                               <div className="flex items-center justify-between">
                                 <span className="font-medium text-gray-900">{bump.name}</span>
                                 <span className="font-semibold text-gold-500">
-                                  +${(bump.price / 100).toFixed(0)}
+                                  +R{(bump.price / 100).toFixed(0)}
                                 </span>
                               </div>
                               <p className="mt-1 text-sm text-gray-500">{bump.description}</p>
@@ -630,7 +621,7 @@ export default function Checkout() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">{product.name}</span>
-                  <span className="font-medium text-gray-900">${(product.price / 100).toFixed(0)}</span>
+                  <span className="font-medium text-gray-900">R{(product.price / 100).toFixed(0)}</span>
                 </div>
 
                 {selectedBumps.map((key) => {
@@ -639,7 +630,7 @@ export default function Checkout() {
                   return (
                     <div key={key} className="flex justify-between text-sm">
                       <span className="text-gray-500">{bump.name}</span>
-                      <span className="font-medium text-gray-600">${(bump.price / 100).toFixed(0)}</span>
+                      <span className="font-medium text-gray-600">R{(bump.price / 100).toFixed(0)}</span>
                     </div>
                   );
                 })}
@@ -649,7 +640,7 @@ export default function Checkout() {
                     <div className="divider my-3" />
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Subtotal</span>
-                      <span className="font-medium text-gray-600">${(subtotalUSD / 100).toFixed(0)}</span>
+                      <span className="font-medium text-gray-600">R{(subtotalZAR / 100).toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-green-400">
                       <span>
@@ -657,7 +648,7 @@ export default function Checkout() {
                         {appliedDiscount.discount_type === 'percentage' &&
                           ` (${appliedDiscount.discount_value}%)`}
                       </span>
-                      <span>-${(appliedDiscount.discount_amount / 100).toFixed(2)}</span>
+                      <span>-R{(appliedDiscount.discount_amount / 100).toFixed(0)}</span>
                     </div>
                   </>
                 )}
@@ -667,10 +658,7 @@ export default function Checkout() {
                 <div className="flex justify-between text-lg font-bold">
                   <span className="text-gray-900">Total</span>
                   <div className="text-right">
-                    <div className="text-gradient-gold">${(totalUSD / 100).toFixed(0)}</div>
-                    <div className="text-sm font-normal text-gray-400">
-                      ≈ R{(totalZAR / 100).toFixed(2)}
-                    </div>
+                    <div className="text-gradient-gold">R{(totalZAR / 100).toFixed(0)}</div>
                   </div>
                 </div>
               </div>

@@ -73,8 +73,8 @@ export default function InfluencersCodeProduct() {
               </div>
 
               <div className="mt-10 flex items-baseline gap-4">
-                <span className="text-5xl font-bold text-gradient-gold">$19</span>
-                <span className="text-2xl text-gray-400 line-through">$47</span>
+                <span className="text-5xl font-bold text-gradient-gold">R249</span>
+                <span className="text-2xl text-gray-400 line-through">R499</span>
                 <span className="badge badge-success">60% OFF</span>
               </div>
 
@@ -283,8 +283,8 @@ export default function InfluencersCodeProduct() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$19</span>
-              <span className="text-2xl text-gray-400 line-through">$47</span>
+              <span className="text-5xl font-bold text-gradient-gold">R249</span>
+              <span className="text-2xl text-gray-400 line-through">R499</span>
             </div>
 
             <Link

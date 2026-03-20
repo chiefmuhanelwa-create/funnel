@@ -17,7 +17,7 @@ export default function WhyPriceSection() {
         >
           {/* Title with neon glow */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-8 text-white drop-shadow-[0_0_25px_rgba(251,191,36,0.3)]">
-            Why Only <span className="text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.6)]">$67</span>?
+            Why Only <span className="text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.6)]">R699</span>?
           </h2>
 
           {/* Reasons */}

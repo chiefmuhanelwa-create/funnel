@@ -35,8 +35,8 @@ export default function StarterKitProduct() {
       {/* Conversion Components */}
       <MobileCTA
         productName="Starter Kit"
-        price="$67"
-        originalPrice="$197"
+        price="R699"
+        originalPrice="R1,999"
         checkoutUrl="/checkout/starter-kit"
       />
       <RecentPurchasePopup
@@ -98,8 +98,8 @@ export default function StarterKitProduct() {
               </div>
 
               <div className="mt-10 flex items-baseline gap-4">
-                <span className="text-5xl font-bold text-gradient-gold">$67</span>
-                <span className="text-2xl text-gray-400 line-through">$197</span>
+                <span className="text-5xl font-bold text-gradient-gold">R699</span>
+                <span className="text-2xl text-gray-400 line-through">R1,999</span>
                 <span className="badge badge-success">66% OFF</span>
               </div>
 
@@ -236,15 +236,15 @@ export default function StarterKitProduct() {
               Included Free
             </span>
             <h2 className="text-section md:text-section-lg text-gray-900">
-              Bonus Resources <span className="text-gradient-gold">(Worth $97)</span>
+              Bonus Resources <span className="text-gradient-gold">(Worth R999)</span>
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
-              { title: 'Niche Finder Workbook (PDF)', value: '$27', desc: 'Step-by-step exercises to find your profitable niche in 90 minutes' },
-              { title: 'PAIDS Framework Workbook (PDF)', value: '$27', desc: 'Implement all 5 income pillars with guided worksheets' },
-              { title: 'NoChill Tool Stack Access', value: '$47', desc: 'Complete list of tools used to build a 3M+ audience with affiliate links' },
+              { title: 'Niche Finder Workbook (PDF)', value: 'R299', desc: 'Step-by-step exercises to find your profitable niche in 90 minutes' },
+              { title: 'PAIDS Framework Workbook (PDF)', value: 'R299', desc: 'Implement all 5 income pillars with guided worksheets' },
+              { title: 'NoChill Tool Stack Access', value: 'R499', desc: 'Complete list of tools used to build a 3M+ audience with affiliate links' },
               { title: 'Lifetime Updates', value: 'Priceless', desc: 'Get all future course updates and additions at no extra cost' },
             ].map((bonus, index) => (
               <motion.div
@@ -304,12 +304,12 @@ export default function StarterKitProduct() {
               </thead>
               <tbody>
                 {[
-                  { feature: 'Video Course (9+ Modules)', others: '$197 - $497', us: true },
-                  { feature: 'Niche Finder Workbook', others: '$27 - $47', us: true },
-                  { feature: 'Monetization Framework', others: '$97 - $197', us: true },
+                  { feature: 'Video Course (9+ Modules)', others: 'R1,999 - R4,999', us: true },
+                  { feature: 'Niche Finder Workbook', others: 'R299 - R499', us: true },
+                  { feature: 'Monetization Framework', others: 'R999 - R1,999', us: true },
                   { feature: 'Tool Stack with Affiliate Links', others: 'Not included', us: true },
                   { feature: 'Lifetime Access + Updates', others: '1 year only', us: true },
-                  { feature: 'Community Support', others: '$19/mo', us: true },
+                  { feature: 'Community Support', others: 'R199/mo', us: true },
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-gray-100">
                     <td className="py-4 px-4 text-gray-900">{row.feature}</td>
@@ -325,9 +325,9 @@ export default function StarterKitProduct() {
                 ))}
                 <tr className="bg-amber-50">
                   <td className="py-4 px-4 font-semibold text-gray-900">Total Value</td>
-                  <td className="py-4 px-4 text-center font-semibold text-gray-600">$500+</td>
+                  <td className="py-4 px-4 text-center font-semibold text-gray-600">R5,000+</td>
                   <td className="py-4 px-4 text-center">
-                    <span className="text-2xl font-bold text-gradient-gold">$67</span>
+                    <span className="text-2xl font-bold text-gradient-gold">R699</span>
                   </td>
                 </tr>
               </tbody>
@@ -339,7 +339,7 @@ export default function StarterKitProduct() {
               to="/checkout/starter-kit"
               className="btn-primary btn-lg inline-flex group"
             >
-              Get Started for Just $67
+              Get Started for Just R699
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
             <p className="mt-4 text-sm text-gray-500">
@@ -494,8 +494,8 @@ export default function StarterKitProduct() {
             </div>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$67</span>
-              <span className="text-2xl text-gray-400 line-through">$197</span>
+              <span className="text-5xl font-bold text-gradient-gold">R699</span>
+              <span className="text-2xl text-gray-400 line-through">R1,999</span>
             </div>
 
             <Link

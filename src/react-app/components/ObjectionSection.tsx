@@ -17,7 +17,7 @@ const OBJECTIONS = [
   },
   {
     question: "I don't have money to start a business",
-    answer: "The entire system costs less than a night out — $67. And the first module shows you how to start with ZERO budget. Everything I teach can be done with just your phone. No expensive tools required.",
+    answer: "The entire system costs less than a night out — R699. And the first module shows you how to start with ZERO budget. Everything I teach can be done with just your phone. No expensive tools required.",
   },
   {
     question: "Courses don't work",

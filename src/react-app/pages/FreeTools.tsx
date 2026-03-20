@@ -47,11 +47,11 @@ const LEAD_MAGNETS: Record<string, {
     ],
     upsell: {
       title: "The Influencer's Code",
-      description: 'Learn the complete system for landing and negotiating brand deals worth $5K+',
-      price: '$19',
-      originalPrice: '$47',
+      description: 'Learn the complete system for landing and negotiating brand deals worth R50K+',
+      price: 'R249',
+      originalPrice: 'R499',
       url: '/checkout/influencers-code',
-      badge: '60% OFF Today',
+      badge: '50% OFF Today',
     },
     color: 'amber',
     stats: [
@@ -75,10 +75,10 @@ const LEAD_MAGNETS: Record<string, {
     upsell: {
       title: 'Tax Guide for Contentpreneurs',
       description: 'Complete 115-page SARS compliance guide with VDP process and deduction strategies',
-      price: '$47',
-      originalPrice: '$97',
+      price: 'R449',
+      originalPrice: 'R899',
       url: '/checkout/tax-guide',
-      badge: '52% OFF Today',
+      badge: '50% OFF Today',
     },
     color: 'emerald',
     stats: [
@@ -102,10 +102,10 @@ const LEAD_MAGNETS: Record<string, {
     upsell: {
       title: 'Contentpreneur Starter Kit',
       description: 'Full 9-module video course to build your personal brand and income streams',
-      price: '$67',
-      originalPrice: '$197',
+      price: 'R699',
+      originalPrice: 'R1,999',
       url: '/checkout/starter-kit',
-      badge: '66% OFF Today',
+      badge: '65% OFF Today',
     },
     color: 'purple',
     stats: [
@@ -128,10 +128,10 @@ const LEAD_MAGNETS: Record<string, {
     upsell: {
       title: 'Content Arsenal Pack',
       description: 'Get 100+ templates, swipe files, and tools to 10x your content production',
-      price: '$37',
-      originalPrice: '$97',
+      price: 'R399',
+      originalPrice: 'R899',
       url: '/checkout/content-arsenal',
-      badge: '62% OFF Today',
+      badge: '56% OFF Today',
     },
     color: 'rose',
     stats: [

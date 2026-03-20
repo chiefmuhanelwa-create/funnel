@@ -14,7 +14,7 @@ interface MobileCTAProps {
 export default function MobileCTA({
   ctaText = 'Get Started Now',
   ctaLink = '/checkout/starter-kit',
-  price = '$67',
+  price = 'R699',
   urgencyText,
   scrollThreshold = 300,
 }: MobileCTAProps) {

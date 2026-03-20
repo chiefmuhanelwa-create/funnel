@@ -146,7 +146,7 @@ export default function VideoShowcase() {
             </Link>
 
             <p className="mt-4 text-sm text-gray-500">
-              Start building your 5 income streams today — $67
+              Start building your 5 income streams today — R699
             </p>
           </motion.div>
         </div>

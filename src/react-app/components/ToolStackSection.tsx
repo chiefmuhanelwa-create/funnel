@@ -220,7 +220,7 @@ export default function ToolStackSection({ hasStarterKit }: ToolStackSectionProp
               to="/contentpreneur-starter-kit"
               className="inline-flex items-center gap-2 px-8 md:px-10 py-4 md:py-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold text-lg hover:scale-105 transition-transform shadow-lg"
             >
-              Get the Starter Kit — $67
+              Get the Starter Kit — R699
               <ArrowRight size={20} />
             </Link>
           </motion.div>

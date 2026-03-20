@@ -1,9 +1,8 @@
 // Centralized Product Configuration
 // Single source of truth for all product data
 //
-// IMPORTANT: All prices are in USD CENTS (e.g., 6700 = $67.00 USD)
-// ZAR conversion happens at checkout using live exchange rates (~17-18 ZAR/USD)
-// Live rates fetched from Frankfurter API with backup from open.er-api.com
+// IMPORTANT: All prices are in ZAR CENTS (e.g., 69900 = R699.00)
+// No currency conversion needed - all prices displayed directly in South African Rand
 
 export interface Product {
   key: string;
@@ -42,7 +41,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: '9-Module Personal Branding Course',
     shortName: 'Starter Kit',
     description: 'Complete system to build and monetize your personal brand with 9 video modules, workbooks, and the NoChill Tool Stack.',
-    priceCents: 6700, // $67.00 USD
+    priceCents: 69900, // R699.00
     icon: '🚀',
     imageUrl: PRODUCT_IMAGES.starterKit,
     color: 'amber',
@@ -70,8 +69,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: "The Influencer's Code",
     shortName: "Influencer's Code",
     description: 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization, the 3Es Formula, and PAIDS Method.',
-    priceCents: 1900,
-    originalPriceCents: 19700,
+    priceCents: 24900, // R249.00
+    originalPriceCents: 49900, // R499.00
     icon: '📖',
     imageUrl: PRODUCT_IMAGES.influencersCode,
     color: 'purple',
@@ -91,7 +90,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Content Foundations Course',
     shortName: 'Content Foundations',
     description: 'Master content creation fundamentals with 3 comprehensive video modules.',
-    priceCents: 3700,
+    priceCents: 39900, // R399.00
     icon: '🎯',
     imageUrl: PRODUCT_IMAGES.contentFoundations,
     color: 'blue',
@@ -109,7 +108,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Tax Guide for Contentpreneurs',
     shortName: 'Tax Guide',
     description: 'Essential tax strategies and legal protection for South African content creators.',
-    priceCents: 4700,
+    priceCents: 44900, // R449.00
     icon: '📋',
     imageUrl: PRODUCT_IMAGES.taxGuide,
     color: 'slate',
@@ -129,7 +128,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Niche Finder Workbook',
     shortName: 'Niche Finder',
     description: 'Step-by-step PDF workbook to discover your profitable content niche in 90 minutes.',
-    priceCents: 1700,
+    priceCents: 19900, // R199.00
     icon: '🎯',
     imageUrl: PRODUCT_IMAGES.nicheFinder,
     color: 'green',
@@ -147,7 +146,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'PAIDS Framework Workbook',
     shortName: 'PAIDS Workbook',
     description: 'Master the PAIDS monetization framework to build 5 income streams.',
-    priceCents: 1700,
+    priceCents: 19900, // R199.00
     icon: '💰',
     imageUrl: PRODUCT_IMAGES.paidsWorkbook,
     color: 'emerald',
@@ -166,9 +165,9 @@ export const PRODUCTS: Record<string, Product> = {
     key: 'contentpreneur-pro',
     name: 'Contentpreneur Pro Bundle',
     shortName: 'Pro Bundle',
-    description: 'The complete system: Everything you need from mindset to monetization. Save $23!',
-    priceCents: 14700,
-    originalPriceCents: 17000,
+    description: 'The complete system: Everything you need from mindset to monetization. Save R400!',
+    priceCents: 129900, // R1,299.00
+    originalPriceCents: 169900, // R1,699.00
     icon: '👑',
     imageUrl: PRODUCT_IMAGES.proBundle,
     color: 'gold',
@@ -190,8 +189,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: '1:1 Strategy Call',
     shortName: 'Strategy Call',
     description: '60-minute personalized strategy session with Mr. NoChill. From bathroom floors to boardrooms - get the same frameworks that built 3M+ followers.',
-    priceCents: 49700,
-    originalPriceCents: 99700,
+    priceCents: 499900, // R4,999.00
+    originalPriceCents: 999900, // R9,999.00
     icon: '📞',
     color: 'rose',
     category: 'service',
@@ -209,8 +208,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Contentpreneur Guide (eBook + Print)',
     shortName: 'Contentpreneur Book',
     description: 'The definitive guide to building a profitable content business. Available as eBook and physical book with free SA shipping.',
-    priceCents: 2700,
-    originalPriceCents: 4700,
+    priceCents: 29900, // R299.00
+    originalPriceCents: 49900, // R499.00
     icon: '📚',
     imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
@@ -229,8 +228,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Content Arsenal Expansion Pack',
     shortName: 'Content Arsenal',
     description: '100+ templates, swipe files, and tools to streamline your content creation workflow.',
-    priceCents: 3700,
-    originalPriceCents: 9700,
+    priceCents: 39900, // R399.00
+    originalPriceCents: 89900, // R899.00
     icon: '🛠️',
     imageUrl: PRODUCT_IMAGES.starterKit,
     color: 'cyan',
@@ -250,8 +249,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Contentpreneur Guide (eBook)',
     shortName: 'Contentpreneur eBook',
     description: 'The definitive digital guide to building a profitable content business. Instant download.',
-    priceCents: 1900,
-    originalPriceCents: 2700,
+    priceCents: 24900, // R249.00
+    originalPriceCents: 29900, // R299.00
     icon: '📱',
     imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
@@ -272,8 +271,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'Contentpreneur (Ebook + Hardcopy)',
     shortName: 'Contentpreneur Book',
     description: 'Physical book delivered to your door + digital eBook copy. Free shipping within South Africa.',
-    priceCents: 3700,
-    originalPriceCents: 4700,
+    priceCents: 39900, // R399.00
+    originalPriceCents: 49900, // R499.00
     icon: '📚',
     imageUrl: PRODUCT_IMAGES.contentpreneurBook,
     color: 'indigo',
@@ -317,15 +316,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'starter-kit': [
     {
       key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      savings: '40% OFF',
       headline: "Add The Influencer's Code",
       description: 'The bestselling eBook with 14 chapters on content monetization',
     },
     {
       key: 'tax-guide',
-      discountedPrice: 2900,
-      savings: '38% OFF',
+      discountedPrice: 29900, // R299
+      savings: '33% OFF',
       headline: 'Add Tax Guide for Contentpreneurs',
       description: 'Essential tax strategies for South African creators',
     },
@@ -333,15 +332,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'influencers-code': [
     {
       key: 'paids-workbook',
-      discountedPrice: 1200,
-      savings: '29% OFF',
+      discountedPrice: 14900, // R149
+      savings: '25% OFF',
       headline: 'Add PAIDS Framework Workbook',
       description: 'Turn the concepts into action with this implementation guide',
     },
     {
       key: 'niche-finder',
-      discountedPrice: 1200,
-      savings: '29% OFF',
+      discountedPrice: 14900, // R149
+      savings: '25% OFF',
       headline: 'Add Niche Finder Workbook',
       description: 'Discover your profitable niche in 90 minutes',
     },
@@ -349,15 +348,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'niche-finder': [
     {
       key: 'paids-workbook',
-      discountedPrice: 1200,
-      savings: '29% OFF',
+      discountedPrice: 14900, // R149
+      savings: '25% OFF',
       headline: 'Add PAIDS Framework',
       description: 'Found your niche? Now monetize it with 5 income streams',
     },
     {
       key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      savings: '40% OFF',
       headline: "Add The Influencer's Code",
       description: 'The complete guide to content monetization',
     },
@@ -365,15 +364,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'paids-workbook': [
     {
       key: 'niche-finder',
-      discountedPrice: 1200,
-      savings: '29% OFF',
+      discountedPrice: 14900, // R149
+      savings: '25% OFF',
       headline: 'Add Niche Finder',
       description: 'Perfect pair - find your niche then monetize it',
     },
     {
       key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      savings: '40% OFF',
       headline: "Add The Influencer's Code",
       description: '14 chapters on building influence and income',
     },
@@ -381,15 +380,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'tax-guide': [
     {
       key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      savings: '40% OFF',
       headline: "Add The Influencer's Code",
       description: 'Learn how to maximize your creator income',
     },
     {
       key: 'content-arsenal',
-      discountedPrice: 2700,
-      savings: '27% OFF',
+      discountedPrice: 29900, // R299
+      savings: '25% OFF',
       headline: 'Add Content Arsenal',
       description: '100+ templates to streamline your workflow',
     },
@@ -397,8 +396,8 @@ export const ORDER_BUMPS: Record<string, Array<{
   'content-foundations': [
     {
       key: 'starter-kit',
-      discountedPrice: 3000,
-      savings: 'Save $37',
+      discountedPrice: 34900, // R349
+      savings: 'Save R350',
       headline: 'Upgrade to Full Starter Kit',
       description: 'Get all 9 modules + bonus workbooks + tool stack',
     },
@@ -406,8 +405,8 @@ export const ORDER_BUMPS: Record<string, Array<{
   'contentpreneur-book-ebook': [
     {
       key: 'content-arsenal',
-      discountedPrice: 2700,
-      savings: '27% OFF',
+      discountedPrice: 29900, // R299
+      savings: '25% OFF',
       headline: 'Add Content Arsenal',
       description: '100+ templates to implement what you learn',
     },
@@ -415,8 +414,8 @@ export const ORDER_BUMPS: Record<string, Array<{
   'contentpreneur-book-hardcopy': [
     {
       key: 'content-arsenal',
-      discountedPrice: 2700,
-      savings: '27% OFF',
+      discountedPrice: 29900, // R299
+      savings: '25% OFF',
       headline: 'Add Content Arsenal',
       description: '100+ templates to implement what you learn',
     },
@@ -424,15 +423,15 @@ export const ORDER_BUMPS: Record<string, Array<{
   'content-arsenal': [
     {
       key: 'influencers-code',
-      discountedPrice: 1200,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      savings: '40% OFF',
       headline: "Add The Influencer's Code",
       description: 'The strategy behind the templates',
     },
     {
       key: 'starter-kit',
-      discountedPrice: 4700,
-      savings: '30% OFF',
+      discountedPrice: 49900, // R499
+      savings: '29% OFF',
       headline: 'Add Starter Kit Course',
       description: 'Complete video training to use these tools',
     },
@@ -454,9 +453,9 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       key: 'influencers-code',
       headline: "Special Offer: The Influencer's Code",
       subheadline: 'The perfect companion to your course - 14 chapters on monetization',
-      discountedPrice: 1200,
-      originalPrice: 1900,
-      savings: '37% OFF',
+      discountedPrice: 14900, // R149
+      originalPrice: 24900, // R249
+      savings: '40% OFF',
       urgency: 'One-time offer for new students',
     },
   ],
@@ -465,9 +464,9 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       key: 'starter-kit',
       headline: 'Upgrade: Get the Full Video Course',
       subheadline: 'Put what you learned into action with 9 video modules',
-      discountedPrice: 4700,
-      originalPrice: 6700,
-      savings: '30% OFF',
+      discountedPrice: 49900, // R499
+      originalPrice: 69900, // R699
+      savings: '29% OFF',
       urgency: 'Reader-only discount',
     },
   ],
@@ -476,9 +475,9 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       key: 'starter-kit',
       headline: 'Ready for the Full System?',
       subheadline: 'Get the complete course to build your personal brand',
-      discountedPrice: 4700,
-      originalPrice: 6700,
-      savings: '30% OFF',
+      discountedPrice: 49900, // R499
+      originalPrice: 69900, // R699
+      savings: '29% OFF',
     },
   ],
   'paids-workbook': [
@@ -486,9 +485,9 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       key: 'starter-kit',
       headline: 'Ready for the Full System?',
       subheadline: 'Get the complete course to build your personal brand',
-      discountedPrice: 4700,
-      originalPrice: 6700,
-      savings: '30% OFF',
+      discountedPrice: 49900, // R499
+      originalPrice: 69900, // R699
+      savings: '29% OFF',
     },
   ],
   'tax-guide': [
@@ -496,16 +495,16 @@ export const POST_PURCHASE_UPSELLS: Record<string, Array<{
       key: 'starter-kit',
       headline: 'Now Build Your Income',
       subheadline: 'The complete system to generate income worth taxing',
-      discountedPrice: 4700,
-      originalPrice: 6700,
-      savings: '30% OFF',
+      discountedPrice: 49900, // R499
+      originalPrice: 69900, // R699
+      savings: '29% OFF',
     },
   ],
 };
 
 // Upgrade paths
 export const UPGRADE_PATHS: Record<string, { to: string; price: number; savings: number }> = {
-  'content-foundations': { to: 'starter-kit', price: 3000, savings: 3700 },
+  'content-foundations': { to: 'starter-kit', price: 34900, savings: 35000 }, // R349 upgrade, save R350
 };
 
 // Tool Stack with affiliate links - Complete NoChill Contentpreneur Tool Stack
@@ -601,7 +600,7 @@ export function getProductShortName(key: string): string {
 }
 
 export function formatPrice(cents: number): string {
-  return `$${(cents / 100).toFixed(0)}`;
+  return `R${(cents / 100).toFixed(0)}`;
 }
 
 export function getProductsFromBundle(key: string): string[] {

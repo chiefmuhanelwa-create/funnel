@@ -98,8 +98,8 @@ export default function CoachingProduct() {
               </div>
 
               <div className="mt-10 flex items-center justify-center gap-4">
-                <span className="text-5xl font-bold text-gradient-gold">$497</span>
-                <span className="text-xl text-gray-400 line-through">$997</span>
+                <span className="text-5xl font-bold text-gradient-gold">R4,999</span>
+                <span className="text-xl text-gray-400 line-through">R9,999</span>
                 <span className="badge badge-success">50% OFF</span>
               </div>
 
@@ -514,8 +514,8 @@ export default function CoachingProduct() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$497</span>
-              <span className="text-xl text-gray-400 line-through">$997</span>
+              <span className="text-5xl font-bold text-gradient-gold">R4,999</span>
+              <span className="text-xl text-gray-400 line-through">R9,999</span>
             </div>
 
             <Link

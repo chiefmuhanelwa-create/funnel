@@ -36,8 +36,7 @@ export default function CheckoutStarterKit() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  // Current rate ~16.93 ZAR/USD (March 2026), fallback slightly higher for volatility
-  const [exchangeRate, setExchangeRate] = useState(18.00);
+  // All prices now in ZAR - no conversion needed
 
   // Discount code state
   const [discountCode, setDiscountCode] = useState('');
@@ -56,38 +55,32 @@ export default function CheckoutStarterKit() {
   const mainProduct = {
     key: 'starter-kit',
     name: 'Contentpreneur Starter Kit',
-    price: 6700, // $67 in cents
+    price: 69900, // R699 in cents
   };
 
   const orderBumps: OrderBump[] = [
     {
       key: 'influencers-code',
       name: "The Influencer's Code (eBook)",
-      price: 1200,
-      description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers. Normally $19, yours for just $12 today.',
+      price: 14900, // R149
+      description: 'Bestselling eBook with 6,000+ copies sold. Learn the secrets of successful influencers. Normally R249, yours for just R149 today.',
       imageUrl: PRODUCT_IMAGES.influencersCode,
     },
     {
       key: 'content-foundations',
       name: 'Content Foundations Course',
-      price: 1700,
-      description: '3-module video course: Self Reflection, SWOT Analysis, and Value Alignment. Build your content strategy foundation. Normally $37, yours for just $17 today.',
+      price: 29900, // R299
+      description: '3-module video course: Self Reflection, SWOT Analysis, and Value Alignment. Build your content strategy foundation. Normally R399, yours for just R299 today.',
       imageUrl: PRODUCT_IMAGES.contentFoundations,
     },
   ];
 
   useEffect(() => {
-    // Fetch exchange rate
-    fetch('/api/exchange-rate')
-      .then((res) => res.json())
-      .then((data) => setExchangeRate(data.rate))
-      .catch(() => console.log('Using fallback exchange rate'));
-
     // Track checkout started
     analytics.beginCheckout({
-      value: mainProduct.price,
-      currency: 'USD',
-      items: [{ item_id: mainProduct.key, item_name: mainProduct.name, price: mainProduct.price }],
+      value: mainProduct.price / 100,
+      currency: 'ZAR',
+      items: [{ item_id: mainProduct.key, item_name: mainProduct.name, price: mainProduct.price / 100 }],
     });
   }, []);
 
@@ -158,9 +151,8 @@ export default function CheckoutStarterKit() {
     setDiscountCode('');
   };
 
-  const subtotalUSD = calculateSubtotal();
-  const totalUSD = calculateTotal();
-  const totalZAR = Math.round(totalUSD * exchangeRate);
+  const subtotalZAR = calculateSubtotal();
+  const totalZAR = calculateTotal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +161,7 @@ export default function CheckoutStarterKit() {
 
     try {
       // Track payment info added
-      analytics.addPaymentInfo({ value: totalUSD, currency: 'USD' });
+      analytics.addPaymentInfo({ value: totalZAR / 100, currency: 'ZAR' });
 
       const response = await fetch('/api/checkout/create-session', {
         method: 'POST',
@@ -289,8 +281,8 @@ export default function CheckoutStarterKit() {
                   {appliedDiscount && (
                     <div className="mt-2 flex items-center gap-2 text-sm text-green-400">
                       <CheckCircle size={16} />
-                      Code <strong>{appliedDiscount.code}</strong> applied! Saving $
-                      {(appliedDiscount.discount_amount / 100).toFixed(2)}
+                      Code <strong>{appliedDiscount.code}</strong> applied! Saving R
+                      {(appliedDiscount.discount_amount / 100).toFixed(0)}
                     </div>
                   )}
                 </div>
@@ -337,7 +329,7 @@ export default function CheckoutStarterKit() {
                             <div className="flex items-center justify-between">
                               <span className="font-medium text-gray-900">{bump.name}</span>
                               <span className="font-semibold text-gold-500">
-                                +${(bump.price / 100).toFixed(0)}
+                                +R{(bump.price / 100).toFixed(0)}
                               </span>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">{bump.description}</p>
@@ -407,7 +399,7 @@ export default function CheckoutStarterKit() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">{mainProduct.name}</span>
-                  <span className="font-medium text-gray-900">${(mainProduct.price / 100).toFixed(0)}</span>
+                  <span className="font-medium text-gray-900">R{(mainProduct.price / 100).toFixed(0)}</span>
                 </div>
 
                 {selectedBumps.map((key) => {
@@ -416,7 +408,7 @@ export default function CheckoutStarterKit() {
                   return (
                     <div key={key} className="flex justify-between text-sm">
                       <span className="text-gray-500">{bump.name}</span>
-                      <span className="font-medium text-gray-600">${(bump.price / 100).toFixed(0)}</span>
+                      <span className="font-medium text-gray-600">R{(bump.price / 100).toFixed(0)}</span>
                     </div>
                   );
                 })}
@@ -426,7 +418,7 @@ export default function CheckoutStarterKit() {
                     <div className="divider my-3" />
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Subtotal</span>
-                      <span className="font-medium text-gray-600">${(subtotalUSD / 100).toFixed(0)}</span>
+                      <span className="font-medium text-gray-600">R{(subtotalZAR / 100).toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-green-400">
                       <span>
@@ -434,7 +426,7 @@ export default function CheckoutStarterKit() {
                         {appliedDiscount.discount_type === 'percentage' &&
                           ` (${appliedDiscount.discount_value}%)`}
                       </span>
-                      <span>-${(appliedDiscount.discount_amount / 100).toFixed(2)}</span>
+                      <span>-R{(appliedDiscount.discount_amount / 100).toFixed(0)}</span>
                     </div>
                   </>
                 )}
@@ -444,10 +436,7 @@ export default function CheckoutStarterKit() {
                 <div className="flex justify-between text-lg font-bold">
                   <span className="text-gray-900">Total</span>
                   <div className="text-right">
-                    <div className="text-gradient-gold">${(totalUSD / 100).toFixed(0)}</div>
-                    <div className="text-sm font-normal text-gray-400">
-                      ≈ R{(totalZAR / 100).toFixed(2)}
-                    </div>
+                    <div className="text-gradient-gold">R{(totalZAR / 100).toFixed(0)}</div>
                   </div>
                 </div>
               </div>
@@ -491,7 +480,7 @@ export default function CheckoutStarterKit() {
       <MobileCTA
         ctaText="Get Started Now"
         ctaLink="/checkout/starter-kit"
-        price="$67"
+        price="R699"
         urgencyText="Special pricing ends soon"
       />
     </div>

@@ -5,22 +5,22 @@ import { Link } from 'react-router-dom';
 const VALUE_ITEMS = [
   {
     name: '9-Module Contentpreneur Course',
-    value: 297,
+    value: 2999,
     description: 'Complete personal branding & monetization system',
   },
   {
     name: 'PAIDS Monetization Workbook',
-    value: 47,
+    value: 499,
     description: 'Build your 5 income streams step-by-step',
   },
   {
     name: 'Niche Clarity Workbook',
-    value: 37,
+    value: 399,
     description: 'Find your profitable niche in 30 minutes',
   },
   {
     name: 'Creator Tool Stack',
-    value: 27,
+    value: 299,
     description: 'The exact tools I use daily',
   },
   {
@@ -92,7 +92,7 @@ export default function ValueStackSection() {
                   {item.isFree ? (
                     <span className="text-amber-600 font-bold">FREE</span>
                   ) : (
-                    <span className="text-gray-400 line-through">${item.value}</span>
+                    <span className="text-gray-400 line-through">R{item.value.toLocaleString()}</span>
                   )}
                 </div>
               </motion.div>
@@ -103,14 +103,14 @@ export default function ValueStackSection() {
           <div className="border-t-2 border-dashed border-amber-300 pt-6 mb-8">
             <div className="flex items-center justify-between mb-4">
               <span className="text-lg font-semibold text-gray-700">Total Value:</span>
-              <span className="text-2xl font-bold text-gray-400 line-through">${TOTAL_VALUE}</span>
+              <span className="text-2xl font-bold text-gray-400 line-through">R{TOTAL_VALUE.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold text-gray-900">Your Price Today:</span>
               <div className="flex items-center gap-3">
-                <span className="text-4xl md:text-5xl font-black text-amber-600 drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]">$67</span>
+                <span className="text-4xl md:text-5xl font-black text-amber-600 drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]">R699</span>
                 <span className="bg-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-[0_0_15px_rgba(251,191,36,0.4)]">
-                  SAVE {Math.round((1 - 67/TOTAL_VALUE) * 100)}%
+                  SAVE {Math.round((1 - 699/TOTAL_VALUE) * 100)}%
                 </span>
               </div>
             </div>

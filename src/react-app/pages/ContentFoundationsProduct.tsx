@@ -62,8 +62,8 @@ export default function ContentFoundationsProduct() {
               </div>
 
               <div className="mt-10 flex items-baseline gap-4">
-                <span className="text-5xl font-bold text-gradient-gold">$37</span>
-                <span className="text-2xl text-gray-400 line-through">$67</span>
+                <span className="text-5xl font-bold text-gradient-gold">R399</span>
+                <span className="text-2xl text-gray-400 line-through">R699</span>
                 <span className="badge badge-success">45% OFF</span>
               </div>
 
@@ -94,7 +94,7 @@ export default function ContentFoundationsProduct() {
                   <Link to="/contentpreneur-starter-kit" className="text-gold-500 underline hover:text-gold-400">
                     Contentpreneur Starter Kit
                   </Link>{' '}
-                  (9 modules) for just $30 more at checkout.
+                  (9 modules) for just R349 more at checkout.
                 </p>
               </div>
             </motion.div>
@@ -311,7 +311,7 @@ export default function ContentFoundationsProduct() {
             <div className="glass-card p-8">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Content Foundations</h3>
               <p className="text-gray-500 mb-4">Perfect for beginners</p>
-              <div className="text-3xl font-bold text-gradient-gold mb-6">$37</div>
+              <div className="text-3xl font-bold text-gradient-gold mb-6">R399</div>
               <ul className="space-y-3 mb-8">
                 {['3 Video Modules', 'Self Reflection Workshop', 'SWOT Analysis Template', 'Value Alignment Exercise', 'Lifetime Access'].map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
@@ -332,7 +332,7 @@ export default function ContentFoundationsProduct() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Contentpreneur Starter Kit</h3>
               <p className="text-gray-500 mb-4">Complete system</p>
-              <div className="text-3xl font-bold text-gradient-gold mb-6">$67</div>
+              <div className="text-3xl font-bold text-gradient-gold mb-6">R699</div>
               <ul className="space-y-3 mb-8">
                 {['9 Video Modules + Intro', 'Everything in Foundations', 'PAIDS Framework Workbook', 'Niche Finder Workbook', 'NoChill Tool Stack Access', 'Lifetime Access + Updates'].map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-600 text-sm">
@@ -368,8 +368,8 @@ export default function ContentFoundationsProduct() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$37</span>
-              <span className="text-2xl text-gray-400 line-through">$67</span>
+              <span className="text-5xl font-bold text-gradient-gold">R399</span>
+              <span className="text-2xl text-gray-400 line-through">R699</span>
             </div>
 
             <Link

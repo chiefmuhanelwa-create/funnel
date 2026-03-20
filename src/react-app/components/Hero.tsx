@@ -95,7 +95,7 @@ export default function Hero() {
                 Start Building Your 5 Income Streams
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <span className="text-amber-400 font-bold text-lg drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">Just $67</span>
+              <span className="text-amber-400 font-bold text-lg drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">Just R699</span>
             </div>
 
             {/* Trust Indicators */}
@@ -196,7 +196,7 @@ export default function Hero() {
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <div className="flex flex-col">
-                <span className="text-2xl font-black text-gray-900">$67</span>
+                <span className="text-2xl font-black text-gray-900">R699</span>
                 <span className="text-sm text-gray-500">One-time payment</span>
               </div>
             </div>

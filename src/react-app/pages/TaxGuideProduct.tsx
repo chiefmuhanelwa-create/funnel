@@ -63,8 +63,8 @@ export default function TaxGuideProduct() {
               </div>
 
               <div className="mt-10 flex items-baseline gap-4">
-                <span className="text-5xl font-bold text-gradient-gold">$47</span>
-                <span className="text-2xl text-gray-400 line-through">$97</span>
+                <span className="text-5xl font-bold text-gradient-gold">R449</span>
+                <span className="text-2xl text-gray-400 line-through">R899</span>
                 <span className="badge badge-success">52% OFF</span>
               </div>
 
@@ -285,8 +285,8 @@ export default function TaxGuideProduct() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$47</span>
-              <span className="text-2xl text-gray-400 line-through">$97</span>
+              <span className="text-5xl font-bold text-gradient-gold">R449</span>
+              <span className="text-2xl text-gray-400 line-through">R899</span>
             </div>
 
             <Link

@@ -83,8 +83,8 @@ export default function ContentpreneurBookProduct() {
 
               <div className="mt-10">
                 <div className="flex items-baseline gap-4 mb-4">
-                  <span className="text-5xl font-bold text-gradient-gold">$27</span>
-                  <span className="text-2xl text-gray-400 line-through">$47</span>
+                  <span className="text-5xl font-bold text-gradient-gold">R299</span>
+                  <span className="text-2xl text-gray-400 line-through">R499</span>
                   <span className="badge badge-success">43% OFF</span>
                 </div>
                 <p className="text-sm text-gray-500">
@@ -370,8 +370,8 @@ export default function ContentpreneurBookProduct() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="text-5xl font-bold text-gradient-gold">$27</span>
-              <span className="text-2xl text-gray-400 line-through">$47</span>
+              <span className="text-5xl font-bold text-gradient-gold">R299</span>
+              <span className="text-2xl text-gray-400 line-through">R499</span>
             </div>
 
             <Link

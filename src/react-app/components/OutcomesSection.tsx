@@ -87,7 +87,7 @@ export default function OutcomesSection() {
             Start Building Today
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <p className="mt-3 text-sm text-gray-500">Get instant access for just $67</p>
+          <p className="mt-3 text-sm text-gray-500">Get instant access for just R699</p>
         </motion.div>
       </div>
     </section>

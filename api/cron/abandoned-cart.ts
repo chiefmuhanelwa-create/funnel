@@ -5,12 +5,12 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const PRODUCTS: Record<string, { name: string; price: string; url: string }> = {
-  'starter-kit': { name: 'Contentpreneur Starter Kit', price: '$67', url: '/contentpreneur-starter-kit' },
-  'influencers-code': { name: "The Influencer's Code", price: '$19', url: '/checkout/influencers-code' },
-  'niche-finder': { name: 'Niche Finder Workbook', price: '$17', url: '/checkout/niche-finder' },
-  'paids-workbook': { name: 'PAIDS Framework Workbook', price: '$17', url: '/checkout/paids-workbook' },
-  'tax-guide': { name: 'Tax Guide for Contentpreneurs', price: '$47', url: '/checkout/tax-guide' },
-  'content-foundations': { name: 'Content Foundations Course', price: '$37', url: '/checkout/content-foundations' },
+  'starter-kit': { name: 'Contentpreneur Starter Kit', price: 'R699', url: '/contentpreneur-starter-kit' },
+  'influencers-code': { name: "The Influencer's Code", price: 'R249', url: '/checkout/influencers-code' },
+  'niche-finder': { name: 'Niche Finder Workbook', price: 'R199', url: '/checkout/niche-finder' },
+  'paids-workbook': { name: 'PAIDS Framework Workbook', price: 'R199', url: '/checkout/paids-workbook' },
+  'tax-guide': { name: 'Tax Guide for Contentpreneurs', price: 'R449', url: '/checkout/tax-guide' },
+  'content-foundations': { name: 'Content Foundations Course', price: 'R399', url: '/checkout/content-foundations' },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

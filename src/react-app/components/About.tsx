@@ -218,7 +218,7 @@ export default function About() {
               </Link>
 
               <p className="mt-4 text-gray-500">
-                Get the full system for $67 — Instant Access
+                Get the full system for R699 — Instant Access
               </p>
             </div>
           </div>

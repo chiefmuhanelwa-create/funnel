@@ -221,8 +221,8 @@ export default function TaxTools() {
               </div>
 
               <div className="flex items-center justify-center gap-3 mb-6">
-                <span className="text-3xl font-bold text-emerald-600">$47</span>
-                <span className="text-lg text-gray-400 line-through">$97</span>
+                <span className="text-3xl font-bold text-emerald-600">R449</span>
+                <span className="text-lg text-gray-400 line-through">R899</span>
                 <span className="px-2 py-1 text-xs font-bold text-white bg-emerald-500 rounded">52% OFF</span>
               </div>
 
