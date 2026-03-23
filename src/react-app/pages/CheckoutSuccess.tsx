@@ -127,7 +127,7 @@ export default function CheckoutSuccess() {
           <h2 className="mt-4 text-2xl font-bold text-gray-900">Payment Processing</h2>
           <p className="mt-2 text-gray-500">
             Your payment is still being processed. You'll receive an email confirmation once
-            it's complete.
+            it's complete. Check your spam or promotions folder if you don't see it.
           </p>
           {orderDetails && (
             <p className="mt-4 text-sm text-gray-400">
@@ -189,6 +189,9 @@ export default function CheckoutSuccess() {
           <p className="text-sm text-gray-400">
             A confirmation email has been sent to your inbox with login instructions.
           </p>
+          <p className="text-xs text-gray-400 mt-2">
+            Can't find it? Check your spam or promotions folder.
+          </p>
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-200">
@@ -198,7 +201,7 @@ export default function CheckoutSuccess() {
               <span className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-sm font-bold mr-3 shrink-0">
                 1
               </span>
-              Check your email for your order confirmation
+              Check your email for your order confirmation (check spam/promotions if not in inbox)
             </li>
             <li className="flex items-start">
               <span className="w-6 h-6 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-sm font-bold mr-3 shrink-0">
