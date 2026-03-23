@@ -452,7 +452,42 @@ async function sendOrderEmail(params: {
 </html>
   `;
 
-  const subject = `🎉 Order Confirmed - ${orderNumber}`;
+  // Clean subject line (fewer emojis = less spam-like)
+  const subject = `Order Confirmed - ${orderNumber}`;
+
+  // Generate plain text version for better deliverability
+  const productNames = purchasedProducts.map(k => PRODUCTS[k]?.name || k).join(', ');
+  const textContent = `
+Payment Confirmed - Order ${orderNumber}
+
+Hi ${customerName || 'there'},
+
+Thank you for your purchase! Your order has been confirmed.
+
+Order Number: ${orderNumber}
+Total Paid: ${formattedAmount}
+
+What You Purchased:
+${productNames}
+
+Access your content here: ${appUrl}/members
+
+How to Login:
+1. Go to ${appUrl}/members
+2. Enter your email: ${customerEmail}
+3. Click "Access My Content"
+
+Questions? Reply to this email or contact info@nochill.co.za
+
+Best regards,
+The Contentpreneur Hub Team
+
+---
+NOCHILL PTY LTD
+Johannesburg, South Africa
+
+To unsubscribe: ${appUrl}/unsubscribe?email=${encodeURIComponent(customerEmail)}
+  `.trim();
 
   // Store email in database for admin viewing
   try {
@@ -493,11 +528,24 @@ async function sendOrderEmail(params: {
       console.log('[EMAIL] Skipped - Resend not configured');
       return;
     }
+
+    // Send with spam-reduction best practices
     await resend.emails.send({
       from: 'Contentpreneur Hub <orders@contentpreneurhub.online>',
+      replyTo: 'info@nochill.co.za',
       to: customerEmail,
       subject,
       html: emailHtml,
+      text: textContent, // Plain text version improves deliverability
+      headers: {
+        // List-Unsubscribe header (required by Gmail since Feb 2024)
+        'List-Unsubscribe': `<${appUrl}/unsubscribe?email=${encodeURIComponent(customerEmail)}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      tags: [
+        { name: 'type', value: 'order_confirmation' },
+        { name: 'order', value: orderNumber },
+      ],
     });
     console.log('[EMAIL] Sent to:', customerEmail);
   } catch (err) {

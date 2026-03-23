@@ -171,11 +171,42 @@ async function sendLeadMagnetEmail(email: string, firstName: string, leadMagnet:
     ? `Thank you for requesting access to the <strong>${config.name}</strong>! Click below to start using the tool immediately.`
     : `Thank you for downloading the <strong>${config.name}</strong>! This resource is going to help you take the next step in your contentpreneur journey.`;
 
+  // Plain text version for better deliverability
+  const textContent = `
+${heading}
+
+Hi ${firstName || 'there'},
+
+${isExternalTool ? `Thank you for requesting access to the ${config.name}!` : `Thank you for downloading the ${config.name}!`}
+
+${isExternalTool ? `Access the tool here: ${config.externalTool}` : `Download here: ${config.downloadUrl}`}
+
+${config.upsell}
+Check it out: ${appUrl}${config.upsellUrl}
+
+To your success,
+Mr. NoChill
+
+---
+NOCHILL PTY LTD | Johannesburg, South Africa
+Unsubscribe: ${appUrl}/unsubscribe?email=${encodeURIComponent(email)}
+  `.trim();
+
   try {
     await resend.emails.send({
       from: 'Contentpreneur Hub <hello@contentpreneurhub.online>',
+      replyTo: 'info@nochill.co.za',
       to: email,
-      subject: `${config.icon} Your ${config.name} is ready!`,
+      subject: `Your ${config.name} is ready`,
+      text: textContent,
+      headers: {
+        'List-Unsubscribe': `<${appUrl}/unsubscribe?email=${encodeURIComponent(email)}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      tags: [
+        { name: 'type', value: 'lead_magnet' },
+        { name: 'resource', value: leadMagnet },
+      ],
       html: `
 <!DOCTYPE html>
 <html>
