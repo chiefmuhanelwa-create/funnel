@@ -300,39 +300,56 @@ async function sendOrderEmail(params: {
 
     productListHtml += `
       <div style="background: #f9fafb; border-radius: 12px; padding: 20px; margin-bottom: 16px; border-left: 4px solid #f59e0b;">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <span style="font-size: 28px;">${product.icon}</span>
-          <h3 style="margin: 0; color: #111; font-size: 18px;">${product.name}</h3>
-        </div>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td style="font-size: 28px; width: 40px; vertical-align: top;">${product.icon}</td>
+            <td style="vertical-align: top;">
+              <h3 style="margin: 0; color: #111; font-size: 18px;">${product.name}</h3>
+            </td>
+          </tr>
+        </table>
     `;
 
     if (product.features && product.features.length > 0) {
-      productListHtml += `<ul style="margin: 0; padding-left: 20px; color: #444; font-size: 14px;">`;
+      productListHtml += `<ul style="margin: 12px 0 0 0; padding-left: 20px; color: #444; font-size: 14px;">`;
       for (const feature of product.features) {
         productListHtml += `<li style="margin: 6px 0;">✓ ${feature}</li>`;
       }
       productListHtml += `</ul>`;
     }
 
-    // Add direct access/download link for each product
-    productListHtml += `<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">`;
+    // Add download/access buttons using table layout for email compatibility
+    productListHtml += `<table cellpadding="0" cellspacing="0" border="0" style="margin-top: 16px;"><tr>`;
 
-    // If it's a downloadable PDF, add download button
+    // If it's a downloadable PDF, add prominent download button
     if (product.isDownload && product.downloadUrl) {
       productListHtml += `
-          <a href="${product.downloadUrl}" style="display: inline-block; background: #10b981; color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px;">
-            📥 Download PDF
+        <td style="padding-right: 10px;">
+          <a href="${product.downloadUrl}" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px;">
+            📥 DOWNLOAD PDF
           </a>
+        </td>
       `;
     }
 
-    // Always add access link
+    // Access link
     productListHtml += `
-          <a href="${accessUrl}" style="display: inline-block; background: #f59e0b; color: #000; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px;">
-            Access ${product.name} →
+        <td>
+          <a href="${accessUrl}" style="display: inline-block; background: #f59e0b; color: #000000; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px;">
+            View in Members Area →
           </a>
-        </div>
+        </td>
+      </tr></table>
     `;
+
+    // Add plain text download link as backup for email clients that strip buttons
+    if (product.isDownload && product.downloadUrl) {
+      productListHtml += `
+        <p style="margin: 12px 0 0 0; font-size: 13px; color: #666;">
+          📎 Direct download link: <a href="${product.downloadUrl}" style="color: #10b981; font-weight: 600;">${product.downloadUrl.split('/').pop()}</a>
+        </p>
+      `;
+    }
 
     productListHtml += `</div>`;
   }
@@ -343,26 +360,33 @@ async function sendOrderEmail(params: {
     productListHtml += `
       <div style="background: #ecfdf5; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
         <p style="margin: 0 0 10px; font-weight: 600; color: #065f46;">🎁 Bonus - Included with your purchase:</p>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
     `;
     for (const key of bundledProducts) {
       const product = PRODUCTS[key];
       if (product) {
         productListHtml += `
-          <div style="margin: 8px 0; display: flex; align-items: center; gap: 10px;">
-            <span>${product.icon} ${product.name}</span>
+          <tr>
+            <td style="padding: 8px 0; vertical-align: middle;">
+              <span style="font-size: 16px;">${product.icon} ${product.name}</span>
+            </td>
         `;
         // Add download link for PDFs
         if (product.isDownload && product.downloadUrl) {
           productListHtml += `
-            <a href="${product.downloadUrl}" style="background: #10b981; color: #fff; padding: 4px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: 600;">
-              Download
-            </a>
+            <td style="padding: 8px 0; text-align: right; vertical-align: middle;">
+              <a href="${product.downloadUrl}" style="background: #10b981; color: #ffffff; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: 600;">
+                📥 Download
+              </a>
+            </td>
           `;
+        } else {
+          productListHtml += `<td></td>`;
         }
-        productListHtml += `</div>`;
+        productListHtml += `</tr>`;
       }
     }
-    productListHtml += `</div>`;
+    productListHtml += `</table></div>`;
   }
 
   const emailHtml = `
