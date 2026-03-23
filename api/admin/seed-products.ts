@@ -36,15 +36,15 @@ const PRODUCTS_TO_SEED = [
   },
   {
     product_key: 'niche-finder',
-    name: 'Niche Finder Workbook',
-    description: 'Step-by-step PDF workbook to discover your profitable content niche in 90 minutes.',
-    price_cents: 19900, // R199.00
+    name: 'Niche Clarity Workbook',
+    description: 'The guided workbook that finds your niche from what you\'ve already lived. 7 steps. 90 minutes.',
+    price_cents: 19700, // R197.00
   },
   {
     product_key: 'paids-workbook',
     name: 'PAIDS Framework Workbook',
     description: 'Master the PAIDS monetization framework to build 5 income streams.',
-    price_cents: 19900, // R199.00
+    price_cents: 29700, // R297.00
   },
   {
     product_key: 'contentpreneur-pro',
@@ -123,11 +123,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const existingKeys = new Set(existingProducts.map((p: any) => p.product_key));
 
     let seeded = 0;
-    let skipped = 0;
+    let updated = 0;
 
     for (const product of PRODUCTS_TO_SEED) {
       if (existingKeys.has(product.product_key)) {
-        skipped++;
+        // Update existing product with correct price and details
+        await sql`
+          UPDATE products
+          SET name = ${product.name},
+              description = ${product.description},
+              price_cents = ${product.price_cents},
+              is_active = true
+          WHERE product_key = ${product.product_key}
+        `;
+        updated++;
         continue;
       }
 
@@ -143,7 +152,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({
       success: true,
-      message: `Seeded ${seeded} products, ${skipped} already existed`,
+      message: `Seeded ${seeded} new products, updated ${updated} existing products with correct prices`,
       products: allProducts,
     });
   } catch (error: any) {

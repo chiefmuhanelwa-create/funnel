@@ -1,14 +1,15 @@
 -- Migration: Seed Products
 -- Created: 2024-01-24
 -- Description: Seeds initial products data
+-- IMPORTANT: All prices are in ZAR CENTS (e.g., 69900 = R699.00)
 
 -- Insert core products
 INSERT INTO products (product_key, name, description, price_cents, is_active, level) VALUES
-  ('starter-kit', 'Contentpreneur Starter Kit', 'Complete 9-module course to launch your content creator journey. Includes the PAIDS Framework, niche finder, and monetization strategies.', 6700, 1, 'beginner'),
-  ('influencers-code', 'The Influencer''s Code', 'Comprehensive ebook revealing the secrets of successful content creators. Learn brand partnerships, audience growth, and revenue diversification.', 2700, 1, 'intermediate'),
-  ('tax-guide', 'Creator Tax Guide SA', 'Essential tax guide for South African content creators. Covers deductions, compliance, and financial planning.', 1500, 1, 'all'),
-  ('niche-finder', 'Niche Finder Workbook', 'Interactive workbook to discover your perfect content niche. Includes market research templates and competitor analysis.', 1500, 1, 'beginner'),
-  ('paids-workbook', 'PAIDS Framework Workbook', 'Hands-on workbook to implement the PAIDS content creation framework. Step-by-step exercises for each pillar.', 1500, 1, 'beginner'),
-  ('content-foundations', 'Content Foundations Masterclass', 'Deep-dive masterclass on creating content that converts. Advanced strategies for engagement and growth.', 4700, 1, 'intermediate'),
-  ('contentpreneur-pro', 'Contentpreneur Pro Bundle', 'Complete bundle with all courses, ebooks, and resources. Best value for serious content creators.', 14700, 1, 'all'),
-  ('coaching-session', '1-on-1 Coaching Session', 'Personal 60-minute coaching call to accelerate your content creator journey. Customized strategy and feedback.', 15000, 1, 'all');
+  ('starter-kit', '9-Module Personal Branding Course', 'Complete system to build and monetize your personal brand with 9 video modules, workbooks, and the NoChill Tool Stack.', 69900, 1, 'beginner'),
+  ('influencers-code', 'The Influencer''s Code', 'Bestselling eBook with 6,000+ copies sold. 14 chapters on content monetization.', 19900, 1, 'intermediate'),
+  ('tax-guide', 'Tax Guide for Contentpreneurs', 'Essential tax strategies and legal protection for South African content creators.', 44900, 1, 'all'),
+  ('niche-finder', 'Niche Clarity Workbook', 'The guided workbook that finds your niche from what you have already lived. 7 steps. 90 minutes.', 19700, 1, 'beginner'),
+  ('paids-workbook', 'PAIDS Framework Workbook', 'Master the PAIDS monetization framework to build 5 income streams.', 29700, 1, 'beginner'),
+  ('content-foundations', 'Content Foundations Course', 'Master content creation fundamentals with 3 comprehensive video modules.', 39900, 1, 'intermediate'),
+  ('contentpreneur-pro', 'Contentpreneur Pro Bundle', 'The complete system: Everything you need from mindset to monetization.', 129900, 1, 'all'),
+  ('coaching-session', '1:1 Strategy Call', '60-minute personalized strategy session with Mr. NoChill.', 499900, 1, 'all');

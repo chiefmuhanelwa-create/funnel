@@ -71,7 +71,7 @@ const PRODUCTS: Record<string, { name: string; icon: string; features?: string[]
     ],
   },
   'niche-finder': {
-    name: 'Niche Finder Workbook',
+    name: 'Niche Clarity Workbook',
     icon: '🎯',
     accessLink: '/members',
     downloadUrl: PDF_DOWNLOADS['niche-finder'],
