@@ -25,8 +25,8 @@ interface Product {
 const ALL_PRODUCTS: Product[] = [
   {
     key: 'starter-kit',
-    name: 'Contentpreneur Starter Kit',
-    description: '10-module course to build your content business',
+    name: '9-Module Personal Branding Course',
+    description: 'Complete system to build and monetize your personal brand with video modules, workbooks, and the NoChill Tool Stack.',
     icon: Play,
     link: '/members/starter-kit',
     checkoutLink: '/checkout/starter-kit',
@@ -110,12 +110,14 @@ const ALL_PRODUCTS: Product[] = [
 ];
 
 // Products shown as locked upsells if not owned
-// NOTE: starter-kit is excluded (it's the entry product)
+// All products that can be purchased should be shown as upsells
 // NOTE: content-arsenal is excluded until it's available
 const UPSELL_KEYS = [
+  'starter-kit', // 9-Module Personal Branding Course
   'influencers-code',
   'tax-guide',
   'content-foundations',
+  'paids-workbook', // PAIDS Framework Workbook
   'contentpreneur-book-hardcopy', // Combined eBook + Hardcopy product
 ];
 
