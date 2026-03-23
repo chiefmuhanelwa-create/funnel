@@ -40,8 +40,8 @@ function generateOrderNumber(): string {
 const ORDER_BUMP_PRICES: Record<string, number> = {
   'influencers-code': 14900,      // R149 (normally R199)
   'content-foundations': 29900,   // R299 (normally R399)
-  'paids-workbook': 14900,       // R149 (normally R199)
-  'niche-finder': 14900,         // R149 (normally R199)
+  'paids-workbook': 19700,       // R197 (discounted from R297 when added as bump)
+  'niche-finder': 14700,         // R147 (discounted from R197 when added as bump)
   'content-arsenal': 29900,      // R299 (normally R399)
   'starter-kit': 34900,          // R349 (as upgrade from content-foundations)
   'tax-guide': 29900,            // R299 (as add-on)

@@ -15,7 +15,7 @@ const PRODUCT_BUNDLES: Record<string, string[]> = {
 };
 
 // Products that are bundled (not sold standalone) - redirect to starter-kit
-const BUNDLED_ONLY_PRODUCTS = ['niche-finder', 'paids-workbook', 'content-arsenal'];
+const BUNDLED_ONLY_PRODUCTS = ['content-arsenal'];
 
 // Product configuration
 // IMPORTANT: All prices are in ZAR CENTS (e.g., 69900 = R699.00)
@@ -29,6 +29,24 @@ const PRODUCTS: Record<string, {
   salesPage: string;
   isPreOrder?: boolean;
 }> = {
+  'niche-finder': {
+    key: 'niche-finder',
+    name: 'Niche Finder Workbook',
+    description: 'Find your profitable content niche with this step-by-step workbook',
+    price: 19700, // R197.00
+    image: IMAGES.nicheWorkbookMockup,
+    features: ['6 Guided Exercises', 'Niche Clarity Framework', 'Audience Identification', 'Profitability Validation', 'Instant PDF Download'],
+    salesPage: '/products/niche-finder',
+  },
+  'paids-workbook': {
+    key: 'paids-workbook',
+    name: 'PAIDS Framework Workbook',
+    description: 'Build 5 income streams from your content with the PAIDS system',
+    price: 29700, // R297.00
+    image: IMAGES.paidsWorkbookMockup,
+    features: ['5 Revenue Stream Guides', 'Implementation Worksheets', 'Rate Calculator', 'Income Tracking Dashboard', 'Instant PDF Download'],
+    salesPage: '/products/paids-workbook',
+  },
   'starter-kit': {
     key: 'starter-kit',
     name: 'Contentpreneur Starter Kit',
@@ -114,6 +132,14 @@ const PRODUCTS: Record<string, {
 // Order bumps configuration - discounted prices when purchased together (ZAR cents)
 // Valid upsells: Influencer's Code, Content Foundations, Tax Guide, Contentpreneur Book, Coaching
 const ORDER_BUMPS: Record<string, { key: string; name: string; price: number; description: string }[]> = {
+  'niche-finder': [
+    { key: 'paids-workbook', name: 'PAIDS Framework Workbook', price: 19700, description: 'Complete your monetization toolkit! Learn how to build 5 income streams. Normally R297, yours for just R197 today.' },
+    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'The complete blueprint for influencer success. Normally R199, yours for just R149 today.' },
+  ],
+  'paids-workbook': [
+    { key: 'niche-finder', name: 'Niche Finder Workbook', price: 14700, description: 'Find your perfect niche first! Normally R197, yours for just R147 today.' },
+    { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'The complete blueprint for influencer success. Normally R199, yours for just R149 today.' },
+  ],
   'starter-kit': [
     { key: 'influencers-code', name: "The Influencer's Code (eBook)", price: 14900, description: 'Learn the secrets of successful influencers. Normally R199, yours for just R149 today.' },
     { key: 'content-foundations', name: 'Content Foundations Course', price: 29900, description: '3-module video course on self-reflection, SWOT analysis & value alignment. Normally R399, yours for just R299 today.' },

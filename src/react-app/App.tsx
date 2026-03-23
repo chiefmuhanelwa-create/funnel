@@ -57,6 +57,8 @@ import TaxGuideProduct from './pages/TaxGuideProduct';
 import ContentFoundationsProduct from './pages/ContentFoundationsProduct';
 import CoachingProduct from './pages/CoachingProduct';
 import ContentpreneurBookProduct from './pages/ContentpreneurBookProduct';
+import NicheFinderProduct from './pages/NicheFinderProduct';
+import PAIDSWorkbookProduct from './pages/PAIDSWorkbookProduct';
 import Consultation from './pages/Consultation';
 import FreeTools from './pages/FreeTools';
 import RateCardPro from './pages/RateCardPro';
@@ -116,6 +118,8 @@ function App() {
           <Route path="/products/content-foundations" element={<ContentFoundationsProduct />} />
           <Route path="/products/coaching" element={<CoachingProduct />} />
           <Route path="/products/contentpreneur-book" element={<ContentpreneurBookProduct />} />
+          <Route path="/products/niche-finder" element={<NicheFinderProduct />} />
+          <Route path="/products/paids-workbook" element={<PAIDSWorkbookProduct />} />
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/booking" element={<Apply />} />
