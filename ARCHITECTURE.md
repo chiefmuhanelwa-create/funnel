@@ -15,6 +15,10 @@ This document provides a comprehensive analysis of the Contentpreneur Hub funnel
 5. [Database Schema](#database-schema)
 6. [API Endpoints](#api-endpoints)
 7. [Deployment & Configuration](#deployment--configuration)
+8. [Frontend Routes](#frontend-routes)
+9. [Sales Funnel Structure](#sales-funnel-structure)
+10. [Product Catalog](#product-catalog)
+11. [File Structure](#file-structure)
 
 ---
 
@@ -22,14 +26,16 @@ This document provides a comprehensive analysis of the Contentpreneur Hub funnel
 
 ### Current State
 The platform is a **fully-functional e-commerce sales funnel** with:
-- 27 reusable React components
-- 27 pages (product, checkout, member, admin)
-- 10 digital products
-- 40+ defined routes
-- Email-based member authentication
-- Paystack payment integration
-- Analytics tracking system
+- 30+ reusable React components
+- 30+ pages (product, checkout, member, admin)
+- 12 digital products (including bundles and pre-orders)
+- 50+ defined routes
+- Email-based member authentication (magic link)
+- Paystack payment integration (ZAR currency)
+- Analytics tracking system with admin insights dashboard
 - Abandoned cart recovery (cron job)
+- Calendly booking integration for strategy calls
+- Order bumps and post-purchase upsells
 
 ### Technology Stack
 | Layer | Technology |
@@ -181,25 +187,55 @@ interface ProductShowcaseProps {
 
 ### API Endpoints
 
+#### Core Endpoints
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
 | `/api/subscribe` | POST | Newsletter/lead signup |
+| `/api/opt-in` | POST | Lead magnet opt-in with email delivery |
 | `/api/check-access` | POST | Verify member purchases |
+| `/api/progress` | GET/POST | Track member course progress |
+| `/api/consultation-request` | POST | Strategy call application submission |
+| `/api/exchange-rate` | GET | Currency conversion rates |
+| `/api/track-cart` | POST | Cart abandonment tracking |
+
+#### Authentication
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/auth/send-magic-link` | POST | Send passwordless login email |
+| `/api/auth/verify-code` | POST | Verify magic link token |
+
+#### Checkout & Payments
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
 | `/api/checkout/create` | POST | Create Paystack transaction |
 | `/api/checkout/verify` | GET | Verify payment status |
 | `/api/webhooks/paystack` | POST | Paystack webhook handler |
-| `/api/exchange-rate` | GET | USD to ZAR conversion |
-| `/api/admin/orders` | GET | Admin order listing |
-| `/api/admin/discounts` | GET/POST | Discount management |
-| `/api/analytics/track` | POST | Event tracking |
-| `/api/analytics/dashboard` | GET | Admin analytics |
-| `/api/cron/abandoned-cart` | GET | Hourly cart recovery |
+| `/api/discount/validate` | POST | Validate discount codes |
+
+#### Admin Endpoints
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/admin/orders` | GET | Order listing |
+| `/api/admin/contacts` | GET | Contact/subscriber list |
+| `/api/admin/access` | GET/POST | Member access management |
+| `/api/admin/grant-access` | POST | Manual access grant |
+| `/api/admin/repair-access` | POST | Repair broken access records |
+| `/api/admin/emails` | GET/POST | Email management |
+| `/api/admin/clear-test-data` | POST | Clear test data (dev only) |
+
+#### Analytics
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/analytics/track` | POST | Event tracking (page views, clicks) |
+| `/api/analytics/config` | GET | Analytics configuration |
+| `/api/stats/recent-purchases` | GET | Recent purchases for social proof |
 
 ### Cron Jobs
 
 | Job | Schedule | Purpose |
 |-----|----------|---------|
-| `abandoned-cart` | Hourly (`0 * * * *`) | Send recovery emails |
+| `abandoned-cart` | Hourly (`0 * * * *`) | Send cart recovery emails |
+| `email-sequences` | Every 6 hours | Process drip email sequences |
 
 ---
 
@@ -326,12 +362,81 @@ NEXT_PUBLIC_APP_URL=https://www.contentpreneurhub.online
 
 ---
 
+## Frontend Routes
+
+### Public Pages
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/` | `Home` | Landing page with value proposition |
+| `/contentpreneur-starter-kit` | `StarterKitProduct` | Main product sales page |
+| `/checkout/success` | `CheckoutSuccess` | Post-purchase confirmation |
+| `/auth/callback` | `AuthCallback` | Magic link authentication |
+
+### Product Sales Pages
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/products/influencers-code` | `InfluencersCodeProduct` | eBook sales page |
+| `/products/tax-guide` | `TaxGuideProduct` | Tax guide sales page |
+| `/products/content-foundations` | `ContentFoundationsProduct` | Course sales page |
+| `/products/coaching` | `CoachingProduct` | Strategy call sales page |
+| `/products/contentpreneur-book` | `ContentpreneurBookProduct` | Book pre-order page |
+| `/products/niche-finder` | `NicheFinderProduct` | Workbook sales page |
+| `/products/paids-workbook` | `PAIDSWorkbookProduct` | Workbook sales page |
+
+### Consultation & Application
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/consultation` | `Consultation` | Strategy call info page |
+| `/apply` | `Apply` | Strategy call application form |
+| `/booking` | `Apply` | Alias for /apply |
+
+### Free Tools & Resources
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/free` | `FreeTools` | Free tools landing |
+| `/free/:toolKey` | `FreeTools` | Specific free tool |
+| `/tools/ratecard` | `RateCardPro` | Rate card calculator |
+| `/tools/tax` | `TaxTools` | Tax estimation tool |
+| `/lp/:leadKey` | `LeadMagnetLanding` | Hidden ad landing pages |
+
+### Checkout Routes
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/checkout/starter-kit` | `CheckoutStarterKit` | Main product checkout |
+| `/checkout/:productKey` | `Checkout` | Generic product checkout |
+
+### Member Routes
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/members` | `MembersHub` | Member dashboard |
+| `/members/hub` | `MembersHub` | Alias for /members |
+| `/members/starter-kit` | `StarterKitCourse` | Course content |
+| `/members/content-foundations` | `ContentFoundationsCourse` | Course content |
+| `/members/:productKey` | `MemberDownload` | Product download page |
+| `/dashboard` | `Dashboard` | Legacy dashboard |
+
+### Admin Routes
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/admin` | `Admin` | Admin dashboard with orders, analytics, emails |
+
+---
+
 ## Sales Funnel Structure
 
 ### Primary Funnel Flow
 
 ```
 Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Area
+```
+
+### Alternative Funnels
+
+```
+Niche Finder LP → Checkout → Upsell to Starter Kit
+PAIDS Workbook LP → Checkout → Upsell to Starter Kit
+Influencer's Code LP → Checkout → Upsell to Starter Kit
+Apply Page → Calendly Booking → Strategy Call
 ```
 
 ### Main Product: Contentpreneur Starter Kit (R699)
@@ -361,35 +466,49 @@ Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Are
 | Product | Price (ZAR) | Key | Category | Bundle Status |
 |---------|-------------|-----|----------|---------------|
 | Contentpreneur Starter Kit | R699 | `starter-kit` | Course | Main product (includes niche-finder, paids-workbook) |
-| The Influencer's Code | R199 | `influencers-code` | eBook | Standalone / Upsell |
+| The Influencer's Code | R199 | `influencers-code` | eBook | Standalone / Upsell / Order Bump |
 | Content Foundations | R399 | `content-foundations` | Course | Standalone / Upsell |
-| Tax Guide for Contentpreneurs | R449 | `tax-guide` | Guide | Standalone / Upsell |
-| Niche Finder Workbook | R199 | `niche-finder` | Workbook | Included in Starter Kit |
-| PAIDS Framework Workbook | R199 | `paids-workbook` | Workbook | Included in Starter Kit |
-| Pro Bundle | R1,299 | `contentpreneur-pro` | Bundle | All products |
-| 1:1 Strategy Call | R4,999 | `coaching-session` | Service | Standalone |
-| Contentpreneur Book (eBook) | R249 | `contentpreneur-book-ebook` | Book | Standalone (Pre-order) |
-| Contentpreneur Book (Hardcopy + eBook) | R399 | `contentpreneur-book-hardcopy` | Book | Standalone (Pre-order) |
-| Content Arsenal | R399 | `content-arsenal` | Templates | Standalone |
+| Tax Guide for Contentpreneurs | R449 | `tax-guide` | Guide | Standalone / Upsell / Order Bump |
+| Niche Finder Workbook | R199 | `niche-finder` | Workbook | Standalone / Included in Starter Kit |
+| PAIDS Framework Workbook | R199 | `paids-workbook` | Workbook | Standalone / Included in Starter Kit |
+| Pro Bundle | R1,299 | `contentpreneur-pro` | Bundle | All products combined |
+| 1:1 Strategy Call | R4,999 | `coaching-session` | Service | Standalone (via /apply) |
+| Contentpreneur Guide (eBook + Print) | R299 | `contentpreneur-book` | Book | Standalone |
+| Contentpreneur Guide (eBook) | R249 | `contentpreneur-book-ebook` | Book | Pre-order (April 2026) |
+| Contentpreneur (Hardcopy + eBook) | R399 | `contentpreneur-book-hardcopy` | Book | Pre-order (April 2026) |
+| Content Arsenal | R399 | `content-arsenal` | Templates | Standalone / Order Bump |
+
+### Order Bumps (Checkout Add-ons)
+Order bumps are discounted products shown as checkboxes on checkout pages:
+- Starter Kit checkout: Influencer's Code (R149), Tax Guide (R299)
+- Influencer's Code checkout: PAIDS Workbook (R149), Niche Finder (R149)
+- Niche Finder checkout: PAIDS Workbook (R149), Influencer's Code (R149)
+- PAIDS Workbook checkout: Niche Finder (R149), Influencer's Code (R149)
 
 ---
 
 ## Recommendations Summary
 
-### Immediate Actions (Before Launch)
-1. ✅ Run `migrations/0003_analytics_events.sql` in Neon console
-2. ✅ Add `CRON_SECRET` environment variable in Vercel
-3. ✅ Verify all environment variables are set
+### Completed (Since Initial Launch)
+- ✅ Analytics events tracking implemented
+- ✅ Cron jobs configured (abandoned cart, email sequences)
+- ✅ All environment variables set
+- ✅ ZAR currency migration completed
+- ✅ Admin insights dashboard added
+- ✅ Niche Finder and PAIDS Workbook standalone sales pages
+- ✅ Strategy call application flow with Calendly integration
 
 ### Short-Term Improvements
 1. Create `TestimonialsSection.tsx` for social proof
 2. Add actual customer testimonials/reviews
 3. Consider A/B testing different CTAs
+4. Add more post-purchase upsell sequences
 
 ### Nice-to-Have
 1. Create `GallerySection.tsx` for media showcase
 2. Extract reusable `TwoColumnSection` layout component
 3. Unify product showcase into single component
+4. Add affiliate/referral tracking system
 
 ---
 
@@ -427,5 +546,5 @@ Homepage (/) → Starter Kit Sales Page → Checkout → Success → Members Are
 
 ---
 
-*Document generated: February 2026*
+*Document updated: March 2026*
 *Platform: Contentpreneur Hub (contentpreneurhub.online)*
