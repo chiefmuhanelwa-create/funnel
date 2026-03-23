@@ -125,10 +125,10 @@ export const PRODUCTS: Record<string, Product> = {
   },
   'niche-finder': {
     key: 'niche-finder',
-    name: 'Niche Finder Workbook',
-    shortName: 'Niche Finder',
-    description: 'Step-by-step PDF workbook to discover your profitable content niche in 90 minutes.',
-    priceCents: 19900, // R199.00
+    name: 'Niche Clarity Workbook',
+    shortName: 'Niche Clarity',
+    description: 'The guided workbook that finds your niche from what you\'ve already lived. 7 steps. 90 minutes. Built in South Africa.',
+    priceCents: 19700, // R197.00
     icon: '🎯',
     imageUrl: PRODUCT_IMAGES.nicheFinder,
     color: 'green',
@@ -146,7 +146,7 @@ export const PRODUCTS: Record<string, Product> = {
     name: 'PAIDS Framework Workbook',
     shortName: 'PAIDS Workbook',
     description: 'Master the PAIDS monetization framework to build 5 income streams.',
-    priceCents: 19900, // R199.00
+    priceCents: 29700, // R297.00
     icon: '💰',
     imageUrl: PRODUCT_IMAGES.paidsWorkbook,
     color: 'emerald',
