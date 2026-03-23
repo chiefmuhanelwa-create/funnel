@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle, DollarSign, ArrowRight, Star, Shield, Zap, Package, Megaphone, BookOpen, Briefcase, Handshake, Download } from 'lucide-react';
+import { CheckCircle, DollarSign, ArrowRight, Star, Shield, Zap, Package, Megaphone, BookOpen, Briefcase, Users, Download } from 'lucide-react';
 import { IMAGES } from '../config/assets';
 import BackButton from '../components/BackButton';
 
@@ -9,7 +9,7 @@ export default function PAIDSWorkbookProduct() {
     { icon: Package, title: 'Products', desc: 'Digital products, merchandise, courses', letter: 'P' },
     { icon: Megaphone, title: 'Ads & Affiliates', desc: 'Brand deals and commission income', letter: 'A' },
     { icon: BookOpen, title: 'Information', desc: 'eBooks, guides, templates', letter: 'I' },
-    { icon: Handshake, title: 'Deals', desc: 'Sponsorships and partnerships', letter: 'D' },
+    { icon: Users, title: 'Deals', desc: 'Sponsorships and partnerships', letter: 'D' },
     { icon: Briefcase, title: 'Services', desc: 'Coaching, consulting, freelance', letter: 'S' },
   ];
 
