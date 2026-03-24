@@ -748,6 +748,159 @@ export async function sendBookingConfirmationEmail(
   });
 }
 
+// Send admin notification when someone books a strategy session
+export async function sendAdminBookingNotification(
+  env: Env,
+  booking: {
+    email: string;
+    fullName: string;
+    whatsapp?: string;
+    igHandle?: string;
+    youtube?: string;
+    linkedin?: string;
+    facebook?: string;
+    tiktok?: string;
+    twitter?: string;
+    creatorStage?: string;
+    niche?: string;
+    biggestPain?: string;
+    biggestFrustration?: string;
+    biggestDesire?: string;
+    dreamOutcome?: string;
+    revenue?: string;
+    bookedDate?: string;
+    bookedTime?: string;
+  }
+): Promise<boolean> {
+  const ADMIN_EMAIL = 'chiefmuhanelwa@gmail.com';
+
+  // Build social media section
+  const socialMediaLinks = [
+    booking.igHandle ? `<li><strong>Instagram:</strong> @${booking.igHandle.replace('@', '')}</li>` : '',
+    booking.youtube ? `<li><strong>YouTube:</strong> ${booking.youtube}</li>` : '',
+    booking.linkedin ? `<li><strong>LinkedIn:</strong> ${booking.linkedin}</li>` : '',
+    booking.facebook ? `<li><strong>Facebook:</strong> ${booking.facebook}</li>` : '',
+    booking.tiktok ? `<li><strong>TikTok:</strong> @${booking.tiktok.replace('@', '')}</li>` : '',
+    booking.twitter ? `<li><strong>X/Twitter:</strong> @${booking.twitter.replace('@', '')}</li>` : '',
+  ].filter(Boolean).join('');
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+    .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center; border-radius: 12px 12px 0 0; }
+    .header h1 { margin: 0; font-size: 24px; }
+    .content { background: #ffffff; padding: 30px; border-radius: 0 0 12px 12px; }
+    .section { background: #f9fafb; border-radius: 8px; padding: 20px; margin: 16px 0; border-left: 4px solid #10b981; }
+    .section h3 { margin: 0 0 12px; color: #111; font-size: 16px; }
+    .section ul { margin: 0; padding-left: 20px; }
+    .section li { margin: 6px 0; }
+    .discovery { background: #fef3c7; border-left-color: #f59e0b; }
+    .discovery h3 { color: #92400e; }
+    .booking-time { background: #0A0A0A; color: #F0EEE8; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+    .booking-time h2 { color: #10b981; margin: 0 0 8px; font-size: 14px; text-transform: uppercase; }
+    .booking-time p { margin: 4px 0; font-size: 18px; }
+    .highlight { color: #10b981; font-weight: bold; }
+    .footer { text-align: center; color: #6b7280; font-size: 12px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 New Strategy Session Booked!</h1>
+    </div>
+    <div class="content">
+      <p><strong>${booking.fullName}</strong> just booked a Strategy Session!</p>
+
+      <div class="booking-time">
+        <h2>Session Details</h2>
+        <p><strong>${booking.bookedDate || 'Date TBC'}</strong></p>
+        <p>${booking.bookedTime || 'Time TBC'}</p>
+      </div>
+
+      <div class="section">
+        <h3>📧 Contact Info</h3>
+        <ul>
+          <li><strong>Email:</strong> ${booking.email}</li>
+          <li><strong>WhatsApp:</strong> ${booking.whatsapp || 'Not provided'}</li>
+        </ul>
+      </div>
+
+      ${socialMediaLinks ? `
+      <div class="section">
+        <h3>📱 Social Media Profiles</h3>
+        <ul>${socialMediaLinks}</ul>
+      </div>
+      ` : ''}
+
+      <div class="section">
+        <h3>🎯 Creator Details</h3>
+        <ul>
+          <li><strong>Creator Stage:</strong> ${booking.creatorStage || 'Not specified'}</li>
+          <li><strong>Niche:</strong> ${booking.niche || 'Not specified'}</li>
+          <li><strong>Current Revenue:</strong> ${booking.revenue || 'Not specified'}</li>
+        </ul>
+      </div>
+
+      <div class="section discovery">
+        <h3>🔥 Pains, Frustrations & Desires</h3>
+        <ul>
+          <li><strong>Biggest Pain:</strong> ${formatDiscoveryAnswer(booking.biggestPain)}</li>
+          <li><strong>Biggest Frustration:</strong> ${formatDiscoveryAnswer(booking.biggestFrustration)}</li>
+          <li><strong>Biggest Desire:</strong> ${booking.biggestDesire || 'Not specified'}</li>
+          <li><strong>Dream Outcome:</strong> ${formatDiscoveryAnswer(booking.dreamOutcome)}</li>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <p>This notification was sent automatically when the booking was made.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+
+  return sendEmail(env, {
+    to: ADMIN_EMAIL,
+    subject: `🎯 New Booking: ${booking.fullName} - ${booking.bookedDate || 'TBC'}`,
+    html,
+  });
+}
+
+// Helper function to format discovery answers
+function formatDiscoveryAnswer(value?: string): string {
+  const answers: Record<string, string> = {
+    // Pains
+    'no-clarity': "I don't know what content to create",
+    'no-audience': "I can't grow my audience",
+    'no-money': "I'm not making money from my content",
+    'no-time': "I don't have enough time to be consistent",
+    'no-confidence': "I lack confidence to put myself out there",
+    // Frustrations
+    'algorithm': "The algorithm never favours me",
+    'inconsistent-results': "My results are inconsistent",
+    'copycats': "People copy my content and get more views",
+    'no-strategy': "I don't have a clear strategy",
+    'burnout': "I'm burned out from content creation",
+    // Dream outcomes
+    'full-time-income': "Replace my 9-5 income with content",
+    'brand-deals': "Land consistent brand deals",
+    'sell-products': "Sell my own digital products",
+    'build-community': "Build a loyal community",
+    'become-authority': "Become the go-to expert in my niche",
+    // Old challenge values (for backwards compat)
+    'audience': "Can't build an audience that sticks",
+    'monetise': "Has audience but can't monetise",
+    'strategy': "No system or strategy",
+    'conversion': "Content doesn't convert to sales",
+  };
+  return answers[value || ''] || value || 'Not specified';
+}
+
 export async function sendAbandonedCartEmail(
   env: Env,
   email: string,

@@ -89,13 +89,40 @@ interface SentEmail {
   email_html?: string;
 }
 
+interface Booking {
+  id: number;
+  email: string;
+  full_name: string;
+  whatsapp: string | null;
+  ig_handle: string | null;
+  youtube: string | null;
+  linkedin: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  twitter: string | null;
+  creator_stage: string | null;
+  niche: string | null;
+  biggest_pain: string | null;
+  biggest_frustration: string | null;
+  biggest_desire: string | null;
+  dream_outcome: string | null;
+  revenue: string | null;
+  challenge: string | null;
+  booked_date: string | null;
+  booked_time: string | null;
+  status: string;
+  confirmation_sent: boolean;
+  admin_notified: boolean;
+  created_at: string;
+}
+
 const ADMIN_EMAILS = [
   'info@nochill.co.za',
   'ndivhuwo@nochill.co.za',
   'chiefmuhanelwa@gmail.com',
 ];
 
-type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access' | 'emails' | 'insights';
+type TabKey = 'files' | 'media' | 'contacts' | 'orders' | 'access' | 'emails' | 'insights' | 'bookings';
 
 interface AnalyticsData {
   summary: {
@@ -123,6 +150,8 @@ export default function Admin() {
   const [emails, setEmails] = useState<SentEmail[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<SentEmail | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState(7);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -197,6 +226,12 @@ export default function Admin() {
         });
         const data = await res.json();
         setAnalytics(data);
+      } else if (activeTab === 'bookings') {
+        const res = await fetch('/api/admin/bookings', {
+          headers: { 'X-Admin-Email': user?.email || '' },
+        });
+        const data = await res.json();
+        setBookings(data.bookings || []);
       }
     } catch (err) {
       setError('Failed to fetch data');
@@ -483,6 +518,7 @@ export default function Admin() {
         <div className="flex flex-wrap gap-2 mb-8">
           {[
             { key: 'insights' as TabKey, label: 'Insights', icon: BarChart3 },
+            { key: 'bookings' as TabKey, label: 'Bookings', icon: Users },
             { key: 'files' as TabKey, label: 'Files', icon: FolderOpen },
             { key: 'access' as TabKey, label: 'Access', icon: Key },
             { key: 'orders' as TabKey, label: 'Orders', icon: ShoppingCart },
@@ -767,6 +803,180 @@ export default function Admin() {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Bookings Tab */}
+        {activeTab === 'bookings' && (
+          <div className="space-y-6">
+            {/* Booking Detail Modal */}
+            {selectedBooking && (
+              <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+                  <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
+                    <div>
+                      <h3 className="font-bold text-gray-900 text-lg">{selectedBooking.full_name}</h3>
+                      <p className="text-sm text-gray-500">
+                        Booked: {selectedBooking.booked_date || 'TBC'} at {selectedBooking.booked_time || 'TBC'}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedBooking(null)}
+                      className="p-2 hover:bg-gray-100 rounded-lg"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="p-6 space-y-6">
+                    {/* Contact Info */}
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="font-semibold text-gray-900 mb-3">Contact Info</h4>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div><span className="text-gray-500">Email:</span> <span className="text-gray-900">{selectedBooking.email}</span></div>
+                        <div><span className="text-gray-500">WhatsApp:</span> <span className="text-gray-900">{selectedBooking.whatsapp || '-'}</span></div>
+                      </div>
+                    </div>
+
+                    {/* Social Media */}
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="font-semibold text-gray-900 mb-3">Social Media</h4>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        {selectedBooking.ig_handle && <div><span className="text-gray-500">Instagram:</span> <span className="text-gray-900">@{selectedBooking.ig_handle.replace('@', '')}</span></div>}
+                        {selectedBooking.youtube && <div><span className="text-gray-500">YouTube:</span> <span className="text-gray-900">{selectedBooking.youtube}</span></div>}
+                        {selectedBooking.linkedin && <div><span className="text-gray-500">LinkedIn:</span> <span className="text-gray-900">{selectedBooking.linkedin}</span></div>}
+                        {selectedBooking.facebook && <div><span className="text-gray-500">Facebook:</span> <span className="text-gray-900">{selectedBooking.facebook}</span></div>}
+                        {selectedBooking.tiktok && <div><span className="text-gray-500">TikTok:</span> <span className="text-gray-900">@{selectedBooking.tiktok.replace('@', '')}</span></div>}
+                        {selectedBooking.twitter && <div><span className="text-gray-500">X/Twitter:</span> <span className="text-gray-900">@{selectedBooking.twitter.replace('@', '')}</span></div>}
+                        {!selectedBooking.ig_handle && !selectedBooking.youtube && !selectedBooking.linkedin && !selectedBooking.facebook && !selectedBooking.tiktok && !selectedBooking.twitter && (
+                          <div className="col-span-2 text-gray-400">No social media provided</div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Creator Details */}
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="font-semibold text-gray-900 mb-3">Creator Details</h4>
+                      <div className="space-y-2 text-sm">
+                        <div><span className="text-gray-500">Creator Stage:</span> <span className="text-gray-900">{selectedBooking.creator_stage || '-'}</span></div>
+                        <div><span className="text-gray-500">Niche:</span> <span className="text-gray-900">{selectedBooking.niche || '-'}</span></div>
+                        <div><span className="text-gray-500">Current Revenue:</span> <span className="text-gray-900">{selectedBooking.revenue || '-'}</span></div>
+                      </div>
+                    </div>
+
+                    {/* Discovery - Pains, Frustrations, Desires */}
+                    <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                      <h4 className="font-semibold text-amber-800 mb-3">Pains, Frustrations & Desires</h4>
+                      <div className="space-y-3 text-sm">
+                        <div>
+                          <span className="text-amber-700 font-medium">Biggest Pain:</span>
+                          <p className="text-gray-800 mt-1">{selectedBooking.biggest_pain || '-'}</p>
+                        </div>
+                        <div>
+                          <span className="text-amber-700 font-medium">Biggest Frustration:</span>
+                          <p className="text-gray-800 mt-1">{selectedBooking.biggest_frustration || '-'}</p>
+                        </div>
+                        <div>
+                          <span className="text-amber-700 font-medium">Biggest Desire:</span>
+                          <p className="text-gray-800 mt-1">{selectedBooking.biggest_desire || '-'}</p>
+                        </div>
+                        <div>
+                          <span className="text-amber-700 font-medium">Dream Outcome:</span>
+                          <p className="text-gray-800 mt-1">{selectedBooking.dream_outcome || '-'}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Status */}
+                    <div className="flex items-center gap-4 text-sm">
+                      <span className={`px-3 py-1 rounded-full font-medium ${
+                        selectedBooking.status === 'booked' ? 'bg-green-100 text-green-700' :
+                        selectedBooking.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                        selectedBooking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {selectedBooking.status}
+                      </span>
+                      {selectedBooking.confirmation_sent && (
+                        <span className="text-green-600 flex items-center gap-1">
+                          <Check size={14} /> Confirmation sent
+                        </span>
+                      )}
+                      {selectedBooking.admin_notified && (
+                        <span className="text-green-600 flex items-center gap-1">
+                          <Check size={14} /> Admin notified
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="glass-card p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Strategy Session Bookings ({bookings.length})
+              </h2>
+              {isLoading ? (
+                <div className="text-center py-8">
+                  <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
+                </div>
+              ) : bookings.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">No bookings yet</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 text-gray-600">Name</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Date & Time</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Instagram</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Revenue</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Status</th>
+                        <th className="text-left py-3 px-4 text-gray-600">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.map((booking) => (
+                        <tr key={booking.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-3 px-4">
+                            <span className="font-medium text-gray-900">{booking.full_name}</span>
+                            <span className="block text-xs text-gray-500">{booking.email}</span>
+                          </td>
+                          <td className="py-3 px-4 text-gray-700">
+                            {booking.booked_date || 'TBC'}
+                            <span className="block text-xs text-gray-500">{booking.booked_time || ''}</span>
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">
+                            {booking.ig_handle ? `@${booking.ig_handle.replace('@', '')}` : '-'}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600 text-sm">
+                            {booking.revenue || '-'}
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                              booking.status === 'booked' ? 'bg-green-100 text-green-700' :
+                              booking.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                              booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                              'bg-gray-100 text-gray-700'
+                            }`}>
+                              {booking.status}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <button
+                              onClick={() => setSelectedBooking(booking)}
+                              className="text-amber-600 hover:text-amber-700 font-medium text-sm flex items-center gap-1"
+                            >
+                              <Eye size={14} /> View
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

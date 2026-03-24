@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
-import { sendLeadMagnetEmail, sendStarterKitEmail, sendBookingConfirmationEmail } from '../emails/index';
+import { sendLeadMagnetEmail, sendStarterKitEmail, sendBookingConfirmationEmail, sendAdminBookingNotification } from '../emails/index';
 import { syncToConvertKit } from '../utils/convertkit';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -176,6 +176,17 @@ app.post('/qualified-lead', async (c) => {
     revenue?: string;
     bookedDate?: string;
     bookedTime?: string;
+    // Social media
+    youtube?: string;
+    linkedin?: string;
+    facebook?: string;
+    tiktok?: string;
+    twitter?: string;
+    // Discovery data
+    biggestPain?: string;
+    biggestFrustration?: string;
+    biggestDesire?: string;
+    dreamOutcome?: string;
   }>();
 
   if (!body.email || !body.fullName) {
@@ -185,7 +196,36 @@ app.post('/qualified-lead', async (c) => {
   const normalizedEmail = body.email.toLowerCase().trim();
 
   try {
-    // Check if consultation request exists for this email
+    // Insert into bookings table
+    await db.prepare(`
+      INSERT INTO bookings (
+        email, full_name, whatsapp, ig_handle, youtube, linkedin, facebook, tiktok, twitter,
+        creator_stage, niche, biggest_pain, biggest_frustration, biggest_desire, dream_outcome,
+        revenue, challenge, booked_date, booked_time, status, confirmation_sent, admin_notified
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'booked', 0, 0)
+    `).bind(
+      normalizedEmail,
+      body.fullName,
+      body.whatsapp || null,
+      body.igHandle || null,
+      body.youtube || null,
+      body.linkedin || null,
+      body.facebook || null,
+      body.tiktok || null,
+      body.twitter || null,
+      body.creatorStage || null,
+      body.niche || null,
+      body.biggestPain || null,
+      body.biggestFrustration || null,
+      body.biggestDesire || null,
+      body.dreamOutcome || null,
+      body.revenue || null,
+      body.challenge || null,
+      body.bookedDate || null,
+      body.bookedTime || null
+    ).run();
+
+    // Also update consultation_requests for backwards compatibility
     const existing = await db.prepare(`
       SELECT id FROM consultation_requests WHERE email = ?
     `).bind(normalizedEmail).first();
@@ -194,12 +234,22 @@ app.post('/qualified-lead', async (c) => {
       creatorStage: body.creatorStage,
       niche: body.niche,
       challenge: body.challenge,
+      biggestPain: body.biggestPain,
+      biggestFrustration: body.biggestFrustration,
+      biggestDesire: body.biggestDesire,
+      dreamOutcome: body.dreamOutcome,
+      socialMedia: {
+        youtube: body.youtube,
+        linkedin: body.linkedin,
+        facebook: body.facebook,
+        tiktok: body.tiktok,
+        twitter: body.twitter,
+      },
       bookedDate: body.bookedDate,
       bookedTime: body.bookedTime,
     });
 
     if (existing) {
-      // Update existing record
       await db.prepare(`
         UPDATE consultation_requests
         SET name = ?, whatsapp = COALESCE(?, whatsapp), follower_count = ?, current_income = ?, goals = ?, status = 'booked', updated_at = CURRENT_TIMESTAMP
@@ -213,7 +263,6 @@ app.post('/qualified-lead', async (c) => {
         normalizedEmail
       ).run();
     } else {
-      // Insert new consultation request
       await db.prepare(`
         INSERT INTO consultation_requests (email, name, whatsapp, follower_count, current_income, goals, status)
         VALUES (?, ?, ?, ?, ?, ?, 'booked')
@@ -235,6 +284,36 @@ app.post('/qualified-lead', async (c) => {
       body.bookedDate || '',
       body.bookedTime || ''
     );
+
+    // Send admin notification email
+    const adminEmailSent = await sendAdminBookingNotification(
+      c.env,
+      {
+        email: normalizedEmail,
+        fullName: body.fullName,
+        whatsapp: body.whatsapp,
+        igHandle: body.igHandle,
+        youtube: body.youtube,
+        linkedin: body.linkedin,
+        facebook: body.facebook,
+        tiktok: body.tiktok,
+        twitter: body.twitter,
+        creatorStage: body.creatorStage,
+        niche: body.niche,
+        biggestPain: body.biggestPain,
+        biggestFrustration: body.biggestFrustration,
+        biggestDesire: body.biggestDesire,
+        dreamOutcome: body.dreamOutcome,
+        revenue: body.revenue,
+        bookedDate: body.bookedDate,
+        bookedTime: body.bookedTime,
+      }
+    );
+
+    // Update booking record with email status
+    await db.prepare(`
+      UPDATE bookings SET confirmation_sent = ?, admin_notified = ? WHERE email = ? ORDER BY created_at DESC LIMIT 1
+    `).bind(emailSent ? 1 : 0, adminEmailSent ? 1 : 0, normalizedEmail).run();
 
     if (!emailSent) {
       console.error('Failed to send booking confirmation email to:', normalizedEmail);

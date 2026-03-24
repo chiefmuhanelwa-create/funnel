@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Lock, Instagram, Target, Zap, DollarSign, User, Mail, Phone, Calendar } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Lock, Instagram, Target, Zap, DollarSign, User, Mail, Phone, Calendar, Youtube, Linkedin, Facebook, Twitter, Heart, Frown, Star } from 'lucide-react';
 
 type FormData = {
   igHandle: string;
@@ -12,15 +12,52 @@ type FormData = {
   fullName: string;
   email: string;
   whatsapp: string;
+  // Social media (optional)
+  youtube: string;
+  linkedin: string;
+  facebook: string;
+  tiktok: string;
+  twitter: string;
+  // Discovery questions
+  biggestPain: string;
+  biggestFrustration: string;
+  biggestDesire: string;
+  dreamOutcome: string;
 };
 
 type Screen = 'form' | 'disqualify' | 'disqualify-confirm' | 'booking' | 'booking-confirmed';
+
+const TOTAL_STEPS = 11; // Updated for new steps
 
 const CREATOR_STAGES = [
   'Yes — I post consistently',
   'Yes — but not regularly',
   "No — I'm just getting started",
   "I've never posted before",
+];
+
+const BIGGEST_PAINS = [
+  { value: 'no-clarity', title: "I don't know what content to create", subtitle: 'Feeling stuck and overwhelmed with options' },
+  { value: 'no-audience', title: "I can't grow my audience", subtitle: 'Posting but no one is following' },
+  { value: 'no-money', title: "I'm not making money from my content", subtitle: 'Lots of effort, zero income' },
+  { value: 'no-time', title: "I don't have enough time to be consistent", subtitle: 'Life keeps getting in the way' },
+  { value: 'no-confidence', title: "I lack confidence to put myself out there", subtitle: 'Fear of judgement holds me back' },
+];
+
+const BIGGEST_FRUSTRATIONS = [
+  { value: 'algorithm', title: "The algorithm never favours me", subtitle: 'My content gets buried no matter what' },
+  { value: 'inconsistent-results', title: "My results are inconsistent", subtitle: 'Some posts work, most don\'t' },
+  { value: 'copycats', title: "People copy my content and get more views", subtitle: 'Originality doesn\'t seem to pay' },
+  { value: 'no-strategy', title: "I don't have a clear strategy", subtitle: 'Just winging it and hoping for the best' },
+  { value: 'burnout', title: "I'm burned out from content creation", subtitle: 'The hustle feels exhausting' },
+];
+
+const DREAM_OUTCOMES = [
+  { value: 'full-time-income', title: "Replace my 9-5 income with content", subtitle: 'Financial freedom through my passion' },
+  { value: 'brand-deals', title: "Land consistent brand deals", subtitle: 'Get paid to work with brands I love' },
+  { value: 'sell-products', title: "Sell my own digital products", subtitle: 'Build passive income streams' },
+  { value: 'build-community', title: "Build a loyal community", subtitle: 'Create real impact and connection' },
+  { value: 'become-authority', title: "Become the go-to expert in my niche", subtitle: 'Be recognized and respected' },
 ];
 
 const CHALLENGES = [
@@ -53,9 +90,20 @@ export default function Apply() {
     fullName: '',
     email: '',
     whatsapp: '',
+    // Social media (optional)
+    youtube: '',
+    linkedin: '',
+    facebook: '',
+    tiktok: '',
+    twitter: '',
+    // Discovery questions
+    biggestPain: '',
+    biggestFrustration: '',
+    biggestDesire: '',
+    dreamOutcome: '',
   });
 
-  const progress = (currentStep / 7) * 100;
+  const progress = (currentStep / TOTAL_STEPS) * 100;
 
   const nextStep = () => {
     setCurrentStep(prev => prev + 1);
@@ -77,26 +125,44 @@ export default function Apply() {
         }
         break;
       case 2:
+        // Social media step - all optional, no validation needed
+        break;
+      case 3:
         if (!formData.creatorStage) {
           newErrors.creatorStage = 'Please select an option';
         }
         break;
-      case 3:
+      case 4:
         if (formData.niche.trim().length < 5) {
           newErrors.niche = 'Please describe your niche (at least 5 characters)';
         }
         break;
-      case 4:
-        if (!formData.challenge) {
-          newErrors.challenge = 'Please select an option';
+      case 5:
+        if (!formData.biggestPain) {
+          newErrors.biggestPain = 'Please select an option';
         }
         break;
-      case 5:
+      case 6:
+        if (!formData.biggestFrustration) {
+          newErrors.biggestFrustration = 'Please select an option';
+        }
+        break;
+      case 7:
+        if (formData.biggestDesire.trim().length < 10) {
+          newErrors.biggestDesire = 'Please share your biggest desire (at least 10 characters)';
+        }
+        break;
+      case 8:
+        if (!formData.dreamOutcome) {
+          newErrors.dreamOutcome = 'Please select an option';
+        }
+        break;
+      case 9:
         if (!formData.revenue) {
           newErrors.revenue = 'Please select an option';
         }
         break;
-      case 7:
+      case 11:
         if (!formData.fullName.trim()) {
           newErrors.fullName = 'Please enter your full name';
         }
@@ -130,7 +196,7 @@ export default function Apply() {
   };
 
   const handleSubmit = () => {
-    if (validateStep(7)) {
+    if (validateStep(11)) {
       console.log('Application submitted:', formData);
       // TODO: POST data to webhook or CRM
       setScreen('booking');
@@ -207,6 +273,17 @@ export default function Apply() {
             revenue: formData.revenue,
             bookedDate: formattedDate,
             bookedTime: formattedTime,
+            // Social media
+            youtube: formData.youtube,
+            linkedin: formData.linkedin,
+            facebook: formData.facebook,
+            tiktok: formData.tiktok,
+            twitter: formData.twitter,
+            // Discovery data
+            biggestPain: formData.biggestPain,
+            biggestFrustration: formData.biggestFrustration,
+            biggestDesire: formData.biggestDesire,
+            dreamOutcome: formData.dreamOutcome,
           }),
         }).catch(console.error);
 
@@ -470,7 +547,7 @@ export default function Apply() {
       <div className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 shadow-sm">
         <div className="container mx-auto max-w-7xl px-4 py-3 md:py-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium">Step {currentStep} of 7</span>
+            <span className="text-xs sm:text-sm text-gray-500 font-medium">Step {currentStep} of {TOTAL_STEPS}</span>
             <div className="flex items-center gap-2 text-amber-600 text-xs sm:text-sm font-semibold">
               <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
               3 spots left
@@ -528,7 +605,7 @@ export default function Apply() {
           {currentStep === 1 && (
             <motion.div key="step1" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 1 of 7 — Your Profile
+                Step 1 of {TOTAL_STEPS} — Your Profile
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 What's your Instagram handle?
@@ -566,11 +643,104 @@ export default function Apply() {
             </motion.div>
           )}
 
-          {/* Step 2: Creator Stage */}
+          {/* Step 2: Other Social Media (Optional) */}
           {currentStep === 2 && (
             <motion.div key="step2" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 2 of 7 — Creator Stage
+                Step 2 of {TOTAL_STEPS} — Your Platforms
+              </p>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                Where else can we find you?
+              </h2>
+              <p className="text-gray-600 text-sm md:text-base mb-5">
+                Share your other social profiles so we can get a full picture. These are all optional.
+              </p>
+
+              <div className="space-y-3">
+                <div className="relative">
+                  <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500" size={18} />
+                  <input
+                    type="text"
+                    value={formData.youtube}
+                    onChange={(e) => setFormData(prev => ({ ...prev, youtube: e.target.value }))}
+                    placeholder="YouTube channel URL or handle"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors md:text-base shadow-sm"
+                  />
+                </div>
+
+                <div className="relative">
+                  <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-600" size={18} />
+                  <input
+                    type="text"
+                    value={formData.linkedin}
+                    onChange={(e) => setFormData(prev => ({ ...prev, linkedin: e.target.value }))}
+                    placeholder="LinkedIn profile URL"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors md:text-base shadow-sm"
+                  />
+                </div>
+
+                <div className="relative">
+                  <Facebook className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-500" size={18} />
+                  <input
+                    type="text"
+                    value={formData.facebook}
+                    onChange={(e) => setFormData(prev => ({ ...prev, facebook: e.target.value }))}
+                    placeholder="Facebook page URL"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors md:text-base shadow-sm"
+                  />
+                </div>
+
+                <div className="relative">
+                  <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-900" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                  </svg>
+                  <input
+                    type="text"
+                    value={formData.tiktok}
+                    onChange={(e) => setFormData(prev => ({ ...prev, tiktok: e.target.value }))}
+                    placeholder="TikTok handle"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors md:text-base shadow-sm"
+                  />
+                </div>
+
+                <div className="relative">
+                  <Twitter className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-900" size={18} />
+                  <input
+                    type="text"
+                    value={formData.twitter}
+                    onChange={(e) => setFormData(prev => ({ ...prev, twitter: e.target.value }))}
+                    placeholder="X (Twitter) handle"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors md:text-base shadow-sm"
+                  />
+                </div>
+              </div>
+
+              <p className="text-gray-400 text-xs md:text-sm mt-4 text-center">
+                Don't have all of these? No problem — just fill in what you have.
+              </p>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={() => handleNext(2)}
+                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
+                >
+                  Next <ArrowRight size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 3: Creator Stage */}
+          {currentStep === 3 && (
+            <motion.div key="step3" {...stepVariants} transition={{ duration: 0.35 }}>
+              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+                Step 3 of {TOTAL_STEPS} — Creator Stage
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 Are you currently creating content?
@@ -606,7 +776,7 @@ export default function Apply() {
                   <ArrowLeft size={16} /> Back
                 </button>
                 <button
-                  onClick={() => handleNext(2)}
+                  onClick={() => handleNext(3)}
                   className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
                 >
                   Next <ArrowRight size={16} />
@@ -615,11 +785,11 @@ export default function Apply() {
             </motion.div>
           )}
 
-          {/* Step 3: Niche */}
-          {currentStep === 3 && (
-            <motion.div key="step3" {...stepVariants} transition={{ duration: 0.35 }}>
+          {/* Step 4: Niche */}
+          {currentStep === 4 && (
+            <motion.div key="step4" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 3 of 7 — Your Niche
+                Step 4 of {TOTAL_STEPS} — Your Niche
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 What space are you building in?
@@ -648,54 +818,6 @@ export default function Apply() {
                   <ArrowLeft size={16} /> Back
                 </button>
                 <button
-                  onClick={() => handleNext(3)}
-                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
-                >
-                  Next <ArrowRight size={16} />
-                </button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 4: Challenge */}
-          {currentStep === 4 && (
-            <motion.div key="step4" {...stepVariants} transition={{ duration: 0.35 }}>
-              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 4 of 7 — Your Challenge
-              </p>
-              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
-                What's your biggest obstacle right now?
-              </h2>
-              <p className="text-gray-600 text-sm md:text-base mb-5">
-                These responses determine whether we're a fit. Be honest.
-              </p>
-
-              <div className="space-y-3">
-                {CHALLENGES.map((challenge) => (
-                  <button
-                    key={challenge.value}
-                    onClick={() => setFormData(prev => ({ ...prev, challenge: challenge.value }))}
-                    className={`w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all shadow-sm ${
-                      formData.challenge === challenge.value
-                        ? 'border-amber-500 bg-amber-50'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <span className="font-medium text-gray-900 block md:text-lg">{challenge.title}</span>
-                    <span className="text-gray-500 text-sm md:text-base">{challenge.subtitle}</span>
-                  </button>
-                ))}
-              </div>
-              {errors.challenge && <p className="text-red-500 text-xs md:text-sm mt-2">{errors.challenge}</p>}
-
-              <div className="flex gap-3 mt-6">
-                <button
-                  onClick={prevStep}
-                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
-                >
-                  <ArrowLeft size={16} /> Back
-                </button>
-                <button
                   onClick={() => handleNext(4)}
                   className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
                 >
@@ -705,11 +827,197 @@ export default function Apply() {
             </motion.div>
           )}
 
-          {/* Step 5: Revenue */}
+          {/* Step 5: Biggest Pain */}
           {currentStep === 5 && (
             <motion.div key="step5" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 5 of 7 — Your Revenue
+                Step 5 of {TOTAL_STEPS} — Your Pain
+              </p>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                What's your <span className="text-amber-600">biggest pain point</span> right now?
+              </h2>
+              <p className="text-gray-600 text-sm md:text-base mb-5">
+                Be honest — this helps us understand exactly where you're struggling.
+              </p>
+
+              <div className="space-y-3">
+                {BIGGEST_PAINS.map((pain) => (
+                  <button
+                    key={pain.value}
+                    onClick={() => setFormData(prev => ({ ...prev, biggestPain: pain.value }))}
+                    className={`w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all shadow-sm ${
+                      formData.biggestPain === pain.value
+                        ? 'border-amber-500 bg-amber-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className="font-medium text-gray-900 block md:text-lg">{pain.title}</span>
+                    <span className="text-gray-500 text-sm md:text-base">{pain.subtitle}</span>
+                  </button>
+                ))}
+              </div>
+              {errors.biggestPain && <p className="text-red-500 text-xs md:text-sm mt-2">{errors.biggestPain}</p>}
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={() => handleNext(5)}
+                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
+                >
+                  Next <ArrowRight size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 6: Biggest Frustration */}
+          {currentStep === 6 && (
+            <motion.div key="step6" {...stepVariants} transition={{ duration: 0.35 }}>
+              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+                Step 6 of {TOTAL_STEPS} — Your Frustration
+              </p>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                What <span className="text-amber-600">frustrates you most</span> about your content journey?
+              </h2>
+              <p className="text-gray-600 text-sm md:text-base mb-5">
+                We all have that one thing that drives us crazy. What's yours?
+              </p>
+
+              <div className="space-y-3">
+                {BIGGEST_FRUSTRATIONS.map((frustration) => (
+                  <button
+                    key={frustration.value}
+                    onClick={() => setFormData(prev => ({ ...prev, biggestFrustration: frustration.value }))}
+                    className={`w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all shadow-sm ${
+                      formData.biggestFrustration === frustration.value
+                        ? 'border-amber-500 bg-amber-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className="font-medium text-gray-900 block md:text-lg">{frustration.title}</span>
+                    <span className="text-gray-500 text-sm md:text-base">{frustration.subtitle}</span>
+                  </button>
+                ))}
+              </div>
+              {errors.biggestFrustration && <p className="text-red-500 text-xs md:text-sm mt-2">{errors.biggestFrustration}</p>}
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={() => handleNext(6)}
+                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
+                >
+                  Next <ArrowRight size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 7: Biggest Desire (Text) */}
+          {currentStep === 7 && (
+            <motion.div key="step7" {...stepVariants} transition={{ duration: 0.35 }}>
+              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+                Step 7 of {TOTAL_STEPS} — Your Desire
+              </p>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                What do you <span className="text-amber-600">really want</span> from your content?
+              </h2>
+              <p className="text-gray-600 text-sm md:text-base mb-5">
+                Not what you think you should want — what you REALLY want. Be specific. Dream big.
+              </p>
+
+              <div className="relative">
+                <Heart className="absolute left-4 top-4 md:top-5 text-amber-500" size={18} />
+                <textarea
+                  value={formData.biggestDesire}
+                  onChange={(e) => setFormData(prev => ({ ...prev, biggestDesire: e.target.value }))}
+                  placeholder="e.g. I want to quit my job in 12 months and do content full-time... I want to earn R50k/month from brand deals... I want to build a community of 100k people who trust my advice..."
+                  rows={5}
+                  className={`w-full pl-12 pr-4 py-4 md:py-5 bg-white border-2 rounded-xl text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none transition-colors resize-none md:text-lg shadow-sm ${errors.biggestDesire ? 'border-red-500' : 'border-gray-200'}`}
+                />
+              </div>
+              {errors.biggestDesire && <p className="text-red-500 text-xs md:text-sm mt-2">{errors.biggestDesire}</p>}
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={() => handleNext(7)}
+                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
+                >
+                  Next <ArrowRight size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 8: Dream Outcome */}
+          {currentStep === 8 && (
+            <motion.div key="step8" {...stepVariants} transition={{ duration: 0.35 }}>
+              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+                Step 8 of {TOTAL_STEPS} — Your Dream Outcome
+              </p>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                If this call changes everything, what does <span className="text-amber-600">success</span> look like?
+              </h2>
+              <p className="text-gray-600 text-sm md:text-base mb-5">
+                Pick the outcome that excites you most.
+              </p>
+
+              <div className="space-y-3">
+                {DREAM_OUTCOMES.map((outcome) => (
+                  <button
+                    key={outcome.value}
+                    onClick={() => setFormData(prev => ({ ...prev, dreamOutcome: outcome.value }))}
+                    className={`w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all shadow-sm ${
+                      formData.dreamOutcome === outcome.value
+                        ? 'border-amber-500 bg-amber-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <span className="font-medium text-gray-900 block md:text-lg">{outcome.title}</span>
+                    <span className="text-gray-500 text-sm md:text-base">{outcome.subtitle}</span>
+                  </button>
+                ))}
+              </div>
+              {errors.dreamOutcome && <p className="text-red-500 text-xs md:text-sm mt-2">{errors.dreamOutcome}</p>}
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={() => handleNext(8)}
+                  className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
+                >
+                  Next <ArrowRight size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 9: Revenue */}
+          {currentStep === 9 && (
+            <motion.div key="step9" {...stepVariants} transition={{ duration: 0.35 }}>
+              <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
+                Step 9 of {TOTAL_STEPS} — Your Revenue
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 How much do you currently earn from your content or business?
@@ -743,7 +1051,7 @@ export default function Apply() {
                   <ArrowLeft size={16} /> Back
                 </button>
                 <button
-                  onClick={() => handleNext(5)}
+                  onClick={() => handleNext(9)}
                   className="flex-1 py-3 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-xl hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all flex items-center justify-center gap-2 md:text-lg"
                 >
                   Next <ArrowRight size={16} />
@@ -752,11 +1060,11 @@ export default function Apply() {
             </motion.div>
           )}
 
-          {/* Step 6: Investment Qualifier */}
-          {currentStep === 6 && (
-            <motion.div key="step6" {...stepVariants} transition={{ duration: 0.35 }}>
+          {/* Step 10: Investment Qualifier */}
+          {currentStep === 10 && (
+            <motion.div key="step10" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 6 of 7 — Final Qualifier
+                Step 10 of {TOTAL_STEPS} — Final Qualifier
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 Are you in a position to invest in your growth right now?
@@ -785,14 +1093,23 @@ export default function Apply() {
                   Not right now — I'm not in a position to invest
                 </button>
               </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="w-full px-4 py-3 md:py-4 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center justify-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Go Back
+                </button>
+              </div>
             </motion.div>
           )}
 
-          {/* Step 7: Contact Info */}
-          {currentStep === 7 && (
-            <motion.div key="step7" {...stepVariants} transition={{ duration: 0.35 }}>
+          {/* Step 11: Contact Info */}
+          {currentStep === 11 && (
+            <motion.div key="step11" {...stepVariants} transition={{ duration: 0.35 }}>
               <p className="text-amber-600 text-xs md:text-sm font-semibold uppercase tracking-widest mb-3">
-                Step 7 of 7 — Almost Done
+                Step {TOTAL_STEPS} of {TOTAL_STEPS} — Almost Done
               </p>
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
                 Last step. Where can we reach you?
@@ -839,12 +1156,20 @@ export default function Apply() {
                 </div>
               </div>
 
-              <button
-                onClick={handleSubmit}
-                className="w-full py-4 md:py-5 mt-6 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-2xl hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all md:text-lg"
-              >
-                Book My Strategy Session →
-              </button>
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={prevStep}
+                  className="px-4 py-4 md:py-5 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-2 md:text-base"
+                >
+                  <ArrowLeft size={16} /> Back
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  className="flex-1 py-4 md:py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-900 font-black rounded-2xl hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all md:text-lg"
+                >
+                  Book My Strategy Session →
+                </button>
+              </div>
 
               <p className="text-gray-500 text-xs md:text-sm text-center mt-4 flex items-center justify-center gap-2">
                 <Lock size={12} /> Your details are private and secure. No spam, ever.

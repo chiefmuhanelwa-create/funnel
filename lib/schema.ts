@@ -211,3 +211,37 @@ export const userProgress = pgTable('user_progress', {
     table.lessonId
   ),
 }));
+
+// Bookings table - Strategy session bookings
+export const bookings = pgTable('bookings', {
+  id: serial('id').primaryKey(),
+  email: text('email').notNull(),
+  fullName: text('full_name').notNull(),
+  whatsapp: text('whatsapp'),
+  // Social media profiles
+  igHandle: text('ig_handle'),
+  youtube: text('youtube'),
+  linkedin: text('linkedin'),
+  facebook: text('facebook'),
+  tiktok: text('tiktok'),
+  twitter: text('twitter'),
+  // Discovery questions
+  creatorStage: text('creator_stage'),
+  niche: text('niche'),
+  biggestPain: text('biggest_pain'),
+  biggestFrustration: text('biggest_frustration'),
+  biggestDesire: text('biggest_desire'),
+  dreamOutcome: text('dream_outcome'),
+  revenue: text('revenue'),
+  challenge: text('challenge'),
+  // Booking details
+  bookedDate: text('booked_date'),
+  bookedTime: text('booked_time'),
+  status: text('status').default('booked'), // 'booked', 'completed', 'cancelled', 'no-show'
+  // Email tracking
+  confirmationSent: boolean('confirmation_sent').default(false),
+  adminNotified: boolean('admin_notified').default(false),
+  // Timestamps
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
