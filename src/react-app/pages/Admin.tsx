@@ -225,6 +225,9 @@ export default function Admin() {
           headers: { 'X-Admin-Email': user?.email || '' },
         });
         const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to fetch insights');
+        }
         setAnalytics(data);
       } else if (activeTab === 'bookings') {
         const res = await fetch('/api/admin/bookings', {
