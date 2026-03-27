@@ -29,35 +29,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       sql`
         SELECT COUNT(DISTINCT session_id) AS count
         FROM analytics_events
-        WHERE created_at >= NOW() - ${days} * INTERVAL '1 day'
+        WHERE created_at >= NOW() - make_interval(days => ${days})
       `,
       // Page views
       sql`
         SELECT COUNT(*) AS count
         FROM analytics_events
         WHERE event_type = 'page_view'
-          AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+          AND created_at >= NOW() - make_interval(days => ${days})
       `,
       // Video plays
       sql`
         SELECT COUNT(*) AS count
         FROM analytics_events
         WHERE event_type = 'video_play'
-          AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+          AND created_at >= NOW() - make_interval(days => ${days})
       `,
       // Form submissions
       sql`
         SELECT COUNT(*) AS count
         FROM analytics_events
         WHERE event_type = 'form_submit'
-          AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+          AND created_at >= NOW() - make_interval(days => ${days})
       `,
       // Purchases from analytics_events
       sql`
         SELECT COUNT(*) AS count
         FROM analytics_events
         WHERE event_type = 'purchase'
-          AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+          AND created_at >= NOW() - make_interval(days => ${days})
       `,
       // Revenue from orders table
       sql`
@@ -66,7 +66,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           COALESCE(SUM(total_amount_cents), 0) AS revenue_cents
         FROM orders
         WHERE payment_status = 'completed'
-          AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+          AND created_at >= NOW() - make_interval(days => ${days})
       `,
     ]);
 
@@ -84,7 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         COALESCE(utm_source, 'Direct') AS source,
         COUNT(DISTINCT session_id) AS visitors
       FROM analytics_events
-      WHERE created_at >= NOW() - ${days} * INTERVAL '1 day'
+      WHERE created_at >= NOW() - make_interval(days => ${days})
       GROUP BY utm_source
       ORDER BY visitors DESC
       LIMIT 10
@@ -97,7 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         COUNT(DISTINCT session_id) AS visitors,
         COUNT(DISTINCT CASE WHEN event_type = 'purchase' THEN session_id END) AS purchases
       FROM analytics_events
-      WHERE created_at >= NOW() - ${days} * INTERVAL '1 day'
+      WHERE created_at >= NOW() - make_interval(days => ${days})
       GROUP BY DATE(created_at)
       ORDER BY date ASC
     `;
@@ -110,7 +110,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       FROM analytics_events
       WHERE event_type = 'page_view'
         AND page_url IS NOT NULL
-        AND created_at >= NOW() - ${days} * INTERVAL '1 day'
+        AND created_at >= NOW() - make_interval(days => ${days})
       GROUP BY page_url
       ORDER BY views DESC
       LIMIT 10
