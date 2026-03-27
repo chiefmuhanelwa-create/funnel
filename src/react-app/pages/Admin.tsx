@@ -179,7 +179,7 @@ export default function Admin() {
     if (isAdmin) {
       fetchData();
     }
-  }, [isAdmin, activeTab]);
+  }, [isAdmin, activeTab, analyticsPeriod]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -1375,11 +1375,7 @@ export default function Admin() {
               <h2 className="text-xl font-bold text-gray-900">Page Analytics</h2>
               <select
                 value={analyticsPeriod}
-                onChange={(e) => {
-                  setAnalyticsPeriod(parseInt(e.target.value));
-                  // Refetch with new period
-                  setTimeout(() => fetchData(), 100);
-                }}
+                onChange={(e) => setAnalyticsPeriod(parseInt(e.target.value))}
                 className="input w-auto"
               >
                 <option value={7}>Last 7 days</option>
